@@ -1,0 +1,23 @@
+path.ohlc {
+  fill: #000000;
+  stroke: #000000;
+  stroke-width: 1;
+}
+
+path.ohlc.up {
+  fill: #00aa00;
+  stroke: #00aa00;
+}
+
+path.ohlc.down {
+  fill: #ff0000;
+  stroke: #ff0000;
+}
+
+.container {
+  padding: 12px;
+}
+
+.button {
+  margin-left: 12px;
+}

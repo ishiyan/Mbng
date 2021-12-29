@@ -1,0 +1,30 @@
+<div #container class="container"></div>
+<mat-horizontal-stepper>
+  <mat-step>
+    <ng-template matStepLabel><span class="multiline-label">En&#8203;ti&#8203;ty</span></ng-template>
+    <p class="mat-step-normal">Selected temporal entity:</p>
+    <mat-button-toggle-group #group="matButtonToggleGroup" [(value)]="syntheticDataParameters.temporalEntityKind"
+      class="mat-step-normal">
+      <mat-button-toggle value="ohlcv" selected>Ohlcv</mat-button-toggle>
+      <mat-button-toggle value="quote" selected>Quote</mat-button-toggle>
+      <mat-button-toggle value="trade" selected>Trade</mat-button-toggle>
+      <mat-button-toggle value="scalar" selected>Scalar</mat-button-toggle>
+      <!--mat-button-toggle *ngFor="let type of temporalEntityKinds" [value]="type.toLowerCase()">{{type}} </mat-button-toggle -->
+    </mat-button-toggle-group>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel><span class="multiline-label">Pa&#8203;r&#8203;a&#8203;ms</span></ng-template>
+    <mb-data-generators-synthetic-data-parameters [syntheticDataParameters]="syntheticDataParameters"
+      class="mat-step-wide">
+    </mb-data-generators-synthetic-data-parameters>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel><span class="multiline-label">Ge&#8203;ne&#8203;ra&#8203;te</span></ng-template>
+    <button mat-raised-button color="accent" (click)="generateData()" class="button">Generate data</button>
+    <div class="name" *ngIf="historicalData">{{historicalDataName}}</div>
+    <mb-historical-data-chart [svgheight]=400 [historicalData]="historicalData" *ngIf="historicalData">
+    </mb-historical-data-chart>
+    <mb-data-historical-data-table [historicalData]="historicalData" [enableDownload]="true"
+      *ngIf="historicalData"></mb-data-historical-data-table>
+  </mat-step>
+</mat-horizontal-stepper>

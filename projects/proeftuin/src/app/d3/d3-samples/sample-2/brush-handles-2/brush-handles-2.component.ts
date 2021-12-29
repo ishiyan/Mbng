@@ -1,0 +1,85 @@
+import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@angular/core';
+import * as d3 from 'd3';
+
+@Component({
+  selector: 'd3-sample-brush-handles-2',
+  templateUrl: './brush-handles-2.component.html',
+  styleUrls: ['./brush-handles-2.component.scss']
+})
+export class BrushHandles2Component implements OnInit {
+  @ViewChild('container2', { static: true }) container!: ElementRef;
+  @Input() svgheight: any;
+
+  constructor(private element: ElementRef) {
+  }
+
+  ngOnInit(): void {
+    const data: Array<number> = d3.range(800).map(Math.random);
+
+    const margin: any = { top: 20, right: 10, bottom: 40, left: 20 };
+    const w = this.container.nativeElement.getBoundingClientRect().width;
+    const svg: any = d3.select(this.element.nativeElement).select('svg')
+      .attr('width', w)
+      .attr('height', this.svgheight);
+    const width: number = +w - margin.left - margin.right;
+    const height: number = +this.svgheight - margin.top - margin.bottom;
+
+    const g: any = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    const x: d3.ScaleLinear<number, number> = d3.scaleLinear().range([0, width]);
+    const y: any = d3.randomNormal(height / 2, height / 8);
+
+    const brush = d3.brushX().extent([[0, 0], [width, height]]);
+
+    g.append('g')
+      .attr('class', 'axis axis--x')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(d3.axisBottom(x));
+
+    const circle: any = g.append('g')
+      .attr('class', 'circle')
+      .selectAll('circle')
+      .data(data)
+      .enter().append('circle')
+      .attr('transform', (d: any) => 'translate(' + x(d) + ',' + y() + ')')
+      .attr('r', 3.5);
+
+    const gBrush: any = g.append('g').attr('class', 'brush').call(brush);
+
+    // style brush resize handle
+    // https://github.com/crossfilter/crossfilter/blob/gh-pages/index.html#L466
+    const brushResizePath = (d: any) => {
+      const e = +(d.type === 'e');
+      const xx = e ? 1 : -1;
+      const yy = height / 2;
+      // return 'M' + (.5 * x) + ',' + y + 'A6,6 0 0 ' + e + ' ' + (6.5 * x) + ',' + (y + 6) + 'V' + (2 * y - 6) + 'A6,6 0 0 ' + e +
+      //     ' ' + (.5 * x) + ',' + (2 * y) + 'Z' + 'M' + (2.5 * x) + ',' + (y + 8) + 'V' + (2 * y - 8) + 'M' + (4.5 * x) + ',' +
+      //     (y + 8) + 'V' + (2 * y - 8);
+      return `M${.5 * xx},${yy}A6,6 0 0 ${e} ${6.5 * xx},${yy + 6}V${2 * yy - 6}A6,6 0 0 ${e} ${.5 * xx},${2 * yy}ZM${2.5 * xx},` +
+        `${yy + 8}V${2 * yy - 8}M${4.5 * xx},${yy + 8}V${2 * yy - 8}`;
+    };
+
+    const handle: any = gBrush.selectAll('.handle--custom')
+      .data([{ type: 'w' }, { type: 'e' }])
+      .enter().append('path')
+      .attr('class', 'handle--custom')
+      .attr('stroke', '#000')
+      .attr('cursor', 'ew-resize')
+      .attr('d', brushResizePath);
+
+    brush.on('start brush end', (event: any) => {
+      const s = event.selection;
+      if (s == null) {
+        handle.attr('display', 'none');
+        circle.classed('active', false);
+      } else {
+        const sx = s.map(x.invert);
+        circle.classed('active', (d: any) => sx[0] <= d && d <= sx[1]);
+        handle
+          .attr('display', null)
+          .attr('transform', (d: any, i: any) => 'translate(' + s[i] + ',' + (-height / 4) + ')');
+      }
+    });
+    gBrush.call(brush.move, [0.3, 0.5].map(x));
+  }
+}

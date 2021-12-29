@@ -1,0 +1,201 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Dense single selection list</mat-card-title>
+      <mat-card-subtitle>With responsive width capped on 400px</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list1" (change)="itemIsLineChanged1($event)">
+          <mat-radio-button name="list1" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list1" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list style="max-width:400px" color="primary" multiple="false" dense [(ngModel)]="arrayItemsSelected1" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let d of dataArray" [value]="d">
+          <mb-sparkline [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine1 ? configLine : configFill"></mb-sparkline> {{d.name}}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      You selected:
+      <mb-sparkline [width]="100" [height]="16" [data]="arrayItemsSelected1[0].data"
+        [configuration]="arrayItemIsLine1 ? configFill : configLine"></mb-sparkline>
+      {{arrayItemsSelected1[0].name}}
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Dense multiple selection list</mat-card-title>
+      <mat-card-subtitle>With responsive width capped on 400px</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list2" (change)="itemIsLineChanged2($event)">
+          <mat-radio-button name="list2" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list2" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list style="max-width:400px" color="primary" multiple="true" dense [(ngModel)]="arrayItemsSelected2" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let d of dataArray" [value]="d" checkboxPosition="before">
+          <mb-sparkline [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine2 ? configLine : configFill"></mb-sparkline> {{d.name}}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <div *ngFor="let s of arrayItemsSelected2">
+        You selected:
+        <mb-sparkline [width]="100" [height]="16" [data]="s.data"
+          [configuration]="arrayItemIsLine2 ? configFill : configLine"></mb-sparkline>
+        {{s.name}}
+      </div>
+    </mat-card-actions>
+    <!-- mat-card-actions>
+      <mat-list>
+        <mat-list-item *ngFor="let s of arrayItemsSelected4">
+          You selected:
+          <mb-sparkline [width]="100" [height]="16" [data]="s.data"
+          [configuration]="arrayItemIsLine4 ? configFill : configLine"></mb-sparkline>
+          {{s.name}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-actions -->
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Single selection list</mat-card-title>
+      <mat-card-subtitle>With fixed width of 300px and two-line items</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list3" (change)="itemIsLineChanged3($event)">
+          <mat-radio-button name="list3" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list3" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list style="width:300px" color="primary" multiple="false" [(ngModel)]="arrayItemsSelected3" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let d of dataArray" [value]="d">
+          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine3 ? configLine : configFill"></mb-sparkline>
+          <p matLine>{{d.name}}</p>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      You selected:
+      <mb-sparkline [width]="100" [height]="16" [data]="arrayItemsSelected3[0].data"
+        [configuration]="arrayItemIsLine3 ? configFill : configLine"></mb-sparkline>
+      {{arrayItemsSelected3[0].name}}
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Multiple selection list</mat-card-title>
+      <mat-card-subtitle>With responsive width capped on 400px and two-line items</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list4" (change)="itemIsLineChanged4($event)">
+          <mat-radio-button name="list4" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list4" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list style="max-width:400px" color="primary" multiple="true" [(ngModel)]="arrayItemsSelected4" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let d of dataArray" [value]="d" checkboxPosition="before">
+          <mb-sparkline [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine4 ? configLine : configFill"></mb-sparkline> {{d.name}}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <div *ngFor="let s of arrayItemsSelected4">
+        You selected:
+        <mb-sparkline [width]="100" [height]="16" [data]="s.data"
+          [configuration]="arrayItemIsLine4 ? configFill : configLine"></mb-sparkline>
+        {{s.name}}
+      </div>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Single selection list</mat-card-title>
+      <mat-card-subtitle>With responsive unlimited width and two-line items</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list5" (change)="itemIsLineChanged5($event)">
+          <mat-radio-button name="list5" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list5" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list color="primary" multiple="false" [(ngModel)]="arrayItemsSelected5" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let d of dataArray" [value]="d">
+          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine5 ? configLine : configFill"></mb-sparkline>
+          <p matLine>{{d.name}}</p>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      You selected:
+      <mb-sparkline [width]="100" [height]="16" [data]="arrayItemsSelected5[0].data"
+        [configuration]="arrayItemIsLine5 ? configFill : configLine"></mb-sparkline>
+      {{arrayItemsSelected5[0].name}}
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Simple list</mat-card-title>
+      <mat-card-subtitle>With fixed width of 300px and two-line items</mat-card-subtitle>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list6" (change)="itemIsLineChanged6($event)">
+          <mat-radio-button name="list6" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list6" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list style="max-width:300px">
+        <mat-list-item *ngFor="let d of dataArray">
+          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine6 ? configLine : configFill"></mb-sparkline>
+          <p matLine>{{d.name}}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Simple dense list</mat-card-title>
+      <mat-card-subtitle>
+        <label>Sparkline style:</label>&nbsp;
+        <mat-radio-group name="list7" (change)="itemIsLineChanged7($event)">
+          <mat-radio-button name="list7" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button name="list7" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list dense>
+        <mat-list-item *ngFor="let d of dataArray">
+          <mb-sparkline [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine7 ? configLine : configFill"></mb-sparkline>&nbsp;&nbsp;{{d.name}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

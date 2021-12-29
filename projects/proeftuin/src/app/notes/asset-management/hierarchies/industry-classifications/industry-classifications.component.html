@@ -1,0 +1,41 @@
+<h1>ICB vs GICS</h1>
+
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mb-icicle [data]="icb" [width]=600 [height]=800 [zoom]=true [levels]=3 [labelFunc]="namLabFunc" [labelFontSizeFunc]="labelFontSizeFunc"></mb-icicle>
+      &nbsp;
+      <mb-icicle [data]="gics" [width]=600 [height]=800 [zoom]=true [levels]=3 [labelFunc]="namLabFunc" [labelFontSizeFunc]="labelFontSizeFunc"></mb-icicle>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mb-circlepack [data]="icb" [diameter]=600 [strokeFunc]="strokeFunc" [labelFontSizeFunc]="labelFontSizeFuncLarge"></mb-circlepack>
+      &nbsp;
+      <mb-circlepack [data]="gics" [diameter]=600 [strokeFunc]="strokeFunc" [labelFontSizeFunc]="labelFontSizeFuncLarge"></mb-circlepack>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>1</mat-grid-tile>
+    <mat-grid-tile>2</mat-grid-tile>
+    <mat-grid-tile>3</mat-grid-tile>
+    <mat-grid-tile>4</mat-grid-tile>
+  </mat-grid-list>
+  <!-- mat-card class="example-card">
+    <mat-card-content>
+      <mb-voronoi [data]="icb" [width]=600 [height]=600 [fillFunc]="fillFunc"></mb-voronoi>
+      &nbsp;
+      <mb-voronoi [data]="gics" [width]=600 [height]=600 [fillFunc]="fillFunc"></mb-voronoi>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mb-treemap [data]="icb" [width]=600 [height]=600 [fillFunc]="fillFunc2"></mb-treemap>
+      &nbsp;
+      <mb-treemap [data]="gics" [width]=600 [height]=600 [fillFunc]="fillFunc2"></mb-treemap>
+    </mat-card-content>
+  </mat-card -->
+</div>

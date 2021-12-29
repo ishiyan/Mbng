@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" preserveAspectRatio="xMinYMin slice" overflow="visible" focusable="false">
+ <g>
+    <path fill="lightgrey" stroke-width="0" d="M0,23L0,17L8,10L16,13L23,5L23,23Z" />
+    <path fill="transparent" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" d="M0,17L8,10L16,13L23,5" />
+    <circle cx="0" cy="17" r="2"/>
+    <circle cx="8" cy="10" r="2"/>
+    <circle cx="16" cy="13" r="2"/>
+    <circle cx="23" cy="5" r="2"/>
+ </g>
+</svg>

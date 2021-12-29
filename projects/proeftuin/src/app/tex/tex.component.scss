@@ -1,0 +1,30 @@
+.sidenav-container {
+  flex: 1;
+}
+
+.header {
+  height: 48px;
+  display: flex;
+  padding: 0px;
+  div {
+    padding: 0px;
+  }
+}
+
+.sidenav-toggle {
+  padding: 0px;
+  padding-left: 8px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-item-selected {
+  font-weight: 600;
+}
+
+.slide-toggle {
+  margin: 16px;
+  margin-right: 0px;
+}

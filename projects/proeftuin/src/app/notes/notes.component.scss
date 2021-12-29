@@ -1,0 +1,51 @@
+.sidenav-container {
+  flex: 1;
+}
+
+.header {
+  height: 48px;
+  display: flex;
+  padding: 0px;
+  div {
+    padding: 0px;
+  }
+}
+
+.sidenav-toggle {
+  padding: 0px;
+  padding-left: 8px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-item-unselected {
+  font-weight: normal;
+}
+
+.sidenav-item-selected {
+  font-weight: 600;
+}
+
+.tree-invisible {
+  display: none;
+}
+
+.tree ul,
+.tree li {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  list-style-type: none;
+}
+
+.tree-node {
+  font-size: 16px;
+  white-space: pre-wrap !important;
+}
+
+.tree-item {
+  font-size: 16px;
+  white-space: pre-wrap !important;
+  text-align: left;
+}

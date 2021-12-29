@@ -1,0 +1,17 @@
+<mat-toolbar color="primary" class="mat-elevation-z8 mb-toolbar">
+  <mat-toolbar-row>
+    <button mat-icon-button id="menu" (click)="secondRowOpen = !secondRowOpen" class="show-small">
+      <mat-icon>{{ secondRowOpen ? 'menu_open' : 'menu' }}</mat-icon>
+    </button>
+    <mat-icon svgIcon="mbrane-top" class="logo"></mat-icon>
+    <a mat-button class="hide-small" *ngFor="let key of itemKeys" [routerLink]="key">{{items[key]}}</a>
+    <span class="fill-remaining-space"></span>
+    <mb-theme-picker></mb-theme-picker>
+    <a mat-button routerLink="/">
+      <mat-icon>fingerprint</mat-icon>
+    </a>
+  </mat-toolbar-row>
+  <mat-toolbar-row class="show-small second-row" *ngIf="secondRowOpen">
+    <a mat-button *ngFor="let key of itemKeys" [routerLink]="key">{{items[key]}}</a>
+  </mat-toolbar-row>
+</mat-toolbar>

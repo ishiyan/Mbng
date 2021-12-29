@@ -1,0 +1,109 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Colors</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-swatches [colors]="colors1" [width]="64" [height]="24"></mb-swatches>
+      <p>
+      <mb-swatches [colors]="colors2" [width]="64" [height]="24"></mb-swatches>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Size</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-swatches [colors]="colors1" [width]="128" [height]="32"></mb-swatches>
+      <p>
+      <mb-swatches [colors]="colors2" [width]="32" [height]="8"></mb-swatches>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Select</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-swatches-select [colors]="swatchesArray" (selectionChange)="selectionChanged($event);"></mb-swatches-select>
+    </mat-card-content>
+    <mat-card-actions>
+      Selected:
+      <mb-swatches [width]="100" [height]="16" [colors]="swatchesSelected"></mb-swatches>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Spans</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <span *ngFor="let p of swatchesArray" style="margin-right:10px">
+        <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+      </span>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Multiple selection list</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list dense color="primary" multiple="true" [(ngModel)]="arraySwatchesSelectedMultipleList" [compareWith]="compareFunction">
+        <mat-list-option *ngFor="let p of swatchesArray" [value]="p">
+          <mb-swatches [width]="160" [height]="24" [colors]="p"></mb-swatches>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      Selected:
+      <span *ngFor="let s of arraySwatchesSelectedMultipleList">
+        &nbsp;<mb-swatches [width]="100" [height]="16" [colors]="s"></mb-swatches>
+      </span>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Single selection list</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-selection-list dense color="primary" multiple="false" [(ngModel)]="arraySwatchesSelectedSingleList">
+        <mat-list-option *ngFor="let p of swatchesArray" [value]="p">
+          <mb-swatches [width]="160" [height]="24" [colors]="p"></mb-swatches>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card-content>
+    <mat-card-actions>
+      Selected:
+      <mb-swatches [width]="100" [height]="16" [colors]="arraySwatchesSelectedSingleList[0]"></mb-swatches>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Not selectable list</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list style="max-width:300px">
+        <mat-list-item *ngFor="let s of swatchesArray; let i = index">
+          <mb-swatches [width]="160" [height]="32" [colors]="s"></mb-swatches>&nbsp;{{i}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Dense not selectable list</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list dense style="max-width:300px">
+        <mat-list-item *ngFor="let s of swatchesArray; let i = index">
+          <mb-swatches [width]="160" [height]="32" [colors]="s"></mb-swatches>&nbsp;{{i}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

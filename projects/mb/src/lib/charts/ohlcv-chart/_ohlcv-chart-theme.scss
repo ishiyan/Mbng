@@ -1,0 +1,86 @@
+//@use '@angular/material' as mat;
+@mixin ohlcv-chart-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $is-dark-theme: map-get($theme, is-dark);
+
+  mb-ohlcv-chart {
+    .mat-button-toggle {
+      .svg-icon {
+        stroke: mat.get-color-from-palette($foreground, hint-text);
+      }
+    }
+    .mat-button-toggle-appearance-standard {
+      .svg-icon {
+        stroke: mat.get-color-from-palette($foreground, primary-text);
+      }
+    }
+    .mat-button-toggle-checked {
+      .svg-icon {
+        stroke: mat.get-color-from-palette($foreground, secondary-text);
+      }
+      &.mat-button-toggle-appearance-standard {
+        .svg-icon {
+          stroke: mat.get-color-from-palette($foreground, primary-text);
+        }
+      }
+    }
+    .mat-button-toggle-disabled {
+      .svg-icon {
+        stroke: mat.get-color-from-palette($foreground, disabled-button);
+      }
+    }
+
+    // red: #c60; green: #6c0;
+    // red: #FF0000; green: #00AA00;
+    //$line-color: mat.get-color-from-palette($foreground, primary-text);//if($is-dark-theme, white, black);
+    $line-color: mat.get-color-from-palette($foreground, text);
+
+    text {
+      fill: $line-color;
+    }
+    path.candle {
+      stroke: black;
+    }
+    path.candle.up {
+      fill: white;
+    }
+    path.candle.down {
+      fill: black;
+    }
+    path.ohlc.up {
+      fill: none;
+      stroke: $line-color;
+    }
+    path.ohlc.down {
+      fill: none;
+      stroke: $line-color;
+    }
+    path.volume {
+      // fill: if($is-dark-theme, mat.get-color-from-palette($foreground, darker), mat.get-color-from-palette($foreground, darker));
+      fill: mat.get-color-from-palette($foreground, divider, 0.1);
+    }
+    path.area {
+      fill: mat.get-color-from-palette($background, unselected-chip, 0.5);
+    }
+    path.line {
+      stroke: $line-color;
+    }
+    rect.selection {
+      fill: mat.get-color-from-palette($foreground, divider, 0.3);
+      stroke: none;
+    }
+    .extent {
+      stroke: mat.get-color-from-palette($background);
+    }
+    .crosshair path.wire {
+      stroke: mat.get-color-from-palette($foreground, divider);
+    }
+    .crosshair .axisannotation path {
+      fill: mat.get-color-from-palette($background, unselected-chip);
+    }
+  }
+}

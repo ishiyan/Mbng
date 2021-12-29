@@ -1,0 +1,25 @@
+<div #container class="container"></div>
+
+<mat-expansion-panel expanded="false" *ngIf="viewMenu">
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{chartTitle}}</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
+    (change)="ohlcvViewType = group1.value">
+    <mat-button-toggle [value]="ohlcvViewCandlesticks" class="button-toggle">
+      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="ohlcvViewBars" class="button-toggle">
+      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">Volume</mat-slide-toggle>
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">Crosshair</mat-slide-toggle>
+
+  <button mat-raised-button color="accent" (click)="downloadSvg()" class="button" *ngIf="viewDownloadSvg">Save
+    SVG</button>
+</mat-expansion-panel>
+
+<div id="chart"></div>

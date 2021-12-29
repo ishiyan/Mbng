@@ -1,0 +1,35 @@
+text {
+  fill: #000;
+}
+
+path.candle {
+  stroke: #000000;
+}
+
+path.candle.body {
+  stroke-width: 0;
+}
+
+path.candle.up {
+  fill: #00aa00;
+  stroke: #00aa00;
+}
+
+path.candle.down {
+  fill: #ff0000;
+  stroke: #ff0000;
+}
+
+rect.pane {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
+
+.container {
+  padding: 12px;
+}
+
+.button {
+  margin-left: 12px;
+}

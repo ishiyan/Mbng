@@ -1,0 +1,51 @@
+<br />
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" multiTemplateDataRows>
+    <!-- added: multiTemplateDataRows -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <!-- td mat-cell *matCellDef="let instrument"> {{InstrumentType[instrument.type]}} </td -->
+      <td mat-cell *matCellDef="let instrument"> {{getType(instrument)}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="symbol">
+      <th mat-header-cell *matHeaderCellDef> Ticker </th>
+      <td mat-cell *matCellDef="let instrument"> {{instrument.symbol}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let instrument"> {{instrument.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isin">
+      <th mat-header-cell *matHeaderCellDef> ISIN </th>
+      <td mat-cell *matCellDef="let instrument"> {{instrument.isin}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mic">
+      <th mat-header-cell *matHeaderCellDef> MIC </th>
+      <!-- td mat-cell *matCellDef="let instrument"> {{ExchangeMic[instrument.mic]}} </td -->
+      <td mat-cell *matCellDef="let instrument"> {{getMic(instrument)}} </td>
+    </ng-container>
+
+    <!-- added: expanded content column - the detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let instrument" [attr.colspan]="displayedColumns.length">
+        <div class="expanded-detail" [@detailExpand]="instrument === expandedInstrument ? 'expanded' : 'collapsed'">
+          <!-- div class="expanded-detail-currency"> Currency: {{CurrencyCode[instrument.index.currency]}} </div -->
+          <div class="expanded-detail-description"> {{instrument.description}} </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <!-- added -->
+    <tr mat-row *matRowDef="let instrument; columns: displayedColumns;" class="row"
+      [class.expanded-row]="expandedInstrument === instrument"
+      (click)="expandedInstrument = (expandedInstrument === instrument) ? null : instrument">
+    </tr>
+    <!-- was: tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+  </table>
+</div>

@@ -1,0 +1,67 @@
+table {
+  margin-top: 0px;
+  width: 100%;
+  // outline: thin solid red !important;
+}
+
+.example-card {
+  // max-width: 1024px;
+  margin-bottom: 16px;
+  // outline: thin solid green !important;
+  text-align: center;
+}
+
+.tdcenter {
+  text-align: center;
+}
+
+.tdleft {
+  text-align: left;
+}
+
+.tdheader {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
+
+.tdheadervertical {
+  text-align: center;
+  font-size: x-large;
+  font-weight: bold;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  max-width: 50px;
+}
+
+// ----------------------------------
+// a[href^="http"]:not([href*="example.mil"])::after {
+a[href^="http"]:after {
+  content: '';
+  background: no-repeat left .25em center url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=);
+  padding-right: 1.5em;
+}
+/*a[href^="http"]:after {
+  content: '';
+  background: no-repeat left .25em center url('data:image/svg+xml,\
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48"> \
+      <defs> \
+          <mask id="corner"> \
+              <rect fill="white" x="-24" y="-24" width="48" height="48"></rect> \
+              <rect fill="black" x="2" y="-24" width="22" height="26"></rect> \
+          </mask> \
+      </defs> \
+      <g stroke="blue" fill="blue" stroke-width="4"> \
+          <rect x="-20" y="-16" width="32" height="32" rx="7" ry="7" stroke-width="3" fill="none" mask="url(%23corner)"/> \
+          <g transform="translate(1,0)" stroke-linecap="square"> \
+              <line x1="0" y1="0" x2="17" y2="-17" stroke-width="6"/> \
+              <polygon points="21 -21, 21 -8, 8 -21" stroke-linejoin="round" stroke-width="3"/> \
+           </g> \
+       </g> \
+  </svg>');
+  padding-right: 1.5em;
+}*/

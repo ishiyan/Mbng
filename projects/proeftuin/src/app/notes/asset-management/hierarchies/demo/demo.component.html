@@ -1,0 +1,112 @@
+<mat-card class="example-card">
+  <mat-card-content>
+    <h1>Flat structure</h1>
+    How can we visualize an array of values? For instance, portfolio where every position has a value,
+    or a simple model where every constituen has a weight percentage?
+    //
+    <a href="https://www.msci.com/gics" target="_blank" rel="noopener noreferrer">Justin Bieber Fan Club</a>
+  </mat-card-content>
+</mat-card>
+<mat-card class="example-card">
+  <mat-card-content>
+    <table>
+      <tr>
+        <td></td>
+        <td colspan=2 class="tdleft">
+          <mat-slide-toggle [(ngModel)]="demoFlatAsymmetrical" color="primary">Large data</mat-slide-toggle>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="tdheader">sequentiality</td>
+        <td class="tdheader">adjacency</td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">rectangle</td>
+        <td class="tdcenter"><mb-icicle [data]="demoFlatData" [width]="size4" [height]="size" [labelFontSizeFunc]="labelFontSizeZeroFunc" [zoom]=false [levels]=1 [sumFunc]="demoFlatSumFunc" [sort]="'none'"></mb-icicle></td>
+        <td class="tdcenter"><mb-treemap [data]="demoFlatData" [width]="size" [height]="size" [sort]="'none'" [flat]=true [sumFunc]="demoFlatSumFunc"></mb-treemap></td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">circle</td>
+        <td class="tdcenter"><mb-sunburst [data]="demoFlatData" [diameter]="size" [zoom]=false [levels]=1 [sumFunc]="demoFlatSumFunc" [sort]="'none'"></mb-sunburst></td>
+        <td class="tdcenter"><mb-circlepack [data]="demoFlatData" [diameter]="size" [strokeFunc]="noStrokeFunc" [labelFontSizeFunc]="labelFontSizeZeroFunc" [zoom]=false [flat]=true [sumFunc]="demoFlatSumFunc" [sort]="'none'"></mb-circlepack></td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">convex polygon</td>
+        <td></td>
+        <td class="tdcenter">
+          <div class="tdleft">
+            <mat-select style="width: 90px;" [(ngModel)]="demoFlatShapeSelected" name="demoFlatShape">
+              <mat-option *ngFor="let demoFlatShape of demoFlatShapeArray" [value]="demoFlatShape">
+              {{demoFlatShape}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <mb-voronoi [data]="demoFlatData" [width]="size" [height]="size" [shape]="demoFlatShapeSelected" [strokeFunc]="transparentStrokeFunc" [flat]=true [sumFunc]="demoFlatSumFunc" [fillFunc]="demoFlatValueFill" [labelFontSizeFunc]="labelFontSizeZeroFunc" [sort]="'none'"></mb-voronoi>
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+<mat-card class="example-card">
+  <mat-card-content>
+    <h2>Hierarchical structure</h2>
+  </mat-card-content>
+</mat-card>
+<mat-card class="example-card">
+  <mat-card-content>
+    <table>
+      <tr>
+        <td></td>
+        <td colspan=2 class="tdleft">
+          <mat-slide-toggle [(ngModel)]="demoHierAsymmetrical" color="primary" class="form-field">Large assymetrical data</mat-slide-toggle>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="tdheader">adjacency</td>
+        <td class="tdheader">containment</td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">rectangle</td>
+        <td class="tdcenter">
+          <div class="tdleft">icicle</div>
+          <mb-icicle [data]="demoHierData" [width]="size" [height]="size" [labelFontSizeFunc]="labelFontSizeZeroFunc" [zoom]=true [sumFunc]="demoHierSumFunc"></mb-icicle></td>
+        <td class="tdcenter">
+          <div class="tdleft">treemap</div>
+          <mb-treemap [data]="demoHierData" [width]="size" [height]="size" [sumFunc]="demoHierSumFunc"></mb-treemap></td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">circle</td>
+        <td class="tdcenter">
+          <div class="tdleft">sunburst</div>
+          <mb-sunburst [data]="demoHierData" [diameter]="size" [zoom]=true [sumFunc]="demoHierSumFunc"></mb-sunburst></td>
+        <td class="tdcenter">
+          <div class="tdleft">
+            circle pack
+            <mat-slide-toggle style="margin-left: 8px;" [(ngModel)]="demoHierCirclepackLabelFontsize" color="primary" class="form-field">labels</mat-slide-toggle>
+          </div>
+          <mb-circlepack [data]="demoHierData" [diameter]="size" [strokeFunc]="noStrokeFunc" [zoom]=true [sumFunc]="demoHierSumFunc" [labelFontSizeFunc]="demoHierCirclepackLabelFontsizeFunc" [rootCircle]=false></mb-circlepack></td>
+      </tr>
+      <tr>
+        <td class="tdheadervertical">convex polygon</td>
+        <td></td>
+        <td class="tdcenter">
+          <div class="tdleft">
+            voronoi
+            <mat-select style="width: 90px; margin-left: 8px;" [(ngModel)]="demoHierShapeSelected" name="demoHierShape">
+              <mat-option *ngFor="let demoHierShape of demoHierShapeArray" [value]="demoHierShape">
+              {{demoHierShape}}
+              </mat-option>
+            </mat-select>
+          </div>
+          <mb-voronoi [data]="demoHierData" [width]="size" [height]="size" [shape]="demoHierShapeSelected" [strokeFunc]="transparentStrokeFunc"></mb-voronoi></td>
+        <!-- td>&nbsp; <br/><mb-voronoi [data]="demoHier" [width]="size" [height]="size" [shape]="'hexagon'" [strokeFunc]="transparentStrokeFunc"></mb-voronoi></td>
+        <td>&nbsp; <br/><mb-voronoi [data]="demoHier" [width]="size" [height]="size" [shape]="'octagon'" [strokeFunc]="transparentStrokeFunc"></mb-voronoi></td>
+        <td>&nbsp; <br/><mb-voronoi [data]="demoHier" [width]="size" [height]="size" [shape]="'circle'" [strokeFunc]="transparentStrokeFunc"></mb-voronoi></td -->
+      </tr>
+    </table>
+      </mat-card-content>
+</mat-card>
+
+

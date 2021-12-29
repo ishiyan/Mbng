@@ -1,0 +1,64 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Chirp parameters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div style="width:300px;height:auto;margin:0;padding:0">
+    <mb-svg-viewer src="assets/img/mb-chirp.svg" [scaleToContainer]="true"
+      [ngClass]="!chirpParameters.isBiDirectional? 'shown' : 'hidden'"></mb-svg-viewer>
+  </div>
+  <div style="width:300px;height:auto;margin:0;padding:0">
+    <mb-svg-viewer src="assets/img/mb-chirp-bidirectional.svg" [scaleToContainer]="true"
+      [ngClass]="chirpParameters.isBiDirectional ? 'shown' : 'hidden'"></mb-svg-viewer>
+  </div>
+  <div>
+    <mb-katex [expression]="eq1" [options]="options"></mb-katex>&#8203;
+    <mb-katex [expression]="eq2" [options]="options"></mb-katex>&#8203;
+    <mb-katex [expression]="eq3" [options]="options"></mb-katex>&#8203;
+    <mb-katex [expression]="eq4" [options]="options"></mb-katex>
+  </div>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="chirpParameters.amplitude" min="4" step="1"
+      required>
+    <mat-hint>The amplitude of the chirp, should be positive.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Minimum value, β" [(ngModel)]="chirpParameters.minimalValue" min="1"
+      step="1" required>
+    <mat-hint>The minimum of the chirp, should be positive.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Initial period, λ1" [(ngModel)]="chirpParameters.initialPeriod" min="0"
+      max="1" step="1" required>
+    <mat-hint>The instantaneous initial period of the chirp in samples, should be ≥ 2.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Final period, λL" [(ngModel)]="chirpParameters.finalPeriod" min="0"
+      max="1" step="1" required>
+    <mat-hint>The instantaneous final period of the chirp in samples, should be ≥ 2.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Initial phase, φ" [(ngModel)]="chirpParameters.phaseInPi" min="0" max="1"
+      step="0.01" required>
+    <mat-hint>The initial phase, φ, of the chirp in ratios of π; if φ∈[-1, 1], then the phase ∈[-π, π].</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Chirp sweep</mat-label>
+    <mat-select [(value)]="chirpParameters.chirpSweep" [compareWith]="compare" required>
+      <mat-option *ngFor="let type of chirpSweeps" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+    <mat-hint>The chirp sweep.</mat-hint>
+  </mat-form-field>
+  <mat-form-field class="last-form-field">
+    <mat-label>Bi-directional</mat-label>
+    <mat-select [(value)]="chirpParameters.isBiDirectional" required>
+      <mat-option [value]="true">Yes</mat-option>
+      <mat-option [value]="false">No</mat-option>
+    </mat-select>
+    <mat-hint>If the period of even chirps descends from the final period to the initial one, to form a symmetrical
+      shape with odd chirps.</mat-hint>
+  </mat-form-field>
+</mat-expansion-panel>

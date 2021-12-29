@@ -1,0 +1,66 @@
+text {
+  fill: #000;
+}
+
+path.candle {
+  stroke: #000000;
+}
+
+path.candle.body {
+  stroke-width: 0;
+}
+
+path.candle.up {
+  fill: #00aa00;
+  stroke: #00aa00;
+}
+
+path.candle.down {
+  fill: #ff0000;
+  stroke: #ff0000;
+}
+
+path.tradearrow {
+  stroke: none;
+}
+
+path.tradearrow.buy {
+  fill: #0000ff;
+}
+
+path.tradearrow.buy-pending {
+  fill-opacity: 0.2;
+  stroke: #0000ff;
+  stroke-width: 1.5;
+}
+
+path.tradearrow.sell {
+  fill: #9900ff;
+}
+
+.tradearrow path.highlight {
+  fill: none;
+  stroke-width: 2;
+}
+
+.tradearrow path.highlight.buy,
+.tradearrow path.highlight.buy-pending {
+  stroke: #0000ff;
+}
+
+.tradearrow path.highlight.buy-pending {
+  fill: #0000ff;
+  fill-opacity: 0.3;
+}
+
+.tradearrow path.highlight.sell {
+  stroke: #9900ff;
+}
+
+.container {
+  padding: 12px;
+}
+
+.button {
+  margin-left: 12px;
+}

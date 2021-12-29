@@ -1,0 +1,19 @@
+.brush-and-zoom-area-chart {
+  margin: 0px;
+  padding: 0px;
+}
+
+.area {
+  fill: steelblue;
+  clip-path: url(#clip);
+}
+
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}
+
+.container {
+  padding: 12px;
+}

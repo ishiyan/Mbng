@@ -1,0 +1,72 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Parametric procedural palette</mat-card-title>
+      <mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>Select number of swatches</mat-label>
+          <input matInput type="number" min="2" max="60" [(ngModel)]="generatedPaletteLength">
+        </mat-form-field>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-katex [expression]="katex1"></mb-katex>
+      <mb-katex [expression]="katex2"></mb-katex>
+      <mb-katex [expression]="katex3"></mb-katex>
+    </mat-card-content>
+    <mat-card-content>
+      <mb-swatches [width]="260" [height]="32" [colors]="generatedPalette"></mb-swatches>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>a [{{a1}}, {{a2}}, {{a3}}]</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a1" (input)="a1Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a2" (input)="a2Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a3" (input)="a3Changed($event)"></mat-slider>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>b [{{b1}}, {{b2}}, {{b3}}]</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b1" (input)="b1Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b2" (input)="b2Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b3" (input)="b3Changed($event)"></mat-slider>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>c [{{c1}}, {{c2}}, {{c3}}]</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c1" (input)="c1Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c2" (input)="c2Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c3" (input)="c3Changed($event)"></mat-slider>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>d [{{d1}}, {{d2}}, {{d3}}]</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d1" (input)="d1Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d2" (input)="d2Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d3" (input)="d3Changed($event)"></mat-slider>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Examples</mat-card-title>
+      <mat-card-subtitle>
+        <mat-form-field appearance="fill">
+          <mat-label>Select number of swatches</mat-label>
+          <input matInput type="number" min="2" max="60" [(ngModel)]="generatedPalettesLength">
+        </mat-form-field>  
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <span *ngFor="let s of generatedPalettes">
+        <div><mb-swatches [width]="260" [height]="32" [colors]="s"></mb-swatches></div>
+      </span>
+    </mat-card-content>
+  </mat-card>
+</div>

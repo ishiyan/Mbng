@@ -1,0 +1,32 @@
+.table-container {
+  position: relative;
+  overflow: auto;
+  margin: 0px;
+  padding: 0px;
+}
+
+table {
+  width: 100%;
+}
+
+.row td {
+  border-bottom-width: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.evenrow {
+  background-color: rgba(0, 0, 0, 0.05); //#f5f5f5;
+}
+
+mat-form-field {
+  margin-right: 16px;
+}
+
+.long-field {
+  width: 240px;
+}
+
+.short-field {
+  width: 80px;
+}

@@ -1,0 +1,59 @@
+text {
+  fill: #000;
+}
+
+path.candle {
+  stroke: #000000;
+}
+
+path.candle.body {
+  stroke-width: 0;
+}
+
+path.candle.up {
+  fill: #00aa00;
+  stroke: #00aa00;
+}
+
+path.candle.down {
+  fill: #ff0000;
+  stroke: #ff0000;
+}
+
+.supstance path {
+  stroke: blue;
+  stroke-width: 0.8;
+  stroke-dasharray: 2, 2;
+}
+
+.mouseover .supstance path {
+  stroke-width: 1.5;
+}
+
+.axisannotation path {
+  fill: #dddddd;
+}
+
+.axisannotation text {
+  fill: #000;
+  font: 10px sans-serif;
+}
+
+.dragging .supstance path {
+  stroke: darkblue;
+}
+
+.interaction path {
+  pointer-events: all;
+  cursor: ns-resize;
+  stroke: blue;
+  stroke-width: 1;
+}
+
+.container {
+  padding: 12px;
+}
+
+.button {
+  margin-left: 12px;
+}

@@ -1,0 +1,43 @@
+.table-container {
+  position: relative;
+  max-height: 200px;
+  max-width: 600px;
+  overflow: auto;
+  margin: 16px;
+  margin-left: 32px;
+}
+
+table {
+  width: 100%;
+}
+
+// added
+
+.row td {
+  border-bottom-width: 0;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.row:not(.expanded-row):hover {
+  background: #f5f5f5;
+}
+
+tr.row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.expanded-detail {
+  overflow: hidden;
+  // display: flex;
+}
+
+.expanded-detail-currency {
+  padding-bottom: 8px;
+}
+
+.expanded-detail-description {
+  padding-bottom: 16px;
+}

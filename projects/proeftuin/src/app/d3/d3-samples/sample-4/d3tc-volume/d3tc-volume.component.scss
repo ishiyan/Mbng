@@ -1,0 +1,20 @@
+path.volume {
+  fill: #aaaaaa;
+  opacity: 0.5;
+}
+
+path.volume.up {
+  fill: #00aa00;
+}
+
+path.volume.down {
+  fill: #ff0000;
+}
+
+.container {
+  padding: 12px;
+}
+
+.button {
+  margin-left: 12px;
+}

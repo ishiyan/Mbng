@@ -1,0 +1,40 @@
+<mat-expansion-panel expanded="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Time parameters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-form-field>
+    <input type="time" matInput placeholder="Trading session start time" [(ngModel)]="timeParameters.sessionStartTime"
+      required>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="time" matInput placeholder="Trading session end time" [(ngModel)]="timeParameters.sessionEndTime"
+      required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="First data sample date" [(ngModel)]="timeParameters.startDate"
+      name="startDate" #startDate="ngModel" required>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Time granularity</mat-label>
+    <mat-select [(value)]="timeParameters.timeGranularity" [compareWith]="compare" required>
+      <mat-option *ngFor="let type of timeGranularities" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="last-form-field">
+    <mat-label>Business day calendar</mat-label>
+    <mat-select [(ngModel)]="timeParameters.businessDayCalendar" [compareWith]="compare" required>
+      <mat-option *ngFor="let type of businessDayCalendars" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-icon-button color="accent" (click)="openBusinessDayCalendarDescription()">
+    <mat-icon>help</mat-icon>
+  </button>
+</mat-expansion-panel>

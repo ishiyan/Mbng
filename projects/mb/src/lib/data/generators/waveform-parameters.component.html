@@ -1,0 +1,43 @@
+<mat-expansion-panel expanded="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Waveform parameters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div>
+    <mb-katex [expression]="eq1" [options]="options"></mb-katex>
+  </div>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Waveform samples, L" [(ngModel)]="waveformParameters.waveformSamples"
+      min="4" step="1" required>
+    <mat-hint>Number of samples in the waveform.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Offset samples" [(ngModel)]="waveformParameters.offsetSamples" min="0"
+      step="1" required>
+    <mat-hint>Samples before the very first waveform sample. If zero, waveform starts immediately.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Repetitions count" [(ngModel)]="waveformParameters.repetitionsCount"
+      min="0" step="1" required>
+    <mat-hint>Number of repetitions of the waveform. Zero means infinite.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Noise amplitude fraction, ρn"
+      [(ngModel)]="waveformParameters.noiseAmplitudeFraction" min="0" max="1" step="0.01" required>
+    <mat-hint>Noise amplitude as a fraction of the sample value. No noise if zero.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Noise generator type</mat-label>
+    <mat-select [(value)]="waveformParameters.noiseUniformRandomGeneratorKind" [compareWith]="compare" required>
+      <mat-option *ngFor="let type of uniformRandomGenerators" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+    <mat-hint>Uniform random generator to produce the noise.</mat-hint>
+  </mat-form-field>
+  <mat-form-field class="last-form-field">
+    <input type="number" matInput placeholder="Noise generator seed"
+      [(ngModel)]="waveformParameters.noiseUniformRandomGeneratorSeed" min="0" step="1" required>
+  </mat-form-field>
+</mat-expansion-panel>

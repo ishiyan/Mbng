@@ -1,0 +1,175 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mat-form-field class="form-field-90">
+        <mat-label>data</mat-label>
+        <mat-select [(ngModel)]="datasetSelected" name="dataset">
+          <mat-option *ngFor="let dataset of datasetArray" [value]="dataset.value">
+            {{dataset.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-60">
+        <mat-label>width</mat-label>
+        <mat-select [(ngModel)]="widthSelected" name="width">
+          <mat-option *ngFor="let width of widthArray" [value]="width.value">
+            {{width.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>height</mat-label>
+        <mat-select [(ngModel)]="heightSelected" name="height">
+          <mat-option *ngFor="let height of heightArray" [value]="height.value">
+            {{height.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-80">
+        <mat-label>shape</mat-label>
+        <mat-select [(ngModel)]="shapeSelected" name="shape">
+          <mat-option *ngFor="let shape of shapeArray" [value]="shape">
+            {{shape}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>convergenceRatio</mat-label>
+        <mat-select [(ngModel)]="convergenceRatioSelected" name="convergenceRatio">
+          <mat-option *ngFor="let convergenceRatio of convergenceRatioArray" [value]="convergenceRatio">
+            {{convergenceRatio}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>minWeightRatio</mat-label>
+        <mat-select [(ngModel)]="minWeightRatioSelected" name="minWeightRatio">
+          <mat-option *ngFor="let minWeightRatio of minWeightRatioArray" [value]="minWeightRatio">
+            {{minWeightRatio}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>maxIterationCount</mat-label>
+        <mat-select [(ngModel)]="maxIterationCountSelected" name="maxIterationCount">
+          <mat-option *ngFor="let maxIterationCount of maxIterationCountArray" [value]="maxIterationCount">
+            {{maxIterationCount}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-60">
+        <mat-label>padding</mat-label>
+        <mat-select [(ngModel)]="paddingSelected" name="padding">
+          <mat-option *ngFor="let padding of paddingArray" [value]="padding">
+            {{padding}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-190">
+        <mat-label>sumFunc</mat-label>
+        <mat-select [(ngModel)]="sumFuncSelected" name="sumFunc">
+          <mat-option *ngFor="let sumFunc of sumFuncArray" [value]="sumFunc.value">
+            {{sumFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-60">
+        <mat-label>sort</mat-label>
+        <mat-select [(ngModel)]="sortSelected" name="sort">
+          <mat-option *ngFor="let sort of sortArray" [value]="sort">
+            {{sort}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-190">
+        <mat-label>fillFunc</mat-label>
+        <mat-select [(ngModel)]="fillFuncSelected" name="fillFunc">
+          <mat-option *ngFor="let fillFunc of fillFuncArray" [value]="fillFunc.value">
+            {{fillFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>fillOpacityFunc</mat-label>
+        <mat-select [(ngModel)]="fillOpacityFuncSelected" name="fillOpacityFunc">
+          <mat-option *ngFor="let fillOpacityFunc of fillOpacityFuncArray" [value]="fillOpacityFunc.value">
+            {{fillOpacityFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-60">
+        <mat-label>strokeFunc</mat-label>
+        <mat-select [(ngModel)]="strokeFuncSelected" name="strokeFunc">
+          <mat-option *ngFor="let strokeFunc of strokeFuncArray" [value]="strokeFunc.value">
+            {{strokeFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>strokeWidthFunc</mat-label>
+        <mat-select [(ngModel)]="strokeWidthFuncSelected" name="strokeWidthFunc">
+          <mat-option *ngFor="let strokeWidthFunc of strokeWidthFuncArray" [value]="strokeWidthFunc.value">
+            {{strokeWidthFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-60">
+        <mat-label>labelFunc</mat-label>
+        <mat-select [(ngModel)]="labelFuncSelected" name="labelFunc">
+          <mat-option *ngFor="let labelFunc of labelFuncArray" [value]="labelFunc.value">
+            {{labelFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-80">
+        <mat-label>labelMinRatio</mat-label>
+        <mat-select [(ngModel)]="labelMinRatioSelected" name="labelMinRatio">
+          <mat-option *ngFor="let labelMinRatio of labelMinRatioArray" [value]="labelMinRatio">
+            {{labelMinRatio}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>labelFill</mat-label>
+        <mat-select [(ngModel)]="labelFillSelected" name="labelFill">
+          <mat-option *ngFor="let labelFill of labelFillArray" [value]="labelFill">
+            {{labelFill}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-190">
+        <mat-label>labelShadow</mat-label>
+        <mat-select [(ngModel)]="labelShadowSelected" name="labelShadow">
+          <mat-option *ngFor="let labelShadow of labelShadowArray" [value]="labelShadow">
+            {{labelShadow}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-field-90">
+        <mat-label>labelFontSizeFunc</mat-label>
+        <mat-select [(ngModel)]="labelFontSizeFuncSelected" name="labelFontSizeFunc">
+          <mat-option *ngFor="let labelFontSizeFunc of labelFontSizeFuncArray" [value]="labelFontSizeFunc.value">
+            {{labelFontSizeFunc.key}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-slide-toggle [(ngModel)]="flat" color="primary" class="form-field">flat</mat-slide-toggle>  
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-content>
+      <mb-voronoi [data]="datasetSelected" [width]="widthSelected"  [height]="heightSelected" [padding]="paddingSelected" [shape]="shapeSelected"
+        [convergenceRatio]="convergenceRatioSelected" [minWeightRatio]="minWeightRatioSelected" [maxIterationCount]="maxIterationCountSelected"
+        [sumFunc]="sumFuncSelected" [sort]="sortSelected" [fillFunc]="fillFuncSelected" [fillOpacityFunc]="fillOpacityFuncSelected"
+        [strokeFunc]="strokeFuncSelected" [strokeWidthFunc]="strokeWidthFuncSelected"
+        [flat]="flat" [tapFunc]="tapFunc" [labelFunc]="labelFuncSelected"
+        [labelMinRatio]="labelMinRatioSelected" [labelFill]="labelFillSelected" [labelShadow]="labelShadowSelected"
+        [labelFontSizeFunc]="labelFontSizeFuncSelected"></mb-voronoi>
+    </mat-card-content>
+    <mat-card-actions>
+    {{selectedNodeInfo}}
+    </mat-card-actions>
+  </mat-card>
+
+</div>

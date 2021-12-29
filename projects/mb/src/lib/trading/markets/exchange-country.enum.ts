@@ -1,0 +1,22 @@
+/** Exchange countries related to ISO 10383 Market Identifier Codes. */
+export enum ExchangeCountry {
+  NoCountry = 'noCountry',
+  Austria = 'austria',
+  Belgium = 'belgium',
+  Canada = 'canada',
+  Denmark = 'denmark',
+  Finland = 'finland',
+  France = 'france',
+  Germany = 'germany',
+  Iceland = 'iceland',
+  Italy = 'italy',
+  Luxembourg = 'luxembourg',
+  Norway = 'norway',
+  Portugal = 'portugal',
+  Spain = 'spain',
+  Sweden = 'sweden',
+  Switzerland = 'switzerland',
+  Netherlands = 'netherlands',
+  UnitedKingdom = 'unitedKingdom',
+  UnitedStates = 'unitedStates',
+}

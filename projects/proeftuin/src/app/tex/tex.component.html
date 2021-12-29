@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" class="header">
+  <button mat-button class="sidenav-toggle" (click)="texSidenav.toggle()">
+    <mat-icon>{{ texSidenav.opened ? 'menu_open' : 'menu' }}</mat-icon>
+  </button>
+  <span>TeX: {{category.name}}</span>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #texSidenav class="mat-elevation-z16" mode="push" fixedInViewport="false" opened="false">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let c of categories" [routerLink]="'/tex/' + c.route"
+        routerLinkActive="sidenav-item-selected" (click)="category = c; texSidenav.close();"
+        [class.sidenav-item-selected]="category === c">
+        {{c.name}}
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-slide-toggle class="slide-toggle" [(ngModel)]="renderMathJax">MathJax</mat-slide-toggle>
+    <mat-slide-toggle class="slide-toggle" [(ngModel)]="renderKatex">KaTeX</mat-slide-toggle>
+    <tex-sample-list [samples]="category.samples" [showMathJax]="renderMathJax" [showKatex]="renderKatex"></tex-sample-list>
+  </mat-sidenav-content>
+</mat-sidenav-container>

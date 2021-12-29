@@ -1,0 +1,31 @@
+.footer {
+  margin-top: 40px;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.footer-list {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  padding-bottom: 8px;
+}
+
+.footer-copyright {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  flex-direction: column;
+  min-width: 225px;
+  text-align: center;
+}
+
+.footer-logo {
+  margin-right: 24px;
+}
+
+@media screen and (max-width: 520px) {
+  .footer-list {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,29 @@
+<mat-form-field style="width:92px">
+  <mat-label>{{label}}</mat-label>
+  <mat-select [(value)]="selectedPalette" (selectionChange)="selectionChanged($event);">
+    <mat-select-trigger>
+      <mb-swatches [width]="72" [height]="triggerHeightPixels" [colors]="selectedPalette"></mb-swatches>
+    </mat-select-trigger>
+    <mat-option *ngFor="let p of palettes" [value]="p" style="padding: 18px 0px 0px 30px">
+      <mb-swatches [width]="96" [height]="optionHeightPixels" [colors]="p"></mb-swatches>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<!-- x5: 140px 120 160 -->
+<!-- x4: 116px  96 136 -->
+<!-- x3:  92px  72  96 -->
+<!-- x2:  68px  48  64 -->
+<!--  [ngStyle]="{'width.px': selectWidth}"  style="width:140px" [ngStyle]="computeWidthStyle()" -->
+<!--
+<mat-form-field [ngStyle]="computeWidthStyle()">
+  <mat-label>{{label}}</mat-label>
+  <mat-select [(value)]="selectedPalette" (selectionChange)="selectionChanged($event);">
+    <mat-select-trigger>
+      <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette"></mb-swatches>
+    </mat-select-trigger>
+    <mat-option *ngFor="let p of palettes" [value]="p" style="padding: 18px 0px 0px 30px">
+      <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p"></mb-swatches>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+-->

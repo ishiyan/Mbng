@@ -1,0 +1,31 @@
+<mat-expansion-panel expanded="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Sinusoid generation parameters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div>
+    <mb-katex [expression]="eq1" [options]="options"></mb-katex>&#8203;
+    <mb-katex [expression]="eq2" [options]="options"></mb-katex>
+  </div>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="sinusoidalParameters.amplitude" min="4"
+      step="1" required>
+    <mat-hint>The amplitude of the sinusoid, should be positive.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Minimum value, β" [(ngModel)]="sinusoidalParameters.minimalValue" min="1"
+      step="1" required>
+    <mat-hint>The minimum of the sinusoidal, should be positive.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Period, λ" [(ngModel)]="sinusoidalParameters.period" min="0" max="1"
+      step="1" required>
+    <mat-hint>The period of the sinusoid in samples, should be ≥ 2.</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="number" matInput placeholder="Phase, φ" [(ngModel)]="sinusoidalParameters.phaseInPi" min="0" max="1"
+      step="0.01" required>
+    <mat-hint>The phase, φ, of the sinusoid in ratios of π; if φ∈[-1, 1], then the phase ∈[-π, π].</mat-hint>
+  </mat-form-field>
+</mat-expansion-panel>

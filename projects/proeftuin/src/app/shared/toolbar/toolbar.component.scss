@@ -1,0 +1,37 @@
+.mb-toolbar {
+  position: relative;
+  z-index: 8;
+}
+
+.second-row {
+  height: 42px;
+  padding: 0px;
+  padding-left: 8px;
+  vertical-align: middle;
+}
+
+// This fills the remaining space, by using flexbox.
+// Every toolbar row uses a flexbox row layout.
+.fill-remaining-space {
+  flex-grow: 1;
+  // or: flex: 1 1 auto;
+}
+
+.show-small {
+  display: none;
+}
+
+.logo {
+  margin-right: 48px;
+}
+
+// Rules for when the device is detected to be a small screen.
+@media (max-width: 520px) {
+  .hide-small {
+    display: none;
+  }
+
+  .show-small {
+    display: block;
+  }
+}

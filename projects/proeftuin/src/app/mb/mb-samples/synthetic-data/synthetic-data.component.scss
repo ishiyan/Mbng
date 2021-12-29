@@ -1,0 +1,33 @@
+::ng-deep .mat-horizontal-content-container {
+  padding: 0px !important;
+}
+
+.mat-step-normal {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.multiline-label {
+  white-space: normal;
+}
+
+mat-button-toggle-group {
+  flex-wrap: wrap;
+}
+
+.button {
+  margin: 16px;
+  margin-bottom: 32px;
+}
+
+.name {
+  margin: 0px;
+  margin-left: 16px;
+  margin-bottom: 16px;
+}
+
+.moniker {
+  margin: 0px;
+  margin-left: 16px;
+  margin-bottom: 16px;
+}

@@ -1,0 +1,83 @@
+import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import * as d3 from 'd3';
+import * as d3tc from '../../../../shared/d3tc';
+
+import { D3Ohlcv } from '../../data/d3-ohlcv';
+import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+
+@Component({
+    selector: 'd3-sample-d3tc-multiple-small-plots',
+    templateUrl: './d3tc-multiple-small-plots.component.html',
+    styleUrls: ['./d3tc-multiple-small-plots.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+})
+export class D3tcMultipleSmallPlotsComponent implements OnInit {
+    @ViewChild('container') container: ElementRef;
+    // @Input() svgwidth: any;
+    @Input() svgheight: any;
+
+    ngOnInit() {
+        const data: D3Ohlcv[] = dataOhlcvDaily;
+
+        function chart(id, name, symbol, fullWidth, fullHeight) {
+            const margin = {top: 40, right: 40, bottom: 40, left: 40};
+            const width = fullWidth - margin.left - margin.right;
+            const height = fullHeight - margin.top - margin.bottom;
+            const volumeHeight = fullHeight * .25;
+
+            const x = d3tc.scale.financetime().range([0, width]);
+            const y = d3.scaleLinear().range([height, 0]);
+            const yPercent = y.copy(); // Same as y at this stage, will get a different domain later
+            const yVolume = d3.scaleLinear().range([height, height - volumeHeight]);
+            const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
+            const accessor = candlestick.accessor();
+            // Set the accessor to a ohlc accessor so we get highlighted bars
+            const volume = d3tc.plot.volume().accessor(accessor).xScale(x).yScale(yVolume);
+            const xAxis = d3.axisBottom(x).ticks(4);
+            const yAxis = d3.axisRight(y).ticks(4);
+            const percentAxis = d3.axisLeft(yPercent).ticks(4).tickFormat(d3.format('+.1%'));
+            const volumeAxis = d3.axisRight(yVolume).ticks(2).tickFormat(d3.format(',.3s'));
+
+            const svg: any = d3.select(id).attr('width', width).attr('height', height)
+                .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+            svg.append('clipPath').attr('id', 'clip')
+                .append('rect').attr('x', 0).attr('y', y(1)).attr('width', width).attr('height', y(0) - y(1));
+            svg.append('text').attr('class', 'symbol').attr('x', 5).text(name + ' (' + symbol + ')');
+            svg.append('g').attr('class', 'volume').attr('clip-path', 'url(#clip)');
+            svg.append('g').attr('class', 'candlestick').attr('clip-path', 'url(#clip)');
+            svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')');
+            svg.append('g').attr('class', 'y axis').attr('transform', 'translate(' + width + ',0)');
+            svg.append('g').attr('class', 'percent axis'); 
+            svg.append('g').attr('class', 'volume axis');
+
+            function draw() {
+                svg.select('g.x.axis').call(xAxis);
+                svg.select('g.y.axis').call(yAxis);
+                svg.select('g.volume.axis').call(volumeAxis);
+                svg.select('g.percent.axis').call(percentAxis);
+
+                // We know the data does not change, a simple refresh that does not perform data joins will suffice.
+                svg.select('g.candlestick').call(candlestick.refresh);
+                svg.select('g.volume').call(volume.refresh);
+            }
+
+            // data begin ----------------------------------
+            x.domain(d3tc.scale.plot.time(data, accessor).domain());
+            y.domain(d3tc.scale.plot.ohlc(data, accessor).domain());
+            yPercent.domain(d3tc.scale.plot.percent(y, accessor(data)).domain());
+            yVolume.domain(d3tc.scale.plot.volume(data, accessor.v).domain());
+
+            svg.select('g.candlestick').datum(data).call(candlestick);
+            svg.select('g.volume').datum(data).call(volume);
+            draw();
+            // data end ----------------------------------
+        }
+
+        const width = this.container.nativeElement.getBoundingClientRect().width / 3;
+        const height = this.svgheight;
+
+        chart('#d3tc-multiple-small-plots-1', 'Facebook, Inc.', 'FB', width, height);
+        chart('#d3tc-multiple-small-plots-2', 'Google, Inc.', 'GOOG', width, height);
+        chart('#d3tc-multiple-small-plots-3', 'Apple, Inc.', 'AAPL', width, height);
+    }
+}
