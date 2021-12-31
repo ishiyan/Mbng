@@ -1,26 +1,57 @@
 # Mbng
 
+## Projects in this monorepo
+
+| Project     | Description |
+| ----------- | ----------- |
+| `mb`        | A library with shared components and widgets |
+| `proeftuin` | A testing ground for the `mb` library |
+| `notes`     | An interactive assorted notes for various topics |
+| `ex01`      | [A responsive navbar using a Flex Layout](https://zoaibkhan.com/blog/create-a-responsive-toolbar-in-angular-using-flex-layout/) |
+
 ## Updating
 
-Install latest tools, run `ng update`, run `ncu`.
+Install latest tools, run `ng update`, run `ncu`, run `npm install`.
 
 ```bash
-npm install -g @angular/cli@latest
-npm install -g npm-check-updates@latest
-npm install -g sass@latest
+sudo npm install -g @angular/cli@latest
+sudo npm install -g npm-check-updates@latest
+sudo npm install -g sass@latest
 npm list -g
 
+# This will give an overview
 ng update
+# This will do an actual update of specified packages
+# Use an optional `--force` switch if something is not compatible
 ng update --force @angular/cli @angular/core @angular-eslint/schematics @angular/material @angular/cdk
 
+# This will show updates for the rest of packages
 ncu
-# edit package.json
+# Now edit `package.json` manually and do `npm install`
 npm install
 ```
 
 - Run `prod.cmd`.
 - Go to the `src/themes` and run `build_themes_compressed.cmd`.
 - Run `prod_notes.cmd`
+
+## Add a new application project to the monorepo
+
+From the workspace folder, execute the following. Read about the [multirepo file structure](https://angular.io/guide/file-structure#multiple-projects) and [ng generate](https://angular.io/cli/generate).
+
+```bash
+# Adding a study example application
+ng generate application myapp --style=scss --minimal --prefix=myapp
+
+# Adding a real application
+ng generate application myapp --style=scss --routing=true --prefix=myapp --strict=false
+
+ng generate component feature1/first --export --prefix=myapp --style=scss --project=myapp
+
+ng generate service feature1/second --project=myapp
+
+ng serve myapp
+```
 
 ## Naming and styling
 
