@@ -41,7 +41,7 @@ From the workspace folder, execute the following. Read about the [multirepo file
 
 ```bash
 # Adding a study example application
-ng generate application myapp --style=scss --minimal --prefix=myapp
+ng generate application myapp --prefix=myapp --minimal --routing=false --style=scss --inline-style=false --inline-template=false --skip-tests=true --interactive=false --dry-run=true
 
 # Adding a real application
 ng generate application myapp --style=scss --routing=true --prefix=myapp --strict=false
