@@ -2,9 +2,8 @@ import { Component, ElementRef, ViewChild, Input, ViewEncapsulation, HostListene
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
-// @ts-ignore
-import * as d3ts from 'projects/mb/src/lib/charts/d3ts';
 
+import { primitives } from '../primitives';
 import { Downloader } from '../downloader';
 import { HistoricalData } from '../../data/historical-data';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
@@ -185,9 +184,9 @@ export class HistoricalDataChartComponent {
     const height = marginNav.top - margin.top - margin.bottom;
     const heightNav = this.svgheight - marginNav.top - marginNav.bottom;
 
-    const x = d3ts.scale.financetime().range([0, width]);
+    const x = (primitives.scale.financetime() as any).range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
-    const xNav = d3ts.scale.financetime().range([0, width]);
+    const xNav = (primitives.scale.financetime() as any).range([0, width]);
     const yNav = d3.scaleLinear().range([heightNav, 0]);
     const brushNav = d3.brushX().extent([[0, 0], [width, heightNav + 4]]);
     const priceShape = this.getPriceShape().xScale(x).yScale(y);
@@ -201,14 +200,14 @@ export class HistoricalDataChartComponent {
       xAxisNavBottom = d3.axisBottom(xNav);
     }
 
-    const priceAnnotationLeft = d3ts.plot.axisannotation().axis(yAxisLeft).orient('left')
+    const priceAnnotationLeft = (primitives.plot.axisannotation().axis(yAxisLeft) as any).orient('left')
       .format(d3.format(',.2f'));
-    const timeAnnotationBottom = d3ts.plot.axisannotation().axis(xAxisBottom).orient('bottom')
+    const timeAnnotationBottom = (primitives.plot.axisannotation().axis(xAxisBottom) as any).orient('bottom')
       .format(d3.timeFormat('%Y-%m-%d')).width(65).translate([0, height]);
 
     let crosshair;
     if (this.renderCrosshair) {
-      crosshair = d3ts.plot.crosshair().xScale(x).yScale(y)
+      crosshair = (primitives.plot.crosshair() as any).xScale(x).yScale(y)
         .xAnnotation(timeAnnotationBottom).yAnnotation(priceAnnotationLeft);
     }
 
@@ -220,7 +219,7 @@ export class HistoricalDataChartComponent {
     let volume: any;
     if (this.renderVolume) {
       yVolume = d3.scaleLinear().range([y(0) as number, y(0.3) as number]);
-      volume = d3ts.plot.volume().xScale(x).yScale(yVolume);
+      volume = (primitives.plot.volume() as any).xScale(x).yScale(yVolume);
       focus.append('g').attr('class', 'volume').attr('clip-path', 'url(#clip)');
     }
     focus.append('g').attr('class', 'price').attr('clip-path', 'url(#clip)');
@@ -245,42 +244,43 @@ export class HistoricalDataChartComponent {
       const datum = priceSelection.datum();
       switch (temporalEntityKind) {
         case TemporalEntityKind.Ohlcv:
-          y.domain(d3ts.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+          y.domain(primitives.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
           break;
         case TemporalEntityKind.Quote:
+          console.log('quoteView', quoteView)
           switch (quoteView) {
             case quoteViewDots:
-              y.domain(d3ts.scale.plot.quotepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.quotepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case quoteViewBars:
-              y.domain(d3ts.scale.plot.quotebar(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.quotebar(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
-          y.domain(d3ts.scale.plot.tick(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+          //y.domain(primitives.scale.plot.tick(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
           break;
         case TemporalEntityKind.Trade:
           switch (tradeView) {
             case tradeViewDots:
-              y.domain(d3ts.scale.plot.tradepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.tradepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case tradeViewLine:
-              y.domain(d3ts.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case tradeViewArea:
-              y.domain(d3ts.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
           break;
         case TemporalEntityKind.Scalar:
           switch (scalarView) {
             case scalarViewDots:
-              y.domain(d3ts.scale.plot.valuepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.valuepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case scalarViewLine:
-              y.domain(d3ts.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case scalarViewArea:
-              y.domain(d3ts.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+              y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
           break;
@@ -318,46 +318,47 @@ export class HistoricalDataChartComponent {
     // data begin ----------------------------------
     x.domain(this.data.map(accessor.t));
     xNav.domain(x.domain());
-    // console.log('d3ts.scale.plot', d3ts.scale.plot); ///////////////////////////////////////////////////////////
+    // console.log('primitives.scale.plot', primitives.scale.plot); ///////////////////////////////////////////////////////////
     switch (this.temporalEntityKind) {
       case TemporalEntityKind.Ohlcv:
-        y.domain(d3ts.scale.plot.ohlc(this.data, accessor).domain());
+        y.domain(primitives.scale.plot.ohlc(this.data, accessor).domain());
         break;
       case TemporalEntityKind.Quote:
+        console.log('this.quoteView', this.quoteView)
         switch (this.quoteView) {
           case quoteViewDots:
-            y.domain(d3ts.scale.plot.quotepoint(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.quotepoint(this.data, accessor).domain());
             break;
           case quoteViewBars:
-            // console.log('d3ts.scale.plot', d3ts.scale.plot);
-            y.domain(d3ts.scale.plot.quotebar(this.data, accessor).domain());
+            // console.log('primitives.scale.plot', primitives.scale.plot);
+            y.domain(primitives.scale.plot.quotebar(this.data, accessor).domain());
             break;
         }
-        y.domain(d3ts.scale.plot.tick(this.data, accessor).domain());
+        // y.domain(primitives.scale.plot.quotepoint(this.data, accessor).domain()); // tick
         break;
       case TemporalEntityKind.Trade:
         switch (this.tradeView) {
           case tradeViewDots:
-            y.domain(d3ts.scale.plot.tradepoint(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.tradepoint(this.data, accessor).domain());
             break;
           case tradeViewLine:
-            y.domain(d3ts.scale.plot.tradeline(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.tradeline(this.data, accessor).domain());
             break;
           case tradeViewArea:
-            y.domain(d3ts.scale.plot.tradeline(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.tradeline(this.data, accessor).domain());
             break;
         }
         break;
       case TemporalEntityKind.Scalar:
         switch (this.scalarView) {
           case scalarViewDots:
-            y.domain(d3ts.scale.plot.valuepoint(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.valuepoint(this.data, accessor).domain());
             break;
           case scalarViewLine:
-            y.domain(d3ts.scale.plot.valueline(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.valueline(this.data, accessor).domain());
             break;
           case scalarViewArea:
-            y.domain(d3ts.scale.plot.valueline(this.data, accessor).domain());
+            y.domain(primitives.scale.plot.valueline(this.data, accessor).domain());
             break;
         }
         break;
@@ -365,7 +366,7 @@ export class HistoricalDataChartComponent {
     yNav.domain(y.domain());
     if (this.renderVolume) {
       // @ts-ignore
-      yVolume.domain(d3ts.scale.plot.volume(this.data).domain());
+      yVolume.domain(primitives.scale.plot.volume(this.data).domain());
     }
     focus.select('g.price').datum(this.data);
     if (this.renderVolume) {
@@ -389,48 +390,48 @@ export class HistoricalDataChartComponent {
     switch (this.temporalEntityKind) {
       case TemporalEntityKind.Ohlcv:
         switch (this.ohlcvView) {
-          case ohlcvViewCandlesticks: return d3ts.plot.candlestick();
-          case ohlcvViewBars: return d3ts.plot.ohlc();
-          case ohlcvViewLine: return d3ts.plot.closeline();
-          case ohlcvViewArea: return d3ts.plot.ohlcarea();
-          default: return d3ts.plot.candlestick();
+          case ohlcvViewCandlesticks: return primitives.plot.candlestick();
+          case ohlcvViewBars: return primitives.plot.ohlc();
+          case ohlcvViewLine: return primitives.plot.closeline();
+          case ohlcvViewArea: return primitives.plot.ohlcarea();
+          default: return primitives.plot.candlestick();
         }
       case TemporalEntityKind.Quote:
         switch (this.quoteView) {
-          case quoteViewDots: return d3ts.plot.quotepoint(); // quotepoint(); tick();
-          case quoteViewBars: return d3ts.plot.quotebar(); // quotebar(); tick();
-          default: return d3ts.plot.quotebar();
+          case quoteViewDots: return primitives.plot.quotepoint(); // quotepoint(); tick();
+          case quoteViewBars: return primitives.plot.quotebar(); // quotebar(); tick();
+          default: return primitives.plot.quotepoint();
         }
       case TemporalEntityKind.Trade:
         switch (this.tradeView) {
-          case tradeViewDots: return d3ts.plot.tradepoint();
-          case tradeViewLine: return d3ts.plot.tradeline();
-          case tradeViewArea: return d3ts.plot.tradearea();
-          default: return d3ts.plot.tradeline();
+          case tradeViewDots: return primitives.plot.tradepoint();
+          case tradeViewLine: return primitives.plot.tradeline();
+          case tradeViewArea: return primitives.plot.tradearea();
+          default: return primitives.plot.tradeline();
         }
       case TemporalEntityKind.Scalar:
         switch (this.scalarView) {
-          case scalarViewDots: return d3ts.plot.valuepoint();
-          case scalarViewLine: return d3ts.plot.valueline();
-          case scalarViewArea: return d3ts.plot.valuearea();
-          default: return d3ts.plot.valueline();
+          case scalarViewDots: return primitives.plot.valuepoint();
+          case scalarViewLine: return primitives.plot.valueline();
+          case scalarViewArea: return primitives.plot.valuearea();
+          default: return primitives.plot.valueline();
         }
     }
-    return d3ts.plot.valueline();
+    return primitives.plot.valueline();
   }
 
   private getNavArea(): any {
     switch (this.temporalEntityKind) {
       case TemporalEntityKind.Ohlcv:
-        return d3ts.plot.ohlcarea();
+        return primitives.plot.ohlcarea();
       case TemporalEntityKind.Quote:
-        return d3ts.plot.quotearea();
+        return primitives.plot.quotearea();
       case TemporalEntityKind.Trade:
-        return d3ts.plot.tradearea();
+        return primitives.plot.tradearea();
       case TemporalEntityKind.Scalar:
-        return d3ts.plot.valuearea();
+        return primitives.plot.valuearea();
     }
-    return d3ts.plot.valuearea();
+    return primitives.plot.valuearea();
   }
 
   public saveToSvg(): void {

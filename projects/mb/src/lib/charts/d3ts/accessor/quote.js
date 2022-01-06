@@ -7,7 +7,7 @@ module.exports = function() {
     bid = function(d) { return d.bidPrice; };
 
   function accessor(d) {
-    bind();
+    return accessor.p(d);
   }
 
   accessor.time = function(_) {

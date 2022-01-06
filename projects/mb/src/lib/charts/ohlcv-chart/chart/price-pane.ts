@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
-// @ts-ignore
-import * as d3ts from 'projects/mb/src/lib/charts/d3ts';
 
+import { primitives } from '../../primitives';
 import { IndicatorArrow, verticalArrowGap, minArrowWidth, arowHeightToWidthRatio } from './indicator-arrow';
 import { IndicatorBand } from './indicator-band';
 import { IndicatorLineArea } from './indicator-line-area';
@@ -42,7 +41,7 @@ export class PricePane {
     if (max > datumLastIndex) {
       max = datumLastIndex;
     }
-    const priceDomain: [number, number] = d3ts.scale.plot.ohlc(datum.slice.apply(datum, [min, max]), this.priceAccessor).domain();
+    const priceDomain: [number, number] = primitives.scale.plot.ohlc(datum.slice.apply(datum, [min, max]), this.priceAccessor).domain() as  [number, number];
     if (datum[min] !== undefined) {
       min = +datum[min].time;
     }

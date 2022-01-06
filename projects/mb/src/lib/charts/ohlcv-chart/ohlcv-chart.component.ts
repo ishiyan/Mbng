@@ -2,9 +2,8 @@ import { Component, ElementRef, ViewChild, Input, HostListener, OnChanges } from
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
-// @ts-ignore
-import * as d3ts from 'projects/mb/src/lib/charts/d3ts';
 
+import { primitives } from '../primitives';
 import { Ohlcv } from '../../data/entities/ohlcv';
 import { Scalar } from '../../data/entities/scalar';
 import { Band } from '../entities/band';
@@ -399,7 +398,7 @@ export class OhlcvChartComponent implements OnChanges {
     const factor = cf.valueMarginPercentageFactor;
     pane.yMarginFactorTop = 1 + factor;
     pane.yMarginFactorBottom = 1 - factor;
-    pane.priceShape = (isCandlestick ? d3ts.plot.candlestick() : d3ts.plot.ohlc()).xScale(timeScale).yScale(pane.yPrice);
+    pane.priceShape = (isCandlestick ? primitives.plot.candlestick() as any : primitives.plot.ohlc() as any).xScale(timeScale).yScale(pane.yPrice);
     pane.priceAccessor = pane.priceShape.accessor();
 
     const clip = 'price-clip';
@@ -483,7 +482,7 @@ export class OhlcvChartComponent implements OnChanges {
 
     if (isVolume) {
       pane.yVolume = d3.scaleLinear().range([pane.yPrice(0) as number, pane.yPrice(0.3) as number]);
-      pane.volume = d3ts.plot.volume().xScale(timeScale).yScale(pane.yVolume);
+      pane.volume = (primitives.plot.volume() as any).xScale(timeScale).yScale(pane.yVolume);
       pane.groupVolume = pane.group.append('g').attr('class', 'volume').attr('clip-path', clipUrl);
     }
 
@@ -499,7 +498,7 @@ export class OhlcvChartComponent implements OnChanges {
         .attr('fill', arrow.color);
       const price = OhlcvChartComponent.getArrowPrice(cfg.ohlcv.data, arrow);
       indicatorArrow.price = price;
-      indicatorArrow.arrow = d3ts.svg.arrow()
+      indicatorArrow.arrow = primitives.shapes.arrow()
         .orient(arrow.down ? 'down' : 'up')
         .x((d: any) => timeScale(arrow.time))
         .y((d: any) => {
@@ -530,22 +529,22 @@ export class OhlcvChartComponent implements OnChanges {
     }
 
     if (isCrossHair) {
-      let crosshair = d3ts.plot.crosshair().xScale(timeScale).yScale(pane.yPrice).xAnnotation(timeAnnotationBottom)
+      let crosshair = (primitives.plot.crosshair() as any).xScale(timeScale).yScale(pane.yPrice).xAnnotation(timeAnnotationBottom)
         .verticalWireRange([0, lv.timeAxis.top]);
       if (cfg.axisLeft && cfg.axisRight) {
-        const annotationLeft = d3ts.plot.axisannotation().axis(pane.yAxisLeft).orient('left')
+        const annotationLeft = (primitives.plot.axisannotation().axis(pane.yAxisLeft) as any).orient('left')
           .format(d3.format(cf.valueFormat));
-        const annotationRight = d3ts.plot.axisannotation().axis(pane.yAxisRight).orient('right')
+        const annotationRight = (primitives.plot.axisannotation().axis(pane.yAxisRight) as any).orient('right')
           .format(d3.format(cf.valueFormat)).translate([timeScale(1), 0]);
         crosshair = crosshair.yAnnotation([annotationLeft, annotationRight]);
       } else
         if (cfg.axisLeft) {
-          const annotationLeft = d3ts.plot.axisannotation().axis(pane.yAxisLeft).orient('left')
+          const annotationLeft = (primitives.plot.axisannotation().axis(pane.yAxisLeft) as any).orient('left')
             .format(d3.format(cf.valueFormat));
           crosshair = crosshair.yAnnotation(annotationLeft);
         } else
           if (cfg.axisRight) {
-            const annotationRight = d3ts.plot.axisannotation().axis(pane.yAxisRight).orient('right')
+            const annotationRight = (primitives.plot.axisannotation().axis(pane.yAxisRight) as any).orient('right')
               .format(d3.format(cf.valueFormat)).translate([timeScale(1), 0]);
             crosshair = crosshair.yAnnotation(annotationRight);
           }
@@ -676,27 +675,27 @@ export class OhlcvChartComponent implements OnChanges {
 
     if (isCrossHair) {
       const delta = lv.timeAxis.top - block.top;
-      const timeAnnotationBottom = d3ts.plot.axisannotation().axis(timeAxisBottom).orient('bottom')
+      const timeAnnotationBottom = (primitives.plot.axisannotation().axis(timeAxisBottom) as any).orient('bottom')
         .width(65).translate([0, delta]);
       if (cfg.timeAnnotationFormat) {
         timeAnnotationBottom.format(d3.timeFormat(cfg.timeAnnotationFormat));
       }
-      let crosshair = d3ts.plot.crosshair().xScale(timeScale).yScale(pane.yValue).xAnnotation(timeAnnotationBottom)
+      let crosshair = (primitives.plot.crosshair() as any).xScale(timeScale).yScale(pane.yValue).xAnnotation(timeAnnotationBottom)
         .verticalWireRange([lv.pricePane.top - block.top, delta]);
       if (cfg.axisLeft && cfg.axisRight) {
-        const annotationLeft = d3ts.plot.axisannotation().axis(pane.yAxisLeft).orient('left')
+        const annotationLeft = (primitives.plot.axisannotation().axis(pane.yAxisLeft) as any).orient('left')
           .format(d3.format(cf.valueFormat));
-        const annotationRight = d3ts.plot.axisannotation().axis(pane.yAxisRight).orient('right')
+        const annotationRight = (primitives.plot.axisannotation().axis(pane.yAxisRight) as any).orient('right')
           .format(d3.format(cf.valueFormat)).translate([timeScale(1), 0]);
         crosshair = crosshair.yAnnotation([annotationLeft, annotationRight]);
       } else
         if (cfg.axisLeft) {
-          const annotationLeft = d3ts.plot.axisannotation().axis(pane.yAxisLeft).orient('left')
+          const annotationLeft = (primitives.plot.axisannotation().axis(pane.yAxisLeft) as any).orient('left')
             .format(d3.format(cf.valueFormat));
           crosshair = crosshair.yAnnotation(annotationLeft);
         } else
           if (cfg.axisRight) {
-            const annotationRight = d3ts.plot.axisannotation().axis(pane.yAxisRight).orient('right')
+            const annotationRight = (primitives.plot.axisannotation().axis(pane.yAxisRight) as any).orient('right')
               .format(d3.format(cf.valueFormat)).translate([timeScale(1), 0]);
             crosshair = crosshair.yAnnotation(annotationRight);
           }
@@ -714,14 +713,14 @@ export class OhlcvChartComponent implements OnChanges {
     if (cfg.navigationPane !== undefined) {
       const nav = cfg.navigationPane;
       const heightWithoutTimeAxis = nav.hasTimeAxis ? height - timeAxisHeight : height;
-      pane.timeScale = d3ts.scale.financetime().range([0, width]);
+      pane.timeScale = (primitives.scale.financetime() as any).range([0, width]);
       pane.priceScale = d3.scaleLinear().range([heightWithoutTimeAxis, 0]);
       pane.brush = d3.brushX().extent([[0, 0], [width, heightWithoutTimeAxis]]);
       if (nav.hasArea) {
-        pane.area = d3ts.plot.ohlcarea().xScale(pane.timeScale).yScale(pane.priceScale);
+        pane.area = (primitives.plot.ohlcarea() as any).xScale(pane.timeScale).yScale(pane.priceScale);
       }
       if (nav.hasLine) {
-        pane.line = d3ts.plot.closeline().xScale(pane.timeScale).yScale(pane.priceScale);
+        pane.line = (primitives.plot.closeline() as any).xScale(pane.timeScale).yScale(pane.priceScale);
       }
       if (nav.hasTimeAxis) {
         pane.timeAxis = d3.axisBottom(pane.timeScale).tickSizeOuter(0);
@@ -755,7 +754,7 @@ export class OhlcvChartComponent implements OnChanges {
   private static createTimePane(cfg: Template.Configuration, lh: Chart.HorizontalLayout,
                                 lv: Chart.VerticalLayout, svg: any): Chart.TimePane {
     const pane = new Chart.TimePane();
-    pane.timeScale = d3ts.scale.financetime().range([0, lh.content.width]);
+    pane.timeScale = (primitives.scale.financetime() as any).range([0, lh.content.width]);
     pane.timeAxis = d3.axisBottom(pane.timeScale).tickSizeOuter(0);
     if (cfg.timeTicksFormat !== undefined) {
       pane.timeAxis.tickFormat(d3.timeFormat(cfg.timeTicksFormat));
@@ -765,7 +764,7 @@ export class OhlcvChartComponent implements OnChanges {
     } else {
       pane.timeAxis.ticks(lh.content.width / defaultWhitespaceBetweenTimeTicks);
     }
-    pane.timeAnnotation = d3ts.plot.axisannotation().axis(pane.timeAxis).orient('bottom')
+    pane.timeAnnotation = (primitives.plot.axisannotation().axis(pane.timeAxis) as any).orient('bottom')
       .width(65).translate([0, lv.timeAxis.top - lv.pricePane.top]);
     if (cfg.timeAnnotationFormat !== undefined) {
       pane.timeAnnotation.format(d3.timeFormat(cfg.timeAnnotationFormat));
@@ -1016,11 +1015,11 @@ export class OhlcvChartComponent implements OnChanges {
     // timePane.timeScale.domain([OhlcvChartComponent.firstTime(cfg), OhlcvChartComponent.lastTime(cfg)]);
     // navPane.timeScale.domain([OhlcvChartComponent.firstTime(cfg), OhlcvChartComponent.lastTime(cfg)]);
     navPane.timeScale.domain(timePane.timeScale.domain());
-    pricePane.yPrice.domain(d3ts.scale.plot.ohlc(cfg.ohlcv.data, pricePane.priceAccessor).domain());
+    pricePane.yPrice.domain(primitives.scale.plot.ohlc(cfg.ohlcv.data, pricePane.priceAccessor).domain());
 
     navPane.priceScale.domain(pricePane.yPrice.domain());
     if (pricePane.yVolume) {
-      pricePane.yVolume.domain(d3ts.scale.plot.volume(cfg.ohlcv.data).domain());
+      pricePane.yVolume.domain(primitives.scale.plot.volume(cfg.ohlcv.data).domain());
     }
     pricePane.groupPrice.datum(cfg.ohlcv.data);
     if (this.renderVolume) {
