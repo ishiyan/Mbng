@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
 
-import { primitives } from '../primitives';
+import { primitives } from '../d3-primitives';
 import { Ohlcv } from '../../data/entities/ohlcv';
 import { Scalar } from '../../data/entities/scalar';
 import { Band } from '../entities/band';
@@ -892,7 +892,7 @@ export class OhlcvChartComponent implements OnChanges {
     this.render();
   }
 
-  /** Gets or sets if *crosshair* is visible */
+  /** Gets or sets if *crosshair* is visible. */
   public get viewCrosshair(): boolean {
     return this.renderCrosshair;
   }
@@ -901,7 +901,7 @@ export class OhlcvChartComponent implements OnChanges {
     this.render();
   }
 
-  /** Gets or sets if volume in price pane is visible */
+  /** Gets or sets if *volume* in price pane is visible. */
   public get viewVolume(): boolean {
     return this.renderVolume;
   }
@@ -1009,7 +1009,7 @@ export class OhlcvChartComponent implements OnChanges {
     }
     navPane.brush.on('end', brushed);
 
-    timePane.timeScale.domain(cfg.ohlcv.data.map(pricePane.priceAccessor.t));
+    timePane.timeScale.domain(cfg.ohlcv.data.map(pricePane.priceAccessor.time));
     // console.log(OhlcvChartComponent.firstTime(cfg));
     // console.log(OhlcvChartComponent.lastTime(cfg));
     // timePane.timeScale.domain([OhlcvChartComponent.firstTime(cfg), OhlcvChartComponent.lastTime(cfg)]);
@@ -1039,7 +1039,7 @@ export class OhlcvChartComponent implements OnChanges {
       navPane.timeAxisSelection.call(navPane.timeAxis);
     }
 
-    // associate the brush with the scale and render the brush only AFTER a domain has been applied
+    // Associate the brush with the scale and render the brush only AFTER a domain has been applied.
     navPane.paneSelection.call(navPane.brush).selectAll('rect').attr('height', lv.navigationPane.height);
 
     if (this.currentSelection != null && (this.currentSelection[1] - this.currentSelection[0] > minSelection)) {

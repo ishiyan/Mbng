@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
 
-import { primitives } from '../primitives';
+import { primitives } from '../d3-primitives';
 import { Downloader } from '../downloader';
 import { HistoricalData } from '../../data/historical-data';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
@@ -247,7 +247,6 @@ export class HistoricalDataChartComponent {
           y.domain(primitives.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
           break;
         case TemporalEntityKind.Quote:
-          console.log('quoteView', quoteView)
           switch (quoteView) {
             case quoteViewDots:
               y.domain(primitives.scale.plot.quotepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
@@ -316,25 +315,21 @@ export class HistoricalDataChartComponent {
     brushNav.on('end', brushed);
 
     // data begin ----------------------------------
-    x.domain(this.data.map(accessor.t));
+    x.domain(this.data.map(accessor.time));
     xNav.domain(x.domain());
-    // console.log('primitives.scale.plot', primitives.scale.plot); ///////////////////////////////////////////////////////////
     switch (this.temporalEntityKind) {
       case TemporalEntityKind.Ohlcv:
         y.domain(primitives.scale.plot.ohlc(this.data, accessor).domain());
         break;
       case TemporalEntityKind.Quote:
-        console.log('this.quoteView', this.quoteView)
         switch (this.quoteView) {
           case quoteViewDots:
             y.domain(primitives.scale.plot.quotepoint(this.data, accessor).domain());
             break;
           case quoteViewBars:
-            // console.log('primitives.scale.plot', primitives.scale.plot);
             y.domain(primitives.scale.plot.quotebar(this.data, accessor).domain());
             break;
         }
-        // y.domain(primitives.scale.plot.quotepoint(this.data, accessor).domain()); // tick
         break;
       case TemporalEntityKind.Trade:
         switch (this.tradeView) {
@@ -398,8 +393,8 @@ export class HistoricalDataChartComponent {
         }
       case TemporalEntityKind.Quote:
         switch (this.quoteView) {
-          case quoteViewDots: return primitives.plot.quotepoint(); // quotepoint(); tick();
-          case quoteViewBars: return primitives.plot.quotebar(); // quotebar(); tick();
+          case quoteViewDots: return primitives.plot.quotepoint();
+          case quoteViewBars: return primitives.plot.quotebar();
           default: return primitives.plot.quotepoint();
         }
       case TemporalEntityKind.Trade:

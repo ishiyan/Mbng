@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-import { primitives } from '../../primitives';
+import { primitives } from '../../d3-primitives';
 import { IndicatorArrow, verticalArrowGap, minArrowWidth, arowHeightToWidthRatio } from './indicator-arrow';
 import { IndicatorBand } from './indicator-band';
 import { IndicatorLineArea } from './indicator-line-area';
