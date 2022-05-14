@@ -13,7 +13,7 @@
     "@angular/platform-browser": "^13.3.7",
     "@angular/platform-browser-dynamic": "^13.3.7",
     "@angular/router": "^13.3.7",
-    "katex": "^0.13.24",
+    "katex": "^0.15.3",
     "d3": "^7.4.4",
     "d3-voronoi-treemap": "^1.1.1",
     "seedrandom": "^3.0.5",

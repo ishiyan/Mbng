@@ -39,20 +39,21 @@ npm install
 
 1. https://github.com/angular/angular-cli/releases
 2. https://github.com/angular/angular/blob/master/CHANGELOG.md, https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md
-3. https://github.com/angular/material2/blob/master/CHANGELOG.md
-4. https://github.com/d3/d3/releases
-5. https://www.mathjax.org/news/#new-in-release
-6. https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md
-7. https://github.com/angular/flex-layout/blob/master/CHANGELOG.md
-8. http://hammerjs.github.io/changelog/
-9. https://github.com/google/material-design-icons/releases
-10. https://github.com/angular/zone.js/blob/master/CHANGELOG.md
-11. https://github.com/Microsoft/tslib/releases
-12. https://github.com/zloirock/core-js/blob/master/CHANGELOG.md
+3. https://github.com/angular/zone.js/blob/master/CHANGELOG.md
+4. https://github.com/angular/flex-layout/blob/master/CHANGELOG.md
+5. https://github.com/angular/material2/blob/master/CHANGELOG.md
+6. https://github.com/google/material-design-icons/releases
+7. https://github.com/jossef/material-design-icons-iconfont/releases, icons themselves https://jossef.github.io/material-design-icons-iconfont/4. https://github.com/d3/d3/releases
+8. https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md
+9. http://hammerjs.github.io/changelog/
+10. https://github.com/Microsoft/tslib/releases
+11. https://github.com/zloirock/core-js/blob/master/CHANGELOG.md
+12. https://github.com/d3/d3/releases
 13. https://github.com/Kcnarf/d3-voronoi-treemap/releases
 14. https://github.com/Kcnarf/d3-voronoi-map/releases
-15. https://github.com/KaTeX/KaTeX/releases
-16. https://github.com/jossef/material-design-icons-iconfont/releases, icons themselves https://jossef.github.io/material-design-icons-iconfont/
+15. https://www.mathjax.org/news/#new-in-release
+16. https://github.com/KaTeX/KaTeX/releases
+17. https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex
 
 ## Add a new application project to the monorepo
 
