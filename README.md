@@ -37,23 +37,24 @@ npm install
 
 ## Updates
 
-1. https://github.com/angular/angular-cli/releases
-2. https://github.com/angular/angular/blob/master/CHANGELOG.md, https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md
-3. https://github.com/angular/zone.js/blob/master/CHANGELOG.md
-4. https://github.com/angular/flex-layout/blob/master/CHANGELOG.md
-5. https://github.com/angular/material2/blob/master/CHANGELOG.md
-6. https://github.com/google/material-design-icons/releases
-7. https://github.com/jossef/material-design-icons-iconfont/releases, icons themselves https://jossef.github.io/material-design-icons-iconfont/4. https://github.com/d3/d3/releases
-8. https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md
-9. http://hammerjs.github.io/changelog/
-10. https://github.com/Microsoft/tslib/releases
-11. https://github.com/zloirock/core-js/blob/master/CHANGELOG.md
-12. https://github.com/d3/d3/releases
-13. https://github.com/Kcnarf/d3-voronoi-treemap/releases
-14. https://github.com/Kcnarf/d3-voronoi-map/releases
-15. https://www.mathjax.org/news/#new-in-release
-16. https://github.com/KaTeX/KaTeX/releases
-17. https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex
+1. [angular cli](https://github.com/angular/angular-cli/releases)
+2. [angular](https://github.com/angular/angular/blob/master/CHANGELOG.md), [angular release schedule](https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md)
+3. [angular zone](https://github.com/angular/zone.js/blob/master/CHANGELOG.md)
+4. [angular flex-layout](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
+5. [angular material](https://github.com/angular/material2/blob/master/CHANGELOG.md)
+6. [material design icons](https://github.com/google/material-design-icons/releases)
+7. [material design icons font](https://github.com/jossef/material-design-icons-iconfont/releases), [icons themselves](https://jossef.github.io/material-design-icons-iconfont/)
+8. [rxjs](https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md)
+9. [hammerjs](http://hammerjs.github.io/changelog/)
+10. [tslib](https://github.com/Microsoft/tslib/releases)
+11. [core-js](https://github.com/zloirock/core-js/blob/master/CHANGELOG.md)
+12. [d3](https://github.com/d3/d3/releases)
+13. [d3 types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3)
+14. [d3 voronoi treemap](https://github.com/Kcnarf/d3-voronoi-treemap/releases)
+15. [d3 voronoi map](https://github.com/Kcnarf/d3-voronoi-map/releases)
+16. [mathjax](https://www.mathjax.org/news/#new-in-release)
+17. [katex](https://github.com/KaTeX/KaTeX/releases)
+18. [katex types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex)
 
 ## Add a new application project to the monorepo
 
@@ -330,4 +331,3 @@ arboretum
 
 glass house = greenhouse = greenery = conservatory
 broeikas
-
