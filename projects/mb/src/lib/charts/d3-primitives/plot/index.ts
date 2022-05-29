@@ -17,33 +17,35 @@ import { tradearrow as tradearrow_ } from './tradearrow';
 import { trendline as trendline_ } from './trendline';
 import { volume as volume_ } from './volume';
 
-export const plot = function () {
-  var accessor = accessors_(),
-    plot = plot_(),
-    plotMixin = plotMixin_(plot),
-    candlestick = candlestick_(accessor.ohlcv, plot, plotMixin),
-    axisannotation = axisannotation_(accessor.value, plotMixin);
+export const plot = () => {
+  const plt = plot_();
+  const plotMixin = plotMixin_(plt);
+  const accessor = accessors_();
+  const candlestick = candlestick_(accessor.ohlcv, plt, plotMixin);
+  const axisannotation = axisannotation_(accessor.value, plotMixin);
 
   return {
-    ohlcarea: area_(accessor.ohlcv, plot, plotMixin),
-    valuearea: area_(accessor.value, plot, plotMixin),
-    tradearea: area_(accessor.trade, plot, plotMixin),
-    quotearea: area_(accessor.quote, plot, plotMixin),
+    ohlcarea: area_(accessor.ohlcv, plt, plotMixin),
+    valuearea: area_(accessor.value, plt, plotMixin),
+    tradearea: area_(accessor.trade, plt, plotMixin),
+    quotearea: area_(accessor.quote, plt, plotMixin),
+    // eslint-disable-next-line object-shorthand
     axisannotation: axisannotation,
-    quotepoint: quotepoint_(accessor.quote, plot, plotMixin),
-    quotebar: quotebar_(accessor.quote, plot, plotMixin),
+    quotepoint: quotepoint_(accessor.quote, plt, plotMixin),
+    quotebar: quotebar_(accessor.quote, plt, plotMixin),
+    // eslint-disable-next-line object-shorthand
     candlestick: candlestick,
-    tradepoint: tradepoint_(accessor.trade, plot, plotMixin),
-    valuepoint: valuepoint_(accessor.value, plot, plotMixin),
-    closeline: line_(accessor.ohlcv, plot, plotMixin),
-    tradeline: line_(accessor.trade, plot, plotMixin),
-    valueline: line_(accessor.value, plot, plotMixin),
-    crosshair: crosshair_(accessor.crosshair, plot, plotMixin),
-    ohlc: ohlc_(accessor.ohlcv, plot, plotMixin),
-    supstance: supstance_(accessor.supstance, plot, plotMixin),
-    tick: tick_(accessor.tick, plot, plotMixin),
-    tradearrow: tradearrow_(accessor.trade, plot, plotMixin),
-    trendline: trendline_(accessor.trendline, plot, plotMixin),
-    volume: volume_(accessor.volume, plot, plotMixin)
+    tradepoint: tradepoint_(accessor.trade, plt, plotMixin),
+    valuepoint: valuepoint_(accessor.value, plt, plotMixin),
+    closeline: line_(accessor.ohlcv, plt, plotMixin),
+    tradeline: line_(accessor.trade, plt, plotMixin),
+    valueline: line_(accessor.value, plt, plotMixin),
+    crosshair: crosshair_(accessor.crosshair, plt, plotMixin),
+    ohlc: ohlc_(accessor.ohlcv, plt, plotMixin),
+    supstance: supstance_(accessor.supstance, plt, plotMixin),
+    tick: tick_(accessor.tick, plt, plotMixin),
+    tradearrow: tradearrow_(accessor.trade, plt, plotMixin),
+    trendline: trendline_(accessor.trendline, plt, plotMixin),
+    volume: volume_(accessor.volume, plt, plotMixin)
   };
 };

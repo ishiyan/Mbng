@@ -231,6 +231,15 @@
             "tsConfig": "projects/mb/tsconfig.spec.json",
             "karmaConfig": "projects/mb/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/mb/**/*.ts",
+              "projects/mb/**/*.html"
+            ]
+          }
         }
       }
     }

@@ -1,4 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { computeDimensions } from '../../charts/compute-dimensions';

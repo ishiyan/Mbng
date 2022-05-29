@@ -384,18 +384,18 @@ const icbMap: Map<number, IcbLevel[]> = new Map([
 /**
  * Returns an array of ICB levels leading to a given ICB numeric value
  */
-export function icbGet(value: number): IcbLevel[] {
+export const icbGet = (value: number): IcbLevel[] => {
   const array = icbMap.get(value);
   return array ? (array as IcbLevel[]) : [];
-}
+};
 
 /**
  * Returns an industry level leading to a given ICB numeric value
  */
-export function icbGetIndustry(value: number): IcbLevel | undefined {
+export const icbGetIndustry = (value: number): IcbLevel | undefined => {
   const array = icbMap.get(value);
   return array && array.length > 0 ? array[0] : undefined;
-}
+};
 
 /**
  * Industry Classification Benchmark taxonomy before 2019

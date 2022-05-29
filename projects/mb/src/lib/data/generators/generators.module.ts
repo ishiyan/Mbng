@@ -21,9 +21,9 @@ import { SawtoothParametersComponent } from './sawtooth/sawtooth-parameters.comp
 import { SquareParametersComponent } from './square/square-parameters.component';
 import { SinusoidalParametersComponent } from './sinusoidal/sinusoidal-parameters.component';
 import { GeometricBrownianMotionParametersComponent } from './geometric-brownian-motion/geometric-brownian-motion-parameters.component';
+
 // eslint-disable-next-line max-len
 import { FractionalBrownianMotionParametersComponent } from './fractional-brownian-motion/fractional-brownian-motion-parameters.component';
-// eslint-disable-next-line max-len
 
 @NgModule({
     imports: [

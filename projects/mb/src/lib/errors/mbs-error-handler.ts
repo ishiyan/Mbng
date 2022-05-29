@@ -1,10 +1,10 @@
 import { Injectable, Injector, ErrorHandler, NgZone } from '@angular/core';
-import { MatSnackBar/*, MatSnackBarVerticalPosition*/ } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class MbsErrorHandler implements ErrorHandler {
 
-  private snackBar: MatSnackBar;
+  private snackBar!: MatSnackBar;
 
   constructor(private injector: Injector, private zone: NgZone) { }
 

@@ -7,7 +7,7 @@ import { colorsCoSequential5Palettes } from './colors-co-sequential-5-palettes';
  *
  * The number of digits determines the number of colors, their order determines the order of colors.
  */
-export function colorsCoSequential5PalettesSelection(sequence: string = '54321'): string[][] {
+export const colorsCoSequential5PalettesSelection = (sequence: string = '54321'): string[][] => {
   const palettes: string[][] = [];
 
   if (sequence.length < 1) {
@@ -56,4 +56,4 @@ export function colorsCoSequential5PalettesSelection(sequence: string = '54321')
   }
 
   return palettes;
-}
+};

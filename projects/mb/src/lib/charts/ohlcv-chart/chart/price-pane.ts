@@ -41,7 +41,8 @@ export class PricePane {
     if (max > datumLastIndex) {
       max = datumLastIndex;
     }
-    const priceDomain: [number, number] = primitives.scale.plot.ohlc(datum.slice.apply(datum, [min, max]), this.priceAccessor).domain() as  [number, number];
+    const priceDomain: [number, number] =
+      primitives.scale.plot.ohlc(datum.slice.apply(datum, [min, max]), this.priceAccessor).domain() as  [number, number];
     if (datum[min] !== undefined) {
       min = +datum[min].time;
     }

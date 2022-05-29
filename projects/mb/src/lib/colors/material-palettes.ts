@@ -7,28 +7,28 @@
  *
  * For instance, *'270'* defines 200-700-50 palettes.
  */
-export function materialPalettes(sequence: string = '9785634120'): string[][] {
+export const materialPalettes = (sequence: string = '9785634120'): string[][] => {
   const palettes: string[][] = [
-    [], // red
-    [], // pink
-    [], // purple
-    [], // deep purple
-    [], // indigo
-    [], // blue
-    [], // light blue
-    [], // cyan
-    [], // teal
-    [], // green
-    [], // light green
-    [], // lime
-    [], // yellow
-    [], // amber
-    [], // orange
-    [], // deep orange
-    [], // brown
-    [], // grey
-    []  // blue grey
-];
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [] // blue grey
+  ];
 
   if (sequence.length < 1) {
     return palettes;
@@ -38,16 +38,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
   for (const digit of digitArray) {
     switch (digit) {
       case '9': {
-        palettes[ 0].push('#B71C1C'); // red
-        palettes[ 1].push('#880E4F'); // pink
-        palettes[ 2].push('#4A148C'); // purple
-        palettes[ 3].push('#311B92'); // deep purple
-        palettes[ 4].push('#1A237E'); // indigo
-        palettes[ 5].push('#0D47A1'); // blue
-        palettes[ 6].push('#01579B'); // light blue
-        palettes[ 7].push('#006064'); // cyan
-        palettes[ 8].push('#004D40'); // teal
-        palettes[ 9].push('#1B5E20'); // green
+        palettes[0].push('#B71C1C'); // red
+        palettes[1].push('#880E4F'); // pink
+        palettes[2].push('#4A148C'); // purple
+        palettes[3].push('#311B92'); // deep purple
+        palettes[4].push('#1A237E'); // indigo
+        palettes[5].push('#0D47A1'); // blue
+        palettes[6].push('#01579B'); // light blue
+        palettes[7].push('#006064'); // cyan
+        palettes[8].push('#004D40'); // teal
+        palettes[9].push('#1B5E20'); // green
         palettes[10].push('#33691E'); // light green
         palettes[11].push('#827717'); // lime
         palettes[12].push('#F57F17'); // yellow
@@ -60,16 +60,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '8': {
-        palettes[ 0].push('#C62828'); // red
-        palettes[ 1].push('#AD1457'); // pink
-        palettes[ 2].push('#6A1B9A'); // purple
-        palettes[ 3].push('#4527A0'); // deep purple
-        palettes[ 4].push('#283593'); // indigo
-        palettes[ 5].push('#1565C0'); // blue
-        palettes[ 6].push('#0277BD'); // light blue
-        palettes[ 7].push('#00838F'); // cyan
-        palettes[ 8].push('#00695C'); // teal
-        palettes[ 9].push('#2E7D32'); // green
+        palettes[0].push('#C62828'); // red
+        palettes[1].push('#AD1457'); // pink
+        palettes[2].push('#6A1B9A'); // purple
+        palettes[3].push('#4527A0'); // deep purple
+        palettes[4].push('#283593'); // indigo
+        palettes[5].push('#1565C0'); // blue
+        palettes[6].push('#0277BD'); // light blue
+        palettes[7].push('#00838F'); // cyan
+        palettes[8].push('#00695C'); // teal
+        palettes[9].push('#2E7D32'); // green
         palettes[10].push('#558B2F'); // light green
         palettes[11].push('#9E9D24'); // lime
         palettes[12].push('#F9A825'); // yellow
@@ -82,16 +82,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '7': {
-        palettes[ 0].push('#D32F2F'); // red
-        palettes[ 1].push('#C2185B'); // pink
-        palettes[ 2].push('#7B1FA2'); // purple
-        palettes[ 3].push('#512DA8'); // deep purple
-        palettes[ 4].push('#303F9F'); // indigo
-        palettes[ 5].push('#1976D2'); // blue
-        palettes[ 6].push('#0288D1'); // light blue
-        palettes[ 7].push('#0097A7'); // cyan
-        palettes[ 8].push('#00796B'); // teal
-        palettes[ 9].push('#388E3C'); // green
+        palettes[0].push('#D32F2F'); // red
+        palettes[1].push('#C2185B'); // pink
+        palettes[2].push('#7B1FA2'); // purple
+        palettes[3].push('#512DA8'); // deep purple
+        palettes[4].push('#303F9F'); // indigo
+        palettes[5].push('#1976D2'); // blue
+        palettes[6].push('#0288D1'); // light blue
+        palettes[7].push('#0097A7'); // cyan
+        palettes[8].push('#00796B'); // teal
+        palettes[9].push('#388E3C'); // green
         palettes[10].push('#689F38'); // light green
         palettes[11].push('#AFB42B'); // lime
         palettes[12].push('#FBC02D'); // yellow
@@ -104,16 +104,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '6': {
-        palettes[ 0].push('#E53935'); // red
-        palettes[ 1].push('#D81B60'); // pink
-        palettes[ 2].push('#8E24AA'); // purple
-        palettes[ 3].push('#5E35B1'); // deep purple
-        palettes[ 4].push('#3949AB'); // indigo
-        palettes[ 5].push('#1E88E5'); // blue
-        palettes[ 6].push('#039BE5'); // light blue
-        palettes[ 7].push('#00ACC1'); // cyan
-        palettes[ 8].push('#00897B'); // teal
-        palettes[ 9].push('#43A047'); // green
+        palettes[0].push('#E53935'); // red
+        palettes[1].push('#D81B60'); // pink
+        palettes[2].push('#8E24AA'); // purple
+        palettes[3].push('#5E35B1'); // deep purple
+        palettes[4].push('#3949AB'); // indigo
+        palettes[5].push('#1E88E5'); // blue
+        palettes[6].push('#039BE5'); // light blue
+        palettes[7].push('#00ACC1'); // cyan
+        palettes[8].push('#00897B'); // teal
+        palettes[9].push('#43A047'); // green
         palettes[10].push('#7CB342'); // light green
         palettes[11].push('#C0CA33'); // lime
         palettes[12].push('#FDD835'); // yellow
@@ -126,16 +126,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '5': {
-        palettes[ 0].push('#F44336'); // red
-        palettes[ 1].push('#E91E63'); // pink
-        palettes[ 2].push('#9C27B0'); // purple
-        palettes[ 3].push('#673AB7'); // deep purple
-        palettes[ 4].push('#3F51B5'); // indigo
-        palettes[ 5].push('#2196F3'); // blue
-        palettes[ 6].push('#03A9F4'); // light blue
-        palettes[ 7].push('#00BCD4'); // cyan
-        palettes[ 8].push('#009688'); // teal
-        palettes[ 9].push('#4CAF50'); // green
+        palettes[0].push('#F44336'); // red
+        palettes[1].push('#E91E63'); // pink
+        palettes[2].push('#9C27B0'); // purple
+        palettes[3].push('#673AB7'); // deep purple
+        palettes[4].push('#3F51B5'); // indigo
+        palettes[5].push('#2196F3'); // blue
+        palettes[6].push('#03A9F4'); // light blue
+        palettes[7].push('#00BCD4'); // cyan
+        palettes[8].push('#009688'); // teal
+        palettes[9].push('#4CAF50'); // green
         palettes[10].push('#8BC34A'); // light green
         palettes[11].push('#CDDC39'); // lime
         palettes[12].push('#FFEB3B'); // yellow
@@ -148,16 +148,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '4': {
-        palettes[ 0].push('#EF5350'); // red
-        palettes[ 1].push('#EC407A'); // pink
-        palettes[ 2].push('#AB47BC'); // purple
-        palettes[ 3].push('#7E57C2'); // deep purple
-        palettes[ 4].push('#5C6BC0'); // indigo
-        palettes[ 5].push('#42A5F5'); // blue
-        palettes[ 6].push('#29B6F6'); // light blue
-        palettes[ 7].push('#26C6DA'); // cyan
-        palettes[ 8].push('#26A69A'); // teal
-        palettes[ 9].push('#66BB6A'); // green
+        palettes[0].push('#EF5350'); // red
+        palettes[1].push('#EC407A'); // pink
+        palettes[2].push('#AB47BC'); // purple
+        palettes[3].push('#7E57C2'); // deep purple
+        palettes[4].push('#5C6BC0'); // indigo
+        palettes[5].push('#42A5F5'); // blue
+        palettes[6].push('#29B6F6'); // light blue
+        palettes[7].push('#26C6DA'); // cyan
+        palettes[8].push('#26A69A'); // teal
+        palettes[9].push('#66BB6A'); // green
         palettes[10].push('#9CCC65'); // light green
         palettes[11].push('#D4E157'); // lime
         palettes[12].push('#FFEE58'); // yellow
@@ -170,16 +170,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '3': {
-        palettes[ 0].push('#E57373'); // red
-        palettes[ 1].push('#F06292'); // pink
-        palettes[ 2].push('#BA68C8'); // purple
-        palettes[ 3].push('#9575CD'); // deep purple
-        palettes[ 4].push('#7986CB'); // indigo
-        palettes[ 5].push('#64B5F6'); // blue
-        palettes[ 6].push('#4FC3F7'); // light blue
-        palettes[ 7].push('#4DD0E1'); // cyan
-        palettes[ 8].push('#4DB6AC'); // teal
-        palettes[ 9].push('#81C784'); // green
+        palettes[0].push('#E57373'); // red
+        palettes[1].push('#F06292'); // pink
+        palettes[2].push('#BA68C8'); // purple
+        palettes[3].push('#9575CD'); // deep purple
+        palettes[4].push('#7986CB'); // indigo
+        palettes[5].push('#64B5F6'); // blue
+        palettes[6].push('#4FC3F7'); // light blue
+        palettes[7].push('#4DD0E1'); // cyan
+        palettes[8].push('#4DB6AC'); // teal
+        palettes[9].push('#81C784'); // green
         palettes[10].push('#AED581'); // light green
         palettes[11].push('#DCE775'); // lime
         palettes[12].push('#FFF176'); // yellow
@@ -192,16 +192,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '2': {
-        palettes[ 0].push('#EF9A9A'); // red
-        palettes[ 1].push('#F48FB1'); // pink
-        palettes[ 2].push('#CE93D8'); // purple
-        palettes[ 3].push('#B39DDB'); // deep purple
-        palettes[ 4].push('#9FA8DA'); // indigo
-        palettes[ 5].push('#90CAF9'); // blue
-        palettes[ 6].push('#81D4FA'); // light blue
-        palettes[ 7].push('#80DEEA'); // cyan
-        palettes[ 8].push('#80CBC4'); // teal
-        palettes[ 9].push('#A5D6A7'); // green
+        palettes[0].push('#EF9A9A'); // red
+        palettes[1].push('#F48FB1'); // pink
+        palettes[2].push('#CE93D8'); // purple
+        palettes[3].push('#B39DDB'); // deep purple
+        palettes[4].push('#9FA8DA'); // indigo
+        palettes[5].push('#90CAF9'); // blue
+        palettes[6].push('#81D4FA'); // light blue
+        palettes[7].push('#80DEEA'); // cyan
+        palettes[8].push('#80CBC4'); // teal
+        palettes[9].push('#A5D6A7'); // green
         palettes[10].push('#C5E1A5'); // light green
         palettes[11].push('#E6EE9C'); // lime
         palettes[12].push('#FFF59D'); // yellow
@@ -214,16 +214,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '1': {
-        palettes[ 0].push('#FFCDD2'); // red
-        palettes[ 1].push('#F8BBD0'); // pink
-        palettes[ 2].push('#E1BEE7'); // purple
-        palettes[ 3].push('#D1C4E9'); // deep purple
-        palettes[ 4].push('#C5CAE9'); // indigo
-        palettes[ 5].push('#BBDEFB'); // blue
-        palettes[ 6].push('#B3E5FC'); // light blue
-        palettes[ 7].push('#B2EBF2'); // cyan
-        palettes[ 8].push('#B2DFDB'); // teal
-        palettes[ 9].push('#C8E6C9'); // green
+        palettes[0].push('#FFCDD2'); // red
+        palettes[1].push('#F8BBD0'); // pink
+        palettes[2].push('#E1BEE7'); // purple
+        palettes[3].push('#D1C4E9'); // deep purple
+        palettes[4].push('#C5CAE9'); // indigo
+        palettes[5].push('#BBDEFB'); // blue
+        palettes[6].push('#B3E5FC'); // light blue
+        palettes[7].push('#B2EBF2'); // cyan
+        palettes[8].push('#B2DFDB'); // teal
+        palettes[9].push('#C8E6C9'); // green
         palettes[10].push('#DCEDC8'); // light green
         palettes[11].push('#F0F4C3'); // lime
         palettes[12].push('#FFF9C4'); // yellow
@@ -236,16 +236,16 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
         break;
       }
       case '0': {
-        palettes[ 0].push('#FFEBEE'); // red
-        palettes[ 1].push('#FCE4EC'); // pink
-        palettes[ 2].push('#F3E5F5'); // purple
-        palettes[ 3].push('#EDE7F6'); // deep purple
-        palettes[ 4].push('#E8EAF6'); // indigo
-        palettes[ 5].push('#E3F2FD'); // blue
-        palettes[ 6].push('#E1F5FE'); // light blue
-        palettes[ 7].push('#E0F7FA'); // cyan
-        palettes[ 8].push('#E0F2F1'); // teal
-        palettes[ 9].push('#E8F5E9'); // green
+        palettes[0].push('#FFEBEE'); // red
+        palettes[1].push('#FCE4EC'); // pink
+        palettes[2].push('#F3E5F5'); // purple
+        palettes[3].push('#EDE7F6'); // deep purple
+        palettes[4].push('#E8EAF6'); // indigo
+        palettes[5].push('#E3F2FD'); // blue
+        palettes[6].push('#E1F5FE'); // light blue
+        palettes[7].push('#E0F7FA'); // cyan
+        palettes[8].push('#E0F2F1'); // teal
+        palettes[9].push('#E8F5E9'); // green
         palettes[10].push('#F1F8E9'); // light green
         palettes[11].push('#F9FBE7'); // lime
         palettes[12].push('#FFFDE7'); // yellow
@@ -260,4 +260,4 @@ export function materialPalettes(sequence: string = '9785634120'): string[][] {
     }
   }
   return palettes;
-}
+};

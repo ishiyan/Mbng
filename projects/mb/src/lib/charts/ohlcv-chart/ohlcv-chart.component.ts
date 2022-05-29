@@ -5,12 +5,13 @@ import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
 import { Ohlcv } from '../../data/entities/ohlcv';
-import { Scalar } from '../../data/entities/scalar';
+/* import { Scalar } from '../../data/entities/scalar';
 import { Band } from '../entities/band';
-import { Heatmap } from '../entities/heatmap';
+import { Heatmap } from '../entities/heatmap'; */
 import * as Template from './template/template';
 import * as Chart from './chart/chart';
 import { Downloader } from '../downloader';
+import { Scalar } from '../../data/entities/scalar';
 
 /** *Ohlcv* view type: *candlesticks*. */
 const ohlcvViewCandlesticks = 0;
@@ -87,13 +88,14 @@ export class OhlcvChartComponent implements OnChanges {
       return +value;
     }
 
-    const numeric = value.match(/\d+/);
-    if (value.endsWith('%')) {
-      // @ts-ignore
-      return +numeric / 100 * reference;
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return +numeric;
+    const numeric = +value.match(/\d+/);
+    if (value.endsWith('%')) {
+      return numeric / 100 * reference;
+    }
+
+    return numeric;
   }
 
   private static layoutHorizontal(cfg: Template.Configuration, referenceWidth: number): Chart.HorizontalLayout {
@@ -209,7 +211,6 @@ export class OhlcvChartComponent implements OnChanges {
     }
 
     if (pane.heatmap) {
-      const heiz = 6;
       const q = g.append('image').attr('x', l).attr('y', top - legendHeatmapImageHeight)
         .attr('width', legendHeatmapImageWidth).attr('height', legendHeatmapImageHeight).attr('preserveAspectRatio', 'none')
         .attr('xlink:href',
@@ -398,7 +399,8 @@ export class OhlcvChartComponent implements OnChanges {
     const factor = cf.valueMarginPercentageFactor;
     pane.yMarginFactorTop = 1 + factor;
     pane.yMarginFactorBottom = 1 - factor;
-    pane.priceShape = (isCandlestick ? primitives.plot.candlestick() as any : primitives.plot.ohlc() as any).xScale(timeScale).yScale(pane.yPrice);
+    pane.priceShape = (isCandlestick ? primitives.plot.candlestick() as any : primitives.plot.ohlc() as any)
+      .xScale(timeScale).yScale(pane.yPrice);
     pane.priceAccessor = pane.priceShape.accessor();
 
     const clip = 'price-clip';
@@ -433,7 +435,7 @@ export class OhlcvChartComponent implements OnChanges {
         .defined(d => { const w: any = d; return !isNaN(w.value); })
         .x(d => { const w: any = d; return timeScale(w.time); })
         .y0(d => { const w: any = d; return pane.yPrice(w.value) as number; })
-        .y1(d => { const w: any = d; return pane.yPrice(value) as number; });
+        .y1(() => pane.yPrice(value) as number);
       indicatorLineArea.data = lineArea.data;
       indicatorLineArea.value = lineArea.value;
       pane.indicatorLineAreas.push(indicatorLineArea);
@@ -452,10 +454,10 @@ export class OhlcvChartComponent implements OnChanges {
       const val = horizontal.value;
       indicatorHorizontal.value = val;
       indicatorHorizontal.data =
-        [{ time: minDate, value: val }, { time: maxDate, value: val }];
+        [new Scalar({ time: minDate, value: val }), new Scalar({ time: maxDate, value: val })];
       indicatorHorizontal.line = d3.line()
         .x(d => { const w: any = d; return timeScale(w.time); })
-        .y(d => pane.yPrice(val) as number);
+        .y(() => pane.yPrice(val) as number);
       pane.indicatorHorizontals.push(indicatorHorizontal);
     }
 
@@ -500,8 +502,8 @@ export class OhlcvChartComponent implements OnChanges {
       indicatorArrow.price = price;
       indicatorArrow.arrow = primitives.shapes.arrow()
         .orient(arrow.down ? 'down' : 'up')
-        .x((d: any) => timeScale(arrow.time))
-        .y((d: any) => {
+        .x(() => timeScale(arrow.time))
+        .y(() => {
           const p = pane.yPrice(price) as number;
           return arrow.down ? p - Chart.verticalArrowGap : p + Chart.verticalArrowGap;
         });
@@ -608,7 +610,7 @@ export class OhlcvChartComponent implements OnChanges {
         .defined(d => { const w: any = d; return !isNaN(w.value); })
         .x(d => { const w: any = d; return timeScale(w.time); })
         .y0(d => { const w: any = d; return pane.yValue(w.value) as number; })
-        .y1(d => { const w: any = d; return pane.yValue(value) as number; });
+        .y1(() => pane.yValue(value) as number);
       indicatorLineArea.data = lineArea.data;
       indicatorLineArea.value = lineArea.value;
       pane.indicatorLineAreas.push(indicatorLineArea);
@@ -627,10 +629,10 @@ export class OhlcvChartComponent implements OnChanges {
       const val = horizontal.value;
       indicatorHorizontal.value = val;
       indicatorHorizontal.data =
-        [{ time: minDate, value: val }, { time: maxDate, value: val }];
+        [new Scalar({ time: minDate, value: val }), new Scalar({ time: maxDate, value: val })];
       indicatorHorizontal.line = d3.line()
         .x(d => { const w: any = d; return timeScale(w.time); })
-        .y(d => pane.yValue(val) as number);
+        .y(() => pane.yValue(val) as number);
       pane.indicatorHorizontals.push(indicatorHorizontal);
     }
 
@@ -819,8 +821,10 @@ export class OhlcvChartComponent implements OnChanges {
     const context = canvas.getContext('2d');
     const k = 1 / (width - 1);
     for (let i = 0; i < width; ++i) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       context.fillStyle = color(invertGradient ? (1 - i * k) : (i * k));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       context.fillRect(i, 0, 1, height);
     }
@@ -966,6 +970,7 @@ export class OhlcvChartComponent implements OnChanges {
 
     const navPane = OhlcvChartComponent.createNavPane(cfg, lh, lv, svg);
 
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function draw(): void {
       timePane.draw();
       pricePane.draw(timePane);
@@ -974,6 +979,7 @@ export class OhlcvChartComponent implements OnChanges {
 
     const setCurrentSelection = (x: any) => { this.currentSelection = x; };
 
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushed(event: any): void {
       const zoomable = timePane.timeScale.zoomable();
       const zoomableNav = navPane.timeScale.zoomable();
@@ -990,6 +996,7 @@ export class OhlcvChartComponent implements OnChanges {
       }
     }
 
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushing(event: any): void {
       if (event.selection) {
         const sel = event.selection;

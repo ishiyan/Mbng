@@ -12,19 +12,25 @@
  * NOTE: This is not a complete scale, it will throw errors
  * if it is used for anything else but zooming.
  */
-export const zoomable = function () {
+export const zoomable = () => {
+  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions, @typescript-eslint/no-shadow
   function zoomable(linear: any, zoomed: any, domainLimit: any, clamp?: any) {
     clamp = clamp !== undefined ? clamp : true;
 
     // Delegates the scale call to the underlying linear scale.
-    function scale(_: any) {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    function scale(/* _: any */) {
+      // eslint-disable-next-line prefer-rest-params
       return linear.apply(linear, arguments);
     }
 
     scale.invert = linear.invert;
 
-    scale.domain = function (_?: any) {
-      if (!arguments.length) return linear.domain();
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.domain = function(_?: any) {
+      if (!arguments.length) {
+        return linear.domain();
+      }
 
       if (clamp) {
         linear.domain([
@@ -44,20 +50,26 @@ export const zoomable = function () {
       return scale;
     };
 
-    scale.range = function (_?: any) {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.range = function() {
       if (!arguments.length) {
         return linear.range();
       }
 
-      throw "Zoomable is a read only range. Use this scale for zooming only.";
+      throw new Error('Zoomable is a read only range. Use this scale for zooming only.');
     };
 
-    scale.copy = function () {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.copy = function() {
       return zoomable(linear.copy(), zoomed, domainLimit, clamp);
     };
 
-    scale.clamp = function (_?: any) {
-      if (!arguments.length) return clamp;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.clamp = function(_?: any) {
+      if (!arguments.length) {
+        return clamp;
+      }
+
       clamp = _;
       return scale;
     };

@@ -17,7 +17,7 @@ export type HierarchyTreeTooltipFunction = (d: d3.HierarchyNode<HierarchyTreeNod
  *
  * For each node, this function returns an empty string.
  */
-export const emptyTooltips: HierarchyTreeTooltipFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) => '';
+export const emptyTooltips: HierarchyTreeTooltipFunction = () => '';
 
 const format = d3.format(',d');
 
@@ -46,4 +46,5 @@ export const pathTooltips: HierarchyTreeTooltipFunction = (d: d3.HierarchyNode<H
  * For each node, this function returns its path separated by new lines and an optional value.
  */
 export const pathValueTooltips: HierarchyTreeTooltipFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) =>
-  `${d.ancestors().map((t: d3.HierarchyNode<HierarchyTreeNode>) => t.data.name).reverse().join('\n')}${d.data.value ? '\n' + format(d.data.value) : ''}`;
+  `${d.ancestors().map((t: d3.HierarchyNode<HierarchyTreeNode>) =>
+    t.data.name).reverse().join('\n')}${d.data.value ? '\n' + format(d.data.value) : ''}`;

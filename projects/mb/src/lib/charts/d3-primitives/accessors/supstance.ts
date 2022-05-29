@@ -1,20 +1,18 @@
-export const supstance = function () {
-  const start = function (d: any) { return d.start; };
-  const end = function (d: any) { return d.end; };
-
+export const supstance = () => {
   /** Supports getter and setter. */
-  const value = function (d: any, _?: any) {
-    if (arguments.length < 2) return d.value;
+  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+  const value = function(d: any, _?: any) {
+    if (arguments.length < 2) {
+      return d.value;
+    }
+
     d.value = _;
     return accessor;
   };
 
-  function accessor(d: any) {
-    return accessor.value(d);
-  }
-
-  accessor.start = start;
-  accessor.end = end;
+  const accessor = (d: any): any => accessor.value(d);
+  accessor.start = (d: any) => d.start;
+  accessor.end = (d: any) => d.end;
   accessor.value = value;
 
   return accessor;

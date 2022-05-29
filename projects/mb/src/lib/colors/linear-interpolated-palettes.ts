@@ -5,7 +5,7 @@ import * as d3 from 'd3';
  *
  * Example: _linearInterpolatedPalette('green', 'yellow', 5)_
  */
-export function linearInterpolatedPalette(colorStart: string, colorEnd: string, numberOfSwatches: number): string[] {
+export const linearInterpolatedPalette = (colorStart: string, colorEnd: string, numberOfSwatches: number): string[] => {
 
   if (numberOfSwatches < 2) {
     numberOfSwatches = 2;
@@ -20,4 +20,4 @@ export function linearInterpolatedPalette(colorStart: string, colorEnd: string, 
   }
 
   return swatches;
-}
+};

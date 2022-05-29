@@ -1,5 +1,3 @@
-import * as d3 from 'd3';
-
 import { HierarchyTreeNode } from '../hierarchy-tree';
 
 /**
@@ -33,7 +31,7 @@ export const sumNumberOfLeafNodes: HierarchyTreeSumFunction = (d: HierarchyTreeN
  *
  * This will result in node sizes being proportional to the number of sub-nodes.
  */
-export const sumNumberOfNodes: HierarchyTreeSumFunction = (d: HierarchyTreeNode) => 1;
+export const sumNumberOfNodes: HierarchyTreeSumFunction = () => 1;
 
 /**
  * Provides an implementation of the **HierarchyTreeSumFunction** type.

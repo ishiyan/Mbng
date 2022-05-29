@@ -566,18 +566,18 @@ const gicsMap: Map<number, GicsLevel[]> = new Map([
 /**
  * Returns an array of GICS levels leading to a given GICS numeric value
  */
-export function gicsGet(value: number): GicsLevel[] {
+export const gicsGet = (value: number): GicsLevel[] => {
   const array = gicsMap.get(value);
   return array ? (array as GicsLevel[]) : [];
-}
+};
 
 /**
  * Returns a sector level leading to a given GICS numeric value
  */
-export function gicsGetSector(value: number): GicsLevel | undefined {
+export const gicsGetSector =  (value: number): GicsLevel | undefined => {
   const array = gicsMap.get(value);
   return array && array.length > 0 ? array[0] : undefined;
-}
+};
 
 /**
  * The Global Industry Classification Standard (GICS) taxonomy

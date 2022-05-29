@@ -1,4 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Ohlcv } from '../../data/entities/ohlcv';
@@ -55,6 +56,7 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
     this.render();
   }
@@ -103,8 +105,8 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
         .curve(convertInterpolation(interp))
         .defined((d: any) => !isNaN(getY(d)))
         // .x((d: any, i: number) => xScale(i))
-        .x((d: any, i: number) => xScale(d.time) as number)
-        .y0((d: any) => yScale(min) as number)
+        .x((d: any) => xScale(d.time) as number)
+        .y0(() => yScale(min) as number)
         .y1((d: any) => yScale(getY(d)) as number);
       svg.append('path')
         .attr('fill', cfg.fillColor)
@@ -115,7 +117,7 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
         .curve(convertInterpolation(interp))
         .defined((d: any) => !isNaN(getY(d)))
         // .x((d: any, i: number) => xScale(i))
-        .x((d: any, i: number) => xScale(d.time) as number)
+        .x((d: any) => xScale(d.time) as number)
         .y((d: any) => yScale(getY(d)) as number);
       svg.append('path')
         .attr('stroke-width', cfg.strokeWidth)

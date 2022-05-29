@@ -1,14 +1,15 @@
 // Injected dependencies.
-export const line = function (valueAccessor: any, plot: any, plotMixin: any, showZero?: any) {
+export const line = (valueAccessor: any, plot: any, plotMixin: any, showZero?: any) => {
   showZero = showZero || false;
 
   // Closure function.
-  return function () {
+  return () => {
     // Container for private, direct access mixed in variables.
     const p = {} as any;
     const svgLine = plot.pathLine();
 
-    function line(g: any) {
+    // eslint-disable-next-line no-underscore-dangle
+    const line_ = (g: any) => {
       const group = p.dataSelector(g);
       group.entry.append('path').attr('class', 'line');
 
@@ -16,10 +17,10 @@ export const line = function (valueAccessor: any, plot: any, plotMixin: any, sho
         group.selection.append('path').attr('class', 'zero');
       }
 
-      line.refresh(g);
-    }
+      line_.refresh(g);
+    };
 
-    line.refresh = function (g: any) {
+    line_.refresh = (g: any) => {
       const selection = p.dataSelector.select(g);
       selection.select('path.line').attr('d', svgLine);
 
@@ -30,16 +31,16 @@ export const line = function (valueAccessor: any, plot: any, plotMixin: any, sho
       }
     };
 
-    function binder() {
+    const binder = () => {
       svgLine.init(p.accessor.time, p.xScale, p.accessor, p.yScale);
-    }
+    };
 
     // Mixin 'superclass' methods and variables.
-    plotMixin(line, p)
+    plotMixin(line_, p)
       .plot(valueAccessor(), binder)
       .dataSelector(plotMixin.dataMapper.array);
     binder();
 
-    return line;
+    return line_;
   };
 };

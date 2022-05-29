@@ -15,25 +15,23 @@ export class Quote {
   /** The ask size. */
   askSize!: number;
 
-  /*constructor(data?: any) {
+  constructor(data?: any) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
-          (<any>this)[property] = (<any>data)[property];
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
+          (this as any)[property] = data[property];
         }
       }
     }
-  }*/
+  }
 
-  /*toJSON(data?: any): any {
+  toJSON(data?: any): any {
     data = typeof data === 'object' ? data : {};
-    data['time'] = this.time ? this.time.toISOString() : <any>undefined;
-    data['bidPrice'] = this.bidPrice;
-    data['bidSize'] = this.bidSize;
-    data['askPrice'] = this.askPrice;
-    data['askSize'] = this.askSize;
+    data.time = this.time ? this.time.toISOString() : undefined;
+    data.bidPrice = this.bidPrice;
+    data.bidSize = this.bidSize;
+    data.askPrice = this.askPrice;
+    data.askSize = this.askSize;
     return data;
-  }*/
+  }
 }
-
-/* eslint-disable , , , , , , , , , , , ,  */

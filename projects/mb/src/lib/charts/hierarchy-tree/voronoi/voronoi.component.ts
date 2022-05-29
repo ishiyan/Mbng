@@ -2,6 +2,7 @@ import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, ViewE
 import { alea } from 'seedrandom';
 import * as d3 from 'd3';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as d3vt from 'd3-voronoi-treemap';
 
@@ -14,7 +15,7 @@ import { HierarchyTreeTooltipFunction, pathParentTooltips } from '../functions/t
 import { HierarchyTreeTapFunction, doNothingTap } from '../functions/tap-function';
 import { HierarchyTreeFillFunction, coolFill } from '../functions/fill-function';
 import { HierarchyTreeStrokeFunction, blackStroke } from '../functions/stroke-function';
-import { HierarchyTreeStrokeWidthFunction, linearStrokeWidth, linearStrokeWidthThick } from '../functions/stroke-width-function';
+import { HierarchyTreeStrokeWidthFunction, linearStrokeWidth } from '../functions/stroke-width-function';
 import { HierarchyTreeFillOpacityFunction, opaqueFillOpacity } from '../functions/fill-opacity-function';
 import { HierarchyTreeFontSizeFunction, linearFontSize } from '../functions/font-size-function';
 
@@ -191,6 +192,7 @@ export class VoronoiComponent implements OnChanges {
 
     // https://github.com/Kcnarf/d3-voronoi-treemap
     const voronoiTreeMap = d3vt.voronoiTreemap()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .prng(alea(12345))
       .convergenceRatio(this.convergenceRatio)
@@ -266,6 +268,7 @@ export class VoronoiComponent implements OnChanges {
       .text((d: string) => d);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
     this.render();
   }

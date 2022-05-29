@@ -48,7 +48,7 @@ export class Instrument {
   constructor(data?: Instrument) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -67,20 +67,18 @@ export class Instrument {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Symbol'] = this.symbol;
-    data['Name'] = this.name;
-    data['Description'] = this.description;
-    data['Type'] = this.type;
-    data['Mic'] = this.mic;
-    data['Isin'] = this.isin;
-    data['Stock'] = this.stock ? this.stock.toJSON() : (undefined as any);
-    data['Etv'] = this.etv ? this.etv.toJSON() : (undefined as any);
-    data['Etf'] = this.etf ? this.etf.toJSON() : (undefined as any);
-    data['Inav'] = this.inav ? this.inav.toJSON() : (undefined as any);
-    data['Fund'] = this.fund ? this.fund.toJSON() : (undefined as any);
-    data['Index'] = this.index ? this.index.toJSON() : (undefined as any);
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Symbol = this.symbol;
+    data.Name = this.name;
+    data.Description = this.description;
+    data.Type = this.type;
+    data.Mic = this.mic;
+    data.Isin = this.isin;
+    data.Stock = this.stock ? this.stock.toJSON() : (undefined as any);
+    data.Etv = this.etv ? this.etv.toJSON() : (undefined as any);
+    data.Etf = this.etf ? this.etf.toJSON() : (undefined as any);
+    data.Inav = this.inav ? this.inav.toJSON() : (undefined as any);
+    data.Fund = this.fund ? this.fund.toJSON() : (undefined as any);
+    data.Index = this.index ? this.index.toJSON() : (undefined as any);
     return data;
   }
 }

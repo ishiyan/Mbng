@@ -1,38 +1,38 @@
 import * as d3 from 'd3';
 
-import { financetime as financetime_ } from "./financetime"
-import { accessors as accessors_ } from "../accessors"
+import { financetime as financetime_ } from './financetime';
+import { accessors as accessors_ } from '../accessors';
 
-export const scale = function () {
-  var accessors = accessors_(),
-    financetime = financetime_(widen);
+export const scale = () => {
+  const accessors = accessors_();
+  const fintime = financetime_(widen);
 
-  function ohlcv(data: any, accessor?: any, widening?: any) {
+  const ohlcv = (data: any, accessor?: any, widening?: any) => {
     accessor = accessor || accessors.ohlcv();
     widening = widening === undefined ? 0.02 : widening;
     const low = accessor.low;
     const high = accessor.high;
     return d3.scaleLinear()
       .domain([d3.min(data.map(low)), d3.max(data.map(high))].map(widen(widening)));
-  }
+  };
 
-  function quote(data: any, accessor?: any, widening?: any) {
+  const quote = (data: any, accessor?: any, widening?: any) => {
     accessor = accessor || accessors.quote();
     widening = widening === undefined ? 0.02 : widening;
     const bid = accessor.bid;
     const ask = accessor.ask;
     return d3.scaleLinear()
       .domain([d3.min(data.map(bid)), d3.max(data.map(ask))].map(widen(widening)));
-  }
+  };
 
-  function pathWithValueAccessor(data: any, accessor?: any, widening?: any) {
+  const pathWithValueAccessor = (data: any, accessor?: any, widening?: any) => {
     accessor = accessor || accessors.value();
     widening = widening === undefined ? 0.02 : widening;
-    return pathScale(d3, data, accessor, widening);
-  }
+    return pathScale(data, accessor, widening);
+  };
 
   return {
-    financetime: financetime,
+    financetime: fintime,
 
     plot: {
       candlestick: ohlcv,
@@ -48,42 +48,41 @@ export const scale = function () {
       quotepoint: quote,
       quotebar: quote,
 
-      percent: function (scale: any, reference?: any) {
-        var domain = scale.domain();
+      percent: (scale_: any, reference?: any) => {
+        const domain = scale_.domain();
         reference = reference || domain[0];
-        return scale
+        return scale_
           .copy()
           .domain([domain[0], domain[domain.length - 1]]
-            .map(function (d) { return (d - reference) / reference; }));
+            .map((d) => (d - reference) / reference));
       },
 
-      supstance: function (data: any, accessor?: any, widening?: any) {
+      supstance: (data: any, accessor?: any, widening?: any) => {
         accessor = accessor || accessors.supstance();
         widening = widening === undefined ? 0.02 : widening;
-        return pathScale(d3, data, accessor.value, widening);
+        return pathScale(data, accessor.value, widening);
       },
 
-
-      time: function (data: any, accessor?: any) {
+      time: (data: any, accessor?: any) => {
         accessor = accessor || accessors.value();
-        return financetime().domain(data.map(accessor.time));
+        return fintime().domain(data.map(accessor.time));
       },
 
-      tradearrow: function (data: any, accessor?: any, widening?: any) {
+      tradearrow: (data: any, accessor?: any, widening?: any) => {
         accessor = accessor || accessors.trade();
         widening = widening === undefined ? 0.02 : widening;
-        return pathScale(d3, data, accessor.price, widening);
+        return pathScale(data, accessor.price, widening);
       },
 
-      trendline: function (data: any, accessor?: any, widening?: any) {
+      trendline: (data: any, accessor?: any, widening?: any) => {
         accessor = accessor || accessors.trendline();
         widening = widening === undefined ? 0.04 : widening;
-        var values = mapReduceFilter(data,
-          function (d: any) { return [accessor.startValue(d), accessor.endValue(d)]; });
+        const values = mapReduceFilter(data,
+          (d: any) => [accessor.startValue(d), accessor.endValue(d)]);
         return d3.scaleLinear().domain(d3.extent(values).map(widen(widening)));
       },
 
-      volume: function (data: any, accessor?: any) {
+      volume: (data: any, accessor?: any) => {
         accessor = accessor || accessors.ohlcv();
         return d3.scaleLinear()
           .domain([0, d3.max(data.map(accessor.volume)) as any * 1.15]);
@@ -92,33 +91,29 @@ export const scale = function () {
   };
 };
 
-function pathDomain(d3: any, data: any, accessor: any, widening: any) {
-  return data.length > 0 ? d3.extent(data, accessor).map(widen(widening)) : [];
-}
+const pathDomain = (data: any, accessor: any, widening: any) =>
+  data.length > 0 ? d3.extent(data, accessor).map(widen(widening)) : [];
 
-function pathScale(d3: any, data: any, accessor: any, widening: any) {
-  return d3.scaleLinear().domain(pathDomain(d3, data, accessor, widening));
-}
+const pathScale = (data: any, accessor: any, widening: any) =>
+  d3.scaleLinear().domain(pathDomain(data, accessor, widening));
 
 /** Only to be used on an array of 2 elements [min, max]. */
-function widen(widening: any, width?: any) {
+const widen = (widening: any, width?: any) => {
   widening = widening || 0;
 
-  return function (d: any, i: any, array: any) {
+  return (d: any, i: any, array: any) => {
     if (array.length > 2) {
-      throw "array.length > 2 unsupported. array.length = " + array.length;
+      throw new Error('array.length > 2 unsupported. array.length = ' + array.length);
     }
 
     width = width || (array[array.length - 1] - array[0]);
     return d + (i * 2 - 1) * width * widening;
   };
-}
+};
 
-function mapReduceFilter(data: any, map: any) {
-  return data
-    .map(map)
-    // Flatten.
-    .reduce(function (a: any, b: any) { return a.concat(b); })
-    // Remove nulls.
-    .filter(function (d: any) { return d !== null; });
-}
+const mapReduceFilter = (data: any, map: any) => data
+  .map(map)
+  // Flatten.
+  .reduce((a: any, b: any) => a.concat(b))
+  // Remove nulls.
+  .filter((d: any) => d !== null);

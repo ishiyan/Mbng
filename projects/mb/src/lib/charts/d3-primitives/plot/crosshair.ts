@@ -1,22 +1,22 @@
 import * as d3 from 'd3';
 
 // Injected dependencies.
-export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin: any) {
+export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
   // Closure function.
-  return function () {
-    // Container for private, direct access mixed in variables.
+  () => {
     const p = {} as any;
     const dispatcher = d3.dispatch('enter', 'out', 'move');
     const xAnnotationComposer = plot.plotComposer().scope('composed-annotation')
-      .plotScale(function (plot: any) { return plot.axis().scale(); });
+      .plotScale((plt: any) => plt.axis().scale());
     const yAnnotationComposer = plot.plotComposer().scope('composed-annotation')
-      .plotScale(function (plot: any) { return plot.axis().scale(); });
-    var verticalPathGenerator: any;
-    var horizontalPathGenerator: any;
-    var verticalWireRange: any;
-    var horizontalWireRange: any;
+      .plotScale((plt: any) => plt.axis().scale());
+    let verticalPathGenerator: any;
+    let horizontalPathGenerator: any;
+    let verticalWireRange: any;
+    let horizontalWireRange: any;
 
-    function crosshair(g: any) {
+    // eslint-disable-next-line no-underscore-dangle
+    const crosshair_ = (g: any) => {
       const group = p.dataSelector(g);
 
       group.entry.append('path').attr('class', 'horizontal wire');
@@ -29,10 +29,10 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
         .style('fill', 'none')
         .style('pointer-events', 'all');
 
-      crosshair.refresh(g);
-    }
+      crosshair_.refresh(g);
+    };
 
-    crosshair.refresh = function (g: any) {
+    crosshair_.refresh = (g: any) => {
       const xRange = p.xScale.range();
       const yRange = p.yScale.range();
       const group = p.dataSelector.select(g);
@@ -49,15 +49,20 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
         .attr('y', Math.min.apply(null, yRange))
         .attr('height', Math.abs(yRange[yRange.length - 1] - yRange[0]))
         .attr('width', Math.abs(xRange[xRange.length - 1] - xRange[0]))
-        .on('mouseenter', function (event: any) {
+        .on('mouseenter', function() {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           dispatcher.call('enter', this);
         })
-        .on('mouseout', function (event: any) {
+        .on('mouseout', function() {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           dispatcher.call('out', this);
+
           // Redraw with null values to ensure when we enter again, there is nothing cached when redisplayed.
+          // eslint-disable-next-line no-underscore-dangle
           delete group.node().__coord__;
+
           // Mutating data, don't need to manually pass down.
           initialiseWire(group.datum());
           refresh(group, pathVerticalSelection, pathHorizontalSelection, xAnnotationSelection, yAnnotationSelection);
@@ -69,16 +74,17 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
       refresh(group, pathVerticalSelection, pathHorizontalSelection, xAnnotationSelection, yAnnotationSelection);
     };
 
-    function mousemoveRefresh(selection: any, pathVerticalSelection: any, pathHorizontalSelection: any,
-      xAnnotationSelection: any, yAnnotationSelection: any) {
-      return function (event: any) {
-        // Cache coordinates past this mouse move.
-        selection.node().__coord__ = d3.pointer(event);
-        refresh(selection, pathVerticalSelection, pathHorizontalSelection, xAnnotationSelection, yAnnotationSelection);
-      };
-    }
+    const mousemoveRefresh =
+      (selection: any, pathVerticalSelection: any, pathHorizontalSelection: any, xAnnotationSelection: any, yAnnotationSelection: any) =>
+        (event: any) => {
+          // Cache coordinates past this mouse move.
+          // eslint-disable-next-line no-underscore-dangle
+          selection.node().__coord__ = d3.pointer(event);
+          refresh(selection, pathVerticalSelection, pathHorizontalSelection, xAnnotationSelection, yAnnotationSelection);
+        };
 
-    function refresh(selection: any, xPath: any, yPath: any, xAnnotationSelection: any, yAnnotationSelection: any) {
+    const refresh = (selection: any, xPath: any, yPath: any, xAnnotationSelection: any, yAnnotationSelection: any) => {
+      // eslint-disable-next-line no-underscore-dangle
       const coords = selection.node().__coord__;
       if (coords !== undefined) {
         const d = selection.datum();
@@ -100,46 +106,62 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
       xAnnotationSelection.call(xAnnotationComposer.refresh);
       yAnnotationSelection.call(yAnnotationComposer.refresh);
       selection.attr('display', displayAttr);
-    }
+    };
 
     /** Supports getter and setter. */
-    crosshair.xAnnotation = function (_?: any) {
-      if (!arguments.length) return xAnnotationComposer.plots();
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    crosshair_.xAnnotation = function(_?: any) {
+      if (!arguments.length) {
+        return xAnnotationComposer.plots();
+      }
+
       xAnnotationComposer.plots(_ instanceof Array ? _ : [_]);
       return binder();
     };
 
     /** Supports getter and setter. */
-    crosshair.yAnnotation = function (_?: any) {
-      if (!arguments.length) return yAnnotationComposer.plots();
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    crosshair_.yAnnotation = function(_?: any) {
+      if (!arguments.length) {
+        return yAnnotationComposer.plots();
+      }
+
       yAnnotationComposer.plots(_ instanceof Array ? _ : [_]);
       return binder();
     };
 
     /** Supports getter and setter. */
-    crosshair.verticalWireRange = function (_?: any) {
-      if (!arguments.length) return verticalWireRange;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    crosshair_.verticalWireRange = function(_?: any) {
+      if (!arguments.length) {
+        return verticalWireRange;
+      }
+
       verticalWireRange = _;
       return binder();
     };
 
     /** Supports getter and setter. */
-    crosshair.horizontalWireRange = function (_?: any) {
-      if (!arguments.length) return horizontalWireRange;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    crosshair_.horizontalWireRange = function(_?: any) {
+      if (!arguments.length) {
+        return horizontalWireRange;
+      }
+
       horizontalWireRange = _;
       return binder();
     };
 
-    function binder() {
+    const binder = () => {
       xAnnotationComposer.accessor(p.accessor.x).scale(p.xScale);
       yAnnotationComposer.accessor(p.accessor.y).scale(p.yScale);
-      return crosshair;
-    }
+      return crosshair_;
+    };
 
-    function horizontalPathLine() {
+    const horizontalPathLine = () => {
       const range = horizontalWireRange || p.xScale.range();
 
-      return function (d: any) {
+      return (d: any) => {
         if (p.accessor.y(d) === null) {
           return null;
         }
@@ -151,12 +173,12 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
 
         return 'M ' + range[0] + ' ' + value + ' L ' + range[range.length - 1] + ' ' + value;
       };
-    }
+    };
 
-    function verticalPathLine() {
+    const verticalPathLine = () => {
       const range = verticalWireRange || p.yScale.range();
 
-      return function (d: any) {
+      return (d: any) => {
         if (p.accessor.x(d) === null) {
           return null;
         }
@@ -169,34 +191,28 @@ export const crosshair = function (crosshairAccessor: any, plot: any, plotMixin:
 
         return 'M ' + value + ' ' + range[0] + ' L ' + value + ' ' + range[range.length - 1];
       };
-    }
+    };
 
-    function initialiseWire(d?: any) {
+    const initialiseWire = (d?: any) => {
       d = d || {};
       p.accessor.x(d, null);
       p.accessor.y(d, null);
       return d;
-    }
+    };
 
-    function isEmpty(d?: any) {
-      return d === undefined || p.accessor.x(d) === null || p.accessor.y(d) === null;
-    }
+    const isEmpty = (d?: any) => d === undefined || p.accessor.x(d) === null || p.accessor.y(d) === null;
 
-    function displayAttr(d?: any) {
-      return isEmpty(d) ? 'none' : null;
-    }
+    const displayAttr = (d?: any) => isEmpty(d) ? 'none' : null;
 
     // Mixin scale management and event listening.
-    plotMixin(crosshair, p)
+    plotMixin(crosshair_, p)
       .plot(crosshairAccessor(), binder)
-      .dataSelector(function (d: any) {
-        // Has the user set data? If not, put empty data ready for mouse over.
-        return isEmpty(d) ? [initialiseWire()] : [d];
-      })
+      .dataSelector((d: any) =>
+          // Has the user set data? If not, put empty data ready for mouse over.
+          isEmpty(d) ? [initialiseWire()] : [d])
       .on(dispatcher);
 
     p.dataSelector.scope('crosshair');
 
     return binder();
   };
-};

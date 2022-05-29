@@ -17,7 +17,7 @@ export type HierarchyTreeSortFunction = (a: d3.HierarchyNode<HierarchyTreeNode>,
  *
  * This function returns **0** for all hierarchy tree nodes which results in no soring being done.
  */
-export const sortNone: HierarchyTreeSortFunction = (a: d3.HierarchyNode<HierarchyTreeNode>, b: d3.HierarchyNode<HierarchyTreeNode>) => 0;
+export const sortNone: HierarchyTreeSortFunction = () => 0;
 
 /**
  * Provides an implementation of the **HierarchyTreeSortFunction** type.

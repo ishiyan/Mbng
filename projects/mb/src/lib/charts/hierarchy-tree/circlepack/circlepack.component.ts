@@ -104,6 +104,7 @@ export class CirclepackComponent implements OnChanges {
 
   constructor(private elementRef: ElementRef) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
     this.render();
   }
@@ -199,7 +200,6 @@ export class CirclepackComponent implements OnChanges {
     };
 
     const zoom = (event: any, d: d3.HierarchyCircularNode<HierarchyTreeNode>) => {
-      const focus0 = focus;
       focus = d;
       const transition = svg.transition().duration(this.transitionMsec)
         .tween('zoom', () => {

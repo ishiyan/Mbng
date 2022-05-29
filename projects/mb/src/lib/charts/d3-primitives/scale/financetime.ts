@@ -1,18 +1,20 @@
 import * as d3 from 'd3';
 
-import { rebindCallback } from "../rebind"
-import { zoomable as zoomable_ } from "./zoomable"
+import { rebindCallback } from '../rebind';
+import { zoomable as zoomable_ } from './zoomable';
 
 /**
  Finance time scale which is not necessarily continuous, is required to be plot continuous. Finance scale
  generally contains data points on days where a market is open but no points when closed, such as weekday
  and weekends respectively. When plot, is done so without weekend gaps.
  */
-export const financetime = function (scaleWiden: any) { // Injected dependencies
-  function financetime(tickMethods: any, genericFormat: any, index?: any, domain?: any, padding?: any, outerPadding?: any, zoomLimit?: any, closestTicks?: any, zoomable?: any) {
-    var dateIndexMap: any;
-    var tickState = { tickFormat: tickMethods.daily[tickMethods.daily.length - 1][2] };
-    var band = 3;
+export const financetime = (scaleWiden: any) => { // Injected dependencies
+  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+  function fintime(tickMethods: any, genericFmt: any, index?: any, domain?: any,
+    padding?: any, outerPadding?: any, zoomLimit?: any, closestTicks?: any, zoomable?: any) {
+    let dateIndexMap: any;
+    let band = 3;
+    const tickState = { tickFormat: tickMethods.daily[tickMethods.daily.length - 1][2] };
 
     index = index || d3.scaleLinear();
     domain = domain || [new Date(0), new Date(1)];
@@ -20,6 +22,12 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
     outerPadding = outerPadding === undefined ? 0.65 : outerPadding;
     zoomLimit = zoomLimit || { domain: index.domain() }; // Wrap in object to carry onto zoomable
     closestTicks = closestTicks || false;
+
+    const zoomed = () => {
+      band = rangeBand(index, domain, padding);
+      return scale;
+    };
+
     zoomable = zoomable || zoomable_()(index, zoomed, zoomLimit);
 
     /**
@@ -36,8 +44,8 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      * @param x The value to scale.
      * @param offset Apply an index offset to the mapped x (date) parameter.
      */
-    function scale(x: any, offset: any): any {
-      var mappedIndex = dateIndexMap[x instanceof Date ? x.getTime() : +x];
+    const scale = (x: any, offset: any): any => {
+      let mappedIndex = dateIndexMap[x instanceof Date ? x.getTime() : +x];
       offset = offset || 0;
 
       // Make sure the value has been mapped, if not, determine if it's just before,
@@ -54,16 +62,16 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
       }
 
       return index(mappedIndex + offset);
-    }
+    };
 
     /**
      * Invert the passed range coordinate to the corresponding domain. Returns null if no valid domain available.
      *
      * @param y
-     * @returns {null} If the range value cannot be mapped. eg, if range value is outside of the mapped domain.
+     * @returns If the range value cannot be mapped. eg, if range value is outside of the mapped domain.
      */
-    scale.invert = function (y: any): null {
-      var d = domain[scale.invertToIndex(y)];
+    scale.invert = (y: any): null => {
+      const d = domain[scale.invertToIndex(y)];
       return d ? d : null;
     };
 
@@ -73,13 +81,11 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      * or an index greater than what is available in the domain.
      *
      * @param y
-     * @returns {number} A number representing the index in the domain the range value has been inverted to.
-     *                   May return values outside of the domain such as negatives or value greater
-     *                   than `domain().length-1`.
+     * @returns A number representing the index in the domain the range value has been inverted to.
+     *          May return values outside of the domain such as negatives or value greater
+     *          than `domain().length-1`.
      */
-    scale.invertToIndex = function (y: any): number {
-      return Math.round(index.invert(y));
-    };
+    scale.invertToIndex = (y: any): number => Math.round(index.invert(y));
 
     /**
      * As the underlying structure relies on a full array, ensure the full domain is passed here,
@@ -87,9 +93,10 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      *
      * @param _ The full domain array.
      */
-    scale.domain = function (_?: any): any {
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.domain = function(_?: any): any {
       if (!arguments.length) {
-        var visible = index.domain();
+        let visible = index.domain();
 
         if (visible[0] < 0 && visible[visible.length - 1] < 0) {
           // If it's all negative return empty, nothing is visible.
@@ -111,16 +118,11 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
       return applyDomain();
     };
 
-    function zoomed() {
-      band = rangeBand(index, domain, padding);
-      return scale;
-    }
-
-    function domainMap() {
+    const domainMap = () => {
       dateIndexMap = lookupIndex(domain);
-    }
+    };
 
-    function applyDomain() {
+    const applyDomain = () => {
       domainMap();
       index.domain([0, domain.length - 1]);
       zoomed();
@@ -132,11 +134,10 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
       // Capture the zoom limit after the domain has been applied.
       zoomLimit.domain = index.domain();
       return zoomed();
-    }
-
-    scale.copy = function () {
-      return financetime(tickMethods, genericFormat, index.copy(), domain, padding, outerPadding, zoomLimit, closestTicks);
     };
+
+    scale.copy = () =>
+      fintime(tickMethods, genericFmt, index.copy(), domain, padding, outerPadding, zoomLimit, closestTicks);
 
     /**
      * Equivalent to d3's ordinal.rangeBand(). It could not be named rangeBand as d3 uses the method
@@ -145,25 +146,29 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      * d3.scale.ordinal()(x) returns y at the beginning of the band. When rendering svg axis, d3
      * compensates for this checking if rangeBand is defined and compensates as such.
      */
-    scale.band = function (): number {
-      return band;
-    };
+    scale.band = (): number => band;
 
-    scale.outerPadding = function (_?: any): any {
-      if (!arguments.length) return outerPadding;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.outerPadding = function(_?: any): any {
+      if (!arguments.length) {
+        return outerPadding;
+      }
+
       outerPadding = _;
       return applyDomain();
     };
 
-    scale.padding = function (_?: any): any {
-      if (!arguments.length) return padding;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.padding = function(_?: any): any {
+      if (!arguments.length) {
+        return padding;
+      }
+
       padding = _;
       return applyDomain();
     };
 
-    scale.zoomable = function (): any {
-      return zoomable;
-    };
+    scale.zoomable = (): any => zoomable;
 
     /**
      * Generates ticks as continuous as possible against the underlying domain. Where continuous time ticks
@@ -177,7 +182,7 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      * - Supporting daily and intraday continuous (no gaps) plotting.
      * https://github.com/mbostock/d3/blob/e03b6454294e1c0bbe3125f787df56c468658d4e/src/time/scale.js#L67
      */
-    scale.ticks = function (interval: any, steps: any): any {
+    scale.ticks = (interval: any, steps: any): any => {
       const visibleDomain = scale.domain();
       const indexDomain = index.domain();
 
@@ -186,7 +191,7 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
         return [];
       }
 
-      var method = interval === undefined ? tickMethod(visibleDomain, indexDomain, 10) :
+      const method = interval === undefined ? tickMethod(visibleDomain, indexDomain, 10) :
         typeof interval === 'number' ? tickMethod(visibleDomain, indexDomain, interval) : null;
 
       tickState.tickFormat = method ? method[2] : tickMethod(visibleDomain, indexDomain, 10)[2];
@@ -207,10 +212,10 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
         .reduce(sequentialDuplicates, []);
     };
 
-    function tickMethod(visibleDomain: any, indexDomain: any, count: any): any {
-      if (visibleDomain.length == 1) {
+    const tickMethod = (visibleDomain: any, indexDomain: any, count: any): any => {
+      if (visibleDomain.length === 1) {
         // If we only have 1 to display, show the generic tick method.
-        return genericFormat;
+        return genericFmt;
       }
 
       const visibleDomainExtent = visibleDomain[visibleDomain.length - 1] - visibleDomain[0];
@@ -225,25 +230,29 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
       const target = visibleDomainExtent / k;
       const i = d3.bisect(tickSteps, target);
 
-      return i == methods.length ?
+      return i === methods.length ?
         // Return the largest tick method.
         methods[i - 1] :
         // Else return close approximation or first tickMethod.
         i ? methods[target / tickSteps[i - 1] < tickSteps[i] / target ? i - 1 : i] : methods[i];
-    }
+    };
 
     /**
      * By default `ticks()` will generate tick values greater than the nearest domain interval
      * value, which may not be best value, particularly for irregular intraday domains.
-     * 
+     *
      * Setting this to true will cause tick generation to choose values closest to the
      * corresponding domain value for the calculated interval.
      *
      * @param _ Optional `boolean` value. If argument is passed, sets the value
      *          and returns this instance, if no argument, returns the current value.
      */
-    scale.closestTicks = function (_?: any): any {
-      if (!arguments.length) return closestTicks;
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    scale.closestTicks = function(_?: any): any {
+      if (!arguments.length) {
+        return closestTicks;
+      }
+
       closestTicks = _;
       return scale;
     };
@@ -254,47 +263,41 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
      * otherwise a default tickFormat will be returned which may not be the optimal
      * representation of the current domain state.
      */
-    scale.tickFormat = function (): Function {
-      return function (date: any) {
-        return tickState.tickFormat(date);
-      };
-    };
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    scale.tickFormat = (): Function => (date: any) => tickState.tickFormat(date);
 
     rebindCallback(scale, index, zoomed, 'range');
     domainMap();
     return zoomed();
   }
 
-  function rangeBand(linear: any, domain: any, padding: any) {
-    return (Math.abs(linear(domain.length - 1) - linear(0)) / Math.max(1, domain.length - 1))
-      * (1 - padding);
-  }
+  const rangeBand = (linear: any, domain: any, padding: any) =>
+    (Math.abs(linear(domain.length - 1) - linear(0)) / Math.max(1, domain.length - 1)) * (1 - padding);
 
   /**
    * Calculates the proportion of domain that is visible.
    * Used to reduce the overall count by this factor.
    */
-  function countK(visibleDomain: any, indexDomain: any): number {
-    return visibleDomain.length / (indexDomain[indexDomain.length - 1] - indexDomain[0]);
-  }
+  const countK = (visibleDomain: any, indexDomain: any): number =>
+    visibleDomain.length / (indexDomain[indexDomain.length - 1] - indexDomain[0]);
 
-  function lookupIndex(array: any) {
+  const lookupIndex = (array: any) => {
     const lookup = {} as any;
-    array.forEach(function (d: any, i: any) { lookup[+d] = i; });
+    array.forEach((d: any, i: any) => { lookup[+d] = i; });
     return lookup;
-  }
+  };
 
-  function domainTicks(visibleDomain: any, closest: any) {
+  const domainTicks = (visibleDomain: any, closest: any) => {
     // Quickly lookup index of the domain.
     const visibleDomainLookup = lookupIndex(visibleDomain);
 
-    return function (d: any) {
+    return (d: any) => {
       const value = visibleDomainLookup[+d];
       if (value !== undefined) {
         return visibleDomain[value];
       }
 
-      var index = d3.bisect(visibleDomain, d);
+      let index = d3.bisect(visibleDomain, d);
       if (closest && index > 0) {
         // `d3.bisect` gets the index of the closest value that is the greater than d,
         // which may not be the value that is closest to d.
@@ -306,15 +309,15 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
 
       return visibleDomain[index];
     };
-  }
+  };
 
-  function sequentialDuplicates(previous: any, current: any) {
+  const sequentialDuplicates = (previous: any, current: any) => {
     if (previous.length === 0 || previous[previous.length - 1] !== current) {
       previous.push(current);
     }
 
     return previous;
-  }
+  };
 
   const dailyStep = 864e5;
   const dailyTickSteps = [
@@ -342,37 +345,37 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
 
   const dayFormat = d3.timeFormat('%b %e');
   const yearFormat = d3_v3_multi_shim([
-    [d3.timeFormat('%b %Y'), function (d: any) { return d.getMonth(); }],
-    [d3.timeFormat('%Y'), function () { return true; }]
+    [d3.timeFormat('%b %Y'), (d: any) => d.getMonth()],
+    [d3.timeFormat('%Y'), () => true]
   ]);
   const intradayFormat = d3_v3_multi_shim([
-    [d3.timeFormat(':%S'), function (d: any) { return d.getSeconds(); }],
-    [d3.timeFormat('%I:%M'), function (d: any) { return d.getMinutes(); }],
-    [d3.timeFormat('%I %p'), function () { return true; }]
-  ])
+    [d3.timeFormat(':%S'), (d: any) => d.getSeconds()],
+    [d3.timeFormat('%I:%M'), (d: any) => d.getMinutes()],
+    [d3.timeFormat('%I %p'), () => true]
+  ]);
   const genericFormat = [d3.timeSecond, 1, d3_v3_multi_shim([
-    [d3.timeFormat(':%S'), function (d: any) { return d.getSeconds(); }],
-    [d3.timeFormat('%I:%M'), function (d: any) { return d.getMinutes(); }],
-    [d3.timeFormat('%I %p'), function (d: any) { return d.getHours(); }],
-    [d3.timeFormat('%b %e'), function () { return true; }]
+    [d3.timeFormat(':%S'), (d: any) => d.getSeconds()],
+    [d3.timeFormat('%I:%M'), (d: any) => d.getMinutes()],
+    [d3.timeFormat('%I %p'), (d: any) => d.getHours()],
+    [d3.timeFormat('%b %e'), () => true]
   ])
   ];
 
   const dayFormatUtc = d3.utcFormat('%b %e');
   const yearFormatUtc = d3_v3_multi_shim([
-    [d3.utcFormat('%b %Y'), function (d: any) { return d.getUTCMonth(); }],
-    [d3.utcFormat('%Y'), function () { return true; }]
+    [d3.utcFormat('%b %Y'), (d: any) => d.getUTCMonth()],
+    [d3.utcFormat('%Y'), () => true]
   ]);
   const intradayFormatUtc = d3_v3_multi_shim([
-    [d3.utcFormat(':%S'), function (d: any) { return d.getUTCSeconds(); }],
-    [d3.utcFormat('%I:%M'), function (d: any) { return d.getUTCMinutes(); }],
-    [d3.utcFormat('%I %p'), function () { return true; }]
+    [d3.utcFormat(':%S'), (d: any) => d.getUTCSeconds()],
+    [d3.utcFormat('%I:%M'), (d: any) => d.getUTCMinutes()],
+    [d3.utcFormat('%I %p'), () => true]
   ]);
   const genericFormatUtc = [d3.timeSecond, 1, d3_v3_multi_shim([
-    [d3.utcFormat(':%S'), function (d: any) { return d.getUTCSeconds(); }],
-    [d3.utcFormat('%I:%M'), function (d: any) { return d.getUTCMinutes(); }],
-    [d3.utcFormat('%I %p'), function (d: any) { return d.getUTCHours(); }],
-    [d3.utcFormat('%b %e'), function () { return true; }]
+    [d3.utcFormat(':%S'), (d: any) => d.getUTCSeconds()],
+    [d3.utcFormat('%I:%M'), (d: any) => d.getUTCMinutes()],
+    [d3.utcFormat('%I %p'), (d: any) => d.getUTCHours()],
+    [d3.utcFormat('%b %e'), () => true]
   ])
   ];
 
@@ -422,23 +425,20 @@ export const financetime = function (scaleWiden: any) { // Injected dependencies
     [d3.utcDay, 1, dayFormatUtc]
   ];
 
-  function scaleFinancetime() {
-    return financetime({ daily: dailyTickMethod, intraday: intradayTickMethod }, genericFormat);
-  }
+  const scaleFinancetime = () =>
+    fintime({ daily: dailyTickMethod, intraday: intradayTickMethod }, genericFormat);
 
-  scaleFinancetime.utc = function () {
-    return financetime({ daily: dailyTickMethodUtc, intraday: intradayTickMethodUtc }, genericFormatUtc);
-  };
+  scaleFinancetime.utc = () =>
+    fintime({ daily: dailyTickMethodUtc, intraday: intradayTickMethodUtc }, genericFormatUtc);
 
   return scaleFinancetime;
 };
 
-function d3_v3_multi_shim(multi: any) {
-  return function (d: any) {
-    for (var i = 0; i < multi.length; i++) {
-      if (multi[i][1](d)) {
-        return multi[i][0](d);
-      }
+const d3_v3_multi_shim = (multi: any) => (d: any) => {
+  for (const elem of multi) {
+    if (elem[1](d)) {
+      return elem[0](d);
     }
-  };
-}
+  }
+};
+

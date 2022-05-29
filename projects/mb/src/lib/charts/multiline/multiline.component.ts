@@ -1,4 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Ohlcv } from '../../data/entities/ohlcv';
@@ -56,7 +57,6 @@ export class MultilineComponent implements OnChanges, AfterViewInit {
       const lenCurrent = this.currentConfiguration.length;
       if (lenCurrent > 0) {
         const minLen = Math.min(lenCfg, lenCurrent);
-        const maxLen = Math.max(lenCfg, lenCurrent);
         for (let i = 0; i < minLen; ++i) {
           this.currentConfiguration[i] = { ...this.currentConfiguration[i], ...cfg[i] };
         }
@@ -166,6 +166,7 @@ export class MultilineComponent implements OnChanges, AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
     this.render();
   }

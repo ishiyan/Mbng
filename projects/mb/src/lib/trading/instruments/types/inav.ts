@@ -12,7 +12,7 @@ export class Inav {
   constructor(data?: Inav) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -23,10 +23,8 @@ export class Inav {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Currency'] = this.currency;
-    data['Target'] = this.target ? this.target.toJSON() : (undefined as any);
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Currency = this.currency;
+    data.Target = this.target ? this.target.toJSON() : (undefined as any);
     return data;
   }
 }

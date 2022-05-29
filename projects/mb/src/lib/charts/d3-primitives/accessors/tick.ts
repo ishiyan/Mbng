@@ -1,19 +1,10 @@
-export const tick = function () {
-  const time = function (d: any) { return d.time; };
-  const high = function (d: any) { return d.askPrice; }; // d.high
-  const low = function (d: any) { return d.bidPrice; }; // d.low
-  const spread = function (d: any) { return (d.askPrice - d.bidPrice) / 2; }; // d.spread
-
-  function accessor(d: any) {
-    return accessor.value(d);
-  }
-
-  accessor.time = time;
-  accessor.high = high;
-  accessor.low = low;
-  accessor.spread = spread;
-
-  accessor.value = spread; // Make a setter: withValue(_).
+export const tick = () => {
+  const accessor = (d: any): any => accessor.value(d);
+  accessor.time = (d: any) => d.time;
+  accessor.high = (d: any) => d.askPrice; // d.high
+  accessor.low = (d: any) => d.bidPrice; // d.low
+  accessor.spread = (d: any) => (d.askPrice - d.bidPrice) / 2; // d.spread
+  accessor.value = accessor.spread; // Make a setter: withValue(_).
 
   return accessor;
 };

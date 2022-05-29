@@ -11,8 +11,7 @@ export type HierarchyTreeStrokeWidthFunction =
 /**
  * Provides an implementation of the *'no stroke width'* **HierarchyTreeStrokeWidthFunction** type.
  */
-export const noStrokeWidth: HierarchyTreeStrokeWidthFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 0;
+export const noStrokeWidth: HierarchyTreeStrokeWidthFunction = () => 0;
 
 /**
  * Provides  a *'thin'* implementation of the *'linear stroke width'* **HierarchyTreeStrokeWidthFunction** type.

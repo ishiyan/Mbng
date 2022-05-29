@@ -9,23 +9,21 @@ export class Trade {
   /** The volume (quantity). */
   volume!: number;
 
-  /*constructor(data?: any) {
+  constructor(data?: any) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
-          (<any>this)[property] = (<any>data)[property];
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
+          (this as any)[property] = data[property];
         }
       }
     }
-  }*/
+  }
 
-  /*toJSON(data?: any): any {
+  toJSON(data?: any): any {
     data = typeof data === 'object' ? data : {};
-    data['time'] = this.time ? this.time.toISOString() : <any>undefined;
-    data['price'] = this.price;
-    data['volume'] = this.volume;
+    data.time = this.time ? this.time.toISOString() : undefined;
+    data.price = this.price;
+    data.volume = this.volume;
     return data;
-  }*/
+  }
 }
-
-/* eslint-disable , , , , , , , , , , , ,  */

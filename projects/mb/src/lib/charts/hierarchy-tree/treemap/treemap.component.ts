@@ -98,6 +98,7 @@ export class TreemapComponent implements OnChanges {
 
   constructor(private elementRef: ElementRef) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
     this.render();
   }

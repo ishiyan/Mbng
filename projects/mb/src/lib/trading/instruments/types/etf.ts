@@ -42,7 +42,7 @@ export class Etf {
   constructor(data?: Etf) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -54,20 +54,18 @@ export class Etf {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Currency'] = this.currency;
-    data['TradingMode'] = this.tradingMode;
-    data['Cfi'] = this.cfi;
-    data['DividendFrequency'] = this.dividendFrequency;
-    data['ExpositionType'] = this.expositionType;
-    data['Fraction'] = this.fraction;
-    data['TotalExpenseRatio'] = this.totalExpenseRatio;
-    data['IndexFamily'] = this.indexFamily;
-    data['LaunchDate'] = this.launchDate;
-    data['Issuer'] = this.issuer;
-    data['Inav'] = this.inav ? this.inav.toJSON() : (undefined as any);
-    data['Underlying'] = this.underlying ? this.underlying.toJSON() : (undefined as any);
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Currency = this.currency;
+    data.TradingMode = this.tradingMode;
+    data.Cfi = this.cfi;
+    data.DividendFrequency = this.dividendFrequency;
+    data.ExpositionType = this.expositionType;
+    data.Fraction = this.fraction;
+    data.TotalExpenseRatio = this.totalExpenseRatio;
+    data.IndexFamily = this.indexFamily;
+    data.LaunchDate = this.launchDate;
+    data.Issuer = this.issuer;
+    data.Inav = this.inav ? this.inav.toJSON() : (undefined as any);
+    data.Underlying = this.underlying ? this.underlying.toJSON() : (undefined as any);
     return data;
   }
 }

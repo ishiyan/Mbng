@@ -1,22 +1,18 @@
-export const ohlcv = function () {
-  function accessor(d: any): any {
-    return accessor.value(d);
-  }
-
-  accessor.time = function (d: any): any { return d.time; };
-  accessor.open = function (d: any): any { return d.open; };
-  accessor.high = function (d: any): any { return d.high; };
-  accessor.low = function (d: any): any { return d.low; };
-  accessor.close = function (d: any): any { return d.close; };
-  accessor.volume = function (d: any): any { return d.volume; };
-
+export const ohlcv = () => {
+  const accessor = (d: any): any => accessor.value(d);
+  accessor.time = (d: any): any => d.time;
+  accessor.open = (d: any): any => d.open;
+  accessor.high = (d: any): any => d.high;
+  accessor.low = (d: any): any => d.low;
+  accessor.close = (d: any): any => d.close;
+  accessor.volume = (d: any): any => d.volume;
   accessor.value = accessor.close;
 
   /** By default, *value(d)* returns closing price (*d.close*).
    *  This setter allows to set it to a different expression, e.g. *(d.high + d.low)/2*
    *  by passing a function or a lambda *d: any => (d.high + d.low)/2*.
    */
-  accessor.withValue = function (fun: any) {
+  accessor.withValue = (fun: any): any => {
     accessor.value = fun;
     return accessor;
   };

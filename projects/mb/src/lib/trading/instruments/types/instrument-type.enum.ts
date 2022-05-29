@@ -1,5 +1,6 @@
 /** Identifies instrument types. */
 export enum InstrumentType {
+  // eslint-disable-next-line id-blacklist
   Undefined = 'undefined',
   Index = 'index',
   Stock = 'stock',

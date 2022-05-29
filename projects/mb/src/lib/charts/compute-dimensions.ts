@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
 
-export function computeDimensions(elementRef: ElementRef, width: number | string, height: number | string,
-                                  defaultWidth: number, defaultHeight: number): [number, number] {
+export const computeDimensions = (elementRef: ElementRef, width: number | string, height: number | string,
+  defaultWidth: number, defaultHeight: number): [number, number] => {
   let w = defaultWidth;
   let h = defaultHeight;
   const nativeElement = elementRef.nativeElement;
@@ -117,15 +117,10 @@ export function computeDimensions(elementRef: ElementRef, width: number | string
     }
   }
 
-  // console.log('1.11%%foo ->', extractValue('1.11%foo'));
-  // console.log('1.11% ->', extractValue('1.11%'));
-  // console.log('1.11px ->', extractValue('1.11px'));
-  // console.log('1.11 ->', extractValue('1.11'));
-
   return [w, h];
-}
+};
 
-function extractValue(input: number | string | null | undefined): [number | undefined, boolean, string] {
+const extractValue = (input: number | string | null | undefined): [number | undefined, boolean, string] => {
   if (input === undefined || input === null) {
     return [undefined, false, ''];
   }
@@ -139,10 +134,9 @@ function extractValue(input: number | string | null | undefined): [number | unde
     return [value, isPercent, matches[3]];
   }
   return [+input, false, ''];
-}
+};
 
-function computePercentageWidth(percentage: number, name: string, element: any): number | undefined {
-
+const computePercentageWidth = (percentage: number, name: string, element: any): number | undefined => {
   if (name != null && name.length > 0) {
     if (name === 'offsetParent') {
       const offsetParent = element.offsetParent;
@@ -170,11 +164,10 @@ function computePercentageWidth(percentage: number, name: string, element: any):
     return parent.clientWidth * percentage / 100;
   }
   return undefined;
-}
+};
 
 
-function computePercentageHeight(percentage: number, name: string, element: any, width: number): number | undefined {
-
+const computePercentageHeight = (percentage: number, name: string, element: any, width: number): number | undefined => {
   if (name != null && name.length > 0) {
     if (name === 'width') {
       return width * percentage / 100;
@@ -204,4 +197,4 @@ function computePercentageHeight(percentage: number, name: string, element: any,
     return parent.clientHeight * percentage / 100;
   }
   return undefined;
-}
+};

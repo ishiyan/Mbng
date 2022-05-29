@@ -48,7 +48,7 @@ export class FractionalBrownianMotionParameters {
   constructor(data?: FractionalBrownianMotionParameters) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }

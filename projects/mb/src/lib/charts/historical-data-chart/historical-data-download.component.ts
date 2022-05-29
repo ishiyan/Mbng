@@ -63,6 +63,7 @@ export class HistoricalDataDownloadComponent {
     }
     const csv = this.writeByteOrderMark ? '\ufeff' + this.convertToCSV() : this.convertToCSV();
     const blob = new Blob([csv], { type: 'text/csv;charset=utf8;' });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const filename = this.currentHistoricalData.name.replace(/ /g, '_') + '.csv';
 
@@ -101,6 +102,7 @@ export class HistoricalDataDownloadComponent {
       return this.decimalPipe.transform(value, decimalFormat);
     };
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const csv = items.map(row => headers.map(fieldName => replacer(fieldName, row[fieldName])).join(separator));
     if (this.writeDescription) {

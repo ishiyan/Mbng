@@ -15,7 +15,7 @@ export class InstrumentReference {
   constructor(data?: InstrumentReference) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -24,12 +24,10 @@ export class InstrumentReference {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Mic'] = this.mic;
-    data['Isin'] = this.isin;
-    data['Symbol'] = this.symbol;
-    data['Name'] = this.name;
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Mic = this.mic;
+    data.Isin = this.isin;
+    data.Symbol = this.symbol;
+    data.Name = this.name;
     return data;
   }
 }

@@ -12,6 +12,7 @@ export class MathJaxComponent implements OnChanges {
   @ViewChild(MathJaxDirective)
   mathJaxDirective!: MathJaxDirective;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: SimpleChanges): void {
     if (this.mathJaxDirective) {
       this.mathJaxDirective.typeset(this.expression);

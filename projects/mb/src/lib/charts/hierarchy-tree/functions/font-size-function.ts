@@ -11,38 +11,32 @@ export type HierarchyTreeFontSizeFunction =
 /**
  * Provides an *'equal font size 8'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize8: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 8;
+export const equalFontSize8: HierarchyTreeFontSizeFunction = () => 8;
 
 /**
  * Provides an *'equal font size 10'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize10: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 10;
+export const equalFontSize10: HierarchyTreeFontSizeFunction = () => 10;
 
 /**
  * Provides an *'equal font size 12'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize12: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 12;
+export const equalFontSize12: HierarchyTreeFontSizeFunction = () => 12;
 
 /**
  * Provides an *'equal font size 14'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize14: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 14;
+export const equalFontSize14: HierarchyTreeFontSizeFunction = () => 14;
 
 /**
  * Provides an *'equal font size 16'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize16: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 16;
+export const equalFontSize16: HierarchyTreeFontSizeFunction = () => 16;
 
 /**
  * Provides an *'equal font size 18'* implementation of the **HierarchyTreeFontSizeFunction** type.
  */
-export const equalFontSize18: HierarchyTreeFontSizeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 18;
+export const equalFontSize18: HierarchyTreeFontSizeFunction = () => 18;
 
 /**
  * Provides an *'linear font size'* implementation of the **HierarchyTreeFontSizeFunction** type.

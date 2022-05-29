@@ -3,9 +3,7 @@ import { Quote } from '../data/entities/quote';
 import { Trade } from '../data/entities/trade';
 import { Scalar } from '../data/entities/scalar';
 
-export function lineValueAccessor(array: (Ohlcv[] | Quote[] | Trade[] | Scalar[])):
-  (d: Ohlcv | Quote | Trade | Scalar) => number {
-  const len = array.length;
+export const lineValueAccessor = (array: (Ohlcv[] | Quote[] | Trade[] | Scalar[])): (d: Ohlcv | Quote | Trade | Scalar) => number => {
   if (array.length > 0) {
     if ((array as Ohlcv[])[0].close !== undefined) {
       return (d: Ohlcv | Quote | Trade | Scalar) => (d as Ohlcv).close;
@@ -15,5 +13,6 @@ export function lineValueAccessor(array: (Ohlcv[] | Quote[] | Trade[] | Scalar[]
       return (d: Ohlcv | Quote | Trade | Scalar) => (d as Quote).bidPrice;
     }
   }
+
   return (d: Ohlcv | Quote | Trade | Scalar) => (d as Scalar).value;
-}
+};

@@ -8,16 +8,14 @@ import { crosshair as crosshair_} from './crosshair';
 import { trendline as trendline_} from './trendline';
 import { supstance as supstance_} from './supstance';
 
-export const accessors = function() {
-  return {
-    value: value_,
-    ohlcv: ohlcv_,
-    volume: volume_,
-    quote: quote_,
-    trade: trade_,
-    tick: tick_,
-    crosshair: crosshair_,
-    trendline: trendline_,
-    supstance: supstance_
-  };
-};
+export const accessors = () => ({
+  value: value_,
+  ohlcv: ohlcv_,
+  volume: volume_,
+  quote: quote_,
+  trade: trade_,
+  tick: tick_,
+  crosshair: crosshair_,
+  trendline: trendline_,
+  supstance: supstance_
+});

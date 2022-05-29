@@ -214,8 +214,10 @@ export class IndicatorPane {
       for (let i = 0; i < height; ++i) {
         const index = Math.round((y.invert(i) - periodMin) * periodRes);
         const value = (heat[index] - min) / delta;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         context.fillStyle = color(invertColor ? 1 - value : value);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         context.fillRect(0, periodInverted ? height - i : i, width, 1);
       }
@@ -223,8 +225,10 @@ export class IndicatorPane {
       for (let i = 0; i < height; ++i) {
         const index = Math.round((y.invert(i) - periodMin) * periodRes);
         const value = heat[index];
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         context.fillStyle = color(invertColor ? 1 - value : value);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         context.fillRect(0, periodInverted ? height - i : i, width, 1);
       }

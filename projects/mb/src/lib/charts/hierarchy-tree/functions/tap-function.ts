@@ -14,4 +14,4 @@ export type HierarchyTreeTapFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) 
 /**
  * Provides a *'do nothing'* implementation of the **HierarchyTreeTapFunction** type.
  */
-export const doNothingTap: HierarchyTreeTapFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) => {};
+export const doNothingTap: HierarchyTreeTapFunction = () => {};

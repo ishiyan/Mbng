@@ -11,23 +11,19 @@ export type HierarchyTreeStrokeFunction =
 /**
  * Provides an implementation of the *'no stroke color'* **HierarchyTreeStrokeFunction** type.
  */
-export const noStroke: HierarchyTreeStrokeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => '';
+export const noStroke: HierarchyTreeStrokeFunction = () => '';
 
 /**
  * Provides an implementation of the *'transparent'* **HierarchyTreeStrokeFunction** type.
  */
-export const transparentStroke: HierarchyTreeStrokeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 'transparent';
+export const transparentStroke: HierarchyTreeStrokeFunction = () => 'transparent';
 
 /**
  * Provides an implementation of the *'black stroke color'* **HierarchyTreeStrokeFunction** type.
  */
-export const blackStroke: HierarchyTreeStrokeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 'black';
+export const blackStroke: HierarchyTreeStrokeFunction = () => 'black';
 
 /**
  * Provides an implementation of the *'white stroke color'* **HierarchyTreeStrokeFunction** type.
  */
-export const whiteStroke: HierarchyTreeStrokeFunction =
-  (d: d3.HierarchyRectangularNode<HierarchyTreeNode> | d3.HierarchyCircularNode<HierarchyTreeNode>) => 'white';
+export const whiteStroke: HierarchyTreeStrokeFunction = () => 'white';

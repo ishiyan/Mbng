@@ -1,13 +1,14 @@
 // Injected dependencies.
-export const volume = function (volumeAccessor: any, plot: any, plotMixin: any) {
+export const volume = (volumeAccessor: any, plot: any, plotMixin: any) =>
   // Closure function.
-  return function () {
-    // Container for private, direct access mixed in variables.
+  () => {
     const p = {} as any;
-    var volumeGenerator: any;
+    let volumeGenerator: any;
 
-    function volume(g: any) {
-      var group = p.dataSelector(g);
+    // eslint-disable-next-line no-underscore-dangle
+    const volume_ = (g: any) => {
+      const group = p.dataSelector(g);
+
       if (isOhlcvAccessor()) {
         plot.appendPathsUpDownEqual(group.selection, p.accessor, 'volume');
       }
@@ -15,10 +16,10 @@ export const volume = function (volumeAccessor: any, plot: any, plotMixin: any) 
         group.entry.append('path').attr('class', 'volume');
       }
 
-      volume.refresh(g);
-    }
+      volume_.refresh(g);
+    };
 
-    volume.refresh = function (g: any) {
+    volume_.refresh = (g: any) => {
       if (isOhlcvAccessor()) {
         g.selectAll('path.volume').attr('d', volumeGenerator);
       }
@@ -27,22 +28,20 @@ export const volume = function (volumeAccessor: any, plot: any, plotMixin: any) 
       }
     };
 
-    function binder() {
+    const binder = () => {
       volumeGenerator = plot.joinPath(volumePath);
-    }
+    };
 
-    function isOhlcvAccessor() {
-      return p.accessor.open && p.accessor.close;
-    }
+    const isOhlcvAccessor = () => p.accessor.open && p.accessor.close;
 
-    function volumePath() {
+    const volumePath = () => {
       const accessor = p.accessor;
       const x = p.xScale;
       const y = p.yScale;
       const w = p.width(x);
       const w2 = w / 2;
 
-      return function (d: any) {
+      return (d: any) => {
         const vol = accessor.volume(d);
         if (isNaN(vol)) {
           return null;
@@ -54,15 +53,14 @@ export const volume = function (volumeAccessor: any, plot: any, plotMixin: any) 
 
         return 'M ' + xValue + ' ' + zero + ' l 0 ' + h + ' l ' + w + ' 0 l 0 ' + (-h);
       };
-    }
+    };
 
     // Mixin 'superclass' methods and variables.
-    plotMixin(volume, p)
+    plotMixin(volume_, p)
       .plot(volumeAccessor(), binder)
       .width(binder)
       .dataSelector(plotMixin.dataMapper.array);
     binder();
 
-    return volume;
+    return volume_;
   };
-};

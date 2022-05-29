@@ -11,12 +11,12 @@ export type HierarchyTreeFillOpacityFunction =
 /**
  * Provides an *'transparent'* implementation of the **HierarchyTreeFillOpacityFunction** type.
  */
-export const transparentFillOpacity: HierarchyTreeFillOpacityFunction = (d: d3.HierarchyNode<HierarchyTreeNode>, maxHeight: number) => 0;
+export const transparentFillOpacity: HierarchyTreeFillOpacityFunction = () => 0;
 
 /**
  * Provides an *'opaque'* implementation of the **HierarchyTreeFillOpacityFunction** type.
  */
-export const opaqueFillOpacity: HierarchyTreeFillOpacityFunction = (d: d3.HierarchyNode<HierarchyTreeNode>, maxHeight: number) => 1;
+export const opaqueFillOpacity: HierarchyTreeFillOpacityFunction = () => 1;
 
 /**
  * Provides an *'linear'* implementation of the **HierarchyTreeFillOpacityFunction** type.

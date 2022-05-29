@@ -3,7 +3,7 @@
 // Use declaration merging to add it back to the 'Navigator'.
 declare global {
   interface Navigator {
-      msSaveBlob?: (blob: any, defaultName?: string) => boolean
+      msSaveBlob?: (blob: any, defaultName?: string) => boolean;
   }
 }
 
@@ -96,8 +96,7 @@ export class Downloader {
     canvas.height = height * dpi;
     canvas.style.width = width + 'px';
     const context = canvas.getContext('2d');
-    // @ts-ignore
-    context.scale(dpi, dpi);
+    context?.scale(dpi, dpi);
     return context;
   }
 }

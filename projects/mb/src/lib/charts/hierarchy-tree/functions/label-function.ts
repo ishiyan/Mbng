@@ -32,4 +32,4 @@ export const valueLabels: HierarchyTreeLabelFunction = (d: d3.HierarchyNode<Hier
  *
  * For each node, this function returns an empty string.
  */
-export const emptyLabels: HierarchyTreeLabelFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) => '';
+export const emptyLabels: HierarchyTreeLabelFunction = () => '';

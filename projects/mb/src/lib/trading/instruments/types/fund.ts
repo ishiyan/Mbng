@@ -20,7 +20,7 @@ export class Fund {
   constructor(data?: Fund) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -29,13 +29,11 @@ export class Fund {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Currency'] = this.currency;
-    data['TradingMode'] = this.tradingMode;
-    data['Cfi'] = this.cfi;
-    data['Issuer'] = this.issuer;
-    data['SharesOutstanding'] = this.sharesOutstanding;
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Currency = this.currency;
+    data.TradingMode = this.tradingMode;
+    data.Cfi = this.cfi;
+    data.Issuer = this.issuer;
+    data.SharesOutstanding = this.sharesOutstanding;
     return data;
   }
 }

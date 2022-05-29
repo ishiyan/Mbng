@@ -6,22 +6,20 @@ export class Scalar {
   /** The value. */
   value!: number;
 
-  /*constructor(data?: any) {
+  constructor(data?: any) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
-          (<any>this)[property] = (<any>data)[property];
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
+          (this as any)[property] = data[property];
         }
       }
     }
-  }*/
+  }
 
   /*toJSON(data?: any): any {
     data = typeof data === 'object' ? data : {};
-    data['time'] = this.time ? this.time.toISOString() : <any>undefined;
-    data['value'] = this.value;
+    data.time = this.time ? this.time.toISOString() : undefined;
+    data.value = this.value;
     return data;
   }*/
 }
-
-/* eslint-disable , , , , , , , , , , , ,  */

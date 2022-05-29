@@ -26,7 +26,7 @@ export class Etv {
   constructor(data?: Etv) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -35,15 +35,13 @@ export class Etv {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Currency'] = this.currency;
-    data['TradingMode'] = this.tradingMode;
-    data['AllInFees'] = this.allInFees;
-    data['ExpenseRatio'] = this.expenseRatio;
-    data['DividendFrequency'] = this.dividendFrequency;
-    data['Issuer'] = this.issuer;
-    data['SharesOutstanding'] = this.sharesOutstanding;
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Currency = this.currency;
+    data.TradingMode = this.tradingMode;
+    data.AllInFees = this.allInFees;
+    data.ExpenseRatio = this.expenseRatio;
+    data.DividendFrequency = this.dividendFrequency;
+    data.Issuer = this.issuer;
+    data.SharesOutstanding = this.sharesOutstanding;
     return data;
   }
 }

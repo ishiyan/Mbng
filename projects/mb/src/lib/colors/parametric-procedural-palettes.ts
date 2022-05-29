@@ -40,8 +40,8 @@
  * https://observablehq.com/@makio135/give-me-colors
  * https://iquilezles.org/www/articles/palettes/palettes.htm
  */
-export function parametricProceduralPalette(numberOfSwatches: number,
-                                            a: number[], b: number[], c: number[], d: number[]): string[] {
+export const parametricProceduralPalette = (numberOfSwatches: number,
+  a: number[], b: number[], c: number[], d: number[]): string[] => {
   const func = proceduralScale(a, b, c, d);
   const swatches: string[] = [];
   const coef = 1 / (numberOfSwatches - 1);
@@ -51,12 +51,11 @@ export function parametricProceduralPalette(numberOfSwatches: number,
   }
 
   return swatches;
-}
+};
 
-function proceduralScale(a: number[], b: number[], c: number[], d: number[]): any {
-  function channel(i: number, t: number): number {
-    return (a[i] + b[i] * Math.cos(Math.PI * 2 * (c[i] * t + d[i]))) * 255;
-  }
+const proceduralScale = (a: number[], b: number[], c: number[], d: number[]): any => {
+  const channel = (i: number, t: number): number =>
+    (a[i] + b[i] * Math.cos(Math.PI * 2 * (c[i] * t + d[i]))) * 255;
 
   return (t: number): string => `rgb(${channel(0, t)}, ${channel(1, t)}, ${channel(2, t)})`;
-}
+};

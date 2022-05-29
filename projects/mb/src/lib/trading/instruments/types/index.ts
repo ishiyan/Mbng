@@ -32,7 +32,7 @@ export class Index {
   constructor(data?: Index) {
     if (data) {
       for (const property in data) {
-        if (data.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(data, property)) {
           (this as any)[property] = (data as any)[property];
         }
       }
@@ -41,17 +41,15 @@ export class Index {
 
   toJSON(data?: any) {
     data = typeof data === 'object' ? data : {};
-    /* eslint-disable @typescript-eslint/dot-notation */
-    data['Currency'] = this.currency;
-    data['Kind'] = this.kind;
-    data['Family'] = this.family;
-    data['CalculationFrequency'] = this.calculationFrequency;
-    data['Weighting'] = this.weighting;
-    data['CappingFactor'] = this.cappingFactor;
-    data['Icb'] = this.icb;
-    data['BaseDate'] = this.baseDate;
-    data['BaseLevel'] = this.baseLevel;
-    /* eslint-enable @typescript-eslint/dot-notation */
+    data.Currency = this.currency;
+    data.Kind = this.kind;
+    data.Family = this.family;
+    data.CalculationFrequency = this.calculationFrequency;
+    data.Weighting = this.weighting;
+    data.CappingFactor = this.cappingFactor;
+    data.Icb = this.icb;
+    data.BaseDate = this.baseDate;
+    data.BaseLevel = this.baseLevel;
     return data;
   }
 }

@@ -238,20 +238,24 @@ export class HistoricalDataChartComponent {
       nav.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + heightNav + ')');
     }
 
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function draw(scalarView: number, tradeView: number, quoteView: number,
                   renderVolume: boolean, temporalEntityKind: TemporalEntityKind | undefined) {
       const priceSelection = focus.select('g.price');
       const datum = priceSelection.datum();
       switch (temporalEntityKind) {
         case TemporalEntityKind.Ohlcv:
+          // eslint-disable-next-line prefer-spread
           y.domain(primitives.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
           break;
         case TemporalEntityKind.Quote:
           switch (quoteView) {
             case quoteViewDots:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.quotepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case quoteViewBars:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.quotebar(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
@@ -260,12 +264,15 @@ export class HistoricalDataChartComponent {
         case TemporalEntityKind.Trade:
           switch (tradeView) {
             case tradeViewDots:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.tradepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case tradeViewLine:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case tradeViewArea:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
@@ -273,12 +280,15 @@ export class HistoricalDataChartComponent {
         case TemporalEntityKind.Scalar:
           switch (scalarView) {
             case scalarViewDots:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.valuepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case scalarViewLine:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
             case scalarViewArea:
+              // eslint-disable-next-line prefer-spread
               y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
@@ -302,6 +312,8 @@ export class HistoricalDataChartComponent {
     const qv = this.quoteView;
     const rv = this.renderVolume;
     const tek = this.temporalEntityKind;
+
+    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushed(event: any) {
       const zoomable = x.zoomable();
       const zoomableNav = xNav.zoomable();
@@ -360,6 +372,7 @@ export class HistoricalDataChartComponent {
     }
     yNav.domain(y.domain());
     if (this.renderVolume) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       yVolume.domain(primitives.scale.plot.volume(this.data).domain());
     }

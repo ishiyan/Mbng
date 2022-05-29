@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 
 const SELECT_PADDING_PIXELS = 20;
@@ -10,7 +10,6 @@ const NUMBER_OF_SWATCHES = 3;
   selector: 'mb-swatches-select',
   templateUrl: './swatches-select.component.html',
   styleUrls: ['./swatches-select.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class SwatchesSelectComponent {
