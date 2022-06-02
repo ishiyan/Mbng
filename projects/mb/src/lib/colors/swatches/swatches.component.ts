@@ -37,7 +37,8 @@ export class SwatchesComponent implements OnChanges, AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
-  ngOnChanges(changes: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ngOnChanges(_changes: any) {
     this.render();
   }
 

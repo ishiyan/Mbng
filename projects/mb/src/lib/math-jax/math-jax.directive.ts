@@ -22,7 +22,8 @@ export class MathJaxDirective implements OnChanges {
       // Line break error.
       .replace(/<br \/>/gi, '<br/> ')
       // Automatic breakline.
-      .replace(/[$]([\s\S]+?)[$]/gi, (m, p: string, o, s) =>
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .replace(/[$]([\s\S]+?)[$]/gi, (m, p: string, _o, _s) =>
         p.includes('\\\\') && !p.includes('\\begin')
           ? `$\\begin{align*}${p}\\end{align*}$`
           : `$${p}$`);

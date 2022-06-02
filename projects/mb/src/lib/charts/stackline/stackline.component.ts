@@ -78,7 +78,6 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
       const lenCurrent = this.currentConfiguration.length;
       if (lenCurrent > 0) {
         const minLen = Math.min(lenCfg, lenCurrent);
-        const maxLen = Math.max(lenCfg, lenCurrent);
         for (let i = 0; i < minLen; ++i) {
           this.currentConfiguration[i] = { ...this.currentConfiguration[i], ...cfg[i] };
         }
@@ -176,7 +175,8 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
-  ngOnChanges(changes: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ngOnChanges(_changes: any) {
     this.render();
   }
 
