@@ -244,5 +244,7 @@
       }
     }
   },
-  "defaultProject": "proeftuin"
+  "cli": {
+    "analytics": false
+  }
 }
