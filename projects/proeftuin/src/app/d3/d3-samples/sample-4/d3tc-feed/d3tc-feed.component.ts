@@ -1,10 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
+// zzz@ts-ignore
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives' //'../../../../shared/d3tc';
+import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+// import { D3Ohlcv } from '../../data/d3-ohlcv';
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
   selector: 'd3-sample-d3tc-feed',
@@ -19,7 +20,7 @@ export class D3tcFeedComponent implements OnInit {
   }
 
   ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+    const data: Ohlcv[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
     const w = this.container.nativeElement.getBoundingClientRect().width;
@@ -29,21 +30,27 @@ export class D3tcFeedComponent implements OnInit {
     const width = w - margin.left - margin.right;
     const height = this.svgheight - margin.top - margin.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
     const yVolume = d3.scaleLinear().range([y(0) as number, y(0.2) as number]);
-    const ohlc = d3tc.plot.ohlc().xScale(x).yScale(y);
+    // @ts-ignore
+    const ohlc = primitives.plot.ohlc().xScale(x).yScale(y);
     const accessor = ohlc.accessor();
     // Set the accessor to a ohlc accessor so we get highlighted bars.
-    const volume = d3tc.plot.volume().accessor(ohlc.accessor()).xScale(x).yScale(yVolume);
+    // @ts-ignore
+    const volume = primitives.plot.volume().accessor(ohlc.accessor()).xScale(x).yScale(yVolume);
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
     const volumeAxis = d3.axisRight(yVolume).ticks(3).tickFormat(d3.format(',.3s'));
 
-    const timeAnnotation = d3tc.plot.axisannotation().axis(xAxis).orient('bottom')
+    // @ts-ignore
+    const timeAnnotation = primitives.plot.axisannotation().axis(xAxis).orient('bottom')
       .format(d3.timeFormat('%Y-%m-%d')).width(65).translate([0, height]);
-    const ohlcAnnotation = d3tc.plot.axisannotation().axis(yAxis).orient('left').format(d3.format(',.2f'));
-    const volumeAnnotation = d3tc.plot.axisannotation().axis(volumeAxis).orient('right').width(35);
+    // @ts-ignore
+    const ohlcAnnotation = primitives.plot.axisannotation().axis(yAxis).orient('left').format(d3.format(',.2f'));
+    // @ts-ignore
+    const volumeAnnotation = primitives.plot.axisannotation().axis(volumeAxis).orient('right').width(35);
 
     defs.append('clipPath').attr('id', 'ohlcClip')
       .append('rect').attr('x', 0).attr('y', 0).attr('width', width).attr('height', height);
@@ -61,17 +68,18 @@ export class D3tcFeedComponent implements OnInit {
     function move(coords: any) {
       coordsText.text(timeAnnotation.format()(coords.x) + ', ' + ohlcAnnotation.format()(coords.y));
     }
-    const crosshair = d3tc.plot.crosshair().xScale(x).yScale(y)
+    // @ts-ignore
+    const crosshair = primitives.plot.crosshair().xScale(x).yScale(y)
       .xAnnotation(timeAnnotation).yAnnotation([ohlcAnnotation, volumeAnnotation]).on('move', move);
 
     const feed = data;
-    function redraw(dat: D3Ohlcv[]) {
-      x.domain(dat.map(accessor.d));
+    function redraw(dat: Ohlcv[]) {
+      x.domain(dat.map(accessor.time));
       // Show only 150 points on the plot
       x.zoomable().domain([dat.length - 130, dat.length]);
       // Update y scale min max, only on viewable zoomable.domain()
-      y.domain(d3tc.scale.plot.ohlc(dat.slice(dat.length - 130, dat.length)).domain());
-      yVolume.domain(d3tc.scale.plot.volume(dat.slice(dat.length - 130, dat.length)).domain());
+      y.domain(primitives.scale.plot.ohlc(dat.slice(dat.length - 130, dat.length)).domain());
+      yVolume.domain(primitives.scale.plot.volume(dat.slice(dat.length - 130, dat.length)).domain());
       // Setup a transition for all that support
       svg.transition() // Disable transition for now, each is only for transitions
         .each(function() {

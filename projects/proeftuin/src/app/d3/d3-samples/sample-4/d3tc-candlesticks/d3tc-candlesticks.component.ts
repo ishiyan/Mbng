@@ -1,10 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
+// zzz@ts-ignore
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives' //'../../../../shared/d3tc';
+import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+// import { D3Ohlcv } from '../../data/d3-ohlcv';
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
   selector: 'd3-sample-d3tc-candlesticks',
@@ -19,7 +20,7 @@ export class D3tcCandlesticksComponent implements OnInit {
   }
 
   ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+    const data: Ohlcv[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
     const w = this.container.nativeElement.getBoundingClientRect().width;
@@ -31,16 +32,18 @@ export class D3tcCandlesticksComponent implements OnInit {
     const width = w - margin.left - margin.right;
     const height = this.svgheight - margin.top - margin.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
-    const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
+    // @ts-ignore
+    const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
     const accessor = candlestick.accessor();
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
 
-    function draw(dat: D3Ohlcv[]) {
-      x.domain(dat.map(accessor.d));
-      y.domain(d3tc.scale.plot.ohlc(dat, accessor).domain());
+    function draw(dat: Ohlcv[]) {
+      x.domain(dat.map(accessor.time));
+      y.domain(primitives.scale.plot.ohlc(dat, accessor).domain());
       svg.selectAll('g.candlestick').datum(dat).call(candlestick);
       svg.selectAll('g.x.axis').call(xAxis);
       svg.selectAll('g.y.axis').call(yAxis);
@@ -53,7 +56,7 @@ export class D3tcCandlesticksComponent implements OnInit {
       .append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '.71em')
       .style('text-anchor', 'end').text('Price');
     let toggle = true;
-    const d: D3Ohlcv[] = data.slice(0, data.length - 20);
+    const d: Ohlcv[] = data.slice(0, data.length - 20);
     draw(d);
     d3.select(this.element.nativeElement).select('button').on('click', () => { draw(toggle ? data : d); toggle = !toggle; });
     // data end ----------------------------------
