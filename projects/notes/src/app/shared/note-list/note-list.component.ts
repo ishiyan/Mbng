@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
-import { Note } from '../notes/note';
+import { Note } from '../note';
+import { notes as initialNotes } from '../../notes/notes';
 
 @Component({
   selector: 'app-note-list',
@@ -8,5 +9,5 @@ import { Note } from '../notes/note';
   styleUrls: ['./note-list.component.scss']
 })
 export class NoteListComponent {
-  @Input() notes!: Note[];
+  @Input() notes: Note[] = initialNotes;
 }

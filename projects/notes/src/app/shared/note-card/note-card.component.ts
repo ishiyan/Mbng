@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 
-import { Note } from '../notes/note';
+import { Note } from '../note';
 
 @Component({
   selector: 'app-note-card',

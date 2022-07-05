@@ -7,7 +7,7 @@ import { Component, HostListener } from '@angular/core';
 })
 export class ScrollerComponent {
 
-  showScroller: boolean;
+  showScroller = false;
   showScrollerPosition = 100;
 
   @HostListener('window:scroll')

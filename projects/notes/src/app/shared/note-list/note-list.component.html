@@ -1,1 +1,4 @@
-<app-note-card *ngFor="let note of notes; let i = index" [note]="note"></app-note-card>
+<mat-icon>view_module</mat-icon>
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center">
+  <app-note-card *ngFor="let note of notes; let i = index" [note]="note"></app-note-card>
+</div>

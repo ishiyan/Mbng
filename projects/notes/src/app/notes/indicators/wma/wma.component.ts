@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './wma.component.html',
   styleUrls: ['./wma.component.scss']
 })
-export class wmaComponent {
+export class WmaComponent {
 }

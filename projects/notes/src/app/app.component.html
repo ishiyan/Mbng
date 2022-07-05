@@ -1,12 +1,12 @@
-<mat-toolbar class="nav-bar mat-elevation-z2">
-  <button mat-button [routerLink]='[""]'><mat-icon>view_module</mat-icon></button>
+<mat-toolbar color="primary" class="nav-bar mat-elevation-z2">
+  <button mat-icon-button [routerLink]='[""]'><mat-icon>view_module</mat-icon></button>
   <span class="spacer"></span>
-  <button mat-button (click)="sidenav.toggle()"><mat-icon>settings</mat-icon></button>
+  <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>{{ sidenav.opened ? 'menu_open' : 'menu' }}</mat-icon></button>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav class="mat-elevation-z16" mode="push" fixedInViewport="false" opened="false">
     <mat-chip-list #taglist>
-      <mat-chip *ngFor="let tag of mytags" [selectable]="true">{{tag.name}}</mat-chip>
+      <mat-chip *ngFor="let tag of mytags" [selectable]="true">{{tag.title}}</mat-chip>
     </mat-chip-list>
   </mat-sidenav>
   <mat-sidenav-content>
