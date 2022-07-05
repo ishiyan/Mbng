@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MbModule } from 'projects/mb/src/lib/mb.module';
+import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
+import { SnackBarModule } from 'projects/mb/src/lib/snack-bar/snack-bar.module';
+
+import { NoteCardModule } from './shared/note-card/note-card.module';
+import { NoteListModule } from './shared/note-list/note-list.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,7 +21,15 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    MbModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
+    FlexLayoutModule,
+    MaterialModule,
+    SnackBarModule,
+    KatexModule,
+    NoteCardModule,
+    NoteListModule,
     AppRoutingModule
   ],
   providers: [],

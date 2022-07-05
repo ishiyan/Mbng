@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { SecondService } from 'projects/mb/src/lib/feature1/second.service';
+
+import { Tag } from './shared/tag';
+import { tags } from './tags';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +9,5 @@ import { SecondService } from 'projects/mb/src/lib/feature1/second.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'notes';
-
-  constructor(secondService: SecondService) {
-    this.title = secondService.message;
-  }
+  mytags: Tag[] = tags
 }
