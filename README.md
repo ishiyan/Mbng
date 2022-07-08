@@ -7,7 +7,6 @@
 | `mb`        | A library with shared components and widgets |
 | `proeftuin` | A testing ground for the `mb` library |
 | `notes`     | An interactive assorted notes for various topics |
-| `ex01`      | [A responsive navbar using a Flex Layout](https://zoaibkhan.com/blog/create-a-responsive-toolbar-in-angular-using-flex-layout/) |
 
 ## Updating
 

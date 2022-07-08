@@ -8,6 +8,8 @@ import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
 
+import { ScrollerModule } from '../../../shared/scroller/scroller.module';
+
 import { SmaComponent } from './sma.component';
 
 import { SmaRoutingModule } from './sma-routing.module';
@@ -21,6 +23,7 @@ import { SmaRoutingModule } from './sma-routing.module';
     KatexModule,
     ChartsModule,
     ColorsModule,
+    ScrollerModule,
     SmaRoutingModule
   ],
   declarations: [

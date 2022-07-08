@@ -1,3 +1,17 @@
+.toolbar {
+  height: 42px;
+  padding: 0px;
+  padding-left: 0px;
+  vertical-align: middle;
+}
+
+// This fills the remaining space, by using flexbox.
+// Every toolbar row uses a flexbox row layout.
+.fill-remaining-space {
+  flex-grow: 1;
+  // or: flex: 1 1 auto;
+}
+
 .sidenav-container {
   flex: 1;
 }

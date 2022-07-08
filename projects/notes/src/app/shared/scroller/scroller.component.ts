@@ -7,25 +7,17 @@ import { Component, HostListener } from '@angular/core';
 })
 export class ScrollerComponent {
 
-  showScroller = false;
-  showScrollerPosition = 100;
+  showScroller = true; // false;
 
   @HostListener('window:scroll')
   checkScroll() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-
-    if (scrollPosition >= this.showScrollerPosition) {
-      this.showScroller = true;
-    } else {
-      this.showScroller = false;
-    }
+    const showScrollerPosition = 100;
+    const scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+console.log("window.scrollY="+window.scrollY+", documentElement.scrollTop="+document.documentElement.scrollTop+", body.scrollTop="+document.body.scrollTop);
+    this.showScroller = scrollPosition > showScrollerPosition;
   }
 
   gotoTop() {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    window.scroll({top: 0, left: 0, behavior: 'smooth'});
   }
 }

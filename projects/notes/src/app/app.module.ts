@@ -9,6 +9,8 @@ import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { SnackBarModule } from 'projects/mb/src/lib/snack-bar/snack-bar.module';
 
+import { ScrollerModule } from './shared/scroller/scroller.module';
+import { ScrollToTopModule } from './shared/scroll-to-top/scroll-to-top.module';
 import { NoteCardModule } from './shared/note-card/note-card.module';
 import { NoteListModule } from './shared/note-list/note-list.module';
 
@@ -28,6 +30,8 @@ import { AppComponent } from './app.component';
     MaterialModule,
     SnackBarModule,
     KatexModule,
+    ScrollerModule,
+    ScrollToTopModule,
     NoteCardModule,
     NoteListModule,
     AppRoutingModule

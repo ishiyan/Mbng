@@ -1,4 +1,31 @@
-<mat-icon>view_module</mat-icon>
+<mat-toolbar class="toolbar">
+  <button mat-icon-button (click)="toggleTagsVisibility()">
+    <mat-icon>discount</mat-icon>
+  </button>
+  <mat-icon>search</mat-icon>
+  &nbsp;
+  <div class="search">
+    <mat-form-field>
+      <input matInput #search type="search" (keyup)="searchChanged($event.target.value)" placeholder="">
+    </mat-form-field>
+  </div>
+  <ng-container *ngIf="search.value.length > 0">
+    <button mat-icon-button (click)="search.value=''; searchChanged('')">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </ng-container>
+</mat-toolbar>
+<ng-container *ngIf="tagsVisible">
+  <div class="fullwidth">
+    <mat-chip-list selectable multiple>
+      <mat-chip *ngFor="let tag of tags" [selectable]="true" [selected]="tag.enabled"
+        (selectionChange)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
+        <mat-icon class="check" *ngIf="tag.enabled">check</mat-icon>
+        {{tag.title}}
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</ng-container>
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center">
   <app-note-card *ngFor="let note of notes; let i = index" [note]="note"></app-note-card>
 </div>

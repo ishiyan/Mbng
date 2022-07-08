@@ -1,4 +1,4 @@
-import { Note } from '../shared/note';
+import { Note } from './shared/note.interface';
 
 export const notes: Note[] =
   [

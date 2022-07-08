@@ -1,24 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
-
-import { NoteCardComponent } from './note-card.component';
+import { ScrollToTopComponent } from './scroll-to-top.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
     MaterialModule,
-    FlexLayoutModule,
-    FormsModule
+    FlexLayoutModule
   ],
   exports: [
-    NoteCardComponent
+    ScrollToTopComponent
   ],
-  declarations: [NoteCardComponent]
+  declarations: [ScrollToTopComponent]
 })
-export class NoteCardModule { }
+export class ScrollToTopModule { }
