@@ -1,0 +1,31 @@
+<mat-expansion-panel expanded="false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mb-sparkline [width]="220" [height]="32" [configuration]="configSparkline"
+        [data]="series.data">
+      </mb-sparkline>
+    </mat-panel-title>
+    <mat-panel-description>
+      {{series.name}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="limitwidth">
+    <ng-container *ngIf="removable">
+      <button mat-icon-button color="warn" (click)="removeSeries()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </ng-container>
+    {{series.description}}
+  </div>
+  <div class="divider"></div>
+  <mat-divider></mat-divider>
+  <div class="divider"></div>
+  <div>{{series.data.length}} {{series.timeGranularity}} bars</div>
+  <div>{{series.timeStart|date}} to {{series.timeEnd|date}}</div>
+  <div class="divider"></div>
+  <mat-divider></mat-divider>
+  <div class="divider"></div>
+  <mb-multiline [width]="360" [height]="'50%width'"
+    [configuration]="[configMultiline]" [data]="[series.data]" [min]="0" [timeAxis]="['bottom']" [valueAxis]="['grid']">
+  </mb-multiline>
+</mat-expansion-panel>

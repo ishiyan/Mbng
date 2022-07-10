@@ -1,47 +1,10 @@
+import { Bar } from './bar'
+
 /** An [open, high, low, close, volume] bar. */
-export class Ohlcv {
-  /** The date and time.
-   *
-   * For _ohlcv_ bar entities it corresponds to the closing time, so that an _ohlcv_ bar accumulates lower-level entities
-   * up to the closing date and time.
-   */
-  time!: Date;
-
-  /** The opening price. */
-  open!: number;
-
-  /** The highest price. */
-  high!: number;
-
-  /** The lowest price. */
-  low!: number;
-
-  /** The closing price. */
-  close!: number;
-
-  /** The volume. */
-  volume!: number;
-
+export class Ohlcv extends Bar {
   constructor(data?: any) {
-    if (data) {
-      for (const property in data) {
-        if (Object.prototype.hasOwnProperty.call(data, property)) {
-          (this as any)[property] = data[property];
-        }
-      }
-    }
+    super(data);
   }
-
-  /*public toJSON(data?: any): any {
-    data = typeof data === 'object' ? data : {};
-    data.time = this.time ? this.time.toISOString() : undefined;
-    data.open = this.open;
-    data.high = this.high;
-    data.low = this.low;
-    data.close = this.close;
-    data.volume = this.volume;
-    return data;
-  }*/
 }
 
 /*export namespace Ohlcv {

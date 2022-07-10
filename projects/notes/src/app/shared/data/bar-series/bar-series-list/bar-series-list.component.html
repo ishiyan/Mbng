@@ -1,0 +1,5 @@
+<!--div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center">
+</div-->
+<app-bar-series-card *ngFor="let series of seriesList"
+  [series]="series.data" [removable]="series.removable" (removed)="removed($event);">
+</app-bar-series-card>

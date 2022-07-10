@@ -2,7 +2,7 @@ import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from
 import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
-import { Ohlcv } from '../../data/entities/ohlcv';
+import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
@@ -33,7 +33,7 @@ const TIME_AXIS_HEIGHT = 18;
 })
 export class MultilineComponent implements OnChanges, AfterViewInit {
   private currentConfiguration: LineConfiguration[] = [];
-  private currentData: (Ohlcv[] | Quote[] | Trade[] | Scalar[])[] = [];
+  private currentData: (Bar[] | Quote[] | Trade[] | Scalar[])[] = [];
   private currentDataEmpty = true;
   private dataTimeMin!: Date;
   private dataTimeMax!: Date;
@@ -117,7 +117,7 @@ export class MultilineComponent implements OnChanges, AfterViewInit {
   }
 
   /** The data array to use. */
-  @Input() set data(dat: (Ohlcv[] | Quote[] | Trade[] | Scalar[])[]) {
+  @Input() set data(dat: (Bar[] | Quote[] | Trade[] | Scalar[])[]) {
     // Assume all data series are sorted on time.
     let minTime = MAX_DATE;
     let maxTime = MIN_DATE;
@@ -156,7 +156,7 @@ export class MultilineComponent implements OnChanges, AfterViewInit {
     this.dataValueMax = maxValue;
     this.currentData = dat;
   }
-  get data(): (Ohlcv[] | Quote[] | Trade[] | Scalar[])[] {
+  get data(): (Bar[] | Quote[] | Trade[] | Scalar[])[] {
     return this.currentData;
   }
 

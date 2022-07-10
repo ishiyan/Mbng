@@ -2,7 +2,7 @@ import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from
 import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
-import { Ohlcv } from '../../data/entities/ohlcv';
+import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
@@ -30,7 +30,7 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
   private currentConfiguration: SparklineConfiguration = {
     fillColor: 'steelblue', strokeColor: undefined, strokeWidth: 1, interpolation: 'linear'
   };
-  private currentData!: Ohlcv[] | Quote[] | Trade[] | Scalar[];
+  private currentData!: Bar[] | Quote[] | Trade[] | Scalar[];
 
   /** Specifies fill, stroke and interpolation. */
   @Input() set configuration(cfg: SparklineConfiguration) {
@@ -43,10 +43,10 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
   }
 
   /** The data array to use. */
-  @Input() set data(dat: Ohlcv[] | Quote[] | Trade[] | Scalar[]) {
+  @Input() set data(dat: Bar[] | Quote[] | Trade[] | Scalar[]) {
     this.currentData = dat;
   }
-  get data(): Ohlcv[] | Quote[] | Trade[] | Scalar[] {
+  get data(): Bar[] | Quote[] | Trade[] | Scalar[] {
     return this.currentData;
   }
 
@@ -82,9 +82,9 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
 
     let yExtent: any[];
     let getY: any;
-    if ((dat as Ohlcv[])[0].close !== undefined) {
-      yExtent = d3.extent(dat as Ohlcv[], d => d.close);
-      getY = (d: any) => (d as Ohlcv).close;
+    if ((dat as Bar[])[0].close !== undefined) {
+      yExtent = d3.extent(dat as Bar[], d => d.close);
+      getY = (d: any) => (d as Bar).close;
     } else if ((dat as Trade[])[0].price !== undefined) {
       yExtent = d3.extent(dat as Trade[], d => d.price);
       getY = (d: any) => (d as Trade).price;

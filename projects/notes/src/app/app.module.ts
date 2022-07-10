@@ -13,6 +13,8 @@ import { ScrollerModule } from './shared/scroller/scroller.module';
 import { ScrollToTopModule } from './shared/scroll-to-top/scroll-to-top.module';
 import { NoteCardModule } from './shared/note-card/note-card.module';
 import { NoteListModule } from './shared/note-list/note-list.module';
+import { BarSeriesCardModule } from './shared/data/bar-series/bar-series-card/bar-series-card.module';
+import { BarSeriesListModule } from './shared/data/bar-series/bar-series-list/bar-series-list.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,6 +36,8 @@ import { AppComponent } from './app.component';
     ScrollToTopModule,
     NoteCardModule,
     NoteListModule,
+    BarSeriesCardModule,
+    BarSeriesListModule,
     AppRoutingModule
   ],
   providers: [],

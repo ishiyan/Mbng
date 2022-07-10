@@ -38,6 +38,7 @@ export * from './lib/colors/colors.module';
 export * from './lib/data/historical-data';
 export * from './lib/data/entities/temporal-entity-kind.enum';
 export * from './lib/data/entities/ohlcv';
+export * from './lib/data/entities/bar';
 export * from './lib/data/entities/quote';
 export * from './lib/data/entities/trade';
 export * from './lib/data/entities/scalar';

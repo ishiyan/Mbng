@@ -2,7 +2,7 @@ import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from
 import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
-import { Ohlcv } from '../../data/entities/ohlcv';
+import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
@@ -117,7 +117,7 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
   }
 
   /** The data arrays to use. */
-  @Input() set data(dat: (Ohlcv[] | Quote[] | Trade[] | Scalar[])[]) {
+  @Input() set data(dat: (Bar[] | Quote[] | Trade[] | Scalar[])[]) {
     // Assume all data series are sorted on time and has the same time stamps.
     let minTime = MAX_DATE;
     let maxTime = MIN_DATE;
