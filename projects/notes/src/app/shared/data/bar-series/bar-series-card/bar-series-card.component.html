@@ -20,8 +20,10 @@
   <div class="divider"></div>
   <mat-divider></mat-divider>
   <div class="divider"></div>
-  <div>{{series.data.length}} {{series.timeGranularity}} bars</div>
-  <div>{{series.timeStart|date}} to {{series.timeEnd|date}}</div>
+  <div>
+    {{series.data.length}} <i>{{series.timeGranularity}}</i> bars
+    ({{series.timeStart|date}} to {{series.timeEnd|date}})
+  </div>
   <div class="divider"></div>
   <mat-divider></mat-divider>
   <div class="divider"></div>

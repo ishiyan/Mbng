@@ -17,8 +17,11 @@ interface RemovableBarSeries {
 export class BarSeriesListComponent {
   readonly seriesList: RemovableBarSeries[] = [
     {data: barSeriesTalib1d, removable: false},
-    {data: barSeriesRdsaXams1d, removable: false},
+    {data: barSeriesRdsaXams1d, removable: true},
   ];
+
+  add() {    
+  }
 
   removed(series: BarSeries) {
     const i = this.seriesIndex(series);

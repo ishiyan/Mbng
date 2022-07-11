@@ -3,3 +3,15 @@
 <app-bar-series-card *ngFor="let series of seriesList"
   [series]="series.data" [removable]="series.removable" (removed)="removed($event);">
 </app-bar-series-card>
+
+<mat-expansion-panel expanded="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon color="primary">add_box</mat-icon>
+      </mat-panel-title>
+      <mat-panel-description>
+        add temporary data
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- here be dragons -->
+</mat-expansion-panel>
