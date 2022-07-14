@@ -16,32 +16,32 @@ const empty = '';
 export class NoteListComponent {
   @Input()
   notes: Note[] = initialNotes;
-  tags: Tag[] = initialTags; 
-  tagsVisible = false;
-  pattern = empty;
+  
+  protected tags: Tag[] = initialTags;
+  protected tagsVisible = false;
+  protected pattern = empty;
 
-  public searchChanged(pat: string): void {
+  protected searchChanged(pat: string): void {
     this.pattern = pat.trim().toLowerCase();
     this.filterNotes();
   }
 
-  public tagsChanged(tag: Tag, event: MatChipSelectionChange) {
+  protected tagsChanged(tag: Tag, event: MatChipSelectionChange): void {
     tag.enabled = event.selected;
     this.filterNotes();
   }
 
-  public toggleTag(tag: Tag) {
+  protected toggleTag(tag: Tag): void {
     tag.enabled = !tag.enabled;
     this.filterNotes();
   }
 
-  public toggleTagsVisibility() {
+  protected toggleTagsVisibility(): void {
     this.tagsVisible = !this.tagsVisible;
   }
 
   protected noTagsEnabled(): boolean {
-    for (let i = 0; i < initialTags.length; i++) {
-      const t = initialTags[i];
+    for (const t of initialTags) {
       if (t.enabled) {
         return false;
       }
@@ -51,11 +51,9 @@ export class NoteListComponent {
   }
 
   protected isTagged(n: Note): boolean {
-    for (let i = 0; i < initialTags.length; i++) {
-      const t = initialTags[i];
+    for (const t of initialTags) {
       if (t.enabled) {
-        for (let j = 0; j < n.tags.length; j++) {
-          const s = n.tags[j];
+        for (const s of n.tags) {
           if (t.title === s) {
             return true;
           }
@@ -76,8 +74,7 @@ export class NoteListComponent {
     const noTags = this.noTagsEnabled();
     const filteredNotes: Note[] = [];
 
-    for (let i = 0; i < initialNotes.length; i++) {
-      const n = initialNotes[i];
+    for (const n of initialNotes) {
       if (noTags || this.isTagged(n)) {
         if (p.length < 1 || this.matchesPattern(n, p)) {
           filteredNotes.push(n);

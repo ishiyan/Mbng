@@ -1,10 +1,10 @@
-import { Bar } from "projects/mb/src/lib/data/entities/bar";
-import { TimeGranularity } from "projects/mb/src/lib/trading/time/time-granularity.enum";
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
 
 /** Contains a series of bars. */
 export interface BarSeries {
-  /** Brief name of the series. */
-  name: string;
+  /** Brief mnemonic of the series. */
+  mnemonic: string;
 
   /** Text describing the series. */
   description: string;

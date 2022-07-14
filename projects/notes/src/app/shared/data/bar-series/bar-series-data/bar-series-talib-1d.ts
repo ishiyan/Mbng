@@ -2,8 +2,8 @@ import { TimeGranularity } from 'projects/mb/src/public-api';
 import { BarSeries } from '../bar-series.interface';
 
 export const barSeriesTalib1d: BarSeries = {
-  name: "talib 1d",
-  description: "Data used for testing indicators in TALib.",
+  mnemonic: 'talib 1d',
+  description: 'Data used for testing indicators in TALib.',
   timeStart: new Date(2011, 0, 3),
   timeEnd: new Date(2011, 11, 20),
   timeGranularity: TimeGranularity.Day1,
@@ -259,6 +259,6 @@ export const barSeriesTalib1d: BarSeries = {
     { time: new Date(2011, 11, 15), open: 109.56, high: 110.75, low: 109.06, close: 109.81, volume: 4084800 },
     { time: new Date(2011, 11, 16), open: 110.44, high: 110.5, low: 108.75, close: 109, volume: 2685200 },
     { time: new Date(2011, 11, 19), open: 109.69, high: 110.5, low: 108.56, close: 108.75, volume: 3438000 },
-    { time: new Date(2011, 11, 20), open: 109.19, high: 109.5, low: 106.62, close: 107.87, volume: 2870500 }  
+    { time: new Date(2011, 11, 20), open: 109.19, high: 109.5, low: 106.62, close: 107.87, volume: 2870500 }
   ],
 };

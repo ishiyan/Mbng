@@ -14,11 +14,11 @@ export class AppComponent {
 
   constructor(private overlay: OverlayContainer) { }
 
-  isDarkTheme() {
+  protected isDarkTheme(): boolean {
     return this.className === darkClassName;
   }
 
-  toggleTheme() {
+  protected toggleTheme(): void {
     if (this.className === darkClassName) {
       this.overlay.getContainerElement().classList.remove(darkClassName);
       this.className = lightClassName;

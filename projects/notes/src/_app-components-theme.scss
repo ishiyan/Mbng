@@ -1,5 +1,3 @@
-// @import "app/shared/toolbar/toolbar-theme";
-// @import "app/shared/footer/footer-theme";
 @import "../../mb/src/lib/svg-viewer/svg-viewer-theme";
 @import "../../mb/src/lib/charts/historical-data-chart/historical-data-chart-theme";
 @import "../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart-theme";
@@ -12,8 +10,6 @@
   $foreground: map-get($theme, foreground);
   $next-theme: mat.define-palette(mat.$red-palette);
 
-  // @include toolbar-theme($theme);
-  // @include footer-theme($theme);
   @include svg-viewer-theme($theme);
   @include historical-data-chart-theme($theme);
   @include ohlcv-chart-theme($theme);

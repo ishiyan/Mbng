@@ -23,10 +23,15 @@ export class BarSeriesCardComponent {
   /** Event emitted when the bar series has been removed by the user. */
   @Output() readonly removed: EventEmitter<BarSeries> = new EventEmitter<BarSeries>();
 
-  readonly configSparkline: SparklineConfiguration = { fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1 };
-  readonly configMultiline: SparklineConfiguration = { fillColor: undefined, strokeColor: primaryColor, strokeWidth: 1 };
+  protected readonly configSparkline: SparklineConfiguration = {
+    fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
+  };
 
-  removeSeries() {
+  protected readonly configMultiline: SparklineConfiguration = {
+    fillColor: undefined, strokeColor: primaryColor, strokeWidth: 1
+  };
+
+  protected remove(): void {
     this.removed.emit(this.series);
   }
 }
