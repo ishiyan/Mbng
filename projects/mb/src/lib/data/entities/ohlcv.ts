@@ -1,4 +1,4 @@
-import { Bar } from './bar'
+import { Bar } from './bar';
 
 /** An [open, high, low, close, volume] bar. */
 export class Ohlcv extends Bar {
