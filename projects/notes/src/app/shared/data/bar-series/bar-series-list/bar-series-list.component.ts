@@ -9,7 +9,7 @@ import { BarSeriesService } from '../bar-series.service';
   styleUrls: ['./bar-series-list.component.scss']
 })
 export class BarSeriesListComponent implements OnInit {
-  protected seriesArray: RemovableBarSeries[] = [];
+  protected seriesArray!: RemovableBarSeries[];
 
   constructor(private barSeriesService: BarSeriesService) {
     this.seriesArray = this.barSeriesService.get();

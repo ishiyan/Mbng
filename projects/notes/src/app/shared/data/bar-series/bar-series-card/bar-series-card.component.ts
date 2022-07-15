@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
+import { LineConfiguration } from 'mb';
 
 import { BarSeries } from '../bar-series.interface';
 
@@ -11,7 +12,8 @@ const primaryColor = '#009688';
 @Component({
   selector: 'app-bar-series-card',
   templateUrl: './bar-series-card.component.html',
-  styleUrls: ['./bar-series-card.component.scss']
+  styleUrls: ['./bar-series-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BarSeriesCardComponent {
   /** Specifies the bar series. */
@@ -27,7 +29,7 @@ export class BarSeriesCardComponent {
     fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
   };
 
-  protected readonly configMultiline: SparklineConfiguration = {
+  protected readonly configMultiline: LineConfiguration = {
     fillColor: undefined, strokeColor: primaryColor, strokeWidth: 1
   };
 

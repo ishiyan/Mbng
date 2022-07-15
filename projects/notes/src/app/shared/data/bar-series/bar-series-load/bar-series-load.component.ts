@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { SparklineConfiguration } from 'mb';
+import { LineConfiguration } from 'mb';
+
 
 import { Bar } from 'projects/mb/src/lib/data/entities/bar';
 import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
@@ -19,7 +20,7 @@ const empty = '';
   styleUrls: ['./bar-series-load.component.scss']
 })
 export class BarSeriesLoadComponent {
-  protected readonly configMultiline: SparklineConfiguration = {
+  protected readonly configMultiline: LineConfiguration = {
     fillColor: undefined, strokeColor: primaryColor, strokeWidth: 1
   };
 

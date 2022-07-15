@@ -8,8 +8,8 @@ import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
 
+import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
 import { EmaComponent } from './ema.component';
-
 import { EmaRoutingModule } from './ema-routing.module';
 
 @NgModule({
@@ -21,6 +21,7 @@ import { EmaRoutingModule } from './ema-routing.module';
     KatexModule,
     ChartsModule,
     ColorsModule,
+    BarSeriesSelectModule,
     EmaRoutingModule
   ],
   declarations: [
