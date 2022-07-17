@@ -24,7 +24,7 @@ export class SyntheticDataService {
 
   private static toSegment(parameters: SyntheticDataParameters): string {
     switch (parameters.temporalEntityKind) {
-      case TemporalEntityKind.Ohlcv:
+      case TemporalEntityKind.Bar:
         return '/ohlcvs';
       case TemporalEntityKind.Quote:
         return '/quotes';

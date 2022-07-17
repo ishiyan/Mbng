@@ -25,7 +25,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/notes/src/favicon.ico",
-              "projects/notes/src/assets"
+              "projects/notes/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/mb/assets",
+                "output": "/assets/"                
+              }
             ],
             "styles": [
               "projects/notes/src/styles.scss"
@@ -134,7 +139,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/proeftuin/src/favicon.ico",
-              "projects/proeftuin/src/assets"
+              "projects/proeftuin/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/mb/assets",
+                "output": "/assets/"                
+              }
             ],
             "styles": [
               "projects/proeftuin/src/styles.scss"

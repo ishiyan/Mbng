@@ -1,6 +1,23 @@
 {
   "name": "mb",
   "version": "1.0.0",
+  "exports": {
+    ".": {
+      "sass": "./src/_index.scss"
+    },
+    "./theming/svg-viewer-theme": {
+      "sass": "./src/lib/svg-viewer/_svg-viewer-theme.scss"
+    },
+    "./theming/historical-data-chart-theme": {
+      "sass": "./src/lib/charts/historical-data-chart/_historical-data-chart-theme.scss"
+    },
+    "./theming/linear-chart-theme": {
+      "sass": "./src/lib/charts/linear-chart/_linear-chart-theme.scss"
+    },
+    "./theming/ohlcv-chart-theme": {
+      "sass": "./src/lib/charts/ohlcv-chart/_ohlcv-chart-theme.scss"
+    }
+  },
   "peerDependencies": {
     "@angular/animations": "^14.0.4",
     "@angular/cdk": "^14.0.4",

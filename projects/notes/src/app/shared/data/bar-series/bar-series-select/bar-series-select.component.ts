@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
 
@@ -16,11 +16,14 @@ const primaryColor = '#009688';
 })
 export class BarSeriesSelectComponent implements OnInit {
   protected seriesArray!: BarSeries[];
-  protected seriesSelected!: BarSeries;
+  protected selected!: BarSeries;
   protected labelText = '';
   protected configFill: SparklineConfiguration = {
     fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
   };
+
+  /** Event emitted when the selection has been changed. */
+  @Output() selectionChange: EventEmitter<BarSeries> = new EventEmitter<BarSeries>();
 
   /** Specifies the sparkline fill color. */
   @Input() set color(c: string) {
@@ -36,18 +39,23 @@ export class BarSeriesSelectComponent implements OnInit {
       this.labelText = text;
     }
   }
-
+ 
   constructor(private barSeriesService: BarSeriesService) {
     this.seriesArray = this.barSeriesService.get();
-    this.seriesSelected = this.seriesArray[0];
+    this.selected = this.seriesArray[0];
   }
 
   ngOnInit(): void {
+    this.selectionChange.emit(this.selected);
     this.barSeriesService.getObservable().subscribe(ar => {
       this.seriesArray = ar;
-      if (!ar.includes(this.seriesSelected)) {
-        this.seriesSelected = ar[0];
+      if (!ar.includes(this.selected)) {
+        this.selected = ar[0];
       }
     });
+  }
+
+  protected changed(selection: BarSeries): void {
+    this.selectionChange.emit(selection);
   }
 }

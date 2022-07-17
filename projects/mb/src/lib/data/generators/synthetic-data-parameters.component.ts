@@ -48,7 +48,7 @@ export class SyntheticDataParametersComponent {
   }
 
   public get isOhlcv(): boolean {
-    return this.syntheticDataParameters.temporalEntityKind === TemporalEntityKind.Ohlcv;
+    return this.syntheticDataParameters.temporalEntityKind === TemporalEntityKind.Bar;
   }
 
   public get isQuote(): boolean {

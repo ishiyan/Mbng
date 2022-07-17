@@ -16,7 +16,7 @@ export class HistoricalDataDownloadComponent {
     if (historicalData) {
       this.canDownload = historicalData.data && historicalData.data.length > 0;
       switch (historicalData.temporalEntityKind) {
-        case TemporalEntityKind.Ohlcv:
+        case TemporalEntityKind.Bar:
           this.currentColumns = ['time', 'open', 'high', 'low', 'close', 'volume'];
           break;
         case TemporalEntityKind.Quote:

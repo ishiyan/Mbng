@@ -1,3 +1,7 @@
 .button {
   margin-right: 8px;
 }
+
+::ng-deep .mat-horizontal-content-container {
+  padding: 0px !important;
+}

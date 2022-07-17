@@ -26,7 +26,7 @@ export class HistoricalDataTableComponent implements OnInit {
       this.dataSource.data = historicalData.data;
       this.canDownload = historicalData.data && historicalData.data.length > 0;
       switch (historicalData.temporalEntityKind) {
-        case TemporalEntityKind.Ohlcv:
+        case TemporalEntityKind.Bar:
           this.currentColumns = ['time', 'open', 'high', 'low', 'close', 'volume'];
           break;
         case TemporalEntityKind.Quote:
@@ -69,7 +69,7 @@ export class HistoricalDataTableComponent implements OnInit {
   }
 
   get isOhlcv(): boolean {
-    return this.temporalEntityKind === TemporalEntityKind.Ohlcv;
+    return this.temporalEntityKind === TemporalEntityKind.Bar;
   }
 
   get isQuote(): boolean {

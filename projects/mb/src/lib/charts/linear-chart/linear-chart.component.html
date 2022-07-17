@@ -1,0 +1,86 @@
+<div #container class="container"></div>
+<mat-expansion-panel expanded="false" *ngIf="settingsPanelVisible">
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{title}}</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <mat-radio-group name="barRadioGroup" *ngIf="isBar">
+    <mat-radio-button name="barRadioGroup" [value]="barViewCandlesticks" color="primary" [checked]="true"
+      (change)="barViewType = barViewCandlesticks;">&nbsp;
+      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
+    </mat-radio-button>&nbsp;&nbsp;
+    <mat-radio-button name="barRadioGroup" [value]="barViewBars" color="primary"
+      (change)="barViewType = barViewBars;">&nbsp;
+      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
+    </mat-radio-button>&nbsp;&nbsp;
+    <mat-radio-button name="barRadioGroup" [value]="barViewLine" color="primary"
+      (change)="barViewType = barViewLine;">&nbsp;
+      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+    </mat-radio-button>&nbsp;&nbsp;
+    <mat-radio-button name="barRadioGroup" [value]="barViewArea" color="primary"
+      (change)="barViewType = barViewArea;">&nbsp;
+      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+    </mat-radio-button>;
+  </mat-radio-group>
+
+  <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="barViewType"
+    *ngIf="isBar" (change)="barViewType = group1.value">
+    <mat-button-toggle [value]="barViewCandlesticks" class="button-toggle">
+      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="barViewBars" class="button-toggle">
+      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="barViewLine" class="button-toggle">
+      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="barViewArea" class="button-toggle">
+      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #group2="matButtonToggleGroup" class="button-toggle-group" [value]="scalarViewType"
+    *ngIf="isScalar" (change)="scalarViewType = group2.value">
+    <mat-button-toggle [value]="scalarViewLine" class="button-toggle">
+      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="scalarViewDots" class="button-toggle">
+      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="scalarViewArea" class="button-toggle">
+      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #group3="matButtonToggleGroup" class="button-toggle-group" [value]="tradeViewType"
+    *ngIf="isTrade" (change)="tradeViewType = group3.value">
+    <mat-button-toggle [value]="tradeViewLine" class="button-toggle">
+      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="tradeViewDots" class="button-toggle">
+      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="tradeViewArea" class="button-toggle">
+      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-button-toggle-group #group4="matButtonToggleGroup" class="button-toggle-group" [value]="quoteViewType"
+    *ngIf="isQuote" (change)="quoteViewType = group4.value">
+    <mat-button-toggle [value]="quoteViewBars" class="button-toggle">
+      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle [value]="quoteViewDots" class="button-toggle">
+      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume" *ngIf="!isScalar">Volume
+  </mat-slide-toggle>
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">Crosshair</mat-slide-toggle>
+
+  <button mat-raised-button color="accent" (click)="saveToSvg()" class="button" *ngIf="saveSvgVisible">
+    Save SVG
+  </button>
+</mat-expansion-panel>
+<ng-content></ng-content>

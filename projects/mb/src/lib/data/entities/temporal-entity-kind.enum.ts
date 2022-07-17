@@ -1,7 +1,7 @@
 /** Enumerates temporal entity kinds. */
 export enum TemporalEntityKind {
   /** Opening price, highest price, lowest price, closing price, volume. */
-  Ohlcv = 'ohlcv',
+  Bar = 'ohlcv',
 
   /** Ask price, ask size, bid price, bid size. */
   Quote = 'quote',

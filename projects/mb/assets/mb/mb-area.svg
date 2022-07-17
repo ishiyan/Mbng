@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" preserveAspectRatio="xMinYMin slice" overflow="visible" focusable="false">
+  <defs>
+    <pattern id="diagonalHatch" width="2" height="2" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="2" style="stroke-width:2" />
+    </pattern>
+  </defs>
+  <g>
+    <path stroke="transparent" fill="url(#diagonalHatch)" stroke-width="1" d="M0,23L0,17L8,10L16,13L23,5L23,23Z" />    
+  </g>
+</svg>

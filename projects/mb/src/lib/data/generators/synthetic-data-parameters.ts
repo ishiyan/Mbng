@@ -20,7 +20,7 @@ import {
 /** The input parameters for the synthetic data generation. */
 export class SyntheticDataParameters {
   static readonly defaultSampleCount: number = 512;
-  static readonly defaultTemporalEntityKind: TemporalEntityKind = TemporalEntityKind.Ohlcv;
+  static readonly defaultTemporalEntityKind: TemporalEntityKind = TemporalEntityKind.Bar;
   static readonly defaultSyntheticDataKind: SyntheticDataKind = SyntheticDataKind.FractionalBrownianMotion;
 
   /** The selected temporal entity. */
@@ -110,7 +110,7 @@ export class SyntheticDataParameters {
     data[waveformParametersName] = this.waveformParameters ? this.waveformParameters.toJSON() : new WaveformParameters();
     data[timeParametersName] = this.timeParameters ? this.timeParameters.toJSON() : new TimeParameters();
     switch (this.temporalEntityKind) {
-      case TemporalEntityKind.Ohlcv: {
+      case TemporalEntityKind.Bar: {
         data[ohlcvParametersName] = this.ohlcvParameters ? this.ohlcvParameters.toJSON() : new OhlcvParameters();
         break;
       }

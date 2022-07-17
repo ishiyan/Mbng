@@ -35,7 +35,8 @@ export * from './lib/colors/swatches/swatches.component';
 export * from './lib/colors/swatches/swatches-select.component';
 export * from './lib/colors/colors.module';
 
-export * from './lib/data/historical-data';
+export * from './lib/data/historical-data'; // deprecated
+export * from './lib/data/data-series.interface';
 export * from './lib/data/entities/temporal-entity-kind.enum';
 export * from './lib/data/entities/ohlcv';
 export * from './lib/data/entities/bar';
@@ -150,6 +151,8 @@ export * from './lib/charts/line-configuration.interface';
 export * from './lib/charts/downloader';
 export * from './lib/charts/entities/band';
 export * from './lib/charts/entities/heatmap';
+export * from './lib/charts/linear-chart/linear-chart.component';
+export * from './lib/charts/linear-chart/linear-chart.module';
 export * from './lib/charts/ohlcv-chart/template/template';
 export * from './lib/charts/ohlcv-chart/ohlcv-chart.component';
 export * from './lib/charts/ohlcv-chart/ohlcv-chart.module';

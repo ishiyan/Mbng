@@ -5,17 +5,17 @@ import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
 import { Downloader } from '../downloader';
-import { HistoricalData } from '../../data/historical-data';
+import { DataSeries } from '../../data/data-series.interface';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
 import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
 
-const ohlcvViewCandlesticks = 0;
-const ohlcvViewBars = 1;
-const ohlcvViewLine = 2;
-const ohlcvViewArea = 3;
+const barViewCandlesticks = 0;
+const barViewBars = 1;
+const barViewLine = 2;
+const barViewArea = 3;
 const scalarViewLine = 0;
 const scalarViewDots = 1;
 const scalarViewArea = 2;
@@ -46,42 +46,45 @@ const textAfterSvg = `
 `;
 
 @Component({
-  selector: 'mb-historical-data-chart',
-  templateUrl: './historical-data-chart.component.html',
-  styleUrls: ['./historical-data-chart.component.scss'],
+  selector: 'mb-linear-chart',
+  templateUrl: './linear-chart.component.html',
+  styleUrls: ['./linear-chart.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class HistoricalDataChartComponent {
+export class LinearChartComponent {
   @ViewChild('container', { static: true }) container!: ElementRef;
+  /** If chart settings panel is visible. */
+  @Input() settingsPanelVisible = true;
+  /** If *Save SVG* button is visible. */
+  @Input() saveSvgVisible = true;
+  /** Chart title. */
+  @Input() title = '';
   @Input() svgheight: any;
-  @Input()
-  set historicalData(historicalData: HistoricalData) {
-    if (historicalData && historicalData.data) {
-      const d = historicalData.data;
-      if ((d as Bar[])[0].close !== undefined) {
+  @Input() set dataSeries(series: Bar[] | Quote[] | Trade[] | Scalar[]) {
+    if (series) {
+      if ((series as Bar[])[0].close !== undefined) {
         this.temporalEntityKind = TemporalEntityKind.Bar;
-      } else if ((d as Scalar[])[0].value !== undefined) {
+      } else if ((series as Scalar[])[0].value !== undefined) {
         this.temporalEntityKind = TemporalEntityKind.Scalar;
-      } else if ((d as Trade[])[0].price !== undefined) {
+      } else if ((series as Trade[])[0].price !== undefined) {
         this.temporalEntityKind = TemporalEntityKind.Trade;
-      } else if ((d as Quote[])[0].askPrice !== undefined) {
+      } else if ((series as Quote[])[0].askPrice !== undefined) {
         this.temporalEntityKind = TemporalEntityKind.Quote;
       } else {
         this.temporalEntityKind = undefined;
       }
 
-      this.title = historicalData.moniker;
-      this.data = d;
+      this.data = series;
     } else {
       this.temporalEntityKind = undefined;
-      this.title = undefined;
       this.data = [];
     }
+
     this.render();
   }
 
   private temporalEntityKind: TemporalEntityKind | undefined;
-  get isOhlcv(): boolean {
+  get isBar(): boolean {
     return this.temporalEntityKind === TemporalEntityKind.Bar;
   }
   get isQuote(): boolean {
@@ -94,16 +97,16 @@ export class HistoricalDataChartComponent {
     return this.temporalEntityKind === TemporalEntityKind.Scalar;
   }
 
-  readonly ohlcvViewCandlesticks = ohlcvViewCandlesticks;
-  readonly ohlcvViewBars = ohlcvViewBars;
-  readonly ohlcvViewLine = ohlcvViewLine;
-  readonly ohlcvViewArea = ohlcvViewArea;
-  private ohlcvView: number = this.ohlcvViewCandlesticks;
-  get ohlcvViewType(): number {
-    return this.ohlcvView;
+  readonly barViewCandlesticks = barViewCandlesticks;
+  readonly barViewBars = barViewBars;
+  readonly barViewLine = barViewLine;
+  readonly barViewArea = barViewArea;
+  private barView: number = this.barViewCandlesticks;
+  get barViewType(): number {
+    return this.barView;
   }
-  set ohlcvViewType(value: number) {
-    this.ohlcvView = value;
+  set barViewType(value: number) {
+    this.barView = value;
     this.render();
   }
 
@@ -160,36 +163,32 @@ export class HistoricalDataChartComponent {
     this.render();
   }
 
-  private title: string | undefined = undefined;
-  get chartTitle(): string {
-    return (this.title !== undefined) ? this.title : '';
-  }
-
   private data: any[] = [];
   private renderNavAxis = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(private elementRef: ElementRef, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('mb-candlesticks',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-candlesticks.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-bars.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-bars.svg'));
     iconRegistry.addSvgIcon('mb-line',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-line.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-line.svg'));
     iconRegistry.addSvgIcon('mb-area',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-area.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-area.svg'));
     iconRegistry.addSvgIcon('mb-dots',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-dots.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-dots.svg'));
   }
-
+  
   @HostListener('window:resize', [])
   render() {
-    const chartId = '#chart';
     const margin = { top: 10, bottom: 20, right: 80, left: 35 };
     const marginNav = { top: this.svgheight - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
 
     const w = this.container.nativeElement.getBoundingClientRect().width;
-    d3.select(chartId).select('svg').remove();
-    const svg: any = d3.select(chartId).append('svg')
+
+    const sel = d3.select(this.elementRef.nativeElement);
+    sel.select('svg').remove();
+    const svg: any = sel.append('svg')
       .attr('width', w)
       .attr('height', this.svgheight)
       .append('g')
@@ -238,8 +237,7 @@ export class HistoricalDataChartComponent {
     }
     focus.append('g').attr('class', 'price').attr('clip-path', 'url(#clip)');
     focus.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')');
-    focus.append('g').attr('class', 'y axis')
-      .append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '.71em').style('text-anchor', 'end').text('Price');
+    focus.append('g').attr('class', 'y axis');
     if (this.renderCrosshair) {
       focus.append('g').attr('class', 'crosshair').call(crosshair);
     }
@@ -254,7 +252,7 @@ export class HistoricalDataChartComponent {
 
     // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function draw(scalarView: number, tradeView: number, quoteView: number,
-                  renderVolume: boolean, temporalEntityKind: TemporalEntityKind | undefined) {
+      renderVolume: boolean, temporalEntityKind: TemporalEntityKind | undefined) {
       const priceSelection = focus.select('g.price');
       const datum = priceSelection.datum();
       switch (temporalEntityKind) {
@@ -273,7 +271,6 @@ export class HistoricalDataChartComponent {
               y.domain(primitives.scale.plot.quotebar(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
               break;
           }
-          //y.domain(primitives.scale.plot.tick(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
           break;
         case TemporalEntityKind.Trade:
           switch (tradeView) {
@@ -314,7 +311,7 @@ export class HistoricalDataChartComponent {
       }
 
       // Using refresh method is more efficient as it does not perform any data joins
-      // Use this if underlying data is not changing
+      // Use refresh because underlying data is not changing
       svg.select('g.price').call(priceShape.refresh);
 
       focus.select('g.x.axis').call(xAxisBottom);
@@ -411,11 +408,11 @@ export class HistoricalDataChartComponent {
   private getPriceShape(): any {
     switch (this.temporalEntityKind) {
       case TemporalEntityKind.Bar:
-        switch (this.ohlcvView) {
-          case ohlcvViewCandlesticks: return primitives.plot.candlestick();
-          case ohlcvViewBars: return primitives.plot.ohlc();
-          case ohlcvViewLine: return primitives.plot.closeline();
-          case ohlcvViewArea: return primitives.plot.ohlcarea();
+        switch (this.barView) {
+          case barViewCandlesticks: return primitives.plot.candlestick();
+          case barViewBars: return primitives.plot.ohlc();
+          case barViewLine: return primitives.plot.closeline();
+          case barViewArea: return primitives.plot.ohlcarea();
           default: return primitives.plot.candlestick();
         }
       case TemporalEntityKind.Quote:
@@ -457,7 +454,10 @@ export class HistoricalDataChartComponent {
   }
 
   public saveToSvg(): void {
+    const d = new Date();
+    const filename =
+      `linear-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
     Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.container.nativeElement.parentNode, 'chart'),
-      textBeforeSvg, textAfterSvg), 'historical_data_chart.html');
+      textBeforeSvg, textAfterSvg), filename);
   }
 }

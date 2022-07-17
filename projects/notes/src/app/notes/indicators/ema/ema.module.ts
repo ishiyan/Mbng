@@ -5,8 +5,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
-import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
+import { LinearChartModule } from 'projects/mb/src/lib/charts/linear-chart/linear-chart.module';
 
 import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
 import { EmaComponent } from './ema.component';
@@ -19,8 +19,8 @@ import { EmaRoutingModule } from './ema-routing.module';
     FlexLayoutModule,
     MaterialModule,
     KatexModule,
-    ChartsModule,
     ColorsModule,
+    LinearChartModule,
     BarSeriesSelectModule,
     EmaRoutingModule
   ],

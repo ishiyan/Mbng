@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HistoricalDataChartModule } from './historical-data-chart/historical-data-chart.module';
+import { LinearChartModule } from './linear-chart/linear-chart.module';
 import { OhlcvChartModule } from './ohlcv-chart/ohlcv-chart.module';
 import { SparklineModule } from './sparkline/sparkline.module';
 import { MultilineModule } from './multiline/multiline.module';
@@ -17,6 +18,7 @@ import { VoronoiModule } from './hierarchy-tree/voronoi/voronoi.module';
     imports: [
         CommonModule,
         HistoricalDataChartModule,
+        LinearChartModule,
         OhlcvChartModule,
         SparklineModule,
         MultilineModule,
@@ -29,6 +31,7 @@ import { VoronoiModule } from './hierarchy-tree/voronoi/voronoi.module';
     ],
     exports: [
         HistoricalDataChartModule,
+        LinearChartModule,
         OhlcvChartModule,
         SparklineModule,
         MultilineModule,

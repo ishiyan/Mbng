@@ -5,6 +5,7 @@ import { Scalar } from './entities/scalar';
 import { TemporalEntityKind } from './entities/temporal-entity-kind.enum';
 import { TimeGranularity } from '../trading/time/time-granularity.enum';
 
+/** @deprecated */
 export interface HistoricalData {
   temporalEntityKind: TemporalEntityKind | undefined;
   timeGranularity: TimeGranularity | undefined;
