@@ -1,23 +1,8 @@
 import { Bar } from 'projects/mb/src/lib/data/entities/bar';
-import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
+import { Series } from '../series.interface';
 
 /** Contains a series of bars. */
-export interface BarSeries {
-  /** Brief mnemonic of the series. */
-  mnemonic: string;
-
-  /** Text describing the series. */
-  description: string;
-
-  /** The time of the first element of the series. */
-  timeStart: Date;
-
-  /** The time of the last element of the series. */
-  timeEnd: Date;
-
-  /** The time granularity of a bar in the series. */
-  timeGranularity: TimeGranularity;
-
+export interface BarSeries extends Series {
   /** The actual data array. */
   data: Bar[];
 }

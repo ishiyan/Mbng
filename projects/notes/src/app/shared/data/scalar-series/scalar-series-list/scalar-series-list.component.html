@@ -1,0 +1,7 @@
+<app-series-card *ngFor="let series of seriesArray" [series]="series" [removable]="series.removable"
+    (removed)="removed($event);">
+</app-series-card>
+
+<div class="loader">
+    <app-scalar-series-load></app-scalar-series-load>
+</div>

@@ -1,15 +1,7 @@
-<app-bar-series-card *ngFor="let series of seriesArray" [series]="series" [removable]="series.removable"
+<app-series-card *ngFor="let series of seriesArray" [series]="series" [removable]="series.removable"
     (removed)="removed($event);">
-</app-bar-series-card>
+</app-series-card>
 
-<mat-expansion-panel expanded="false">
-    <mat-expansion-panel-header>
-        <mat-panel-title>
-            <mat-icon color="primary">add_box</mat-icon>
-        </mat-panel-title>
-        <mat-panel-description>
-            add temporary data
-        </mat-panel-description>
-    </mat-expansion-panel-header>
+<div class="loader">
     <app-bar-series-load></app-bar-series-load>
-</mat-expansion-panel>
+</div>

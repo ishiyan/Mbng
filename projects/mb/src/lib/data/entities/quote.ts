@@ -25,7 +25,7 @@ export class Quote {
     }
   }
 
-  toJSON(data?: any): any {
+  /*toJSON(data?: any): any {
     data = typeof data === 'object' ? data : {};
     data.time = this.time ? this.time.toISOString() : undefined;
     data.bidPrice = this.bidPrice;
@@ -33,5 +33,5 @@ export class Quote {
     data.askPrice = this.askPrice;
     data.askSize = this.askSize;
     return data;
-  }
+  }*/
 }

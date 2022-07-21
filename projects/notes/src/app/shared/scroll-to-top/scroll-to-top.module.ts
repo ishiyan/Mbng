@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 import { ScrollToTopComponent } from './scroll-to-top.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonModule,
+    MatIconModule
   ],
   exports: [
     ScrollToTopComponent

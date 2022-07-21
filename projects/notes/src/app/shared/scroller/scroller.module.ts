@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 import { ScrollerComponent } from './scroller.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule
+    MatButtonModule,
+    MatIconModule
   ],
   exports: [ScrollerComponent],
   declarations: [ScrollerComponent]

@@ -16,7 +16,7 @@ const empty = '';
 export class NoteListComponent {
   @Input()
   notes: Note[] = initialNotes;
-  
+
   protected tags: Tag[] = initialTags;
   protected tagsVisible = false;
   protected pattern = empty;

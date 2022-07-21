@@ -1,7 +1,7 @@
 import { TimeGranularity } from 'projects/mb/src/public-api';
-import { BarSeries } from '../bar-series.interface';
+import { Series } from '../../series.interface';
 
-export const barSeriesRdsaXams1d: BarSeries = {
+export const barSeriesRdsaXams1d: Series = {
   mnemonic: 'rdsa:xams 1d',
   description: 'Royal Dutch Shell Plc, GB00BP6MXD84',
   timeStart: new Date(1999, 0, 4),

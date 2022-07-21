@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { NoteCardComponent } from './note-card.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule,
-    MaterialModule,
     FlexLayoutModule,
-    FormsModule
+    RouterModule,
+    MatCardModule,
+    MatChipsModule
   ],
   exports: [
     NoteCardComponent

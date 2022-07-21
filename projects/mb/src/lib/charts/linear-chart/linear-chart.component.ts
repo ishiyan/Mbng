@@ -5,7 +5,6 @@ import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
 import { Downloader } from '../downloader';
-import { DataSeries } from '../../data/data-series.interface';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
 import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
@@ -52,14 +51,20 @@ const textAfterSvg = `
   encapsulation: ViewEncapsulation.Emulated
 })
 export class LinearChartComponent {
-  @ViewChild('container', { static: true }) container!: ElementRef;
+  private random = Math.random().toString(36).substring(2);
+  protected svgContainerId = 'linearchart-svg-' + this.random;
+  protected widthContainerId = 'linearchart-width-' + this.random;
+  //@ViewChild('container', { static: true }) container!: ElementRef;
   /** If chart settings panel is visible. */
   @Input() settingsPanelVisible = true;
   /** If *Save SVG* button is visible. */
   @Input() saveSvgVisible = true;
   /** Chart title. */
   @Input() title = '';
-  @Input() svgheight: any;
+  /** The width of the chart as a fraction of the window width. */
+  @Input() widthFraction = 1;
+  /** The height of the chart as a fraction of the chart width. */
+  @Input() heightFraction = 0.6180340;
   @Input() set dataSeries(series: Bar[] | Quote[] | Trade[] | Scalar[]) {
     if (series) {
       if ((series as Bar[])[0].close !== undefined) {
@@ -166,7 +171,7 @@ export class LinearChartComponent {
   private data: any[] = [];
   private renderNavAxis = false;
 
-  constructor(private elementRef: ElementRef, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('mb-candlesticks',
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
@@ -178,24 +183,36 @@ export class LinearChartComponent {
     iconRegistry.addSvgIcon('mb-dots',
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-dots.svg'));
   }
-  
+
+  private afterViewInit = false;
+  ngAfterViewInit() {
+    this.afterViewInit = true;
+    setTimeout(() => this.render(), 0);
+  }
+
   @HostListener('window:resize', [])
   render() {
+    if (!this.afterViewInit) {
+      return;
+    }
+
+    const e = d3.select('#' + this.widthContainerId).node() as Element;
+    const w = this.widthFraction * e.getBoundingClientRect().width;
+    const h = this.heightFraction * w;
+
     const margin = { top: 10, bottom: 20, right: 80, left: 35 };
-    const marginNav = { top: this.svgheight - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
+    const marginNav = { top: h - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
 
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-
-    const sel = d3.select(this.elementRef.nativeElement);
+    const sel = d3.select('#' + this.svgContainerId);
     sel.select('svg').remove();
     const svg: any = sel.append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', h)
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
     const height = marginNav.top - margin.top - margin.bottom;
-    const heightNav = this.svgheight - marginNav.top - marginNav.bottom;
+    const heightNav = h - marginNav.top - marginNav.bottom;
 
     const x = (primitives.scale.financetime() as any).range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
@@ -457,7 +474,8 @@ export class LinearChartComponent {
     const d = new Date();
     const filename =
       `linear-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
-    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.container.nativeElement.parentNode, 'chart'),
+    const e = d3.select('#' + this.widthContainerId).node() as Element;
+    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);
   }
 }

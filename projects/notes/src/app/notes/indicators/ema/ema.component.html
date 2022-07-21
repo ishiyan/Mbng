@@ -2,10 +2,10 @@
   <button mat-raised-button color="accent" class="button">EMA component</button>
 </p>
 <div style="margin:8px;">
-  <app-bar-series-select color="steelblue" label="foobar" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
+  <app-series-select color="steelblue" label="foobar" (selectionChange)="dataSelectionChanged($event)"></app-series-select>
 </div>
 <br/>
-<mb-linear-chart [svgheight]=400 [dataSeries]="dataSelection.data" [title]="dataSelection.mnemonic">
+<mb-linear-chart [dataSeries]="dataSelection.data" [title]="dataSelection.mnemonic">
 </mb-linear-chart>
 <br/>
 <p>

@@ -19,11 +19,11 @@ export class Trade {
     }
   }
 
-  toJSON(data?: any): any {
+  /*toJSON(data?: any): any {
     data = typeof data === 'object' ? data : {};
     data.time = this.time ? this.time.toISOString() : undefined;
     data.price = this.price;
     data.volume = this.volume;
     return data;
-  }
+  }*/
 }

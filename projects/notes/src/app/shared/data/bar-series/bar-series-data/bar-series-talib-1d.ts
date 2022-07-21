@@ -1,7 +1,7 @@
 import { TimeGranularity } from 'projects/mb/src/public-api';
-import { BarSeries } from '../bar-series.interface';
+import { Series } from '../../series.interface';
 
-export const barSeriesTalib1d: BarSeries = {
+export const barSeriesTalib1d: Series = {
   mnemonic: 'talib 1d',
   description: 'Data used for testing indicators in TALib.',
   timeStart: new Date(2011, 0, 3),
