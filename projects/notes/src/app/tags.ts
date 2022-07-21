@@ -14,10 +14,10 @@ export const tags: Tag[] = [
     title: 'Comparisons', enabled: false
   },
   {
-    title: 'Comparisons 2', enabled: false
+    title: 'Data', enabled: false
   },
   {
-    title: 'Comparisons 3', enabled: false
+    title: 'Visualization', enabled: false
   },
   {
     title: 'Comparisons 4', enabled: false

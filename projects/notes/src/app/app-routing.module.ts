@@ -5,9 +5,10 @@ import { NoteListComponent } from './shared/note-list/note-list.component';
 
 const routes: Routes = [
   { path: '', component: NoteListComponent },
-  { path: '2', loadChildren: () => import('./notes/indicators/sma/sma.module').then(m => m.SmaModule) },
-  { path: '1', loadChildren: () => import('./notes/indicators/wma/wma.module').then(m => m.WmaModule) },
-  { path: '0', loadChildren: () => import('./notes/indicators/ema/ema.module').then(m => m.EmaModule) },
+  { path: '3', loadChildren: () => import('./notes/indicators/sma/sma.module').then(m => m.SmaModule) },
+  { path: '2', loadChildren: () => import('./notes/indicators/wma/wma.module').then(m => m.WmaModule) },
+  { path: '1', loadChildren: () => import('./notes/indicators/ema/ema.module').then(m => m.EmaModule) },
+  { path: '0', loadChildren: () => import('./notes/data/linear-charting/linear-charting.module').then(m => m.LinearChartingModule) },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
