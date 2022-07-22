@@ -8,12 +8,6 @@
   $is-dark-theme: map-get($theme, is-dark);
 
   mb-linear-chart {
-    .mat-radio-button {
-      .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, secondary-text);
-      }  
-    }
-
     .mat-button-toggle {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, hint-text);
@@ -22,18 +16,18 @@
 
     .mat-button-toggle-appearance-standard {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, text);
+        stroke: mat.get-color-from-palette($foreground, secondary-text);
       }
     }
 
     .mat-button-toggle-checked {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, secondary-text);
+        stroke: mat.get-color-from-palette($accent, text);
       }
 
       &.mat-button-toggle-appearance-standard {
         .svg-icon {
-          stroke: mat.get-color-from-palette($foreground, text);
+          stroke: mat.get-color-from-palette($accent, text);
         }
       }
     }
@@ -42,6 +36,14 @@
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, disabled-button);
       }
+    }
+
+    mat-slide-toggle:not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($accent, text);
+    }
+
+    mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($foreground, secondary-text);
     }
 
     // red: #c60; green: #6c0;

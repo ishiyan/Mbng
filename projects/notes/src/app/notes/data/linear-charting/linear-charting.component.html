@@ -1,11 +1,39 @@
 <p>
   <button mat-raised-button color="accent" class="button">EMA component</button>
 </p>
-<div style="margin:8px;">
-  <app-series-select color="steelblue" label="foobar" (selectionChange)="dataSelectionChanged($event)"></app-series-select>
+<div>
+  <app-series-select color="steelblue" label="all series" (selectionChange)="seriesSelectionChanged($event)"></app-series-select>
 </div>
 <br/>
-<mb-linear-chart [dataSeries]="dataSelection.data" [title]="dataSelection.mnemonic">
+<mb-linear-chart [dataSeries]="seriesSelection.data" [title]="seriesSelection.mnemonic">
+</mb-linear-chart>
+<br/>
+<div>
+  <app-bar-series-select color="steelblue" label="bar series" (selectionChange)="barSeriesSelectionChanged($event)"></app-bar-series-select>
+</div>
+<br/>
+<mb-linear-chart [dataSeries]="barSeriesSelection.data" [title]="barSeriesSelection.mnemonic">
+</mb-linear-chart>
+<br/>
+<div>
+  <app-scalar-series-select color="steelblue" label="scalar series" (selectionChange)="scalarSeriesSelectionChanged($event)"></app-scalar-series-select>
+</div>
+<br/>
+<mb-linear-chart [dataSeries]="scalarSeriesSelection.data" [title]="scalarSeriesSelection.mnemonic">
+</mb-linear-chart>
+<br/>
+<div>
+  <app-trade-series-select color="steelblue" label="trade series" (selectionChange)="tradeSeriesSelectionChanged($event)"></app-trade-series-select>
+</div>
+<br/>
+<mb-linear-chart [dataSeries]="tradeSeriesSelection.data" [title]="tradeSeriesSelection.mnemonic">
+</mb-linear-chart>
+<br/>
+<div>
+  <app-quote-series-select color="steelblue" label="quote series" (selectionChange)="quoteSeriesSelectionChanged($event)"></app-quote-series-select>
+</div>
+<br/>
+<mb-linear-chart [dataSeries]="quoteSeriesSelection.data" [title]="quoteSeriesSelection.mnemonic">
 </mb-linear-chart>
 <br/>
 <p>

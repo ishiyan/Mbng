@@ -4,25 +4,6 @@
     <mat-panel-title>{{title}}</mat-panel-title>
   </mat-expansion-panel-header>
 
-  <mat-radio-group name="barRadioGroup" *ngIf="isBar">
-    <mat-radio-button name="barRadioGroup" [value]="barViewCandlesticks" color="primary" [checked]="true"
-      (change)="barViewType = barViewCandlesticks;">&nbsp;
-      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
-    </mat-radio-button>&nbsp;&nbsp;
-    <mat-radio-button name="barRadioGroup" [value]="barViewBars" color="primary"
-      (change)="barViewType = barViewBars;">&nbsp;
-      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
-    </mat-radio-button>&nbsp;&nbsp;
-    <mat-radio-button name="barRadioGroup" [value]="barViewLine" color="primary"
-      (change)="barViewType = barViewLine;">&nbsp;
-      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
-    </mat-radio-button>&nbsp;&nbsp;
-    <mat-radio-button name="barRadioGroup" [value]="barViewArea" color="primary"
-      (change)="barViewType = barViewArea;">&nbsp;
-      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
-    </mat-radio-button>;
-  </mat-radio-group>
-
   <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="barViewType"
     *ngIf="isBar" (change)="barViewType = group1.value">
     <mat-button-toggle [value]="barViewCandlesticks" class="button-toggle">
@@ -75,12 +56,15 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume" *ngIf="!isScalar">Volume
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume" *ngIf="!isScalar">
+    <mat-icon>leaderboard</mat-icon>
   </mat-slide-toggle>
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">Crosshair</mat-slide-toggle>
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
+    <mat-icon>add</mat-icon>
+  </mat-slide-toggle>
 
-  <button mat-raised-button color="accent" (click)="saveToSvg()" class="button" *ngIf="saveSvgVisible">
-    Save SVG
+  <button mat-button mat-mini-fab color="accent" (click)="saveToSvg()" class="button" *ngIf="saveSvgVisible">
+    <mat-icon>download</mat-icon>
   </button>
 </mat-expansion-panel>
 <div id="{{svgContainerId}}"></div>
