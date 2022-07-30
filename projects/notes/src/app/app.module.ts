@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { NoteListModule } from './shared/note-list/note-list.module';
 import { SeriesListModule } from './shared/data/series-list/series-list.module';
+import { KatexSettingsModule } from './shared/katex-settings/katex-settings.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
@@ -26,6 +27,7 @@ import { AppComponent } from './app.component';
     MatToolbarModule,
     NoteListModule,
     SeriesListModule,
+    KatexSettingsModule,
     AppRoutingModule
   ],
   declarations: [AppComponent],

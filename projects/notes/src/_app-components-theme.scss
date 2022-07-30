@@ -3,6 +3,8 @@
 @import "../../mb/src/lib/charts/linear-chart/linear-chart-theme";
 @import "../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart-theme";
 
+@import "./app/shared/katex-settings/katex-settings-theme";
+
 @mixin app-components-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -15,4 +17,6 @@
   @include historical-data-chart-theme($theme);
   @include linear-chart-theme($theme);
   @include ohlcv-chart-theme($theme);
+
+  @include katex-settings-theme($theme);
 }

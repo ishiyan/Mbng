@@ -1,0 +1,14 @@
+@mixin katex-settings-theme($theme) {
+  $accent: map-get($theme, accent);
+  $foreground: map-get($theme, foreground);
+
+  app-katex-settings {
+    mat-slide-toggle:not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($accent, text);
+    }
+
+    mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($foreground, secondary-text);
+    }
+  }
+}

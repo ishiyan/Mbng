@@ -7,6 +7,9 @@ export * from './lib/material/material.module';
 export * from './lib/katex/katex.directive';
 export * from './lib/katex/katex.service';
 export * from './lib/katex/katex.component';
+export * from './lib/katex/katex-display.component';
+export * from './lib/katex/katex-inline.component';
+export * from './lib/katex/katex-settings.service';
 export * from './lib/katex/katex.module';
 
 /*
