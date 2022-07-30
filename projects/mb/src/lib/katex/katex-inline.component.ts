@@ -16,8 +16,7 @@ const defaultOptions: KatexOptions = {
   selector: 'mb-ki',
   templateUrl: './katex-inline.component.html',
   styleUrls: ['./katex-inline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { 'class': 'notranslate' }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KatexInlineComponent implements AfterContentInit {
   protected options: KatexOptions = defaultOptions;

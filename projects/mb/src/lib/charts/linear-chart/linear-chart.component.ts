@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
@@ -50,7 +50,7 @@ const textAfterSvg = `
   styleUrls: ['./linear-chart.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class LinearChartComponent {
+export class LinearChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);
   protected svgContainerId = 'linearchart-svg-' + this.random;
   protected widthContainerId = 'linearchart-width-' + this.random;

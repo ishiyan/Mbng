@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
 import { KatexOptions } from 'katex';
 
 import { KatexSettingsService } from './katex-settings.service';
@@ -30,22 +30,19 @@ export class KatexDisplayComponent implements AfterContentInit, OnInit {
 
   ngOnInit(): void {
     this.settings.sourceObservable().subscribe({next: s => {
-      console.log("went");
       this.options = { ...defaultOptions, output: s ? 'mathml' : 'html' };
     }});
 
     this.settings.tagLeftObservable().subscribe({next: s => {
-      console.log("went");
       this.options = { ...defaultOptions, leqno: s };
     }});
 
     this.settings.equationLeftObservable().subscribe({next: s => {
-      console.log("went");
       this.options = { ...defaultOptions, fleqn: s };
     }});
   }
 
-  ngAfterContentInit(): void {    
+  ngAfterContentInit(): void {
     const tex = this.element.nativeElement.innerText;
     this.expression = tex;
     this.hidden = true;

@@ -195,4 +195,3 @@ export * from './lib/charts/hierarchy-tree/functions/tooltip-function';
 export * from './lib/charts/charts.module';
 
 export * from './lib/mb.module';
-export * from './lib/feature1/second.service';
