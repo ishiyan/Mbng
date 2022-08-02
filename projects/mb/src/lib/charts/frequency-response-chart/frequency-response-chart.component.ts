@@ -52,9 +52,8 @@ const textAfterSvg = `
 })
 export class FrequencyResponseChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);
-  protected svgContainerId = 'linearchart-svg-' + this.random;
-  protected widthContainerId = 'linearchart-width-' + this.random;
-  //@ViewChild('container', { static: true }) container!: ElementRef;
+  protected svgContainerId = 'frchart-svg-' + this.random;
+  protected widthContainerId = 'frchart-width-' + this.random;
   /** If chart settings panel is visible. */
   @Input() settingsPanelVisible = true;
   /** If *Save SVG* button is visible. */
@@ -190,6 +189,27 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
+  /*
+https://indexes.morningstar.com/our-indexes/details/morningstar-global-target-market-exposure-FS0000DQH7?currency=EUR&variant=NR&tab=overview
+Index Overview
+Ticker —
+SecId F000010CAO
+Inception Date May 01, 2018
+Performance Start Date Jun 20, 2008
+Asset Class Equity
+Series Name Morningstar Equity TME
+Base Currency EUR
+Return Type Net Total Return
+Weighting Scheme Market Capitalization Free-Float Adjusted
+Reconstitution Frequency Semi-annually
+Rebalance Frequency Quarterly
+Strategic Beta —
+Index Description The Morningstar Global Target Market Exposure Index is a rules based, float market capitalization-weighted index designed to cover 85% of the equity float-adjusted market capitalization of the Global equity markets. This Index does not incorporate Environmental, Social, or Governance (ESG) criteria.
+https://lt.morningstar.com/api/rest.svc/timeseries_price/hvqzxf7smz?id=F000010CAO&idtype=MSID&startDate=2022-01-01&Currencyid=EUR&outputtype=json
+
+https://indexes.morningstar.com/our-indexes?filterPattern=Morningstar%20Global%20Target%20Market%20Exposure
+*/
+
   @HostListener('window:resize', [])
   render() {
     if (!this.afterViewInit) {
@@ -200,7 +220,9 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     const w = this.widthFraction * e.getBoundingClientRect().width;
     const h = this.heightFraction * w;
 
-    const margin = { top: 10, bottom: 20, right: 80, left: 35 };
+    const margin = { top: 20, bottom: 30, right: 10, left: 35 };
+
+
     const marginNav = { top: h - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
 
     const sel = d3.select('#' + this.svgContainerId);
