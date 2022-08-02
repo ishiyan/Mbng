@@ -37,7 +37,7 @@ npm install
 ## Updates
 
 1. [angular cli](https://github.com/angular/angular-cli/releases)
-2. [angular](https://github.com/angular/angular/blob/master/CHANGELOG.md), [angular release schedule](https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md)
+2. [angular](https://github.com/angular/angular/blob/master/CHANGELOG.md), [angular release schedule](https://github.com/angular/angular/blob/master/docs/RELEASE_SCHEDULE.md), [breaking changes](https://github.com/angular/angular/blob/main/CHANGELOG.md#breaking-changes-1)
 3. [angular zone](https://github.com/angular/zone.js/blob/master/CHANGELOG.md)
 4. [angular flex-layout](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
 5. [angular material](https://github.com/angular/material2/blob/master/CHANGELOG.md)
