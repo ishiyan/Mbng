@@ -4,6 +4,7 @@ import { directRealFastFourierTransform, isValidSignalLength, prepareFrequencyDo
   prepareFilteredSignal, normalize } from './frequency-response';
 
 // ng test mb  --code-coverage --include='**/frequency-response/*.spec.ts'
+// https://usfdatavisualization.github.io/LineSmoothDemo/
 
 const almostEqual = (exp: number, act: number): boolean => Math.abs(exp - act) < Number.EPSILON;
 

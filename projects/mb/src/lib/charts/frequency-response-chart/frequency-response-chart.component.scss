@@ -1,0 +1,59 @@
+.container {
+  margin: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 1px;
+}
+
+.button-toggle-group {
+  margin: 0;
+  margin-right: 16px;
+}
+
+.slide-toggle {
+  margin: 0;
+  margin-right: 16px;
+  vertical-align: middle;
+}
+
+mat-slide-toggle .mat-icon {
+  vertical-align: bottom;
+}
+
+:host ::ng-deep {
+  path.candle.body {
+    stroke-width: 1px; // 0;
+  }
+
+  path.ohlc {
+    stroke-width: 1px;
+  }
+
+  path.point {
+    stroke-width: 1.5px;
+  }
+
+  path.line {
+    stroke-width: 1;
+  }
+
+  .extent {
+    fill-opacity: 0.125;
+    shape-rendering: crispEdges;
+  }
+
+  .coords {
+    font: 10px sans-serif;
+  }
+
+  .crosshair {
+    cursor: crosshair;
+    font: 10px sans-serif;
+  }
+
+  .crosshair path.wire {
+    stroke-dasharray: 1, 1;
+  }
+}
