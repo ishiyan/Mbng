@@ -77,7 +77,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private clipId = 'frchart-clip-' +  this.random;
   private pointerEventsId = 'frchart-pointer-events-' + this.random;
   protected svgContainerId = 'frchart-svg-' + this.random;
-  protected widthContainerId = 'frchart-width-' + this.random;
+  // xxx protected widthContainerId = 'frchart-width-' + this.random;
 
   /** If chart settings panel is visible. */
   @Input() settingsPanelVisible = false;
@@ -321,9 +321,9 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     const thisOne = this;
     const margin = { top: 20, bottom: 30, right: 10, left: 35 };
 
-    //const e = d3.select('#' + this.widthContainerId).node() as Element;
-    //const w = this.widthFraction * e.getBoundingClientRect().width;
-    //const h = this.heightFraction * (w - margin.left - margin.right) + margin.top + margin.bottom;
+    // xxx const e = d3.select('#' + this.widthContainerId).node() as Element;
+    // xxx const w = this.widthFraction * e.getBoundingClientRect().width;
+    // xxx const h = this.heightFraction * (w - margin.left - margin.right) + margin.top + margin.bottom;
     const computed = computeDimensions(this.elementRef, this.widthValue, this.heightValue, defaultWidth, defaultHeight);
     const w = computed[0];
     const h = computed[1];
@@ -490,8 +490,10 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     const d = new Date();
     const filename =
       `frequency-response-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
-    const e = d3.select('#' + this.widthContainerId).node() as Element;
-    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
+    // xxx const e = d3.select('#' + this.widthContainerId).node() as Element;
+    // xxx Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
+    // xxx textBeforeSvg, textAfterSvg), filename);
+    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.elementRef.nativeElement, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);
   }
 }

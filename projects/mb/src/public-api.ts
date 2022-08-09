@@ -159,6 +159,8 @@ export * from './lib/charts/line-configuration.interface';
 export * from './lib/charts/downloader';
 export * from './lib/charts/entities/band';
 export * from './lib/charts/entities/heatmap';
+export * from './lib/charts/frequency-response-chart/frequency-response-chart.component';
+export * from './lib/charts/frequency-response-chart/frequency-response-chart.module';
 export * from './lib/charts/linear-chart/linear-chart.component';
 export * from './lib/charts/linear-chart/linear-chart.module';
 export * from './lib/charts/ohlcv-chart/template/template';
