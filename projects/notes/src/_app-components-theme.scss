@@ -2,6 +2,7 @@
 @import "../../mb/src/lib/charts/historical-data-chart/historical-data-chart-theme";
 @import "../../mb/src/lib/charts/linear-chart/linear-chart-theme";
 @import "../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart-theme";
+@import "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme";
 
 @import "./app/shared/katex-settings/katex-settings-theme";
 
@@ -17,6 +18,7 @@
   @include historical-data-chart-theme($theme);
   @include linear-chart-theme($theme);
   @include ohlcv-chart-theme($theme);
+  @include frequency-response-chart-theme($theme);
 
   @include katex-settings-theme($theme);
 }

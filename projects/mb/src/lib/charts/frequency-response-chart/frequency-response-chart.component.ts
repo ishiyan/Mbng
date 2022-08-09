@@ -1,42 +1,64 @@
-import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
+import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 
-import { primitives } from '../d3-primitives';
 import { Downloader } from '../downloader';
-import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
-import { Bar } from '../../data/entities/bar';
-import { Quote } from '../../data/entities/quote';
-import { Trade } from '../../data/entities/trade';
-import { Scalar } from '../../data/entities/scalar';
+import { FrequencyResponseResult }
+  from '../../trading/indicators/indicator/frequency-response/frequency-response.interface';
+import { computeDimensions } from '../compute-dimensions';
 
-const barViewCandlesticks = 0;
-const barViewBars = 1;
-const barViewLine = 2;
-const barViewArea = 3;
-const scalarViewLine = 0;
-const scalarViewDots = 1;
-const scalarViewArea = 2;
-const tradeViewLine = 0;
-const tradeViewDots = 1;
-const tradeViewArea = 2;
-const quoteViewBars = 0;
-const quoteViewDots = 1;
+const fmt2 = d3.format('.2f');
+const fmt3 = d3.format('.3f');
+
+const defaultWidth = 300;
+const defaultHeight = 300;
+
+const xFrequencies = 0;
+const xPeriods = 1;
+const xModeMax = 2;
+type xModeType = 0 | 1;
+const xModeLabels = ['Normalized frequency', 'Period, samples'];
+
+const yPowerDecibels = 0;
+const yPowerPercents = 1;
+const yAmplitudeDecibels = 2;
+const yAmplitudePercents = 3;
+const yPhaseDegrees = 4;
+const yModeMax = 5;
+type yModeType = 0 | 1 | 2 | 3 | 4;
+const yModeLabels = ['Power, dB', 'Power, %', 'Amplitude, dB', 'Amplitude, %', 'Phase, deg °'];
+const yModeSuffices = [' dB', ' %', ' dB', ' %', ' °'];
+
+interface xComponentType {
+  data: number[];
+  min: number;
+  max: number;
+}
+
+interface yLineType {
+  label: string;
+  color?: string;
+  line: number[];
+  hover: boolean;
+}
+
+interface yComponentType {
+  lines: yLineType[];
+  min: number;
+  max: number;
+}
+
+//const color = d3.scaleLinear().domain([0, 1]).range(['#0000ff', '#00ff00']).interpolate(d3.interpolateHcl),
+const color = d3.interpolateCool;
 
 /** The text to place before the SVG line when exporting chart as SVG. */
 const textBeforeSvg = `<html><meta charset="utf-8"><style>
-  text { fill: black; font-family: Arial, Helvetica, sans-serif; }
-  path.candle { stroke: black; }
-  path.candle.up { fill: white; }
-  path.candle.down { fill: black; }
-  path.ohlc.up { fill: none; stroke: black; }
-  path.ohlc.down { fill: none; stroke: black; }
-  path.volume { fill: lightgrey; }
-  path.point { fill: none; stroke: black; }
-  path.area { fill: lightgrey; }
-  path.line { stroke: black; }
-  rect.selection { fill: darkgrey; }
+  text { fill: black; font-family: Arial, Helvetica, sans-serif; cursor: default; }
+  .filter-response .legend .label circle { stroke-width: 2px; }
+  .filter-response .coords { fill: black; font: 10px sans-serif; }
+  .filter-response .subfigure text { font-weight: bold; }
+  .filter-response .axis path { fill: none; stroke: black; }
+  .filter-response .axis line { fill: none; stroke: grey; }
+  .line { stroke-width: 2px; }
 </style><body>
 `;
 /** The text to place after the SVG line when exporting chart as SVG. */
@@ -52,136 +74,237 @@ const textAfterSvg = `
 })
 export class FrequencyResponseChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);
+  private clipId = 'frchart-clip-' +  this.random;
+  private pointerEventsId = 'frchart-pointer-events-' + this.random;
   protected svgContainerId = 'frchart-svg-' + this.random;
   protected widthContainerId = 'frchart-width-' + this.random;
+
   /** If chart settings panel is visible. */
-  @Input() settingsPanelVisible = true;
+  @Input() settingsPanelVisible = false;
+
   /** If *Save SVG* button is visible. */
   @Input() saveSvgVisible = true;
-  /** Chart title. */
-  @Input() title = '';
-  /** The width of the chart as a fraction of the window width. */
-  @Input() widthFraction = 1;
-  /** The height of the chart as a fraction of the chart width. */
-  @Input() heightFraction = 0.6180340;
-  @Input() set dataSeries(series: Bar[] | Quote[] | Trade[] | Scalar[]) {
-    if (series) {
-      if ((series as Bar[])[0].close !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Bar;
-      } else if ((series as Scalar[])[0].value !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Scalar;
-      } else if ((series as Trade[])[0].price !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Trade;
-      } else if ((series as Quote[])[0].askPrice !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Quote;
-      } else {
-        this.temporalEntityKind = undefined;
+
+  private widthValue: number | string = defaultWidth;
+  /** A width of the chart in pixels or as percentage. */
+  @Input() set width(value: number | string) {
+    this.widthValue = value;
+    this.render();
+  }
+
+  private heightValue: number | string = defaultHeight;
+  /** A height of the chart in pixels or as percentage. */
+  @Input() set height(value: number | string) {
+    this.heightValue = value;
+    this.render();
+  }
+
+  // /** The width of the chart as a fraction of the window width. */
+  // @Input() widthFraction = 1;
+  // /** The height of the chart as a fraction of the chart width. */
+  // @Input() heightFraction = 0.6180340;
+
+  /** The array of frequency responses to use. */
+  @Input() set data(dat: FrequencyResponseResult[]) {
+    let empty = true;
+
+    for (const d of dat) {
+      const len = d.frequencies.length;
+      if (len < 1) {
+        continue;
       }
 
-      this.data = series;
-    } else {
-      this.temporalEntityKind = undefined;
-      this.data = [];
+      if (empty) {
+        // X-axis range is always the same, [0, 1], since the frequency is normalized.
+        // So we do this only the first time.
+        // Also, we know that the frequency data is sorted in ascending order.
+        empty = false;
+
+        this.xComponents[xFrequencies] = {
+          data: d.frequencies,
+          min: 0,
+          max: 1
+        };
+
+        const a = d.frequencies;
+        const r = Array.from(a).reverse();
+        for (let i = 0; i < r.length; ++i) {
+          r[i] = 2 / r[i];
+        }
+
+        this.xComponents[xPeriods] = {
+          data: r,
+          min: 2,
+          max: Math.ceil(r[r.length - 1])
+        };
+
+        for (let i = 0; i < yModeMax; ++i) {
+          this.yComponents[xFrequencies][i] = {lines: [], min: Infinity, max: -Infinity};
+          this.yComponents[xPeriods][i] = {lines: [], min: Infinity, max: -Infinity};
+        }
+      }
+
+      const yData = [d.powerDecibel, d.powerPercent, d.amplitudeDecibel, d.amplitudePercent, d.phaseDegrees];
+
+      for (let i = yPowerDecibels; i < yModeMax; ++i) {
+        const yd = yData[i];
+
+        const cf = this.yComponents[xFrequencies][i];
+        cf.lines.push({ label: d.label, line: yd.data, hover: false });
+        cf.min = Math.min(cf.min, yd.min);
+        cf.max = Math.max(cf.max, yd.max);
+
+        const cp = this.yComponents[xPeriods][i];
+        cp.lines.push({ label: d.label, line: Array.from(yd.data).reverse(), hover: false });
+        cp.min = cf.min;
+        cp.max = cf.max;
+      }
     }
 
     this.render();
   }
 
-  private temporalEntityKind: TemporalEntityKind | undefined;
-  get isBar(): boolean {
-    return this.temporalEntityKind === TemporalEntityKind.Bar;
+  /** Current x axis is xComponents[xMode] */
+  private xComponents = new Array<xComponentType>(xModeMax);
+  /** Current y axis is yComponents[xMode][yMode]. */
+  private yComponents = [new Array<yComponentType>(yModeMax), new Array<yComponentType>(yModeMax)];
+
+  /** The x mode. */
+  @Input() set xmode(value: 'frequency' | 'period') {
+    switch (value) {
+      case 'frequency':
+        this.xModeValue = xFrequencies;
+        break;
+      case 'period':
+        this.xModeValue = xPeriods;
+        break;
+    }
   }
-  get isQuote(): boolean {
-    return this.temporalEntityKind === TemporalEntityKind.Quote;
+  private xMode: xModeType = xFrequencies;
+  protected set xModeValue(value: xModeType) {
+    if (this.xMode !== value) {
+      this.xMode = value;
+      this.render();
+    }
   }
-  get isTrade(): boolean {
-    return this.temporalEntityKind === TemporalEntityKind.Trade;
+  protected get xModeValue(): xModeType {
+    return this.xMode;
   }
-  get isScalar(): boolean {
-    return this.temporalEntityKind === TemporalEntityKind.Scalar;
+  protected get xModeFrequencies(): xModeType {
+    return xFrequencies;
+  }
+  protected get xModePeriods(): xModeType {
+    return xPeriods;
   }
 
-  readonly barViewCandlesticks = barViewCandlesticks;
-  readonly barViewBars = barViewBars;
-  readonly barViewLine = barViewLine;
-  readonly barViewArea = barViewArea;
-  private barView: number = this.barViewCandlesticks;
-  get barViewType(): number {
-    return this.barView;
+  /** The y mode. */
+  @Input() set ymode(value: 'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg') {
+    switch (value) {
+      case 'powerDb':
+        this.yModeValue = yPowerDecibels;
+        break;
+      case 'powerPct':
+        this.yModeValue = yPowerPercents;
+        break;
+      case 'amplitudeDb':
+        this.yModeValue = yAmplitudeDecibels;
+        break;
+      case 'amplitudePct':
+        this.yModeValue = yAmplitudePercents;
+        break;
+      case 'phaseDeg':
+        this.yModeValue = yPhaseDegrees;
+        break;
+    }
   }
-  set barViewType(value: number) {
-    this.barView = value;
-    this.render();
+  private yMode: yModeType = yPowerDecibels;
+  protected set yModeValue(value: yModeType) {
+    if (this.yMode !== value) {
+      this.yMode = value;
+      this.render();
+    }
   }
-
-  readonly scalarViewLine = scalarViewLine;
-  readonly scalarViewDots = scalarViewDots;
-  readonly scalarViewArea = scalarViewArea;
-  private scalarView: number = this.scalarViewLine;
-  get scalarViewType(): number {
-    return this.scalarView;
+  protected get yModeValue(): yModeType {
+    return this.yMode;
   }
-  set scalarViewType(value: number) {
-    this.scalarView = value;
-    this.render();
+  protected get yModePowerDecibels(): yModeType {
+    return yPowerDecibels;
   }
-
-  readonly tradeViewLine = tradeViewLine;
-  readonly tradeViewDots = tradeViewDots;
-  readonly tradeViewArea = tradeViewArea;
-  private tradeView: number = this.tradeViewLine;
-  get tradeViewType(): number {
-    return this.tradeView;
+  protected get yModePowerPercents(): yModeType {
+    return yPowerPercents;
   }
-  set tradeViewType(value: number) {
-    this.tradeView = value;
-    this.render();
+  protected get yModeAmplitudeDecibels(): yModeType {
+    return yAmplitudeDecibels;
   }
-
-  readonly quoteViewBars = quoteViewBars;
-  readonly quoteViewDots = quoteViewDots;
-  private quoteView: number = this.quoteViewBars;
-  get quoteViewType(): number {
-    return this.quoteView;
+  protected get yModeAmplitudePercents(): yModeType {
+    return yAmplitudePercents;
   }
-  set quoteViewType(value: number) {
-    this.quoteView = value;
-    this.render();
+  protected get yModePhaseDegrees(): yModeType {
+    return yPhaseDegrees;
   }
 
-  private renderCrosshair = false;
-  get viewCrosshair() {
-    return this.renderCrosshair;
-  }
-  set viewCrosshair(value: boolean) {
-    this.renderCrosshair = value;
-    this.render();
+  private subFigureLetter = '';
+  /** The sub-figure letter of this chart. */
+  @Input() set subfig(value: string) {
+    this.subFigureLetter = value;
   }
 
-  private renderVolume = false;
-  get viewVolume() {
-    return this.renderVolume;
+  private forcedFrequencyMin?: number;
+  private forcedFrequencyMax?: number;
+  /** The minimum x frequency to use. */
+  @Input() set minFrequency(value: number | undefined) {
+    this.forcedFrequencyMin = value;
   }
-  set viewVolume(value: boolean) {
-    this.renderVolume = value;
-    this.render();
+  /** The maximum x frequency to use. */
+  @Input() set maxFrequency(value: number | undefined) {
+    this.forcedFrequencyMax = value;
   }
 
-  private data: any[] = [];
-  private renderNavAxis = false;
-
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('mb-candlesticks',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
-    iconRegistry.addSvgIcon('mb-bars',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-bars.svg'));
-    iconRegistry.addSvgIcon('mb-line',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-line.svg'));
-    iconRegistry.addSvgIcon('mb-area',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-area.svg'));
-    iconRegistry.addSvgIcon('mb-dots',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-dots.svg'));
+  private forcedPeriodMin?: number;
+  private forcedPeriodMax?: number;
+  /** The minimum x period to use. */
+  @Input() set minPeriod(value: number | undefined) {
+    this.forcedPeriodMin = value;
   }
+  /** The maximum x period to use. */
+  @Input() set maxPeriod(value: number | undefined) {
+    this.forcedPeriodMax = value;
+  }
+
+  private forcedDbMin?: number;
+  private forcedDbMax?: number;
+  /** The minimum y decibels to use. */
+  @Input() set minDb(value: number | undefined) {
+    this.forcedDbMin = value;
+  }
+  /** The maximum y decibels to use. */
+  @Input() set maxDb(value: number | undefined) {
+    this.forcedDbMax = value;
+  }
+
+  private forcedPctMin?: number;
+  private forcedPctMax?: number;
+  /** The minimum y percentages to use. */
+  @Input() set minPct(value: number | undefined) {
+    this.forcedPctMin = value;
+  }
+  /** The maximum y percentages to use. */
+  @Input() set maxPct(value: number | undefined) {
+    this.forcedPctMax = value;
+  }
+  
+  private forcedDegMin?: number;
+  private forcedDegMax?: number;
+  /** The minimum y phase degrees to use. */
+  @Input() set minDeg(value: number | undefined) {
+    this.forcedDegMin = value;
+  }
+  /** The maximum y phase degrees to use. */
+  @Input() set maxDeg(value: number | undefined) {
+    this.forcedDegMax = value;
+  }
+
+  constructor(private elementRef: ElementRef) { }
 
   private afterViewInit = false;
   ngAfterViewInit() {
@@ -189,313 +312,184 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     setTimeout(() => this.render(), 0);
   }
 
-  /*
-https://indexes.morningstar.com/our-indexes/details/morningstar-global-target-market-exposure-FS0000DQH7?currency=EUR&variant=NR&tab=overview
-Index Overview
-Ticker —
-SecId F000010CAO
-Inception Date May 01, 2018
-Performance Start Date Jun 20, 2008
-Asset Class Equity
-Series Name Morningstar Equity TME
-Base Currency EUR
-Return Type Net Total Return
-Weighting Scheme Market Capitalization Free-Float Adjusted
-Reconstitution Frequency Semi-annually
-Rebalance Frequency Quarterly
-Strategic Beta —
-Index Description The Morningstar Global Target Market Exposure Index is a rules based, float market capitalization-weighted index designed to cover 85% of the equity float-adjusted market capitalization of the Global equity markets. This Index does not incorporate Environmental, Social, or Governance (ESG) criteria.
-https://lt.morningstar.com/api/rest.svc/timeseries_price/hvqzxf7smz?id=F000010CAO&idtype=MSID&startDate=2022-01-01&Currencyid=EUR&outputtype=json
-
-https://indexes.morningstar.com/our-indexes?filterPattern=Morningstar%20Global%20Target%20Market%20Exposure
-*/
-
   @HostListener('window:resize', [])
   render() {
     if (!this.afterViewInit) {
       return;
     }
 
-    const e = d3.select('#' + this.widthContainerId).node() as Element;
-    const w = this.widthFraction * e.getBoundingClientRect().width;
-    const h = this.heightFraction * w;
-
+    const thisOne = this;
     const margin = { top: 20, bottom: 30, right: 10, left: 35 };
 
+    //const e = d3.select('#' + this.widthContainerId).node() as Element;
+    //const w = this.widthFraction * e.getBoundingClientRect().width;
+    //const h = this.heightFraction * (w - margin.left - margin.right) + margin.top + margin.bottom;
+    const computed = computeDimensions(this.elementRef, this.widthValue, this.heightValue, defaultWidth, defaultHeight);
+    const w = computed[0];
+    const h = computed[1];
+    const width = w - margin.left - margin.right;
+    const height = h - margin.top - margin.bottom;
+    const labelX = xModeLabels[this.xMode];
+    const labelY = yModeLabels[this.yMode];
+    const suffixY =yModeSuffices[this.yMode];
+    const componentX = this.xComponents[this.xMode];
+    const componentY = this.yComponents[this.xMode][this.yMode];
+    const ll = componentY.lines.length;
 
-    const marginNav = { top: h - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
+    let xmin = componentX.min;
+    let xmax = componentX.max;
+    if (this.xMode === xPeriods) {
+      if (this.forcedPeriodMin !== undefined) {
+        xmin = this.forcedPeriodMin;
+      }
+      if (this.forcedPeriodMax !== undefined) {
+        xmax = this.forcedPeriodMax;
+      }
+    } else {
+      if (this.forcedFrequencyMin !== undefined) {
+        xmin = this.forcedFrequencyMin;
+      }
+      if (this.forcedFrequencyMax !== undefined) {
+        xmax = this.forcedFrequencyMax;
+      }
+    }
+
+    let ymin = componentY.min;
+    let ymax = componentY.max;
+    if (this.yMode === yPowerDecibels || this.yMode === yAmplitudeDecibels) {
+      if (this.forcedDbMin !== undefined) {
+        ymin = this.forcedDbMin;
+      }
+      if (this.forcedDbMax !== undefined) {
+        ymax = this.forcedDbMax;
+      }
+    } else if (this.yMode === yPowerPercents || this.yMode === yAmplitudePercents) {
+      if (this.forcedPctMin !== undefined) {
+        ymin = this.forcedPctMin;
+      }
+      if (this.forcedPctMax !== undefined) {
+        ymax = this.forcedPctMax;
+      }
+    } else {
+      if (this.forcedDegMin !== undefined) {
+        ymin = this.forcedDegMin;
+      }
+      if (this.forcedDegMax !== undefined) {
+        ymax = this.forcedDegMax;
+      }
+    }
+
+    const xScale = d3.scaleLinear().domain([xmin, xmax]).range([0, width]).nice();
+    const yScale = d3.scaleLinear().domain([ymin, ymax]).range([height, 0]).nice();
+    const xAxisBottom = d3.axisBottom(xScale).ticks(width / 40).tickSizeInner(-height).tickSizeOuter(0);
+    const yAxisLeft = d3.axisLeft(yScale).ticks(h / 40).tickSizeInner(-width).tickSizeOuter(0);
 
     const sel = d3.select('#' + this.svgContainerId);
     sel.select('svg').remove();
     const svg: any = sel.append('svg')
       .attr('width', w)
       .attr('height', h)
-      .append('g')
+      .attr('viewbox', '0 0 ' + w + ' ' + h)
+      .attr('preserveAspectRatio', 'xMinYMin meet');
+    const g = svg.append('g')
+      .attr('class', 'filter-response')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    const width = w - margin.left - margin.right;
-    const height = marginNav.top - margin.top - margin.bottom;
-    const heightNav = h - marginNav.top - marginNav.bottom;
 
-    const x = (primitives.scale.financetime() as any).range([0, width]);
-    const y = d3.scaleLinear().range([height, 0]);
-    const xNav = (primitives.scale.financetime() as any).range([0, width]);
-    const yNav = d3.scaleLinear().range([heightNav, 0]);
-    const brushNav = d3.brushX().extent([[0, 0], [width, heightNav + 4]]);
-    const priceShape = this.getPriceShape().xScale(x).yScale(y);
-    const accessor = priceShape.accessor();
-    const areaNav = this.getNavArea().xScale(xNav).yScale(yNav);
+    g.append('text').attr('class', 'xlabel').attr('text-anchor', 'middle')
+      .attr('x', xScale.range()[1] / 2).attr('y', height + 25).text(labelX || null);
+    g.append('g').attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + yScale.range()[0] + ')').call(xAxisBottom)
+      .selectAll('line.tick').filter((d: any) => !d);
 
-    const xAxisBottom = d3.axisBottom(x);
-    const yAxisLeft = d3.axisLeft(y);
-    let xAxisNavBottom;
-    if (this.renderNavAxis) {
-      xAxisNavBottom = d3.axisBottom(xNav);
+    g.append('text').attr('class', 'ylabel')
+      .attr('transform', 'rotate(-90)').attr('text-anchor', 'middle')
+      .attr('x', -yScale.range()[0] / 2).attr('y', 10 - margin.left).text(labelY || null);
+    g.append('g').attr('class', 'y axis').call(yAxisLeft)
+      .selectAll('line.tick').filter((d: any) => !d);
+
+    g.append('g').attr('class', 'subfigure').append('text')
+      .attr('class', 'subfigure').attr('text-anchor', 'left')
+      .attr('x', -margin.left).attr('y', height + 25).text(this.subFigureLetter || null);
+  
+    const glines = g.append('g').attr('class', 'lines');
+    glines.append('clipPath').attr('id', this.clipId)
+      .append('rect').attr('width', width).attr('height', height);
+    for (let i = 0; i < ll; ++i) {
+      const l = componentY.lines[i];
+      const lineGenerator = d3.line().curve(d3.curveCatmullRomOpen)
+        .x((d: any, i: number) => xScale(componentX.data[i]))
+        .y((d: any, i: number) => yScale(l.line[i]));
+
+      glines.append('g').attr('class', 'line')
+        .style('fill', 'none').style('stroke', l.color || color(i / ll))
+        .classed('hover', l.hover)
+        .append('path').attr('clip-path', 'url(#' + this.clipId + ')').datum(l.line)
+        .attr('d', lineGenerator);
     }
 
-    const priceAnnotationLeft = (primitives.plot.axisannotation().axis(yAxisLeft) as any).orient('left')
-      .format(d3.format(',.2f'));
-    const timeAnnotationBottom = (primitives.plot.axisannotation().axis(xAxisBottom) as any).orient('bottom')
-      .format(d3.timeFormat('%Y-%m-%d')).width(65).translate([0, height]);
+    const coordsText = g.append('text').style('text-anchor', 'end')
+      .attr('class', 'coords').attr('x', width - 5).attr('y', 25);
+    g.append('rect')
+      .style('pointer-events', 'all').style('fill', 'none')
+      .attr('id', this.pointerEventsId).attr('width', width).attr('height', height)
+      .on('mouseout touchend dblclick', () => coordsText.style('display', 'none'))
+      .on('mouseenter touchstart', () => coordsText.style('display', 'inline'))
+      .on('mousemove touchmove', function(event: any) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const m = d3.pointer(event, this);
+        const coordx = xScale.invert(m[0]);
+        const coordy = yScale.invert(m[1]);
+        coordsText.text(fmt3(coordx) + ' ⇆ ' + fmt2(coordy) + suffixY);
+      });
 
-    let crosshair;
-    if (this.renderCrosshair) {
-      crosshair = (primitives.plot.crosshair() as any).xScale(x).yScale(y)
-        .xAnnotation(timeAnnotationBottom).yAnnotation(priceAnnotationLeft);
-    }
+    const labelCircleRadius = 5;
+    const labelCircleGap = 3;
+    const leg = g.append('g').attr('class', 'legend').append('g');
 
-    const focus = svg.append('g').attr('class', 'focus').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    focus.append('clipPath').attr('id', 'clip')
-      .append('rect').attr('x', 0).attr('y', y(1)).attr('width', width).attr('height', y(0) as number - y(1) as number);
+    const labelGap = 3;
+    const labelHeight = 15;
+    const labelSpacing = 10;
+    const labelDefaultTextLength = 40;
+    const initialx = 16;
+    let ypos = -labelHeight / 2 - 2;
+    let xposNext = initialx;
+    let cposNext = initialx;
 
-    let yVolume: d3.ScaleLinear<number, number>;
-    let volume: any;
-    if (this.renderVolume) {
-      yVolume = d3.scaleLinear().range([y(0) as number, y(0.3) as number]);
-      volume = (primitives.plot.volume() as any).xScale(x).yScale(yVolume);
-      focus.append('g').attr('class', 'volume').attr('clip-path', 'url(#clip)');
-    }
-    focus.append('g').attr('class', 'price').attr('clip-path', 'url(#clip)');
-    focus.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')');
-    focus.append('g').attr('class', 'y axis');
-    if (this.renderCrosshair) {
-      focus.append('g').attr('class', 'crosshair').call(crosshair);
-    }
+    for (let i = 0; i < ll; ++i) {
+      const l = componentY.lines[i];
+      const lag = leg.append('g').attr('class', 'label')
+        .on('click', () => { l.hover = !l.hover; thisOne.render(); });
+      const cg = lag.append('circle')
+        .style('fill',  !l.hover ? (l.color || color(i / ll)) : 'none')
+        .style('stroke', l.color || color(i / ll))
+        .attr('r', labelCircleRadius);
+      const tg = lag.append('text').text(l.label)
+        .attr('text-anchor', 'start').attr('dy', '.3em')
+        .attr('dx', (labelCircleRadius + labelCircleGap));
 
-    const nav = svg.append('g').attr('class', 'nav')
-      .attr('transform', 'translate(' + marginNav.left + ',' + marginNav.top + ')');
-    nav.append('g').attr('class', 'area');
-    nav.append('g').attr('class', 'pane');
-    if (this.renderNavAxis) {
-      nav.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + heightNav + ')');
-    }
-
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    function draw(scalarView: number, tradeView: number, quoteView: number,
-      renderVolume: boolean, temporalEntityKind: TemporalEntityKind | undefined) {
-      const priceSelection = focus.select('g.price');
-      const datum = priceSelection.datum();
-      switch (temporalEntityKind) {
-        case TemporalEntityKind.Bar:
-          // eslint-disable-next-line prefer-spread
-          y.domain(primitives.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-          break;
-        case TemporalEntityKind.Quote:
-          switch (quoteView) {
-            case quoteViewDots:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.quotepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-            case quoteViewBars:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.quotebar(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-          }
-          break;
-        case TemporalEntityKind.Trade:
-          switch (tradeView) {
-            case tradeViewDots:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.tradepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-            case tradeViewLine:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-            case tradeViewArea:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.tradeline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-          }
-          break;
-        case TemporalEntityKind.Scalar:
-          switch (scalarView) {
-            case scalarViewDots:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.valuepoint(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-            case scalarViewLine:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-            case scalarViewArea:
-              // eslint-disable-next-line prefer-spread
-              y.domain(primitives.scale.plot.valueline(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
-              break;
-          }
-          break;
+      let length;
+      try {
+        length = tg.node().getComputedTextLength() + labelCircleRadius * 2 + labelGap + labelSpacing;
+      } catch (_) {
+        length = labelDefaultTextLength + labelCircleRadius * 2 + labelGap + labelSpacing;
       }
-      priceSelection.call(priceShape);
-      if (renderVolume) {
-        focus.select('g.volume').call(volume);
+      let xpos = xposNext;
+      if (width < xpos + length) {
+        cposNext = xposNext = xpos = initialx;
+        ypos += labelHeight;
       }
-
-      // Using refresh method is more efficient as it does not perform any data joins
-      // Use refresh because underlying data is not changing
-      svg.select('g.price').call(priceShape.refresh);
-
-      focus.select('g.x.axis').call(xAxisBottom);
-      focus.select('g.y.axis').call(yAxisLeft);
+      cg.attr('transform', 'translate(' + cposNext + ',' + ypos + ')');
+      cposNext += length;
+      xposNext += length;
+      tg.attr('transform', 'translate(' + xpos + ',' + ypos + ')');
     }
-
-    const sv = this.scalarView;
-    const tv = this.tradeView;
-    const qv = this.quoteView;
-    const rv = this.renderVolume;
-    const tek = this.temporalEntityKind;
-
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-    function brushed(event: any) {
-      const zoomable = x.zoomable();
-      const zoomableNav = xNav.zoomable();
-      zoomable.domain(zoomableNav.domain());
-      if (event.selection !== null) {
-        zoomable.domain(event.selection.map(zoomable.invert));
-      }
-      draw(sv, tv, qv, rv, tek);
-    }
-
-    brushNav.on('end', brushed);
-
-    // data begin ----------------------------------
-    x.domain(this.data.map(accessor.time));
-    xNav.domain(x.domain());
-    switch (this.temporalEntityKind) {
-      case TemporalEntityKind.Bar:
-        y.domain(primitives.scale.plot.ohlc(this.data, accessor).domain());
-        break;
-      case TemporalEntityKind.Quote:
-        switch (this.quoteView) {
-          case quoteViewDots:
-            y.domain(primitives.scale.plot.quotepoint(this.data, accessor).domain());
-            break;
-          case quoteViewBars:
-            y.domain(primitives.scale.plot.quotebar(this.data, accessor).domain());
-            break;
-        }
-        break;
-      case TemporalEntityKind.Trade:
-        switch (this.tradeView) {
-          case tradeViewDots:
-            y.domain(primitives.scale.plot.tradepoint(this.data, accessor).domain());
-            break;
-          case tradeViewLine:
-            y.domain(primitives.scale.plot.tradeline(this.data, accessor).domain());
-            break;
-          case tradeViewArea:
-            y.domain(primitives.scale.plot.tradeline(this.data, accessor).domain());
-            break;
-        }
-        break;
-      case TemporalEntityKind.Scalar:
-        switch (this.scalarView) {
-          case scalarViewDots:
-            y.domain(primitives.scale.plot.valuepoint(this.data, accessor).domain());
-            break;
-          case scalarViewLine:
-            y.domain(primitives.scale.plot.valueline(this.data, accessor).domain());
-            break;
-          case scalarViewArea:
-            y.domain(primitives.scale.plot.valueline(this.data, accessor).domain());
-            break;
-        }
-        break;
-    }
-    yNav.domain(y.domain());
-    if (this.renderVolume) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      yVolume.domain(primitives.scale.plot.volume(this.data).domain());
-    }
-    focus.select('g.price').datum(this.data);
-    if (this.renderVolume) {
-      focus.select('g.volume').datum(this.data);
-    }
-
-    nav.select('g.area').datum(this.data).call(areaNav);
-    if (this.renderNavAxis) {
-      nav.select('g.x.axis').call(xAxisNavBottom);
-    }
-
-    // Associate the brush with the scale and render the brush only AFTER a domain has been applied
-    nav.select('g.pane').call(brushNav).selectAll('rect').attr('height', heightNav);
-
-    x.zoomable().domain(xNav.zoomable().domain());
-    draw(this.scalarView, this.tradeView, this.quoteView, this.renderVolume, this.temporalEntityKind);
-    // data end ----------------------------------
-  }
-
-  private getPriceShape(): any {
-    switch (this.temporalEntityKind) {
-      case TemporalEntityKind.Bar:
-        switch (this.barView) {
-          case barViewCandlesticks: return primitives.plot.candlestick();
-          case barViewBars: return primitives.plot.ohlc();
-          case barViewLine: return primitives.plot.closeline();
-          case barViewArea: return primitives.plot.ohlcarea();
-          default: return primitives.plot.candlestick();
-        }
-      case TemporalEntityKind.Quote:
-        switch (this.quoteView) {
-          case quoteViewDots: return primitives.plot.quotepoint();
-          case quoteViewBars: return primitives.plot.quotebar();
-          default: return primitives.plot.quotepoint();
-        }
-      case TemporalEntityKind.Trade:
-        switch (this.tradeView) {
-          case tradeViewDots: return primitives.plot.tradepoint();
-          case tradeViewLine: return primitives.plot.tradeline();
-          case tradeViewArea: return primitives.plot.tradearea();
-          default: return primitives.plot.tradeline();
-        }
-      case TemporalEntityKind.Scalar:
-        switch (this.scalarView) {
-          case scalarViewDots: return primitives.plot.valuepoint();
-          case scalarViewLine: return primitives.plot.valueline();
-          case scalarViewArea: return primitives.plot.valuearea();
-          default: return primitives.plot.valueline();
-        }
-    }
-    return primitives.plot.valueline();
-  }
-
-  private getNavArea(): any {
-    switch (this.temporalEntityKind) {
-      case TemporalEntityKind.Bar:
-        return primitives.plot.ohlcarea();
-      case TemporalEntityKind.Quote:
-        return primitives.plot.quotearea();
-      case TemporalEntityKind.Trade:
-        return primitives.plot.tradearea();
-      case TemporalEntityKind.Scalar:
-        return primitives.plot.valuearea();
-    }
-    return primitives.plot.valuearea();
   }
 
   public saveToSvg(): void {
     const d = new Date();
     const filename =
-      `linear-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
+      `frequency-response-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
     const e = d3.select('#' + this.widthContainerId).node() as Element;
     Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);

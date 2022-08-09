@@ -13,6 +13,7 @@ import { MbComponent } from './mb.component';
 import { SyntheticDataModule } from './mb-samples/synthetic-data/synthetic-data.module';
 import { OhlcvChartStudyModule } from './mb-samples/ohlcv-chart-study/ohlcv-chart-study.module';
 import { InstrumentsTableModule } from './mb-samples/instruments-table/instruments-table.module';
+import { SampleFrequencyResponseModule } from './mb-samples/components/frequency-response/sample-frequency-response.module';
 import { SampleSparklineModule } from './mb-samples/components/sparkline/sample-sparkline.module';
 import { SampleMultilineModule } from './mb-samples/components/multiline/sample-multiline.module';
 import { SampleStacklineModule } from './mb-samples/components/stackline/sample-stackline.module';
@@ -36,6 +37,7 @@ import { SampleSwatchesModule } from './mb-samples/components/swatches/sample-sw
     SyntheticDataModule,
     OhlcvChartStudyModule,
     InstrumentsTableModule,
+    SampleFrequencyResponseModule,
     SampleSparklineModule,
     SampleMultilineModule,
     SampleStacklineModule,

@@ -7,53 +7,38 @@
   height: 1px;
 }
 
+.panel {
+  margin: 0;
+  margin-bottom: 16px;
+}
+
 .button-toggle-group {
   margin: 0;
   margin-right: 16px;
 }
 
-.slide-toggle {
-  margin: 0;
-  margin-right: 16px;
-  vertical-align: middle;
-}
-
-mat-slide-toggle .mat-icon {
-  vertical-align: bottom;
-}
-
 :host ::ng-deep {
-  path.candle.body {
-    stroke-width: 1px; // 0;
+  text {
+    cursor: default;
   }
 
-  path.ohlc {
-    stroke-width: 1px;
+  .filter-response .legend .label circle {
+    stroke-width: 2px;
+  }
+  
+  .filter-response .subfigure text {
+    font-weight: bold;
   }
 
-  path.point {
-    stroke-width: 1.5px;
+  .line {
+    stroke-width: 2px;
   }
-
-  path.line {
-    stroke-width: 1;
-  }
-
-  .extent {
-    fill-opacity: 0.125;
-    shape-rendering: crispEdges;
+  
+  .line.hover {
+    stroke-width: 6px;
   }
 
   .coords {
     font: 10px sans-serif;
-  }
-
-  .crosshair {
-    cursor: crosshair;
-    font: 10px sans-serif;
-  }
-
-  .crosshair path.wire {
-    stroke-dasharray: 1, 1;
   }
 }

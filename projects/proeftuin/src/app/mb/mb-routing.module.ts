@@ -13,6 +13,10 @@ const routes: Routes = [
       { path: 'synthetic-data', component: SyntheticDataComponent },
       { path: 'instruments-table', component: InstrumentsTableComponent },
       {
+        path: 'comp-freqresp', loadChildren: () =>
+          import('./mb-samples/components/frequency-response/sample-frequency-response.module').then(m => m.SampleFrequencyResponseModule)
+      },
+      {
         path: 'comp-sparkline', loadChildren: () =>
           import('./mb-samples/components/sparkline/sample-sparkline.module').then(m => m.SampleSparklineModule)
       },

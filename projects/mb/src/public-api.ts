@@ -146,6 +146,10 @@ export * from './lib/trading/instruments/types/fund';
 export * from './lib/trading/instruments/industry-classification/icb-taxonomy';
 export * from './lib/trading/instruments/industry-classification/gics-taxonomy';
 
+export * from './lib/trading/indicators/indicator/frequency-response/frequency-response.interface';
+export * from './lib/trading/indicators/indicator/frequency-response/frequency-response';
+export * from './lib/trading/indicators/simple-moving-average';
+
 export * from './lib/trading/indicators/indicator-type.enum';
 export * from './lib/trading/indicators/indicator-output-type.enum';
 export * from './lib/trading/trading.module';

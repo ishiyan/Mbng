@@ -1,0 +1,313 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Defaults</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-frequency-response-chart [data]="[sma7, sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Percentage width</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="200"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="200" [data]="[sma7, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>style="width:100%"</mat-card-subtitle>
+      <mb-frequency-response-chart style="width:100%" [data]="[sma7, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="'50%'"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="'50%'" [data]="[sma7, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>style="min-width:200px;max-width:400px" [width]="'50%'"</mat-card-subtitle>
+      <mb-frequency-response-chart  style="min-width:200px;max-width:400px" [width]="'50%'" [data]="[sma7, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Percentage height</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="'50%'" [height]="200"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="'50%'" [height]="200" [data]="[sma6, sma2]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="300" [height]="'80%width'"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="300" [height]="'80%width'" [data]="[sma6, sma2]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="'50%'" [height]="'80%width'"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="'50%'" [height]="'80%width'" [data]="[sma6, sma2]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[width]="'50%'" [height]="'80%width'" style="min-height:100px;max-height:300px"</mat-card-subtitle>
+      <mb-frequency-response-chart [width]="'50%'" [height]="'80%width'" style="min-height:100px;max-height:300px" [data]="[sma6, sma2]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>X period [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minPeriod]="2" [maxPeriod]="8" [xmode]="'period'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minPeriod]="2" [maxPeriod]="8" [xmode]="'period'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>X frequency [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minFrequency]="0.5" [maxFrequency]="0.8" [xmode]="'frequency'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minFrequency]="0.5" [maxFrequency]="0.8" [xmode]="'frequency'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Y decibels [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minDb]="-60" [maxDb]="-20" [ymode]="'powerDb'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minDb]="-60" [maxDb]="-20" [ymode]="'powerDb'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[minDb]="-40" [maxDb]="-5" [ymode]="'amplitudeDb'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minDb]="-40" [maxDb]="-5" [ymode]="'amplitudeDb'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Y percentages [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minPct]="-1" [maxPct]="20" [ymode]="'powerPct'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minPct]="-1" [maxPct]="20" [ymode]="'powerPct'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[minPct]="-1" [maxPct]="40" [ymode]="'amplitudePct'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minPct]="-1" [maxPct]="40" [ymode]="'amplitudePct'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Y phase degrees [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minDeg]="-150" [maxDeg]="90" [ymode]="'phaseDeg'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minDeg]="-150" [maxDeg]="90" [ymode]="'phaseDeg'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Sub-figure</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[subfig]="'(a)'" [width]="200"<br/>[subfig]="'(b)'" [width]="200" [ymode]="'powerPct'"</mat-card-subtitle>
+      <table><tr>
+        <td><mb-frequency-response-chart [subfig]="'(a)'" [width]="200" [data]="[sma5, sma3]"></mb-frequency-response-chart></td>
+        <td><mb-frequency-response-chart [subfig]="'(b)'" [width]="200" [ymode]="'powerPct'" [data]="[sma5, sma3]"></mb-frequency-response-chart></td>
+      </tr></table>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Settings panel</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[settingsPanelVisible]="false"</mat-card-subtitle>
+      <mb-frequency-response-chart [data]="[sma7]" [settingsPanelVisible]="false"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[settingsPanelVisible]="true"</mat-card-subtitle>
+      <mb-frequency-response-chart [data]="[sma7]" [settingsPanelVisible]="true"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Save SVG button</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[saveSvgVisible]="true"</mat-card-subtitle>
+      <mb-frequency-response-chart [data]="[sma7]" [settingsPanelVisible]="true" [saveSvgVisible]="true"></mb-frequency-response-chart>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[saveSvgVisible]="false"</mat-card-subtitle>
+      <mb-frequency-response-chart [data]="[sma7]" [settingsPanelVisible]="true" [saveSvgVisible]="false"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Value range</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[min]="0" [max]="200"</mat-card-subtitle>
+      <mb-multiline [configuration]="[configLine]"
+          [data]="[dataOhlcv]" [min]="0"  [max]="200" [valueAxis]="['grid']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[min]="80" [max]="110"</mat-card-subtitle>
+      <mb-multiline [configuration]="[configLine]"
+          [data]="[dataOhlcv]" [min]="80"  [max]="110" [valueAxis]="['grid']"></mb-multiline>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Time range</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[from]="data[0].time" [till]="data[100].time"</mat-card-subtitle>
+      <mb-multiline [configuration]="[configLine]"
+          [data]="[dataOhlcv]" [from]="dataOhlcv[0].time" [till]="dataOhlcv[100].time" [valueAxis]="['grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[from]="data[100].time" [till]="data[200].time"</mat-card-subtitle>
+      <mb-multiline [configuration]="[configLine]"
+          [data]="[dataOhlcv]" [from]="dataOhlcv[100].time" [till]="dataOhlcv[200].time" [valueAxis]="['grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[from]="data[200].time" [till]="data[250].time"</mat-card-subtitle>
+      <mb-multiline [configuration]="[configLine]"
+          [data]="[dataOhlcv]" [from]="dataOhlcv[200].time" [till]="dataOhlcv[250].time" [valueAxis]="['grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Time axis</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[timeAxis]="['top','bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [timeAxis]="['top','bottom']"></mb-multiline>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Value axis</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['grid']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['grid']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','grid']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','grid']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right','grid']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right','grid']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right','grid']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right','grid']"></mb-multiline>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Both axes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['grid']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','grid']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right','grid']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right','grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right','grid']" [timeAxis]="['bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right','grid']" [timeAxis]="['bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right','grid']" [timeAxis]="['top','bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right','grid']" [timeAxis]="['top','bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right']" [timeAxis]="['top','bottom']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right']" [timeAxis]="['top','bottom']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','right','grid']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','right','grid']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left','grid']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left','grid']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['left']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['left']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right','grid']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right','grid']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['right']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['right']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[valueAxis]="['grid']" [timeAxis]="['top']"</mat-card-subtitle>
+      <mb-multiline [data]="[dataOhlcv]" [configuration]="[configLine]" [valueAxis]="['grid']" [timeAxis]="['top']"></mb-multiline>
+    </mat-card-content>
+  </mat-card>
+
+</div>

@@ -3,6 +3,13 @@ import { Note } from './shared/note.interface';
 export const notes: Note[] =
   [
     {
+      title: 'Frequency response of an indicator',
+      summary: 'Indicators as Digital Signal Processing filters',
+      route: '4',
+      created: '2022-08-05',
+      tags: ['Trading', 'Indicators', 'Moving averages']
+    },
+    {
       title: 'Simple moving average',
       summary: 'Exploring simple moving average',
       route: '3',

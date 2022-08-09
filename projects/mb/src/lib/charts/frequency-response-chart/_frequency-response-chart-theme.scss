@@ -1,4 +1,3 @@
-//@use '@angular/material' as mat;
 @mixin frequency-response-chart-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -38,121 +37,27 @@
       }
     }
 
-    mat-slide-toggle:not(.mat-disabled) .mat-icon {
-      color: mat.get-color-from-palette($accent, text);
-    }
-
-    mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
-      color: mat.get-color-from-palette($foreground, secondary-text);
-    }
-
-    // red: #c60; green: #6c0;
-    // red: #FF0000; green: #00AA00;
-    $line-color: mat.get-color-from-palette($foreground, text);
-    $up-color: #6c0;
-    $down-color: #c60;
-
     text {
-      fill: $line-color;
+      fill: mat.get-color-from-palette($foreground, secondary-text);
     }
 
-    path.candle {
-      // stroke: none;
-      stroke: $line-color;
+    .filter-response .coords {
+      fill: mat.get-color-from-palette($foreground, text);
     }
-
-    path.candle.up {
-      fill: if($is-dark-theme, $line-color, transparent);
-      // stroke: $line-color;
-
-      // fill: if($is-dark-theme, mat.get-color-from-palette($primary), transparent);
-      // stroke: mat.get-color-from-palette($primary);
-
-      // fill: $up-color;
-      // stroke: $up-color;
-    }
-
-    path.candle.down {
-      fill: if($is-dark-theme, transparent, $line-color);
-      // stroke: $line-color;
-
-      // fill: if($is-dark-theme, transparent, mat.get-color-from-palette($primary));
-      // stroke: mat.get-color-from-palette($primary);
-
-      // fill: $down-color;
-      // stroke: $down-color;
-    }
-
-    path.ohlc {
-      // fill: $line-color;
-      // stroke: $line-color;
-
+  
+    .filter-response .axis path {
       fill: none;
-      stroke: $line-color;
+      stroke: mat.get-color-from-palette($foreground, secondary-text);
     }
-
-    path.ohlc.up {
-      // fill: mat.get-color-from-palette($primary, 400);
-      // stroke: mat.get-color-from-palette($primary, 400);
-
-      // fill: $up-color;
-      // stroke: $up-color;
-
+    
+    .filter-response .axis line {
       fill: none;
-      stroke: $line-color;
-    }
-
-    path.ohlc.down {
-      // fill: mat.get-color-from-palette($primary, 600);
-      // stroke: mat.get-color-from-palette($primary, 600);
-
-      // fill: $down-color;
-      // stroke: $down-color;
-
-      fill: none;
-      stroke: $line-color;
-    }
-
-    path.volume {
-      // fill: if($is-dark-theme, mat.get-color-from-palette($foreground, darker), mat.get-color-from-palette($foreground, darker));
-      fill: mat.get-color-from-palette($foreground, divider, 0.1);
-    }
-
-    path.point {
-      // fill: mat.get-color-from-palette($background);
-      // stroke: mat.get-color-from-palette($primary);
-
-      fill: none;
-      stroke: $line-color;
-    }
-
-    path.line {
-      // fill: none;
-      // stroke: mat.get-color-from-palette($primary);
-
-      fill: none;
-      stroke: $line-color;
-    }
-
-    path.area {
-      fill: mat.get-color-from-palette($background, unselected-chip, 0.5);
-    }
-
-    rect.selection {
-      fill: mat.get-color-from-palette($foreground, text, 0.3);
-      stroke: none;
-    }
-
-    .extent {
-      stroke: mat.get-color-from-palette($background);
-    }
-
-    .crosshair path.wire {
       stroke: mat.get-color-from-palette($foreground, divider);
     }
-
-    .crosshair .axisannotation path {
-      fill: mat.get-color-from-palette($background, unselected-chip);
+  
+    path.line {
+      fill: none;
+      stroke: mat.get-color-from-palette($foreground, text);
     }
   }
 }

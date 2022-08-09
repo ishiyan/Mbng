@@ -19,6 +19,12 @@ export const treeNodes: MbSample[] = [
     name: 'Components',
     children: [
       {
+        name: 'Frequency response',
+        children: [
+          {name: 'Features', header: 'Frequency response features', route: 'comp-freqresp/s1'}
+        ]
+      },
+      {
         name: 'Ohlcv chart',
         children: [
           {name: 'Candlestick chart', header: 'Candlestick chart', route: 'ohlcv-chart-study'}
