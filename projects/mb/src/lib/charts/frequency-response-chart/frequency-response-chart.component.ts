@@ -52,7 +52,7 @@ const color = d3.interpolateCool;
 
 /** The text to place before the SVG line when exporting chart as SVG. */
 const textBeforeSvg = `<html><meta charset="utf-8"><style>
-  text { fill: black; font-family: Arial, Helvetica, sans-serif; cursor: default; }
+  text { fill: black; font-size: 13px; font-family: Arial, Helvetica, sans-serif; cursor: default; }
   .filter-response .legend .label circle { stroke-width: 2px; }
   .filter-response .coords { fill: black; font: 10px sans-serif; }
   .filter-response .subfigure text { font-weight: bold; }
@@ -99,10 +99,10 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     this.render();
   }
 
-  // /** The width of the chart as a fraction of the window width. */
-  // @Input() widthFraction = 1;
-  // /** The height of the chart as a fraction of the chart width. */
-  // @Input() heightFraction = 0.6180340;
+  // xxx /** The width of the chart as a fraction of the window width. */
+  // xxx @Input() widthFraction = 1;
+  // xxx /** The height of the chart as a fraction of the chart width. */
+  // xxx @Input() heightFraction = 0.6180340;
 
   /** The array of frequency responses to use. */
   @Input() set data(dat: FrequencyResponseResult[]) {
@@ -292,7 +292,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   @Input() set maxPct(value: number | undefined) {
     this.forcedPctMax = value;
   }
-  
+
   private forcedDegMin?: number;
   private forcedDegMax?: number;
   /** The minimum y phase degrees to use. */
@@ -318,6 +318,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisOne = this;
     const margin = { top: 20, bottom: 30, right: 10, left: 35 };
 
@@ -410,15 +411,15 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     g.append('g').attr('class', 'subfigure').append('text')
       .attr('class', 'subfigure').attr('text-anchor', 'left')
       .attr('x', -margin.left).attr('y', height + 25).text(this.subFigureLetter || null);
-  
+
     const glines = g.append('g').attr('class', 'lines');
     glines.append('clipPath').attr('id', this.clipId)
       .append('rect').attr('width', width).attr('height', height);
     for (let i = 0; i < ll; ++i) {
       const l = componentY.lines[i];
       const lineGenerator = d3.line().curve(d3.curveCatmullRomOpen)
-        .x((d: any, i: number) => xScale(componentX.data[i]))
-        .y((d: any, i: number) => yScale(l.line[i]));
+        .x((d: any, j: number) => xScale(componentX.data[j]))
+        .y((d: any, j: number) => yScale(l.line[j]));
 
       glines.append('g').attr('class', 'line')
         .style('fill', 'none').style('stroke', l.color || color(i / ll))
