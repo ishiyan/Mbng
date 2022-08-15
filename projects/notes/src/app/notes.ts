@@ -40,7 +40,7 @@ export const visualisingFinancialDataWithLinearChart: Note = {
   tags: ['Data', 'Visualization']
 };
 
-export const notes: Note[] = [     
+export const notes: Note[] = [
   {
     title: 'Comparing triple exponential moving average with SMA',
     summary: 'Comparing triple exponential moving average with the simple moving average',

@@ -13,9 +13,9 @@
 Install latest tools, run `ng update`, run `ncu`, run `npm install`.
 
 ```bash
-sudo npm install -g @angular/cli@latest
-sudo npm install -g npm-check-updates@latest
-sudo npm install -g sass@latest
+sudo npm install --location=global @angular/cli@latest
+sudo npm install --location=global npm-check-updates@latest
+sudo npm install --location=global sass@latest
 npm list -g
 
 # This will give an overview

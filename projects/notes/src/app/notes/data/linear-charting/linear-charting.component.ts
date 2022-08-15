@@ -5,7 +5,7 @@ import { ScalarSeries } from '../../../shared/data/scalar-series/scalar-series.i
 import { TradeSeries } from '../../../shared/data/trade-series/trade-series.interface';
 import { QuoteSeries } from '../../../shared/data/quote-series/quote-series.interface';
 import { Series } from '../../../shared/data/series.interface';
-import { visualisingFinancialDataWithLinearChart } from '../../../notes'
+import { visualisingFinancialDataWithLinearChart } from '../../../notes';
 
 @Component({
   selector: 'app-data-linear-charting',
@@ -13,7 +13,7 @@ import { visualisingFinancialDataWithLinearChart } from '../../../notes'
   styleUrls: ['./linear-charting.component.scss']
 })
 export class LinearChartingComponent {
-  protected lc = visualisingFinancialDataWithLinearChart; 
+  protected lc = visualisingFinancialDataWithLinearChart;
 
   protected seriesSelection!: Series;
   protected barSeriesSelection!: BarSeries;

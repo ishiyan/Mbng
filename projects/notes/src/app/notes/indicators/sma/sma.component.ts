@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverage } from '../../../notes'
+import { simpleMovingAverage } from '../../../notes';
 
 @Component({
   selector: 'app-ind-sma',
