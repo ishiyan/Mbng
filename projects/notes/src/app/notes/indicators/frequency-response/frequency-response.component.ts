@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { FrequencyResponse, SimpleMovingAverage } from 'projects/mb/src/public-api';
 
-import {frequencyResponseOfAnIndicator, simpleMovingAverage} from '../../../notes';
+import { frequencyResponseOfAnIndicator, simpleMovingAverage } from '../../../notes';
 
 const sl = 4096;
 
