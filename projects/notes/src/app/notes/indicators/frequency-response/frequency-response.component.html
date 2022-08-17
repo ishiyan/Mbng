@@ -45,6 +45,43 @@
     </q>
 </p>
 <mb-frequency-response-chart [data]="[sma2,sma6]"></mb-frequency-response-chart>
+<p></p>
+
+<figure class="figwide">
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%">
+        <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'" [data]="[identity]"></mb-frequency-response-chart>
+        <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'phaseDeg'" [data]="[identity]"></mb-frequency-response-chart>
+    </div>
+    <figcaption>The amplitude (a) and the plase (b) charts of the identity filter.</figcaption>
+</figure>
+
+<figure class="figwide">
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%">
+        <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'amplitudeDb'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+        <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%">
+        <mb-frequency-response-chart [subfig]="'(c)'" [width]="'50%'" [height]="200" [ymode]="'powerDb'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+        <mb-frequency-response-chart [subfig]="'(d)'" [width]="'50%'" [height]="200" [ymode]="'powerPct'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+    </div>
+    <figcaption>A power in decibels (a) and in percents (b), and an amplitude in decibels (c) and in percents (d).</figcaption>
+</figure>
+
+<figure class="figwide">
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%">
+        <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'" [xmode]="'frequency'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+        <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'" [xmode]="'period'" [maxPeriod]="15" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+    </div>
+    <figcaption>An amplitude as a function of a normalized frequency (a) and a period (b).</figcaption>
+</figure>
+
+<figure class="figwide">
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%">
+        <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'frequency'" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+        <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'" [maxPeriod]="15" [data]="[sma2, sma3]"></mb-frequency-response-chart>
+    </div>
+    <figcaption>A phase difference as a function of a normalized frequency (a) and a period (b).</figcaption>
+</figure>
 
 <h1>Bibliography</h1>
 
