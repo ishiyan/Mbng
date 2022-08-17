@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import {weightedMovingAverage, simpleMovingAverage} from '../../../notes';
+import { weightedMovingAverage, simpleMovingAverage } from '../../../notes';
 
 @Component({
   selector: 'app-ind-wma',

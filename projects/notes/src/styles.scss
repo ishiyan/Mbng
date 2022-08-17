@@ -112,6 +112,10 @@ q::after {
 
 // Figures
 
+body {
+  counter-reset: cntFig;
+}
+
 figure {
   counter-increment: cntFig;
 }

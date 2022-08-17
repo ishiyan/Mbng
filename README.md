@@ -34,6 +34,14 @@ npm install
 - Go to the `src/themes` and run `build_themes_compressed.cmd`.
 - Run `prod_notes.cmd`
 
+If `ng serve notes` command gives the
+`Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory`
+error, increase the memory using
+
+```bash
+export NODE_OPTIONS="--max-old-space-size=8192"
+```
+
 ## Updates
 
 1. [angular cli](https://github.com/angular/angular-cli/releases)
