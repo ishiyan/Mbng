@@ -47,8 +47,7 @@ interface yComponentType {
   max: number;
 }
 
-//const color = d3.scaleLinear().domain([0, 1]).range(['#0000ff', '#00ff00']).interpolate(d3.interpolateHcl),
-const color = d3.interpolateCool;
+const color = d3.interpolateCool; // d3.interpolateWarm d3.interpolateCool d3.interpolateSinebow
 
 /** The text to place before the SVG line when exporting chart as SVG. */
 const textBeforeSvg = `<html><meta charset="utf-8"><style>

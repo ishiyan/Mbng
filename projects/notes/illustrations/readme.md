@@ -26,3 +26,7 @@
 ## SVG cleaner
 
 - [https://github.com/RazrFalcon/svgcleaner](https://github.com/RazrFalcon/svgcleaner)
+
+## Kroki
+
+- [https://kroki.io/examples.html](https://kroki.io/examples.html)

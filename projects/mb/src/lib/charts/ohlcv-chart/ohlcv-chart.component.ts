@@ -5,13 +5,12 @@ import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
 import { Ohlcv } from '../../data/entities/ohlcv';
-/* import { Scalar } from '../../data/entities/scalar';
-import { Band } from '../entities/band';
+import { Scalar } from '../../data/entities/scalar';
+/* import { Band } from '../entities/band';
 import { Heatmap } from '../entities/heatmap'; */
 import * as Template from './template/template';
 import * as Chart from './chart/chart';
 import { Downloader } from '../downloader';
-import { Scalar } from '../../data/entities/scalar';
 
 /** *Ohlcv* view type: *candlesticks*. */
 const ohlcvViewCandlesticks = 0;
@@ -74,6 +73,9 @@ const smoothBrushing = false;
   styleUrls: ['./ohlcv-chart.component.scss']
 })
 export class OhlcvChartComponent implements OnChanges {
+  private random = Math.random().toString(36).substring(2);
+  protected svgContainerId = 'ohlcv-chart-svg-' + this.random;
+  protected widthContainerId = 'ohlcv-chart-width-' + this.random;
   private config!: Template.Configuration;
   private currentSelection: any = null;
   private renderVolume: boolean;
@@ -81,7 +83,6 @@ export class OhlcvChartComponent implements OnChanges {
   private ohlcvView: number;
   public readonly ohlcvViewCandlesticks = ohlcvViewCandlesticks;
   public readonly ohlcvViewBars = ohlcvViewBars;
-  @ViewChild('container', { static: true }) container!: ElementRef;
 
   private static valueToPixels(value: number | string, reference: number): number {
     if (typeof value === 'number') {
@@ -125,7 +126,6 @@ export class OhlcvChartComponent implements OnChanges {
         t.remove();
       }
     } else {
-      // console.log('node is null');
       rect = { width: 100, height: 12 };
     }
     return rect;
@@ -391,8 +391,7 @@ export class OhlcvChartComponent implements OnChanges {
 
   private static createPricePane(cfg: Template.Configuration, lh: Chart.HorizontalLayout,
                                  lv: Chart.VerticalLayout, timeScale: any, timeAnnotationBottom: any, svg: any,
-                                 isCandlestick: boolean, isVolume: boolean, isCrossHair: boolean): Chart.PricePane {
-
+                                 isCandlestick: boolean, isVolume: boolean, isCrossHair: boolean, id: string): Chart.PricePane {
     const cf = cfg.pricePane;
     const pane = new Chart.PricePane();
     pane.yPrice = d3.scaleLinear().range([lv.pricePane.height, 0]);
@@ -403,7 +402,7 @@ export class OhlcvChartComponent implements OnChanges {
       .xScale(timeScale).yScale(pane.yPrice);
     pane.priceAccessor = pane.priceShape.accessor();
 
-    const clip = 'price-clip';
+    const clip = 'price-clip-' + id;
     const clipUrl = `url(#${clip})`;
     pane.group = svg.append('g').attr('class', 'price-pane').attr('transform', `translate(${lh.content.left}, ${lv.pricePane.top})`);
     pane.group.append('clipPath').attr('id', clip).append('rect').attr('x', 0).attr('y', pane.yPrice(1))
@@ -558,7 +557,7 @@ export class OhlcvChartComponent implements OnChanges {
 
   private static createIndicatorPane(index: number, cfg: Template.Configuration, lh: Chart.HorizontalLayout,
                                      lv: Chart.VerticalLayout, timeScale: any, timeAxisBottom: any, svg: any,
-                                     isCrossHair: boolean): Chart.IndicatorPane {
+                                     isCrossHair: boolean, id: string): Chart.IndicatorPane {
     const block = lv.indicatorPanes[index];
     const cf = cfg.indicatorPanes[index];
     const pane = new Chart.IndicatorPane();
@@ -567,7 +566,7 @@ export class OhlcvChartComponent implements OnChanges {
     pane.yMarginFactorTop = 1 + factor;
     pane.yMarginFactorBottom = 1 - factor;
 
-    const clip = `indicator-clip-${index}`;
+    const clip = `indicator-clip-${index}-${id}`;
     const clipUrl = `url(#${clip})`;
     pane.group = svg.append('g').attr('class', 'indicator-pane').attr('transform', `translate(${lh.content.left}, ${block.top})`);
     pane.group.append('clipPath').attr('id', clip).append('rect').attr('x', 0).attr('y', pane.yValue(1))
@@ -921,9 +920,9 @@ export class OhlcvChartComponent implements OnChanges {
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('mb-candlesticks',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-candlesticks.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-bars.svg'));
+      sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-bars.svg'));
 
     this.renderVolume = this.config ? this.config.volumeInPricePane : true;
     this.renderCrosshair = this.config ? this.config.crosshair : true;
@@ -931,26 +930,42 @@ export class OhlcvChartComponent implements OnChanges {
   }
 
   public downloadSvg(): void {
-    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.container.nativeElement.parentNode, 'chart'),
-      textBeforeSvg, textAfterSvg), 'ohlcv_chart.html');
+    const d = new Date();
+    const filename =
+      `olcv-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
+    const e = d3.select('#' + this.widthContainerId).node() as Element;
+    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
+      textBeforeSvg, textAfterSvg), filename);
   }
 
   ngOnChanges() {
     this.render();
   }
 
+  private afterViewInit = false;
+  ngAfterViewInit() {
+    this.afterViewInit = true;
+    setTimeout(() => this.render(), 0);
+  }
+
   @HostListener('window:resize', [])
   public render(): void {
-    const chartId = '#chart';
-    // console.log('width=' + this.container.nativeElement.getBoundingClientRect().width);
-    // console.log('offsetWidth=' + this.container.nativeElement.offsetWidth);
-    // const w = this.container.nativeElement.getBoundingClientRect().width;
-    const w = this.container.nativeElement.offsetWidth;
+    if (!this.afterViewInit) {
+      return;
+    }
+
+    const id = this.random;
+    const e = d3.select('#' + this.widthContainerId).node() as any; // Element;
+    // console.log('offsetWidth=' + e.offsetWidth);
+    // console.log('width=' + e.getBoundingClientRect().width);
+    // const w = e.getBoundingClientRect().width;
+    const w = e.offsetWidth;
     const cfg = this.config;
     const lh = OhlcvChartComponent.layoutHorizontal(cfg, w);
 
-    d3.select(chartId).select('svg').remove();
-    const svg: any = d3.select(chartId).append('svg')
+    const sel = d3.select('#' + this.svgContainerId);
+    sel.select('svg').remove();
+    const svg: any = sel.append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet').attr('width', lh.width);
 
     const lv = OhlcvChartComponent.layoutVertical(svg, cfg, lh);
@@ -959,12 +974,12 @@ export class OhlcvChartComponent implements OnChanges {
     const timePane = OhlcvChartComponent.createTimePane(cfg, lh, lv, svg);
 
     const pricePane = OhlcvChartComponent.createPricePane(cfg, lh, lv, timePane.timeScale, timePane.timeAnnotation,
-      svg, this.ohlcvView === ohlcvViewCandlesticks, this.renderVolume, this.renderCrosshair);
+      svg, this.ohlcvView === ohlcvViewCandlesticks, this.renderVolume, this.renderCrosshair, id);
 
     const indicatorPanes: Chart.IndicatorPane[] = [];
     for (let i = 0; i < cfg.indicatorPanes.length; ++i) {
       const pane = OhlcvChartComponent.createIndicatorPane(i, cfg, lh, lv, timePane.timeScale, timePane.timeAxis,
-        svg, this.renderCrosshair);
+        svg, this.renderCrosshair, id);
       indicatorPanes.push(pane);
     }
 

@@ -10,22 +10,16 @@
 .button-toggle-group {
   margin: 0px;
   margin-right: 16px;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-toggle {
-  margin: 0px;
-  padding: 0px;
-}
-
-.svg-icon {
-  margin: 0px;
 }
 
 .slide-toggle {
-  margin: 0px;
+  margin: 0;
   margin-right: 16px;
+  vertical-align: middle;
+}
+
+mat-slide-toggle .mat-icon {
+  vertical-align: bottom;
 }
 
 :host ::ng-deep {

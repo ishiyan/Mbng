@@ -1,4 +1,4 @@
-import { Ohlcv } from '../../../data/entities/ohlcv';
+import { Bar } from '../../../data/entities/bar';
 
 /** Describes an ohlcv data. */
 export class OhlcvData {
@@ -6,7 +6,7 @@ export class OhlcvData {
   public name = '';
 
   /** Data array. */
-  public data: Ohlcv[] = [];
+  public data: Bar[] = [];
 
   /** If data is displayed as candlesticks or as bars */
   public candlesticks = true;

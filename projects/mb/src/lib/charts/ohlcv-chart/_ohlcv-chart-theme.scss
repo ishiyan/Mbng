@@ -1,4 +1,3 @@
-//@use '@angular/material' as mat;
 @mixin ohlcv-chart-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -13,72 +12,106 @@
         stroke: mat.get-color-from-palette($foreground, hint-text);
       }
     }
+
     .mat-button-toggle-appearance-standard {
-      .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, primary-text);
-      }
-    }
-    .mat-button-toggle-checked {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, secondary-text);
       }
+    }
+
+    .mat-button-toggle-checked {
+      .svg-icon {
+        stroke: mat.get-color-from-palette($accent, text);
+      }
       &.mat-button-toggle-appearance-standard {
         .svg-icon {
-          stroke: mat.get-color-from-palette($foreground, primary-text);
+          stroke: mat.get-color-from-palette($accent, text);
         }
       }
     }
+
     .mat-button-toggle-disabled {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, disabled-button);
       }
     }
 
+    mat-slide-toggle:not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($accent, text);
+    }
+
+    mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
+      color: mat.get-color-from-palette($foreground, secondary-text);
+    }
+
+    $line-color: mat.get-color-from-palette($foreground, secondary-text);
+
     // red: #c60; green: #6c0;
     // red: #FF0000; green: #00AA00;
-    //$line-color: mat.get-color-from-palette($foreground, primary-text);//if($is-dark-theme, white, black);
-    $line-color: mat.get-color-from-palette($foreground, text);
+    $up-color: #6c0;
+    $down-color: #c60;
 
     text {
       fill: $line-color;
     }
+
     path.candle {
-      stroke: black;
+      stroke: $line-color;
     }
+
     path.candle.up {
-      fill: white;
+      // stroke: $up-color;
+      // fill: $up-color;
+      fill: if($is-dark-theme, $line-color, transparent);
     }
+
     path.candle.down {
-      fill: black;
+      // stroke: $down-color;
+      // fill: $down-color;
+      fill: if($is-dark-theme, transparent, $line-color);
     }
+
+    path.ohlc {
+      stroke: $line-color;
+      fill: none;
+    }
+
     path.ohlc.up {
-      fill: none;
+      // stroke: $up-color;
       stroke: $line-color;
     }
+
     path.ohlc.down {
-      fill: none;
+      // stroke: $down-color;
       stroke: $line-color;
     }
+
     path.volume {
       // fill: if($is-dark-theme, mat.get-color-from-palette($foreground, darker), mat.get-color-from-palette($foreground, darker));
       fill: mat.get-color-from-palette($foreground, divider, 0.1);
     }
+
     path.area {
       fill: mat.get-color-from-palette($background, unselected-chip, 0.5);
     }
+
     path.line {
       stroke: $line-color;
     }
+
     rect.selection {
-      fill: mat.get-color-from-palette($foreground, divider, 0.3);
+      fill: mat.get-color-from-palette($foreground, text, 0.3);
       stroke: none;
     }
+
     .extent {
       stroke: mat.get-color-from-palette($background);
     }
+
     .crosshair path.wire {
       stroke: mat.get-color-from-palette($foreground, divider);
     }
+
     .crosshair .axisannotation path {
       fill: mat.get-color-from-palette($background, unselected-chip);
     }

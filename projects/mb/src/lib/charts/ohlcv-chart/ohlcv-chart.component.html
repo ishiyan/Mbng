@@ -1,4 +1,4 @@
-<div #container class="container"></div>
+<div id="{{widthContainerId}}" class="container"></div>
 
 <mat-expansion-panel expanded="false" *ngIf="viewMenu">
   <mat-expansion-panel-header>
@@ -15,11 +15,16 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">Volume</mat-slide-toggle>
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">Crosshair</mat-slide-toggle>
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
+    <mat-icon>leaderboard</mat-icon>
+  </mat-slide-toggle>
+  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
+    <mat-icon>add</mat-icon>
+  </mat-slide-toggle>
 
-  <button mat-raised-button color="accent" (click)="downloadSvg()" class="button" *ngIf="viewDownloadSvg">Save
-    SVG</button>
+  <button mat-button mat-mini-fab color="accent" (click)="downloadSvg()" *ngIf="viewDownloadSvg">
+    <mat-icon>download</mat-icon>
+  </button>  
 </mat-expansion-panel>
 
-<div id="chart"></div>
+<div id="{{svgContainerId}}"></div>

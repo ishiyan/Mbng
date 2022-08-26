@@ -1,6 +1,9 @@
 <h1>{{sma.title}}</h1>
 <app-bar-series-select label="example data" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
+<!--
 <mb-linear-chart [dataSeries]="dataSelection.data" [title]="dataSelection.mnemonic"></mb-linear-chart>
+-->
+<mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 <br />
 <hr />
 <h1>From [Ehlers2001]</h1>
