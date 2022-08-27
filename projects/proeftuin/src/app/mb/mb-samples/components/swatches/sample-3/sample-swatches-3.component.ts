@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { linearInterpolatedPalette } from 'projects/mb/src/lib/colors/linear-interpolated-palettes';
+import { linearInterpolatedPalette } from 'projects/mb/src/lib/colors/linear-interpolated-palette';
 
 @Component({
   selector: 'mb-sample-swatches-3',

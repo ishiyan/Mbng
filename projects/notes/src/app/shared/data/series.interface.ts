@@ -1,5 +1,5 @@
 import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
-import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.interface';
+import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.type';
 
 /** Contains a series of temporal entities. */
 export interface Series {

@@ -1,5 +1,5 @@
 import { LineConfiguration } from 'mb';
-import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.interface';
+import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.type';
 import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
 
 import { primaryColor } from '../../theme-colors';

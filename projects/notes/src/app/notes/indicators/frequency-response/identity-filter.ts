@@ -1,4 +1,4 @@
-import { Filter } from "mb";
+import { Filter } from 'mb';
 
 export class IdentityFilter implements Filter {
   getName(): string {

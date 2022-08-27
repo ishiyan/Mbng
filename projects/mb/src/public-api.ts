@@ -25,7 +25,8 @@ export * from './lib/svg-viewer/svg-viewer.module';
 export * from './lib/snack-bar/snack-bar.service';
 export * from './lib/snack-bar/snack-bar.module';
 
-export * from './lib/colors/linear-interpolated-palettes';
+export * from './lib/colors/linear-interpolated-palette';
+export * from './lib/colors/predefined-interpolated-palettes';
 export * from './lib/colors/parametric-procedural-palettes';
 export * from './lib/colors/random-procedural-palettes';
 export * from './lib/colors/material-palettes';
@@ -41,7 +42,7 @@ export * from './lib/colors/colors.module';
 export * from './lib/data/historical-data'; // deprecated
 export * from './lib/data/data-series.interface';
 export * from './lib/data/entities/temporal-entity-kind.enum';
-export * from './lib/data/entities/temporal-entity.interface';
+export * from './lib/data/entities/temporal-entity.type';
 export * from './lib/data/entities/ohlcv'; // deprecated
 export * from './lib/data/entities/bar';
 export * from './lib/data/entities/quote';

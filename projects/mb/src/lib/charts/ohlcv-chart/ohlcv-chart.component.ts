@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input, HostListener, OnChanges } from '@angular/core';
+import { Component, Input, HostListener, OnChanges, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as d3 from 'd3';
@@ -72,7 +72,7 @@ const smoothBrushing = false;
   templateUrl: './ohlcv-chart.component.html',
   styleUrls: ['./ohlcv-chart.component.scss']
 })
-export class OhlcvChartComponent implements OnChanges {
+export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   private random = Math.random().toString(36).substring(2);
   protected svgContainerId = 'ohlcv-chart-svg-' + this.random;
   protected widthContainerId = 'ohlcv-chart-width-' + this.random;
@@ -81,6 +81,7 @@ export class OhlcvChartComponent implements OnChanges {
   private renderVolume: boolean;
   private renderCrosshair: boolean;
   private ohlcvView: number;
+  private afterViewInit = false;
   public readonly ohlcvViewCandlesticks = ohlcvViewCandlesticks;
   public readonly ohlcvViewBars = ohlcvViewBars;
 
@@ -942,7 +943,6 @@ export class OhlcvChartComponent implements OnChanges {
     this.render();
   }
 
-  private afterViewInit = false;
   ngAfterViewInit() {
     this.afterViewInit = true;
     setTimeout(() => this.render(), 0);
@@ -963,9 +963,9 @@ export class OhlcvChartComponent implements OnChanges {
     const cfg = this.config;
     const lh = OhlcvChartComponent.layoutHorizontal(cfg, w);
 
-    const sel = d3.select('#' + this.svgContainerId);
-    sel.select('svg').remove();
-    const svg: any = sel.append('svg')
+    const container = d3.select('#' + this.svgContainerId);
+    container.select('svg').remove();
+    const svg: any = container.append('svg')
       .attr('preserveAspectRatio', 'xMinYMin meet').attr('width', lh.width);
 
     const lv = OhlcvChartComponent.layoutVertical(svg, cfg, lh);

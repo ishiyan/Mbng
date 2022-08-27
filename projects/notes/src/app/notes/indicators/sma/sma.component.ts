@@ -5,6 +5,7 @@ import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
 import { SimpleMovingAverage } from 'mb';
+import { predefinedInterpolatedPalettes } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
 import { simpleMovingAverage } from '../../../notes';
@@ -37,17 +38,16 @@ const deepCopy = (obj: any): any => {
     return copy;
   }
   throw new Error('Unable to copy obj! Its type isn\'t supported.');
-}
+};
 
-const calculateSma = (bars: Bar[], sma: SimpleMovingAverage): Scalar[]  => {  
+const calculateSma = (bars: Bar[], sma: SimpleMovingAverage): Scalar[]  => {
   const scalars: Scalar[] = [];
-  for (let i =0; i < bars.length; i++) {
-    const bar = bars[i];
+  for (const bar of bars) {
     scalars.push({time: bar.time, value: sma.update(bar.close)});
   }
 
   return scalars;
-}
+};
 
 @Component({
   selector: 'app-ind-sma',
@@ -55,25 +55,6 @@ const calculateSma = (bars: Bar[], sma: SimpleMovingAverage): Scalar[]  => {
   styleUrls: ['./sma.component.scss']
 })
 export class SmaComponent {
-  protected sma = simpleMovingAverage;
-  protected dataSelection!: BarSeries;
-  protected configuration!: Configuration;
-
-  protected dataSelectionChanged(barSeries: BarSeries) {
-    const cloned = deepCopy(this.configTemplate) as Configuration;
-    const indicator = new SimpleMovingAverage(5);
-    cloned.ohlcv.name = barSeries.mnemonic;
-    cloned.ohlcv.data = barSeries.data;
-
-    const lineData = new LineData();
-    lineData.name = indicator.getName();
-    lineData.data = calculateSma(barSeries.data, indicator);
-    lineData.color = 'steelblue';
-    lineData.width = 2;
-    cloned.pricePane.lines.push(lineData);
-    this.configuration = cloned;
-    this.dataSelection = barSeries;
-  }
 
   private configTemplate: Configuration = {
     width: '100%', widthMin: 360, // widthMax: 700,
@@ -90,7 +71,7 @@ export class SmaComponent {
     ohlcv: { name: '', data: [], candlesticks: false },
     pricePane: {
       height: '30%', heightMin: 300, heightMax: 800,
-      valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10, 
+      valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10,
       bands: [],
       lineAreas: [],
       horizontals: [],
@@ -103,5 +84,52 @@ export class SmaComponent {
     menuVisible: true, downloadSvgVisible: true
   };
 
+  protected indicators = [
+    new SimpleMovingAverage(5),
+    new SimpleMovingAverage(15),
+    new SimpleMovingAverage(25),
+    new SimpleMovingAverage(35),
+    new SimpleMovingAverage(45),
+    new SimpleMovingAverage(55),
+    new SimpleMovingAverage(65)
+  ];
+
+  private selectedIndex = 0;
+  protected palettes: string[][] = predefinedInterpolatedPalettes(this.indicators.length);
+  protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected sma = simpleMovingAverage;
+  protected dataSelection!: BarSeries;
+  protected configuration!: Configuration;
+
+  protected selectionChanged(selection: string[]) {
+    this.selectedIndex = this.palettes.indexOf(selection);
+    this.selectedPalette = selection;
+    this.render();
+  }
+
+  protected dataSelectionChanged(barSeries: BarSeries) {
+    this.dataSelection = barSeries;
+    this.render();
+  }
+
+  private render() {
+    const cloned = deepCopy(this.configTemplate) as Configuration;
+    cloned.ohlcv.name = this.dataSelection.mnemonic;
+    cloned.ohlcv.data = this.dataSelection.data;
+
+    for (let i = 0; i < this.indicators.length; ++i) {
+      const indicator = this.indicators[i];
+      const lineData = new LineData();
+      lineData.name = indicator.getName();
+      lineData.data = calculateSma(this.dataSelection.data, indicator);
+      lineData.color = this.selectedPalette[i];
+      lineData.width = 1.5;
+      lineData.dash ='';
+      lineData.interpolation = 'stepAfter';
+      cloned.pricePane.lines.push(lineData);
+    }
+
+    this.configuration = cloned;
+  }
 
 }

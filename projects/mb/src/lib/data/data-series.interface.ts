@@ -1,4 +1,4 @@
-import { TemporalEntity } from './entities/temporal-entity.interface';
+import { TemporalEntity } from './entities/temporal-entity.type';
 
 /** Contains a series of temporal data elements. */
 export interface DataSeries {
