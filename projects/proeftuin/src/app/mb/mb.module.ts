@@ -23,6 +23,7 @@ import { SampleTreemapModule } from './mb-samples/components/treemap/sample-tree
 import { SampleCirclepackModule } from './mb-samples/components/circlepack/sample-circlepack.module';
 import { SampleVoronoiModule } from './mb-samples/components/voronoi/sample-voronoi.module';
 import { SampleSwatchesModule } from './mb-samples/components/swatches/sample-swatches.module';
+import { SampleDataEntitiesModule } from './mb-samples/components/data-entities/sample-data-entities.module';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { SampleSwatchesModule } from './mb-samples/components/swatches/sample-sw
     SampleTreemapModule,
     SampleCirclepackModule,
     SampleVoronoiModule,
-    SampleSwatchesModule
+    SampleSwatchesModule,
+    SampleDataEntitiesModule
   ],
   declarations: [
     MbComponent

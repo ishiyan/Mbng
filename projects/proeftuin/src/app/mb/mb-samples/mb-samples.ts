@@ -112,6 +112,12 @@ export const treeNodes: MbSample[] = [
           {name: 'Palettes from web', header: 'Palettes from web', route: 'comp-swatches/s7'},
           {name: 'Predefined interpolated palettes', header: 'Predefined interpolated palettes', route: 'comp-swatches/s8'}
         ]
+      },
+      {
+        name: 'Data entities',
+        children: [
+          {name: 'Bar component selector', header: 'Bar component selector', route: 'comp-data-entities/s1'}
+        ]
       }
     ]
   }

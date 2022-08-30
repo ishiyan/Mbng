@@ -52,6 +52,10 @@ const routes: Routes = [
         path: 'comp-swatches', loadChildren: () =>
           import('./mb-samples/components/swatches/sample-swatches.module').then(m => m.SampleSwatchesModule)
       },
+      {
+        path: 'comp-data-entities', loadChildren: () =>
+          import('./mb-samples/components/data-entities/sample-data-entities.module').then(m => m.SampleDataEntitiesModule)
+      },
       { path: '', component: OhlcvChartStudyComponent }
     ]
   },

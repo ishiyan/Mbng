@@ -48,6 +48,10 @@ export * from './lib/data/entities/bar';
 export * from './lib/data/entities/quote';
 export * from './lib/data/entities/trade';
 export * from './lib/data/entities/scalar';
+export * from './lib/data/entities/bar-component.enum';
+export * from './lib/data/entities/bar-component';
+export * from './lib/data/entities/bar-component.component';
+export * from './lib/data/entities/entities.module';
 
 export * from './lib/data/generators/repetitive-sample/repetitive-sample-generator-parameters';
 
