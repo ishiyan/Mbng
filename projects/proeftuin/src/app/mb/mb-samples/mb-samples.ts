@@ -116,7 +116,8 @@ export const treeNodes: MbSample[] = [
       {
         name: 'Data entities',
         children: [
-          {name: 'Bar component selector', header: 'Bar component selector', route: 'comp-data-entities/s1'}
+          {name: 'Bar component selector', header: 'Bar component selector', route: 'comp-data-entities/s1'},
+          {name: 'Quote component selector', header: 'Quote component selector', route: 'comp-data-entities/s2'}
         ]
       }
     ]

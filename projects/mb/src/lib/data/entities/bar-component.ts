@@ -1,7 +1,7 @@
 import { Bar } from './bar';
 import { BarComponent } from './bar-component.enum';
 
-/** Function for calculating a price component of a Bar. */
+/** Function for calculating a price component of a _Bar_. */
 export const barComponentValue = (component: BarComponent): (bar: Bar) => number => {
   switch (component) {
     case BarComponent.Open:
@@ -13,19 +13,19 @@ export const barComponentValue = (component: BarComponent): (bar: Bar) => number
     case BarComponent.Close:
       return (b: Bar) => b.close;
     case BarComponent.Median:
-      return (b: Bar) => b.open;
+      return (b: Bar) => (b.high + b.low) / 2;
     case BarComponent.Typical:
-      return (b: Bar) => b.open;
+      return (b: Bar) => (b.high + b.low + b.close) / 3;
     case BarComponent.Weighted:
-      return (b: Bar) => b.open;
+      return (b: Bar) => (b.high + b.low + b.close + b.close) / 4;
     case BarComponent.Average:
-      return (b: Bar) => b.open;
-    default:
+      return (b: Bar) => (b.open + b.high + b.low + b.close) / 4;
+    default: // Default to close.
       return (b: Bar) => b.close;
   }
 };
 
-/** The mnemonic of a price component of a Bar. */
+/** The mnemonic of a price component of a _Bar_. */
 export const barComponentMnemonic = (component: BarComponent): string => {
   switch (component) {
     case BarComponent.Open:

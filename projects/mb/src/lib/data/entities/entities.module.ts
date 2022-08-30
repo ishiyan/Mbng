@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { BarComponentComponent } from './bar-component.component';
+import { QuoteComponentComponent } from './quote-component.component';
 
 @NgModule({
     imports: [
@@ -14,10 +15,12 @@ import { BarComponentComponent } from './bar-component.component';
         MatSelectModule
     ],
     exports: [
-        BarComponentComponent
+        BarComponentComponent,
+        QuoteComponentComponent
     ],
     declarations: [
-        BarComponentComponent
+        BarComponentComponent,
+        QuoteComponentComponent
     ]
 })
 export class EntitiesModule { }

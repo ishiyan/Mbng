@@ -1,0 +1,8 @@
+<mat-form-field style="width:17em">
+  <mat-label>{{label}}</mat-label>
+  <mat-select [(value)]="compSelected" (selectionChange)="selectionChanged($event);">
+    <mat-option *ngFor="let comp of comps" [value]="comp.enumeration" selected="comp.selected">
+      {{comp.option}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,4 +1,4 @@
-/** Enumerates price components of a Bar. */
+/** Enumerates price components of a _Bar_. */
 export enum BarComponent {
   /** The opening price. */
   Open,
