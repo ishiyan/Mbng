@@ -56,6 +56,10 @@ const routes: Routes = [
         path: 'comp-data-entities', loadChildren: () =>
           import('./mb-samples/components/data-entities/sample-data-entities.module').then(m => m.SampleDataEntitiesModule)
       },
+      {
+        path: 'comp-ohlcv-chart-selector', loadChildren: () =>
+          import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module').then(m => m.SampleOhlcvChartSelectorModule)
+      },
       { path: '', component: OhlcvChartStudyComponent }
     ]
   },

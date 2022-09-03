@@ -1,0 +1,11 @@
+<mat-form-field style="width:60px">
+  <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
+  <mat-select [(value)]="elemSelected" (selectionChange)="selectionChanged($event);">
+    <mat-select-trigger>
+      <mb-dash-svg [value]="elemSelected"></mb-dash-svg>
+    </mat-select-trigger>
+    <mat-option *ngFor="let elem of elems" [value]="elem.value" selected="elem.selected">
+      <mb-dash-svg [value]="elem.value"></mb-dash-svg>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

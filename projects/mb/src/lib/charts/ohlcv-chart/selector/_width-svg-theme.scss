@@ -1,0 +1,9 @@
+@mixin width-svg-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  mb-width-svg {
+    svg {
+      stroke: mat.get-color-from-palette($foreground, text);
+    }
+  }
+}

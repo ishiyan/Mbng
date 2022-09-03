@@ -16,6 +16,12 @@
     },
     "./theming/ohlcv-chart-theme": {
       "sass": "./src/lib/charts/ohlcv-chart/_ohlcv-chart-theme.scss"
+    },
+    "./theming/width-svg-theme": {
+      "sass": "./src/lib/charts/ohlcv-chart/selector/_width-svg-theme.scss"
+    },
+    "./theming/dash-svg-theme": {
+      "sass": "./src/lib/charts/ohlcv-chart/selector/_dash-svg-theme.scss"
     }
   },
   "peerDependencies": {

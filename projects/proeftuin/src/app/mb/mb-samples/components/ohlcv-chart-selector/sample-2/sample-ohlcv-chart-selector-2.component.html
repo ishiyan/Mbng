@@ -1,0 +1,39 @@
+<div class="sample">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Defaullt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-line-dash (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-line-dash>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected1}}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial value</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-line-dash [initial]="initial" (selectionChange)="selected2 = selectionChange(selected2, $event);">
+      </mb-line-dash>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected2}}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>With label</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-line-dash [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);">
+      </mb-line-dash>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected3}}
+    </mat-card-content>
+  </mat-card>
+</div>

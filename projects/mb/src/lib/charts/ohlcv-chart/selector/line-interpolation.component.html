@@ -1,0 +1,8 @@
+<mat-form-field style="width:7em">
+  <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
+  <mat-select [(value)]="elemSelected" (selectionChange)="selectionChanged($event);">
+    <mat-option *ngFor="let elem of elems" [value]="elem.value" selected="elem.selected">
+      {{elem.option}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

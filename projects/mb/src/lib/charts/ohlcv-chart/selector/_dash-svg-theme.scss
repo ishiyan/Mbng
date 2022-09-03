@@ -1,0 +1,9 @@
+@mixin dash-svg-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  mb-dash-svg {
+    line {
+      stroke: mat.get-color-from-palette($foreground, text);
+    }
+  }
+}

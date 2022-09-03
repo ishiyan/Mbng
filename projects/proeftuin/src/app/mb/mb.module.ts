@@ -24,6 +24,7 @@ import { SampleCirclepackModule } from './mb-samples/components/circlepack/sampl
 import { SampleVoronoiModule } from './mb-samples/components/voronoi/sample-voronoi.module';
 import { SampleSwatchesModule } from './mb-samples/components/swatches/sample-swatches.module';
 import { SampleDataEntitiesModule } from './mb-samples/components/data-entities/sample-data-entities.module';
+import { SampleOhlcvChartSelectorModule } from './mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import { SampleDataEntitiesModule } from './mb-samples/components/data-entities/
     SampleCirclepackModule,
     SampleVoronoiModule,
     SampleSwatchesModule,
-    SampleDataEntitiesModule
+    SampleDataEntitiesModule,
+    SampleOhlcvChartSelectorModule
   ],
   declarations: [
     MbComponent
