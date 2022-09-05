@@ -16,8 +16,8 @@ export class LineWidthComponent implements OnInit {
     { value: 0.1, selected: false },
     { value: 0.3, selected: false },
     { value: 0.5, selected: false },
-    { value: 1.0, selected: false },
-    { value: 1.5, selected: true },
+    { value: 1.0, selected: true },
+    { value: 1.5, selected: false },
     { value: 2.0, selected: false },
     { value: 2.5, selected: false },
     { value: 3.0, selected: false },
@@ -25,7 +25,7 @@ export class LineWidthComponent implements OnInit {
     { value: 4.0, selected: false }
   ];
 
-  protected elemSelected = this.elems[4].value;
+  protected elemSelected = this.elems[3].value;
 
   /** Event emitted when the selected value has been changed by the user. */
   @Output() readonly selectionChange: EventEmitter<number> = new EventEmitter<number>();

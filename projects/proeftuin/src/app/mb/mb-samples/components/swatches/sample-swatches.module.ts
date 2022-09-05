@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
+import { ColorPickerModule } from 'projects/mb/src/lib/colors/picker/color-picker.module';
 
 import { SampleSwatches1Component } from './sample-1/sample-swatches-1.component';
 import { SampleSwatches2Component } from './sample-2/sample-swatches-2.component';
@@ -15,6 +16,7 @@ import { SampleSwatches5Component } from './sample-5/sample-swatches-5.component
 import { SampleSwatches6Component } from './sample-6/sample-swatches-6.component';
 import { SampleSwatches7Component } from './sample-7/sample-swatches-7.component';
 import { SampleSwatches8Component } from './sample-8/sample-swatches-8.component';
+import { SampleSwatches9Component } from './sample-9/sample-swatches-9.component';
 
 import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
 
@@ -26,6 +28,7 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     MaterialModule,
     KatexModule,
     ColorsModule,
+    ColorPickerModule,
     SampleSwatchesRoutingModule
   ],
   declarations: [
@@ -36,7 +39,8 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     SampleSwatches5Component,
     SampleSwatches6Component,
     SampleSwatches7Component,
-    SampleSwatches8Component
+    SampleSwatches8Component,
+    SampleSwatches9Component
   ]
 })
 export class SampleSwatchesModule { }

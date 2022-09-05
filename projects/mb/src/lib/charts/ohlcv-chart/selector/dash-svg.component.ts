@@ -8,8 +8,10 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 export class DashSvgComponent implements OnInit {
   private val = '';
   @Input() set value(v: string) {
-    this.val = v;
-    this.inlineSvgContent(v);
+    if (this.val !== v) {
+      this.val = v;
+      this.inlineSvgContent(v);
+    }
   }
   get value(): string {
     return this.val;

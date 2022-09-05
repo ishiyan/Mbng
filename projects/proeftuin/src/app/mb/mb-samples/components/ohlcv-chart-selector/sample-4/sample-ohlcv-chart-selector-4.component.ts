@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SampleOhlcvChartSelector4Component {
 
-  protected initial = 'cardinal';
+  protected initial = '#ff00ff';
   protected selected1 = '';
   protected selected2 = '';
   protected selected3 = '';

@@ -6,10 +6,12 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
   styleUrls: ['./width-svg.component.scss']
 })
 export class WidthSvgComponent implements OnInit {
-  private val = 1.5;
+  private val = 1;
   @Input() set value(v: number) {
-    this.val = v;
-    this.inlineSvgContent(v);
+    if (this.val !== v) {
+      this.val = v;
+      this.inlineSvgContent(v);  
+    }
   }
   get value(): number {
     return this.val;

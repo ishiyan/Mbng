@@ -37,6 +37,12 @@ export * from './lib/colors/colors-co-all-5-palettes';
 export * from './lib/colors/colors-co-all-5-palettes-selection';
 export * from './lib/colors/swatches/swatches.component';
 export * from './lib/colors/swatches/swatches-select.component';
+export { Cmyk, Hsla, Hsva, Rgba } from './lib/colors/picker/formats';
+export { TextDirective, SliderDirective } from './lib/colors/picker/helpers';
+export { ColorPickerComponent } from './lib/colors/picker/color-picker.component';
+export { ColorPickerDirective } from './lib/colors/picker/color-picker.directive';
+export { ColorPickerService } from './lib/colors/picker/color-picker.service';
+export { ColorPickerModule } from './lib/colors/picker/color-picker.module';
 export * from './lib/colors/colors.module';
 
 export * from './lib/data/historical-data'; // deprecated
@@ -179,6 +185,7 @@ export * from './lib/charts/ohlcv-chart/selector/dash-svg.component';
 export * from './lib/charts/ohlcv-chart/selector/line-width.component';
 export * from './lib/charts/ohlcv-chart/selector/line-dash.component';
 export * from './lib/charts/ohlcv-chart/selector/line-interpolation.component';
+export * from './lib/charts/ohlcv-chart/selector/color.component';
 export * from './lib/charts/ohlcv-chart/selector/line.component';
 export * from './lib/charts/ohlcv-chart/selector/ohlcv-chart-selector.module';
 export * from './lib/charts/historical-data-chart/historical-data-chart.component';

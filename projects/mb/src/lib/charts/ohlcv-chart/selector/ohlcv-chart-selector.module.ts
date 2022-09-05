@@ -3,12 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+
 
 import { WidthSvgComponent } from './width-svg.component';
 import { DashSvgComponent } from './dash-svg.component';
 import { LineWidthComponent } from './line-width.component';
 import { LineDashComponent } from './line-dash.component';
 import { LineInterpolationComponent } from './line-interpolation.component';
+import { ColorComponent } from './color.component';
 import { LineComponent } from './line.component';
 
 @NgModule({
@@ -16,7 +19,8 @@ import { LineComponent } from './line.component';
         CommonModule,
         FormsModule,
         MatFormFieldModule,
-        MatSelectModule
+        MatSelectModule,
+        MatInputModule
     ],
     exports: [
         WidthSvgComponent,
@@ -24,6 +28,7 @@ import { LineComponent } from './line.component';
         LineWidthComponent,
         LineDashComponent,
         LineInterpolationComponent,
+        ColorComponent,
         LineComponent
     ],
     declarations: [
@@ -32,6 +37,7 @@ import { LineComponent } from './line.component';
         LineWidthComponent,
         LineDashComponent,
         LineInterpolationComponent,
+        ColorComponent,
         LineComponent
     ],
     providers: [

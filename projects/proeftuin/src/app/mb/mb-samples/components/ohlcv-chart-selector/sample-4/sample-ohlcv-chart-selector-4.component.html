@@ -4,8 +4,7 @@
       <mat-card-title>Defaullt</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-line-interpolation (selectionChange)="selected1 = selectionChange(selected1, $event);">
-      </mb-line-interpolation>
+      <mb-color (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-color>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected1}}
@@ -17,8 +16,7 @@
       <mat-card-title>With initial value</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-line-interpolation [initial]="initial" (selectionChange)="selected2 = selectionChange(selected2, $event);">
-      </mb-line-interpolation>
+      <mb-color [initial]="initial" (selectionChange)="selected2 = selectionChange(selected2, $event);"></mb-color>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected2}}
@@ -30,8 +28,7 @@
       <mat-card-title>With label</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-line-interpolation [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);">
-      </mb-line-interpolation>
+      <mb-color [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);"></mb-color>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected3}}
