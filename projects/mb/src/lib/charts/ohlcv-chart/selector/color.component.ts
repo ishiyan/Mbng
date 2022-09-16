@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./color.component.scss']
 })
 export class ColorComponent implements OnInit {
-  private value = '#000000';
+  private value = '#000';
 
   /** Event emitted when the selected value has been changed by the user. */
   @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
