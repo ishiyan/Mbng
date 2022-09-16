@@ -1,4 +1,6 @@
-<mat-form-field style="width:60px">
+<mat-form-field style="width:60px" floatLabel="always">
   <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
-  <input matInput type="color" [(ngModel)]="color">
+  <input type="number" matInput mbColorPicker [colorPicker]="color" [style.background]="color"
+    (colorChanged)="color=$event" (colorSelected)="color=$event"
+    [(ngModel)]="color">
 </mat-form-field>

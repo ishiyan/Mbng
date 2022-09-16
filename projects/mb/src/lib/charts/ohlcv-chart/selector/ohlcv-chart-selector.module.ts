@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 
+import { ColorPickerModule } from '../../../colors/picker/color-picker.module';
 
 import { WidthSvgComponent } from './width-svg.component';
 import { DashSvgComponent } from './dash-svg.component';
@@ -20,7 +21,8 @@ import { LineComponent } from './line.component';
         FormsModule,
         MatFormFieldModule,
         MatSelectModule,
-        MatInputModule
+        MatInputModule,
+        ColorPickerModule
     ],
     exports: [
         WidthSvgComponent,

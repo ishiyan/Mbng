@@ -10,7 +10,7 @@ export class WidthSvgComponent implements OnInit {
   @Input() set value(v: number) {
     if (this.val !== v) {
       this.val = v;
-      this.inlineSvgContent(v);  
+      this.inlineSvgContent(v);
     }
   }
   get value(): number {

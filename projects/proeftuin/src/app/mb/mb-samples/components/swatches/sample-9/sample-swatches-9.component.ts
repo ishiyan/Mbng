@@ -1,7 +1,11 @@
 import { Component, ViewContainerRef } from '@angular/core';
-//import { ColorPickerService } from 'dist/mb/lib/colors/picker/color-picker.service';
 
-import { predefinedInterpolatedPalettes } from 'projects/mb/src/lib/colors/predefined-interpolated-palettes';
+import { materialPalettesA } from 'mb';
+
+const colorChanged = (log: string, color:string): string => {
+  log += ' ' + color + ',' ;
+  return log;
+};
 
 @Component({
   selector: 'mb-sample-swatches-9',
@@ -9,29 +13,63 @@ import { predefinedInterpolatedPalettes } from 'projects/mb/src/lib/colors/prede
   styleUrls: ['./sample-swatches-9.component.scss']
 })
 export class SampleSwatches9Component {
+  protected palettes3: string[][] = materialPalettesA();
+  protected selectedPalette3: string[] = this.palettes3[0];
 
-  private numberOfSwatches = 5;
-  private selectedIndex = 0;
-
-  protected  color = '#00ff00';
-
-  palettes: string[][] = predefinedInterpolatedPalettes(this.numberOfSwatches);
-  selectedPalette: string[] = this.palettes[this.selectedIndex];
-
-  get paletteLength(): number {
-    return this.numberOfSwatches;
+  private clr1 = '#00ff00';
+  private clr2 = '#0000ff';
+  private clr3 = this.selectedPalette3[0];
+  private clr4 = '#00aaff';
+  
+  protected alpha2 = false;
+  protected selected1 = '';
+  protected selected2 = '';
+  protected selected3 = '';
+  protected selected4 = '';
+  
+  protected get color1(): string {
+    return this.clr1;
   }
-  set paletteLength(value: number) {
-    this.numberOfSwatches = value;
-    this.selectedIndex = 0;
-    this.palettes = predefinedInterpolatedPalettes(this.numberOfSwatches);
-    this.selectedPalette = this.palettes[this.selectedIndex];
+  protected set color1(value: string) {
+    if (this.clr1 !== value) {
+      this.clr1 = value;
+      this.selected1 = colorChanged(this.selected1, value);  
+    }
   }
 
-  selectionChanged(selection: string[]) {
-    this.selectedIndex = this.palettes.indexOf(selection);
-    this.selectedPalette = selection;
+  protected get color2(): string {
+    return this.clr2;
+  }
+  protected set color2(value: string) {
+    if (this.clr2 !== value) {
+      this.clr2 = value;
+      this.selected2 = colorChanged(this.selected2, value);
+    }
   }
 
-  //constructor(public vcRef: ViewContainerRef, private cpService: ColorPickerService) {}
+  protected get color3(): string {
+    return this.clr3;
+  }
+  protected set color3(value: string) {
+    value = value.toLowerCase();
+    if (this.clr3.toLowerCase() !== value) {
+      this.clr3 = value;
+      this.selected3 = colorChanged(this.selected3, value);
+    }
+  }
+
+  protected get color4(): string {
+    return this.clr4;
+  }
+  protected set color4(value: string) {
+    if (this.clr4 !== value) {
+      this.clr4 = value;
+      this.selected4 = colorChanged(this.selected4, value);
+    }
+  }
+  
+  protected paletteSelectionChanged3(selection: string[]) {
+    this.selectedPalette3 = selection;
+    this.color3 = this.selectedPalette3[0];
+  }
 }

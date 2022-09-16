@@ -1,62 +1,136 @@
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  ViewChild,
-  HostListener,
-  ViewEncapsulation,
-  ElementRef,
-  ChangeDetectorRef,
-  TemplateRef,
-  NgZone,
-  Inject,
-  PLATFORM_ID,
+  Component, OnInit, OnDestroy, ViewChild, HostListener, ElementRef, ChangeDetectorRef, NgZone
 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
-import { detectIE, calculateAutoPositioning } from './helpers';
-import { ColorFormats, Cmyk, Hsla, Hsva, Rgba } from './formats';
-import { AlphaChannel, OutputFormat, SliderDimension, SliderPosition } from './helpers';
-
+import {
+  ColorFormats, Cmyk, Hsla, Hsva, Rgba, stringToHsva, hsvaToRgba, rgbaToHsva, hsva2hsla, hsla2hsva,
+  denormalizeCMYK, rgbaToCmyk, cmykToRgb, normalizeCMYK, denormalizeRGBA, outputFormat, rgbaToHex
+} from './formats';
 import { ColorPickerService } from './color-picker.service';
 
-// Do not store that on the class instance since the condition will be run
-// every time the class is created.
+type TwoDimEvent = {
+  s: number;
+  v: number;
+  rgX: number;
+  rgY: number;
+};
+
+type OneDimEvent = {
+  v: number;
+  rgX: number;
+};
+
+type BoundingRectangle = {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  height: number;
+  width: number;
+};
+
+class SliderPosition {
+  constructor(public h: number, public s: number, public v: number, public a: number) {}
+}
+
+class SliderDimension {
+  constructor(public h: number, public s: number, public v: number, public a: number) {}
+}
+
+const calculateAutoPositioning = (elBounds: BoundingRectangle, triggerElBounds: BoundingRectangle): string => {
+  // Defaults
+  let usePositionX = 'right';
+  let usePositionY = 'bottom';
+
+  // Calculate collisions
+  const { height, width } = elBounds;
+  const { top, left } = triggerElBounds;
+  const bottom = top + triggerElBounds.height;
+  const right = left + triggerElBounds.width;
+
+  const collisionTop = top - height < 0;
+  const collisionBottom = bottom + height > (window.innerHeight || document.documentElement.clientHeight);
+  const collisionLeft = left - width < 0;
+  const collisionRight = right + width > (window.innerWidth || document.documentElement.clientWidth);
+  const collisionAll = collisionTop && collisionBottom && collisionLeft && collisionRight;
+
+  // Generate X & Y position values
+  if (collisionBottom) {
+    usePositionY = 'top';
+  }
+
+  if (collisionTop) {
+    usePositionY = 'bottom';
+  }
+
+  if (collisionLeft) {
+    usePositionX = 'right';
+  }
+
+  if (collisionRight) {
+    usePositionX = 'left';
+  }
+
+  // Choose the largest gap available
+  if (collisionAll) {
+    const postions = ['left', 'right', 'top', 'bottom'];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return postions.reduce((prev, next) => elBounds[prev] > elBounds[next] ? prev : next);
+  }
+
+  if ((collisionLeft && collisionRight)) {
+    if (collisionTop) { return 'bottom'; }
+    if (collisionBottom) { return 'top'; }
+    return top > bottom ? 'top' : 'bottom';
+  }
+
+  if ((collisionTop && collisionBottom)) {
+    if (collisionLeft) {
+      return 'right';
+    }
+    if (collisionRight) {
+      return 'left';
+    }
+
+    return left > right ? 'left' : 'right';
+  }
+
+  return `${usePositionY}-${usePositionX}`;
+};
+
+/**
+ *  Do not store that on the class instance since the condition will be run every time the class is created.
+ */
 const SUPPORTS_TOUCH = typeof window !== 'undefined' && 'ontouchstart' in window;
+
+const widthSaturation = 252;
+const heightSaturation = 130;
+const widthHue = 196;
+const widthAlpha = 196;
+const gap = 10;
 
 @Component({
   selector: 'mb-color-picker',
   templateUrl: './color-picker.component.html',
-  styleUrls: [ './color-picker.component.scss' ],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [ './color-picker.component.scss' ]
 })
-export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit {
-  private isIE10: boolean = false;
-
-  private cmyk!: Cmyk;
+export class ColorPickerComponent implements OnInit, OnDestroy {
+  private hexText = '#ffffff';
+  private hexAlpha = 1;
+  private rgba = new Rgba(255, 255, 255, 1);
+  private hsla = new Hsla(360, 100, 100, 1);
+  private cmyk = new Cmyk(100, 100, 100, 1);
   private hsva!: Hsva;
-
-  private width!: number;
-  private height!: number;
-
-  private cmykColor!: string;
   private outputColor!: string;
   private initialColor!: string;
-  private fallbackColor!: string;
-
+  private fallbackColor = '#fff';
   private listenerResize: any;
   private listenerMouseDown!: EventListener;
-
   private directiveInstance: any;
-
   private sliderH!: number;
   private sliderDimMax!: SliderDimension;
   private directiveElementRef!: ElementRef;
-
-  private dialogArrowSize: number = 10;
-  private dialogArrowOffset: number = 15;
-
   private dialogInputFields: ColorFormats[] = [
     ColorFormats.HEX,
     ColorFormats.RGBA,
@@ -64,97 +138,208 @@ export class ColorPickerComponent implements OnInit, OnDestroy, AfterViewInit {
     ColorFormats.CMYK
   ];
 
-  private useRootViewContainer: boolean = false;
+  protected showAlpha = true;
+  protected hidden!: boolean;
+  protected top!: number;
+  protected left!: number;
+  protected position!: string;
+  protected format = ColorFormats.HEX;
+  protected slider!: SliderPosition;
+  protected selectedColor!: string;
+  protected hueSliderColor!: string;
+  protected alphaSliderColor!: string;
+  protected cpColorMode = 1;
+  protected cpPresetColors!: string[];
+  protected cpTriggerElement!: ElementRef;
 
-  public show!: boolean;
-  public hidden!: boolean;
+  protected get isHex(): boolean {
+    return this.format === ColorFormats.HEX;
+  }
+  protected get isRgba(): boolean {
+    return this.format === ColorFormats.RGBA;
+  }
+  protected get isHsla(): boolean {
+    return this.format === ColorFormats.HSLA;
+  }
+  protected get isCmyk(): boolean {
+    return this.format === ColorFormats.CMYK;
+  }
 
-  public top!: number;
-  public left!: number;
-  public position!: string;
+  protected get hexT(): string {
+    return this.hexText;
+  }
+  protected set hexT(value: string) {
+    if (value && value[0] !== '#') {
+      value = '#' + value;
+    }
 
-  public format!: ColorFormats;
-  public slider!: SliderPosition;
+    const validHex = /^#([a-f0-9]{3}|[a-f0-9]{6})$/gi;
+    if (validHex.test(value)) {
+      if (value.length < 5) {
+        value = '#' + value.substring(1)
+          .split('')
+          .map(c => c + c)
+          .join('');
+      }
+      this.setColorFromString(value, true, false);
+    }
+  }
 
-  public hexText!: string;
-  public hexAlpha!: number;
+  protected get hexA(): number {
+    return this.hexAlpha;
+  }
+  protected set hexA(value: number) {
+    this.onAlphaInput(value);
+  }
 
-  public cmykText!: Cmyk;
-  public hslaText!: Hsla;
-  public rgbaText!: Rgba;
+  protected get rgbaRed(): number {
+    return this.rgba.r;
+  }
+  protected set rgbaRed(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 255) {
+      const rgba = hsvaToRgba(this.hsva);
+      rgba.r = value / 255;
+      this.hsva = rgbaToHsva(rgba);
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public arrowTop!: number;
+  protected get rgbaGreen(): number {
+    return this.rgba.g;
+  }
+  protected set rgbaGreen(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 255) {
+      const rgba = hsvaToRgba(this.hsva);
+      rgba.g = value / 255;
+      this.hsva = rgbaToHsva(rgba);
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public selectedColor!: string;
-  public hueSliderColor!: string;
-  public alphaSliderColor!: string;
+  protected get rgbaBlue(): number {
+    return this.rgba.b;
+  }
+  protected set rgbaBlue(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 255) {
+      const rgba = hsvaToRgba(this.hsva);
+      rgba.b = value / 255;
+      this.hsva = rgbaToHsva(rgba);
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public cpWidth!: number;
-  public cpHeight!: number;
+  protected get rgbaAlpha(): number {
+    return this.rgba.a;
+  }
+  protected set rgbaAlpha(value: number) {
+    this.onAlphaInput(value);
+  }
 
-  public cpColorMode!: number;
+  protected get hslaHue(): number {
+    return this.hsla.h;
+  }
+  protected set hslaHue(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 360) {
+      this.hsva.h = value / 360;
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public cpCmykEnabled!: boolean;
+  protected get hslaSaturation(): number {
+    return this.hsla.s;
+  }
+  protected set hslaSaturation(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      const hsla = hsva2hsla(this.hsva);
+      hsla.s = value / 100;
+      this.hsva = hsla2hsva(hsla);
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public cpAlphaChannel!: AlphaChannel;
-  public cpOutputFormat!: OutputFormat;
+  protected get hslaLightness(): number {
+    return this.hsla.l;
+  }
+  protected set hslaLightness(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      const hsla = hsva2hsla(this.hsva);
+      hsla.l = value / 100;
+      this.hsva = hsla2hsva(hsla);
+      this.sliderH = this.hsva.h;
+      this.updateColorPicker();
+    }
+  }
 
-  public cpDisableInput!: boolean;
-  public cpDialogDisplay!: string;
+  protected get hslaAlpha(): number {
+    return this.hsla.a;
+  }
+  protected set hslaAlpha(value: number) {
+    this.onAlphaInput(value);
+  }
 
-  public cpIgnoredElements: any;
+  protected get cmykCyan(): number {
+    return this.cmyk.c;
+  }
+  protected set cmykCyan(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      this.cmyk.c = value;
+      this.updateColorPicker(true, true, true);
+    }
+  }
 
-  public cpSaveClickOutside!: boolean;
-  public cpCloseClickOutside!: boolean;
+  protected get cmykMagenta(): number {
+    return this.cmyk.m;
+  }
+  protected set cmykMagenta(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      this.cmyk.m = value;
+      this.updateColorPicker(true, true, true);
+    }
+  }
 
-  public cpPosition!: string;
-  public cpUsePosition!: string;
-  public cpPositionOffset!: number;
+  protected get cmykYellow(): number {
+    return this.cmyk.y;
+  }
+  protected set cmykYellow(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      this.cmyk.y = value;
+      this.updateColorPicker(true, true, true);
+    }
+  }
 
-  public cpOKButton!: boolean;
-  public cpOKButtonText!: string;
-  public cpOKButtonClass!: string;
+  protected get cmykBlack(): number {
+    return this.cmyk.k;
+  }
+  protected set cmykBlack(value: number) {
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      this.cmyk.k = value;
+      this.updateColorPicker(true, true, true);
+    }
+  }
 
-  public cpCancelButton!: boolean;
-  public cpCancelButtonText!: string;
-  public cpCancelButtonClass!: string;
+  protected get cmykAlpha(): number {
+    return this.cmyk.a;
+  }
+  protected set cmykAlpha(value: number) {
+    this.onAlphaInput(value);
+  }
 
-public eyeDropperSupported =
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isPlatformBrowser(this.platformId) && 'EyeDropper' in this.document.defaultView;
-  public cpEyeDropper!: boolean;
-
-  public cpPresetLabel!: string;
-  public cpPresetColors!: string[];
-  public cpPresetColorsClass!: string;
-  public cpMaxPresetColorsLength!: number;
-
-  public cpPresetEmptyMessage!: string;
-  public cpPresetEmptyMessageClass!: string;
-
-  public cpAddColorButton!: boolean;
-  public cpAddColorButtonText!: string;
-  public cpAddColorButtonClass!: string;
-  public cpRemoveColorButtonClass!: string;
-
-  public cpTriggerElement!: ElementRef;
-
-  public cpExtraTemplate!: TemplateRef<any>;
-
+  show!: boolean;
   @ViewChild('dialogPopup', { static: true }) dialogElement!: ElementRef;
 
-  @ViewChild('hueSlider', { static: true }) hueSlider!: ElementRef;
-  @ViewChild('alphaSlider', { static: true }) alphaSlider!: ElementRef;
-
   @HostListener('document:keyup.esc', ['$event']) handleEsc(event: any): void {
-    if (this.show && this.cpDialogDisplay === 'popup') {
+    if (this.show) {
       this.onCancelColor(event);
     }
   }
 
   @HostListener('document:keyup.enter', ['$event']) handleEnter(event: any): void {
-    if (this.show && this.cpDialogDisplay === 'popup') {
+    if (this.show) {
       this.onAcceptColor(event);
     }
   }
@@ -163,34 +348,17 @@ public eyeDropperSupported =
     private ngZone: NgZone,
     private elRef: ElementRef,
     private cdRef: ChangeDetectorRef,
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: string,
     private service: ColorPickerService
-  ) {}
+    ) {}
 
   ngOnInit(): void {
-    this.slider = new SliderPosition(0, 0, 0, 0);
-
-    const hueWidth = this.hueSlider.nativeElement.offsetWidth || 140;
-    const alphaWidth = this.alphaSlider.nativeElement.offsetWidth || 140;
-
-    this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
-
-    if (this.cpCmykEnabled) {
-      this.format = ColorFormats.CMYK;
-    } else if (this.cpOutputFormat === 'rgba') {
-      this.format = ColorFormats.RGBA;
-    } else if (this.cpOutputFormat === 'hsla') {
-      this.format = ColorFormats.HSLA;
-    } else {
-      this.format = ColorFormats.HEX;
-    }
+    this.slider = new SliderPosition(widthHue, widthSaturation, heightSaturation, widthAlpha);
+    this.sliderDimMax = new SliderDimension(widthHue, widthSaturation, heightSaturation, widthAlpha);
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.listenerMouseDown = (event: MouseEvent) => { this.onMouseDown(event); };
     this.listenerResize = () => { this.onResize(); };
-
     this.openDialog(this.initialColor, false);
   }
 
@@ -198,34 +366,10 @@ public eyeDropperSupported =
     this.closeDialog();
   }
 
-  ngAfterViewInit(): void {
-    if (this.cpWidth !== 230 || this.cpDialogDisplay === 'inline') {
-      const hueWidth = this.hueSlider.nativeElement.offsetWidth || 140;
-      const alphaWidth = this.alphaSlider.nativeElement.offsetWidth || 140;
-
-      this.sliderDimMax = new SliderDimension(hueWidth, this.cpWidth, 130, alphaWidth);
-
-      this.updateColorPicker(false);
-
-      this.cdRef.detectChanges();
-    }
-  }
-
   public openDialog(color: any, emit: boolean = true): void {
     this.service.setActive(this);
-
-    if (!this.width) {
-      this.cpWidth = this.directiveElementRef.nativeElement.offsetWidth;
-    }
-
-    if (!this.height) {
-      this.height = 320;
-    }
-
-    this.setInitialColor(color);
-
+    this.initialColor = color;
     this.setColorFromString(color, emit);
-
     this.openColorPicker();
   }
 
@@ -234,610 +378,104 @@ public eyeDropperSupported =
   }
 
   public setupDialog(instance: any, elementRef: ElementRef, color: any,
-    cpWidth: string, cpHeight: string, cpDialogDisplay: string, cpFallbackColor: string,
-    cpColorMode: string, cpCmykEnabled: boolean, cpAlphaChannel: AlphaChannel,
-    cpOutputFormat: OutputFormat, cpDisableInput: boolean, cpIgnoredElements: any,
-    cpSaveClickOutside: boolean, cpCloseClickOutside: boolean, cpUseRootViewContainer: boolean,
-    cpPosition: string, cpPositionOffset: string, cpPositionRelativeToArrow: boolean,
-    cpPresetLabel: string, cpPresetColors: string[], cpPresetColorsClass: string,
-    cpMaxPresetColorsLength: number, cpPresetEmptyMessage: string,
-    cpPresetEmptyMessageClass: string, cpOKButton: boolean, cpOKButtonClass: string,
-    cpOKButtonText: string, cpCancelButton: boolean, cpCancelButtonClass: string,
-    cpCancelButtonText: string, cpAddColorButton: boolean, cpAddColorButtonClass: string,
-    cpAddColorButtonText: string, cpRemoveColorButtonClass: string, cpEyeDropper: boolean,
-    cpTriggerElement: ElementRef, cpExtraTemplate: TemplateRef<any>): void
+    cpAlpha: boolean, cpPresetColors: string[], cpTriggerElement: ElementRef): void
   {
-    this.setInitialColor(color);
-
-    this.setColorMode(cpColorMode);
-
-    this.isIE10 = (detectIE() === 10);
-
+    this.initialColor = color;
     this.directiveInstance = instance;
     this.directiveElementRef = elementRef;
-
-    this.cpDisableInput = cpDisableInput;
-
-    this.cpCmykEnabled = cpCmykEnabled;
-    this.cpAlphaChannel = cpAlphaChannel;
-    this.cpOutputFormat = cpOutputFormat;
-
-    this.cpDialogDisplay = cpDialogDisplay;
-
-    this.cpIgnoredElements = cpIgnoredElements;
-
-    this.cpSaveClickOutside = cpSaveClickOutside;
-    this.cpCloseClickOutside = cpCloseClickOutside;
-
-    this.useRootViewContainer = cpUseRootViewContainer;
-
-    this.width = this.cpWidth = parseInt(cpWidth, 10);
-    this.height = this.cpHeight = parseInt(cpHeight, 10);
-
-    this.cpPosition = cpPosition;
-    this.cpPositionOffset = parseInt(cpPositionOffset, 10);
-
-    this.cpOKButton = cpOKButton;
-    this.cpOKButtonText = cpOKButtonText;
-    this.cpOKButtonClass = cpOKButtonClass;
-
-    this.cpCancelButton = cpCancelButton;
-    this.cpCancelButtonText = cpCancelButtonText;
-    this.cpCancelButtonClass = cpCancelButtonClass;
-
-    this.cpEyeDropper = cpEyeDropper;
-
-    this.fallbackColor = cpFallbackColor || '#fff';
-
-    this.setPresetConfig(cpPresetLabel, cpPresetColors);
-
-    this.cpPresetColorsClass = cpPresetColorsClass;
-    this.cpMaxPresetColorsLength = cpMaxPresetColorsLength;
-    this.cpPresetEmptyMessage = cpPresetEmptyMessage;
-    this.cpPresetEmptyMessageClass = cpPresetEmptyMessageClass;
-
-    this.cpAddColorButton = cpAddColorButton;
-    this.cpAddColorButtonText = cpAddColorButtonText;
-    this.cpAddColorButtonClass = cpAddColorButtonClass;
-    this.cpRemoveColorButtonClass = cpRemoveColorButtonClass;
-
+    this.showAlpha = cpAlpha;
+    this.cpPresetColors = cpPresetColors;
     this.cpTriggerElement = cpTriggerElement;
-    this.cpExtraTemplate = cpExtraTemplate;
-
-    if (!cpPositionRelativeToArrow) {
-      this.dialogArrowOffset = 0;
-    }
-
-    if (cpDialogDisplay === 'inline') {
-      this.dialogArrowSize = 0;
-      this.dialogArrowOffset = 0;
-    }
-
-    if (cpOutputFormat === 'hex' &&
-        cpAlphaChannel !== 'always' && cpAlphaChannel !== 'forced')
-    {
-      this.cpAlphaChannel = 'disabled';
-    }
   }
 
-  public setColorMode(mode: string): void {
-    switch (mode.toString().toUpperCase()) {
-      case '1':
-      case 'C':
-      case 'COLOR':
-        this.cpColorMode = 1;
-        break;
-      case '2':
-      case 'G':
-      case 'GRAYSCALE':
-        this.cpColorMode = 2;
-        break;
-      case '3':
-      case 'P':
-      case 'PRESETS':
-        this.cpColorMode = 3;
-        break;
-      default:
-        this.cpColorMode = 1;
-    }
+  public setAlpha(value: boolean): void {
+    this.showAlpha = value;
   }
 
-  public setInitialColor(color: any): void {
-    this.initialColor = color;
-  }
-
-  public setPresetConfig(cpPresetLabel: string, cpPresetColors: string[]): void {
-    this.cpPresetLabel = cpPresetLabel;
+  public setPresetColors(cpPresetColors: string[]): void {
     this.cpPresetColors = cpPresetColors;
   }
 
   public setColorFromString(value: string, emit: boolean = true, update: boolean = true): void {
-    let hsva: Hsva | null;
-
-    if (this.cpAlphaChannel === 'always' || this.cpAlphaChannel === 'forced') {
-      hsva = this.service.stringToHsva(value, true);
-
-      if (!hsva && !this.hsva) {
-        hsva = this.service.stringToHsva(value, false);
-      }
-    } else {
-      hsva = this.service.stringToHsva(value, false);
+    let localHsva: Hsva | null = stringToHsva(value, false);
+    if (!localHsva && !this.hsva) {
+      localHsva = stringToHsva(this.fallbackColor, false);
     }
 
-    if (!hsva && !this.hsva) {
-      hsva = this.service.stringToHsva(this.fallbackColor, false);
-    }
-
-    if (hsva) {
-      this.hsva = hsva;
-
-      this.sliderH = this.hsva.h;
-
-      if (this.cpOutputFormat === 'hex' && this.cpAlphaChannel === 'disabled') {
-        this.hsva.a = 1;
-      }
-
+    if (localHsva) {
+      this.hsva = localHsva;
+      this.sliderH = localHsva.h;
       this.updateColorPicker(emit, update);
     }
   }
 
-  public onResize(): void {
+  private onResize(): void {
     if (this.position === 'fixed') {
       this.setDialogPosition();
-    } else if (this.cpDialogDisplay !== 'inline') {
+    } else {
       this.closeColorPicker();
     }
   }
 
-  public onDragEnd(slider: string): void {
-    this.directiveInstance.sliderDragEnd({ slider: slider, color: this.outputColor });
-  }
-
-  public onDragStart(slider: string): void {
-    this.directiveInstance.sliderDragStart({ slider: slider, color: this.outputColor });
-  }
-
-  public onMouseDown(event: MouseEvent): void {
+  private onMouseDown(event: MouseEvent): void {
     if (
       this.show &&
-      !this.isIE10 &&
-      this.cpDialogDisplay === 'popup' &&
       event.target !== this.directiveElementRef.nativeElement &&
       !this.isDescendant(this.elRef.nativeElement, event.target) &&
-      !this.isDescendant(this.directiveElementRef.nativeElement, event.target) &&
-      this.cpIgnoredElements.filter((item: any) => item === event.target).length === 0
+      !this.isDescendant(this.directiveElementRef.nativeElement, event.target)
     ) {
       this.ngZone.run(() => {
-        if (this.cpSaveClickOutside) {
-          this.directiveInstance.colorSelected(this.outputColor);
-        } else {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this.hsva = null;
-
-          this.setColorFromString(this.initialColor, false);
-
-          if (this.cpCmykEnabled) {
-            this.directiveInstance.cmykChanged(this.cmykColor);
-          }
-
-          this.directiveInstance.colorChanged(this.initialColor);
-
-          this.directiveInstance.colorCanceled();
-        }
-
-        if (this.cpCloseClickOutside) {
-          this.closeColorPicker();
-        }
+        this.directiveInstance.colorSelect(this.outputColor);
+        this.closeColorPicker();
       });
     }
   }
 
-  public onAcceptColor(event: Event): void {
+  private onAcceptColor(event: Event): void {
     event.stopPropagation();
-
     if (this.outputColor) {
-      this.directiveInstance.colorSelected(this.outputColor);
+      this.directiveInstance.colorSelect(this.outputColor);
     }
 
-    if (this.cpDialogDisplay === 'popup') {
-      this.closeColorPicker();
-    }
+    this.closeColorPicker();
   }
 
-  public onCancelColor(event: Event): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    this.hsva = null;
-
+  private onCancelColor(event: Event): void {
     event.stopPropagation();
-
-    this.directiveInstance.colorCanceled();
-
     this.setColorFromString(this.initialColor, true);
-
-    if (this.cpDialogDisplay === 'popup') {
-      if (this.cpCmykEnabled) {
-        this.directiveInstance.cmykChanged(this.cmykColor);
-      }
-
-      this.directiveInstance.colorChanged(this.initialColor, true);
-
-      this.closeColorPicker();
-    }
+    this.directiveInstance.colorChange(this.initialColor);
+    this.closeColorPicker();
   }
 
-  public onEyeDropper(): void {
-    if (!this.eyeDropperSupported) return;
-    const eyeDropper = new (window as any).EyeDropper();
-    eyeDropper.open().then((eyeDropperResult: {
-      sRGBHex: string;
-    }) => {
-      this.setColorFromString(eyeDropperResult.sRGBHex, true);
-    });
-  }
-
-  public onFormatToggle(change: number): void {
-    const availableFormats = this.dialogInputFields.length -
-      (this.cpCmykEnabled ? 0 : 1);
-
-    const nextFormat = (((this.dialogInputFields.indexOf(this.format) + change) %
-      availableFormats) + availableFormats) % availableFormats;
-
+  protected onFormatToggle(change: number): void {
+    const length = this.dialogInputFields.length;
+    const nextFormat = (((this.dialogInputFields.indexOf(this.format) + change) % length) + length) % length;
     this.format = this.dialogInputFields[nextFormat];
   }
 
-  public onColorChange(value: { s: number, v: number, rgX: number, rgY: number }): void {
+  protected onColorChange(value: TwoDimEvent): void {
     this.hsva.s = value.s / value.rgX;
     this.hsva.v = value.v / value.rgY;
-
     this.updateColorPicker();
-
-    this.directiveInstance.sliderChanged({
-      slider: 'lightness',
-      value: this.hsva.v,
-      color: this.outputColor
-    });
-
-    this.directiveInstance.sliderChanged({
-      slider: 'saturation',
-      value: this.hsva.s,
-      color: this.outputColor
-    });
   }
 
-  public onHueChange(value: { v: number, rgX: number }): void {
+  protected onHueChange(value: OneDimEvent): void {
     this.hsva.h = value.v / value.rgX;
     this.sliderH = this.hsva.h;
-
     this.updateColorPicker();
-
-    this.directiveInstance.sliderChanged({
-      slider: 'hue',
-      value: this.hsva.h,
-      color: this.outputColor
-    });
   }
 
-  public onValueChange(value: { v: number, rgX: number }): void {
-    this.hsva.v = value.v / value.rgX;
-
-    this.updateColorPicker();
-
-    this.directiveInstance.sliderChanged({
-      slider: 'value',
-      value: this.hsva.v,
-      color: this.outputColor
-    });
-  }
-
-  public onAlphaChange(value: { v: number, rgX: number }): void {
+  protected onAlphaChange(value: OneDimEvent): void {
     this.hsva.a = value.v / value.rgX;
-
     this.updateColorPicker();
-
-    this.directiveInstance.sliderChanged({
-      slider: 'alpha',
-      value: this.hsva.a,
-      color: this.outputColor
-    });
   }
 
-  public onHexInput(value: string | null): void {
-    if (value === null) {
-      this.updateColorPicker();
-    } else {
-      if (value && value[0] !== '#') {
-        value = '#' + value;
-      }
-
-      let validHex = /^#([a-f0-9]{3}|[a-f0-9]{6})$/gi;
-
-      if (this.cpAlphaChannel === 'always') {
-        validHex = /^#([a-f0-9]{3}|[a-f0-9]{6}|[a-f0-9]{8})$/gi;
-      }
-
-      const valid = validHex.test(value);
-
-      if (valid) {
-        if (value.length < 5) {
-          value = '#' + value.substring(1)
-            .split('')
-            .map(c => c + c)
-            .join('');
-        }
-
-        if (this.cpAlphaChannel === 'forced') {
-          value += Math.round(this.hsva.a * 255).toString(16);
-        }
-
-        this.setColorFromString(value, true, false);
-      }
-
-      this.directiveInstance.inputChanged({
-        input: 'hex',
-        valid: valid,
-        value: value,
-        color: this.outputColor
-      });
-    }
-  }
-
-  public onRedInput(value: { v: number, rg: number }): void {
-    const rgba = this.service.hsvaToRgba(this.hsva);
-
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      rgba.r = value.v / value.rg;
-
-      this.hsva = this.service.rgbaToHsva(rgba);
-
-      this.sliderH = this.hsva.h;
-
+  private onAlphaInput(value: number): void {
+    if (!isNaN(value) && value >= 0 && value <= 1) {
+      this.hsva.a = value;
       this.updateColorPicker();
     }
-
-    this.directiveInstance.inputChanged({
-      input: 'red',
-      valid: valid,
-      value: rgba.r,
-      color: this.outputColor
-    });
   }
-
-  public onBlueInput(value: { v: number, rg: number }): void {
-    const rgba = this.service.hsvaToRgba(this.hsva);
-
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      rgba.b = value.v / value.rg;
-
-      this.hsva = this.service.rgbaToHsva(rgba);
-
-      this.sliderH = this.hsva.h;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'blue',
-      valid: valid,
-      value: rgba.b,
-      color: this.outputColor
-    });
-  }
-
-  public onGreenInput(value: { v: number, rg: number }): void {
-    const rgba = this.service.hsvaToRgba(this.hsva);
-
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      rgba.g = value.v / value.rg;
-
-      this.hsva = this.service.rgbaToHsva(rgba);
-
-      this.sliderH = this.hsva.h;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'green',
-      valid: valid,
-      value: rgba.g,
-      color: this.outputColor
-    });
-  }
-
-  public onHueInput(value: { v: number, rg: number }) {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.hsva.h = value.v / value.rg;
-
-      this.sliderH = this.hsva.h;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'hue',
-      valid: valid,
-      value: this.hsva.h,
-      color: this.outputColor
-    });
-  }
-
-  public onValueInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.hsva.v = value.v / value.rg;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'value',
-      valid: valid,
-      value: this.hsva.v,
-      color: this.outputColor
-    });
-  }
-
-  public onAlphaInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.hsva.a = value.v / value.rg;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'alpha',
-      valid: valid,
-      value: this.hsva.a,
-      color: this.outputColor
-    });
-  }
-
-  public onLightnessInput(value: { v: number, rg: number }): void {
-    const hsla = this.service.hsva2hsla(this.hsva);
-
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      hsla.l = value.v / value.rg;
-
-      this.hsva = this.service.hsla2hsva(hsla);
-
-      this.sliderH = this.hsva.h;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'lightness',
-      valid: valid,
-      value: hsla.l,
-      color: this.outputColor
-    });
-  }
-
-  public onSaturationInput(value: { v: number, rg: number }): void {
-    const hsla = this.service.hsva2hsla(this.hsva);
-
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      hsla.s = value.v / value.rg;
-
-      this.hsva = this.service.hsla2hsva(hsla);
-
-      this.sliderH = this.hsva.h;
-
-      this.updateColorPicker();
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'saturation',
-      valid: valid,
-      value: hsla.s,
-      color: this.outputColor
-    });
-  }
-
-  public onCyanInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.cmyk.c = value.v;
-
-      this.updateColorPicker(false, true, true);
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'cyan',
-      valid: true,
-      value: this.cmyk.c,
-      color: this.outputColor
-    });
-  }
-
-  public onMagentaInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.cmyk.m = value.v;
-
-      this.updateColorPicker(false, true, true);
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'magenta',
-      valid: true,
-      value: this.cmyk.m,
-      color: this.outputColor
-    });
-  }
-
-  public onYellowInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.cmyk.y = value.v;
-
-      this.updateColorPicker(false, true, true);
-    }
-
-     this.directiveInstance.inputChanged({
-      input: 'yellow',
-      valid: true,
-      value: this.cmyk.y,
-      color: this.outputColor
-    });
-  }
-
-  public onBlackInput(value: { v: number, rg: number }): void {
-    const valid = !isNaN(value.v) && value.v >= 0 && value.v <= value.rg;
-
-    if (valid) {
-      this.cmyk.k = value.v;
-
-      this.updateColorPicker(false, true, true);
-    }
-
-    this.directiveInstance.inputChanged({
-      input: 'black',
-      valid: true,
-      value: this.cmyk.k,
-      color: this.outputColor
-    });
-  }
-
-  public onAddPresetColor(event: any, value: string): void {
-    event.stopPropagation();
-
-    if (!this.cpPresetColors.filter((color) => (color === value)).length) {
-      this.cpPresetColors = this.cpPresetColors.concat(value);
-
-      this.directiveInstance.presetColorsChanged(this.cpPresetColors);
-    }
-  }
-
-  public onRemovePresetColor(event: any, value: string): void {
-    event.stopPropagation();
-
-    this.cpPresetColors = this.cpPresetColors.filter((color) => (color !== value));
-
-    this.directiveInstance.presetColorsChanged(this.cpPresetColors);
-  }
-
-  // Private helper functions for the color picker dialog status
 
   private openColorPicker(): void {
     if (!this.show) {
@@ -846,28 +484,17 @@ public eyeDropperSupported =
 
       setTimeout(() => {
         this.hidden = false;
-
         this.setDialogPosition();
-
         this.cdRef.detectChanges();
       }, 0);
 
-      this.directiveInstance.stateChanged(true);
-
-      if (!this.isIE10) {
-        // The change detection should be run on `mousedown` event only when the condition
-        // is met within the `onMouseDown` method.
-        this.ngZone.runOutsideAngular(() => {
-          // There's no sense to add both event listeners on touch devices since the `touchstart`
-          // event is handled earlier than `mousedown`, so we'll get 2 change detections and the
-          // second one will be unnecessary.
-          if (SUPPORTS_TOUCH) {
-            document.addEventListener('touchstart', this.listenerMouseDown);
-          } else {
-            document.addEventListener('mousedown', this.listenerMouseDown);
-          }
-        });
-      }
+      this.ngZone.runOutsideAngular(() => {
+        if (SUPPORTS_TOUCH) {
+          document.addEventListener('touchstart', this.listenerMouseDown);
+        } else {
+          document.addEventListener('mousedown', this.listenerMouseDown);
+        }
+      });
 
       window.addEventListener('resize', this.listenerResize);
     }
@@ -877,21 +504,17 @@ public eyeDropperSupported =
     if (this.show) {
       this.show = false;
 
-      this.directiveInstance.stateChanged(false);
-
-      if (!this.isIE10) {
-        if (SUPPORTS_TOUCH) {
-          document.removeEventListener('touchstart', this.listenerMouseDown);
-        } else {
-          document.removeEventListener('mousedown', this.listenerMouseDown);
-        }
+      if (SUPPORTS_TOUCH) {
+        document.removeEventListener('touchstart', this.listenerMouseDown);
+      } else {
+        document.removeEventListener('mousedown', this.listenerMouseDown);
       }
 
       window.removeEventListener('resize', this.listenerResize);
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (!this.cdRef['destroyed']) {
+      if (!this.cdRef.destroyed) {
         this.cdRef.detectChanges();
       }
     }
@@ -899,114 +522,68 @@ public eyeDropperSupported =
 
   private updateColorPicker(emit: boolean = true, update: boolean = true, cmykInput: boolean = false): void {
     if (this.sliderDimMax) {
-      if (this.cpColorMode === 2) {
-        this.hsva.s = 0;
-      }
-
-      let hue: Rgba, hsla: Hsla, rgba: Rgba;
-
       const lastOutput = this.outputColor;
+      const hslaTmp: Hsla = hsva2hsla(this.hsva);
 
-      hsla = this.service.hsva2hsla(this.hsva);
-
-      if (!this.cpCmykEnabled) {
-        rgba = this.service.denormalizeRGBA(this.service.hsvaToRgba(this.hsva));
+      let rgbaTmp: Rgba;
+      if (!cmykInput) {
+        rgbaTmp = hsvaToRgba(this.hsva);
+        this.cmyk = denormalizeCMYK(rgbaToCmyk(rgbaTmp));
       } else {
-        if (!cmykInput) {
-          rgba = this.service.hsvaToRgba(this.hsva);
-
-          this.cmyk = this.service.denormalizeCMYK(this.service.rgbaToCmyk(rgba));
-        } else {
-          rgba = this.service.cmykToRgb(this.service.normalizeCMYK(this.cmyk));
-
-          this.hsva = this.service.rgbaToHsva(rgba);
-        }
-
-        rgba = this.service.denormalizeRGBA(rgba);
-
-        this.sliderH = this.hsva.h;
+        rgbaTmp = cmykToRgb(normalizeCMYK(this.cmyk));
+        this.hsva = rgbaToHsva(rgbaTmp);
       }
 
-      hue = this.service.denormalizeRGBA(this.service.hsvaToRgba(new Hsva(this.sliderH || this.hsva.h, 1, 1, 1)));
+      rgbaTmp = denormalizeRGBA(rgbaTmp);
+      this.sliderH = this.hsva.h;
+
+      const hue = denormalizeRGBA(hsvaToRgba(new Hsva(this.sliderH || this.hsva.h, 1, 1, 1)));
 
       if (update) {
-        this.hslaText = new Hsla(Math.round((hsla.h) * 360), Math.round(hsla.s * 100), Math.round(hsla.l * 100),
-          Math.round(hsla.a * 100) / 100);
-
-        this.rgbaText = new Rgba(rgba.r, rgba.g, rgba.b, Math.round(rgba.a * 100) / 100);
-
-        if (this.cpCmykEnabled) {
-          this.cmykText = new Cmyk(this.cmyk.c, this.cmyk.m, this.cmyk.y, this.cmyk.k,
-            Math.round(this.cmyk.a * 100) / 100);
-        }
-
-        const allowHex8 = this.cpAlphaChannel === 'always';
-
-        this.hexText = this.service.rgbaToHex(rgba, allowHex8);
-        this.hexAlpha = this.rgbaText.a;
+        this.hsla = new Hsla(
+          Math.round((hslaTmp.h) * 360),
+          Math.round(hslaTmp.s * 100),
+          Math.round(hslaTmp.l * 100),
+          Math.round(hslaTmp.a * 100) / 100);
+        this.rgba = new Rgba(
+          rgbaTmp.r,
+          rgbaTmp.g,
+          rgbaTmp.b,
+          Math.round(rgbaTmp.a * 100) / 100);
+        this.cmyk.a = Math.round(this.cmyk.a * 100) / 100;
+        this.hexText = rgbaToHex(rgbaTmp, false);
+        this.hexAlpha = this.rgba.a;
       }
 
-      if (this.cpOutputFormat === 'auto') {
-        if (this.format !== ColorFormats.RGBA && this.format !== ColorFormats.CMYK && this.format !== ColorFormats.HSLA) {
-          if (this.hsva.a < 1) {
-            this.format = this.hsva.a < 1 ? ColorFormats.RGBA : ColorFormats.HEX;
-          }
-        }
-      }
-
-      this.hueSliderColor = 'rgb(' + hue.r + ',' + hue.g + ',' + hue.b + ')';
-      this.alphaSliderColor = 'rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')';
-
-      this.outputColor = this.service.outputFormat(this.hsva, this.cpOutputFormat, this.cpAlphaChannel);
-      this.selectedColor = this.service.outputFormat(this.hsva, 'rgba', null);
-
-      if (this.format !== ColorFormats.CMYK) {
-        this.cmykColor = '';
-      } else {
-        if (this.cpAlphaChannel === 'always' || this.cpAlphaChannel === 'enabled' ||
-          this.cpAlphaChannel === 'forced')
-        {
-          const alpha = Math.round(this.cmyk.a * 100) / 100;
-
-          this.cmykColor = `cmyka(${this.cmyk.c},${this.cmyk.m},${this.cmyk.y},${this.cmyk.k},${alpha})`;
-        } else {
-          this.cmykColor = `cmyk(${this.cmyk.c},${this.cmyk.m},${this.cmyk.y},${this.cmyk.k})`;
-        }
-      }
+      this.hueSliderColor = `rgb(${hue.r},${hue.g},${hue.b})`;
+      this.alphaSliderColor = `rgb(${rgbaTmp.r},${rgbaTmp.g},${rgbaTmp.b})`;
+      this.outputColor = outputFormat(this.hsva);
+      this.selectedColor = outputFormat(this.hsva);
 
       this.slider = new SliderPosition(
-        (this.sliderH || this.hsva.h) * this.sliderDimMax.h - 8,
-        this.hsva.s * this.sliderDimMax.s - 8,
-        (1 - this.hsva.v) * this.sliderDimMax.v - 8,
-        this.hsva.a * this.sliderDimMax.a - 8
+        (this.sliderH || this.hsva.h) * this.sliderDimMax.h - 10,
+        this.hsva.s * this.sliderDimMax.s - 10,
+        (1 - this.hsva.v) * this.sliderDimMax.v - 10,
+        this.hsva.a * this.sliderDimMax.a - 10
       );
 
       if (emit && lastOutput !== this.outputColor) {
-        if (this.cpCmykEnabled) {
-          this.directiveInstance.cmykChanged(this.cmykColor);
-        }
-
-        this.directiveInstance.colorChanged(this.outputColor);
+        this.directiveInstance.colorChange(this.outputColor);
       }
     }
   }
 
-  // Private helper functions for the color picker dialog positioning
-
   private setDialogPosition(): void {
-    if (this.cpDialogDisplay === 'inline') {
-      this.position = 'relative';
-    } else {
-      let position = 'static', transform = '', style;
-
-      let parentNode: any = null, transformNode: any = null;
-
+      let position = 'static';
+      let transform = '';
+      let parentNode: any = null;
+      let transformNode: any = null;
       let node = this.directiveElementRef.nativeElement.parentNode;
 
       const dialogHeight = this.dialogElement.nativeElement.offsetHeight;
 
       while (node !== null && node.tagName !== 'HTML') {
-        style = window.getComputedStyle(node);
+        const style = window.getComputedStyle(node);
         position = style.getPropertyValue('position');
         transform = style.getPropertyValue('transform');
 
@@ -1020,7 +597,6 @@ public eyeDropperSupported =
 
         if (position === 'fixed') {
           parentNode = transformNode;
-
           break;
         }
 
@@ -1029,8 +605,8 @@ public eyeDropperSupported =
 
       const boxDirective = this.createDialogBox(this.directiveElementRef.nativeElement, (position !== 'fixed'));
 
-      if (this.useRootViewContainer || (position === 'fixed' &&
-         (!parentNode || parentNode instanceof HTMLUnknownElement)))
+      if (position === 'fixed' &&
+         (!parentNode || parentNode instanceof HTMLUnknownElement))
       {
         this.top = boxDirective.top;
         this.left = boxDirective.left;
@@ -1049,41 +625,26 @@ public eyeDropperSupported =
         this.position = 'fixed';
       }
 
-      let usePosition = this.cpPosition;
-
-      if (this.cpPosition === 'auto') {
-        const dialogBounds = this.dialogElement.nativeElement.getBoundingClientRect();
-        const triggerBounds = this.cpTriggerElement.nativeElement.getBoundingClientRect();
-        usePosition = calculateAutoPositioning(dialogBounds, triggerBounds);
-      }
+      const dialogBounds = this.dialogElement.nativeElement.getBoundingClientRect();
+      const triggerBounds = this.cpTriggerElement.nativeElement.getBoundingClientRect();
+      const usePosition = calculateAutoPositioning(dialogBounds, triggerBounds);
 
       if (usePosition === 'top') {
-        this.arrowTop = dialogHeight - 1;
-
-        this.top -= dialogHeight + this.dialogArrowSize;
-        this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
+        this.top -= dialogHeight + gap;
       } else if (usePosition === 'bottom') {
-        this.top += boxDirective.height + this.dialogArrowSize;
-        this.left += this.cpPositionOffset / 100 * boxDirective.width - this.dialogArrowOffset;
+        this.top += boxDirective.height + gap;
       } else if (usePosition === 'top-left' || usePosition === 'left-top') {
-        this.top -= dialogHeight - boxDirective.height + boxDirective.height * this.cpPositionOffset / 100;
-        this.left -= this.cpWidth + this.dialogArrowSize - 2 - this.dialogArrowOffset;
+        this.top -= dialogHeight - boxDirective.height;
+        this.left -= widthSaturation + gap - 2;
       } else if (usePosition === 'top-right' || usePosition === 'right-top') {
-        this.top -= dialogHeight - boxDirective.height + boxDirective.height * this.cpPositionOffset / 100;
-        this.left += boxDirective.width + this.dialogArrowSize - 2 - this.dialogArrowOffset;
+        this.top -= dialogHeight - boxDirective.height;
+        this.left += boxDirective.width + gap - 2;
       } else if (usePosition === 'left' || usePosition === 'bottom-left' || usePosition === 'left-bottom') {
-        this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-        this.left -= this.cpWidth + this.dialogArrowSize - 2;
+        this.left -= widthSaturation + gap - 2;
       } else { // usePosition === 'right' || usePosition === 'bottom-right' || usePosition === 'right-bottom'
-        this.top += boxDirective.height * this.cpPositionOffset / 100 - this.dialogArrowOffset;
-        this.left += boxDirective.width + this.dialogArrowSize - 2;
+        this.left += boxDirective.width + gap - 2;
       }
-
-      this.cpUsePosition = usePosition;
-    }
   }
-
-  // Private helper functions for the color picker dialog positioning and opening
 
   private isDescendant(parent: any, child: any): boolean {
     let node: any = child.parentNode;
