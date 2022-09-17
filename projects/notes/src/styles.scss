@@ -1,14 +1,14 @@
 @use '@angular/material' as mat;
 
 // Styles used by KaTeX.
-@import '~katex/dist/katex.css';
+@import 'katex/dist/katex.css';
 
 // Include material icons fonts.
 // @import '~material-design-icons/iconfont/material-icons.css';
 // Original distribution is outdated, we use the following one which has many newer icons.
 // It is only regular. If you need outline, switch to the original distribution.
 $material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
-@import "~material-design-icons-iconfont/src/material-design-icons";
+@import "material-design-icons-iconfont/src/material-design-icons";
 
 @import "@angular/material/theming";
 @import "./app-components-theme";
