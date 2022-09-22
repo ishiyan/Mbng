@@ -6,13 +6,15 @@ import { SampleOhlcvChartSelector2Component } from './sample-2/sample-ohlcv-char
 import { SampleOhlcvChartSelector3Component } from './sample-3/sample-ohlcv-chart-selector-3.component';
 import { SampleOhlcvChartSelector4Component } from './sample-4/sample-ohlcv-chart-selector-4.component';
 import { SampleOhlcvChartSelector5Component } from './sample-5/sample-ohlcv-chart-selector-5.component';
+import { SampleOhlcvChartSelector6Component } from './sample-6/sample-ohlcv-chart-selector-6.component';
 
 const routes: Routes = [
   { path: 's1', component: SampleOhlcvChartSelector1Component },
   { path: 's2', component: SampleOhlcvChartSelector2Component },
   { path: 's3', component: SampleOhlcvChartSelector3Component },
   { path: 's4', component: SampleOhlcvChartSelector4Component },
-  { path: 's5', component: SampleOhlcvChartSelector5Component } // ,
+  { path: 's5', component: SampleOhlcvChartSelector5Component },
+  { path: 's6', component: SampleOhlcvChartSelector6Component } // ,
   // { path: '**', redirectTo: 's1' }
 ];
 

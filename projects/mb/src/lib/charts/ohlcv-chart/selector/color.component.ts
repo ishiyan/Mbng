@@ -12,7 +12,7 @@ export class ColorComponent implements OnInit {
   @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
 
   /** A label to display above the selector. */
-  @Input() label = '';
+  @Input() label = 'Color';
 
   /** Specifies an initial value. */
   @Input() set initial(color: string) {

@@ -29,7 +29,6 @@ export class ColorPickerSliderDirective {
   }
 
   private move(event: any): void {
-    event.preventDefault();
     this.setCursor(event);
   }
 

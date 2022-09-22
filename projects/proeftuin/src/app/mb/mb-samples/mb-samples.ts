@@ -128,7 +128,8 @@ export const treeNodes: MbSample[] = [
           { name: 'Line dash', header: 'Line dash', route: 'comp-ohlcv-chart-selector/s2' },
           { name: 'Line interpolation', header: 'Line interpolation', route: 'comp-ohlcv-chart-selector/s3' },
           { name: 'Color', header: 'Color', route: 'comp-ohlcv-chart-selector/s4' },
-          { name: 'Line', header: 'Line', route: 'comp-ohlcv-chart-selector/s4' }
+          { name: 'Line style', header: 'Line style', route: 'comp-ohlcv-chart-selector/s5' },
+          { name: 'Line style selector', header: 'Line style selector', route: 'comp-ohlcv-chart-selector/s6' }
         ]
       }
     ]

@@ -1,21 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { LineData } from '../template/line-data';
+import { LineStyle } from './line-style';
 
 @Component({
-  selector: 'mb-line',
-  templateUrl: './line.component.html',
-  styleUrls: ['./line.component.scss']
+  selector: 'mb-line-style',
+  templateUrl: './line-style.component.html',
+  styleUrls: ['./line-style.component.scss']
 })
-export class LineComponent implements OnInit {
+export class LineStyleComponent implements OnInit {
 
-  protected line = new LineData();
+  protected line = new LineStyle();
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<LineData> = new EventEmitter<LineData>();
+  @Output() readonly selectionChange: EventEmitter<LineStyle> = new EventEmitter<LineStyle>();
 
   /** Specifies an initial value. */
-  @Input() set initial(line: LineData) {
+  @Input() set initial(line: LineStyle) {
     this.line = line;
   }
 
@@ -25,16 +25,25 @@ export class LineComponent implements OnInit {
 
   protected widthChanged(width: number) {
     this.line.width = width;
+    this.line = { ...this.line };
     this.selectionChange.emit(this.line);
   }
 
   protected dashChanged(dash: string) {
     this.line.dash = dash;
+    this.line = { ...this.line };
+    this.selectionChange.emit(this.line);
+  }
+
+  protected colorChanged(color: string) {
+    this.line.color = color;
+    this.line = { ...this.line };
     this.selectionChange.emit(this.line);
   }
 
   protected interpolationChanged(interpolation: string) {
     this.line.interpolation = interpolation;
+    this.line = { ...this.line };
     this.selectionChange.emit(this.line);
   }
 }

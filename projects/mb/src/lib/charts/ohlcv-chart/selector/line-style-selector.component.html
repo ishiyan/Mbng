@@ -1,0 +1,5 @@
+<mat-form-field style="width:8em" appearance="fill" floatLabel="always">
+    <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
+    <mb-line-svg matInfix [value]="line" (click)="openDialog()"></mb-line-svg>
+    <input type="text" matInput style="width:0px" />
+</mat-form-field>

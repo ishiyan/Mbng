@@ -34,7 +34,7 @@ export class LineDashComponent implements OnInit {
   @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
 
   /** A label to display above the selector. */
-  @Input() label = '';
+  @Input() label = 'Dash';
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value);

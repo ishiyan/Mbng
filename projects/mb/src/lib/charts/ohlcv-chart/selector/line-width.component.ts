@@ -31,7 +31,7 @@ export class LineWidthComponent implements OnInit {
   @Output() readonly selectionChange: EventEmitter<number> = new EventEmitter<number>();
 
   /** A label to display above the selector. */
-  @Input() label = '';
+  @Input() label = 'Thickness';
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value);

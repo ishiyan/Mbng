@@ -5,8 +5,8 @@ import { QuoteComponent } from './quote-component.enum';
 
 interface Comp {
   enumeration: QuoteComponent;
-  option: string;
-  trigger: string;
+  name: string;
+  tex: string;
   selected: boolean;
 }
 
@@ -17,15 +17,15 @@ interface Comp {
 })
 export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [
-    { enumeration: QuoteComponent.Bid, option: 'Bid, b', trigger: 'b', selected: false },
-    { enumeration: QuoteComponent.Ask, option: 'Ask, a', trigger: 'a', selected: false },
-    { enumeration: QuoteComponent.Mid, option: 'Mid, ba/2', trigger: 'ba/2', selected: false },
-    { enumeration: QuoteComponent.Weighted, option: 'Weighted, (bbs+aas)/(bs+as)', trigger: '(bbs+aas)/(bs+as)', selected: false },
-    { enumeration: QuoteComponent.WeightedMid, option: 'Weighted Mid, (bas+abs)/(bs+as)', trigger: '(bas+abs)/(bs+as)', selected: false },
-    { enumeration: QuoteComponent.SpreadBp, option: 'Spread bp', trigger: 'spread bp', selected: true },
+    { enumeration: QuoteComponent.Bid, name: 'Bid', tex: 'b_p', selected: false },
+    { enumeration: QuoteComponent.Ask, name: 'Ask', tex: 'a_p', selected: false },
+    { enumeration: QuoteComponent.Mid, name: 'Mid', tex: '\\frac{b_p·a_p}{2}', selected: false },
+    { enumeration: QuoteComponent.Weighted, name: 'Weighted', tex: '\\frac{b_p·b_s+a_p·a_s}{b_s+a_s}', selected: false },
+    { enumeration: QuoteComponent.WeightedMid, name: 'Weighted Mid', tex: '\\frac{b_p·a_s+a_p·b_s}{b_s+a_s}', selected: false },
+    { enumeration: QuoteComponent.SpreadBp, name: 'Spread bp', tex: '', selected: true },
   ];
 
-  protected compSelected = this.comps[QuoteComponent.Mid.valueOf()].enumeration;
+  protected compSelected = this.comps[QuoteComponent.Mid.valueOf()];
 
   /** Event emitted when the selected value has been changed by the user. */
   @Output() readonly selectionChange: EventEmitter<QuoteComponent> = new EventEmitter<QuoteComponent>();
@@ -34,19 +34,19 @@ export class QuoteComponentComponent implements OnInit {
   @Input() label = 'Quote component';
 
   protected selectionChanged(selection: MatSelectChange) {
-    this.selectionChange.emit(selection.value);
+    this.selectionChange.emit(selection.value.enumeration);
   }
 
   /** Specifies an initial value. */
   @Input() set initial(comp: QuoteComponent) {
-    const idxOld = this.compSelected.valueOf();
+    const idxOld = this.compSelected.enumeration.valueOf();
     const idxNew = comp.valueOf();
     this.comps[idxOld].selected = false;
     this.comps[idxNew].selected = true;
-    this.compSelected = this.comps[idxNew].enumeration;
+    this.compSelected = this.comps[idxNew];
   }
 
   ngOnInit() {
-    this.selectionChange.emit(this.compSelected);
+    this.selectionChange.emit(this.compSelected.enumeration);
   }
 }

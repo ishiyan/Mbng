@@ -11,6 +11,7 @@ import { SampleOhlcvChartSelector2Component } from './sample-2/sample-ohlcv-char
 import { SampleOhlcvChartSelector3Component } from './sample-3/sample-ohlcv-chart-selector-3.component';
 import { SampleOhlcvChartSelector4Component } from './sample-4/sample-ohlcv-chart-selector-4.component';
 import { SampleOhlcvChartSelector5Component } from './sample-5/sample-ohlcv-chart-selector-5.component';
+import { SampleOhlcvChartSelector6Component } from './sample-6/sample-ohlcv-chart-selector-6.component';
 
 import { SampleOhlcvChartSelectorRoutingModule } from './sample-ohlcv-chart-selector-routing.module';
 
@@ -28,7 +29,8 @@ import { SampleOhlcvChartSelectorRoutingModule } from './sample-ohlcv-chart-sele
     SampleOhlcvChartSelector2Component,
     SampleOhlcvChartSelector3Component,
     SampleOhlcvChartSelector4Component,
-    SampleOhlcvChartSelector5Component
+    SampleOhlcvChartSelector5Component,
+    SampleOhlcvChartSelector6Component
   ]
 })
 export class SampleOhlcvChartSelectorModule { }
