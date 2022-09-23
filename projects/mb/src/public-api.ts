@@ -161,10 +161,15 @@ export * from './lib/trading/instruments/industry-classification/gics-taxonomy';
 
 export * from './lib/trading/indicators/indicator/frequency-response/frequency-response.interface';
 export * from './lib/trading/indicators/indicator/frequency-response/frequency-response';
-export * from './lib/trading/indicators/simple-moving-average';
-
-export * from './lib/trading/indicators/indicator-type.enum';
-export * from './lib/trading/indicators/indicator-output-type.enum';
+export * from './lib/trading/indicators/indicator/indicator-type.enum';
+export * from './lib/trading/indicators/indicator/indicator-output-type.enum';
+export * from './lib/trading/indicators/indicator/indicator-output-metadata.interface';
+export * from './lib/trading/indicators/indicator/indicator-output';
+export * from './lib/trading/indicators/indicator/indicator-metadata.interface';
+export * from './lib/trading/indicators/indicator/indicator-specification.interface';
+export * from './lib/trading/indicators/indicator/indicator.interface';
+export * from './lib/trading/indicators/indicator/line-indicator';
+export * from './lib/trading/indicators/simple-moving-average/simple-moving-average';
 export * from './lib/trading/trading.module';
 
 // export * from './lib/charts/d3ts/index.js';

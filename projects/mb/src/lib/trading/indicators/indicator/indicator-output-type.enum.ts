@@ -2,11 +2,11 @@
 export enum IndicatorOutputType {
 
   /** Holds a single value. */
-  Scalar = 'scalar',
+  Scalar,
 
   /** Holds two values representing lower and upper lines of a band. */
-  Band = 'band',
+  Band,
 
   /** Holds an array of values representing a heat-map column. */
-  HeatMap = 'heatmap'
+  Heatmap
 }
