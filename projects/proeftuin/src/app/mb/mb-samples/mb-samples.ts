@@ -131,6 +131,21 @@ export const treeNodes: MbSample[] = [
           { name: 'Line style', header: 'Line style', route: 'comp-ohlcv-chart-selector/s5' },
           { name: 'Line style selector', header: 'Line style selector', route: 'comp-ohlcv-chart-selector/s6' }
         ]
+      },
+      {
+        name: 'Trading',
+        children: [
+          { name: 'Indicators',
+            children: [
+              { name: 'Simple Moving Average',
+                children: [
+                  { name: 'Params', header: 'Simple moving average params', route: 'comp-tra-ind-sma/s1' },
+                  { name: 'Selector', header: 'Simple moving average selector', route: 'comp-tra-ind-sma/s2' }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }

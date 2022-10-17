@@ -169,7 +169,13 @@ export * from './lib/trading/indicators/indicator/indicator-metadata.interface';
 export * from './lib/trading/indicators/indicator/indicator-specification.interface';
 export * from './lib/trading/indicators/indicator/indicator.interface';
 export * from './lib/trading/indicators/indicator/line-indicator';
+
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average';
+export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
+export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params.component';
+export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/simple-moving-average/simple-moving-average.module';
+
 export * from './lib/trading/trading.module';
 
 // export * from './lib/charts/d3ts/index.js';
