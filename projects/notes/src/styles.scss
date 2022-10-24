@@ -1,0 +1,151 @@
+@use '@angular/material' as mat;
+
+// Styles used by KaTeX.
+@import 'katex/dist/katex.css';
+
+// Include material icons fonts.
+// @import '~material-design-icons/iconfont/material-icons.css';
+// Original distribution is outdated, we use the following one which has many newer icons.
+// It is only regular. If you need outline, switch to the original distribution.
+$material-design-icons-font-directory-path: "~material-design-icons-iconfont/dist/fonts/";
+@import "material-design-icons-iconfont/src/material-design-icons";
+
+@import "@angular/material/theming";
+@import "./app-components-theme";
+
+// Include material core styles.
+@include mat.core();
+
+// Define palettes for application theme.
+$angular-primary: mat.define-palette(mat.$teal-palette, 500, 100, 900);
+$angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$angular-warn: mat.define-palette(mat.$red-palette);
+
+// Define colors because they are the same for both light and dark themes.
+$primary: mat-color($angular-primary);
+$accent: mat-color($angular-accent);
+$warn: mat-color($angular-warn);
+
+// Light theme is set as the default one.
+$angular-default-theme: mat.define-light-theme((color: (primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    ));
+
+@include mat.all-component-themes($angular-default-theme);
+@include app-components-theme($angular-default-theme);
+
+// Dark theme is set as the 'darkMode' style.
+$angular-dark-theme: mat.define-dark-theme((color: (primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    ));
+
+.darkMode {
+  @include mat.all-component-colors($angular-dark-theme);
+  @include app-components-theme($angular-dark-theme);
+}
+
+// Body style.
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto;
+}
+
+// External references. Uses hardcoded primary color.
+
+a[href^="http"]:after {
+  content: '';
+  background: no-repeat left .25em center url('data:image/svg+xml,\
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48"> \
+      <defs> \
+          <mask id="corner"> \
+              <rect fill="white" x="-24" y="-24" width="48" height="48"></rect> \
+              <rect fill="black" x="2" y="-24" width="22" height="26"></rect> \
+          </mask> \
+      </defs> \
+      <g fill="%23009688" stroke="%23009688" stroke-width="4"> \
+          <rect x="-20" y="-16" width="32" height="32" rx="7" ry="7" stroke-width="3" fill="none" mask="url(%23corner)"/> \
+          <g transform="translate(1,0)" stroke-linecap="square"> \
+              <line x1="0" y1="0" x2="17" y2="-17" stroke-width="6"/> \
+              <polygon points="21 -21, 21 -8, 8 -21" stroke-linejoin="round" stroke-width="3"/> \
+           </g> \
+       </g> \
+  </svg>');
+  padding-right: 1.5em;
+}
+
+// Bibliography
+
+.citation {
+  margin-left: 0.7cm;
+  text-indent: -0.7cm;
+  padding: 0px 5px;
+  display: inline-block;
+  width: calc(100% - 1cm);
+  word-break: break-word;
+  line-height: 180%;
+  user-select: none;
+}
+
+// Quotes
+
+q {
+  quotes: '\201c' '\201d' '\2018' '\2019';
+}
+
+q::before {
+  content: open-quote;
+}
+
+q::after {
+  content: close-quote;
+}
+
+// Figures
+
+body {
+  counter-reset: cntFig;
+}
+
+figure {
+  counter-increment: cntFig;
+}
+
+figure figcaption:before {
+  content: "Figure " counter(cntFig) ".";
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+figure img {
+  width: 100%;
+  object-fit: cover;
+}
+
+figure.figleft {
+  float: left;
+  width: 38.1966%; // 1 - 1 / phi
+  max-width: 250px;
+  margin: 1em 1.2em 0.5em 0;
+}
+
+figure.figright {
+  float: right;
+  width: 38.1966%; // 1 - 1 / phi
+  max-width: 250px;
+  margin: 1em 0 0.5em 1.2em;
+}
+
+figure.figwide {
+  width: 100%;
+  margin: 1em auto;
+}
