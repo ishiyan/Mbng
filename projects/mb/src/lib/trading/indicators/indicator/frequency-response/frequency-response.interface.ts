@@ -2,7 +2,7 @@
  * Represents a filter which frequency response is to be calculated.
  **/
  export interface Filter {
-    getName(): string;
+    getMnemonic(): string;
     update(sample: number): number;
 }
 

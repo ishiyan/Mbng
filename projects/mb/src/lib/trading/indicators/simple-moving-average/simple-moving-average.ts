@@ -1,23 +1,25 @@
-export class SimpleMovingAverage {
-  private name: string;
+import { LineIndicator } from "../indicator/line-indicator";
+import { SimpleMovingAverageParams } from "./simple-moving-average-params.interface";
+
+export class SimpleMovingAverage extends LineIndicator {
   private window: Array<number>;
   private windowLength: number;
   private windowSum: number;
   private windowCount: number;
   private lastIndex: number;
-  private primed: boolean;
 
   /**
    * Constructs an instance given a length in samples.
    * Th length should be an integer greater than 1.
    **/
-  public constructor(length: number){
-    length = Math.floor(length);
+  public constructor(params: SimpleMovingAverageParams){
+    super();
+    const length = Math.floor(params.length);
     if (length < 2) {
       throw new Error('length should be greater than 1');
     }
 
-    this.name = 'sma('.concat(length.toString(), ')');
+    this.mnemonic = 'sma('.concat(length.toString(), ')');
     this.window = new Array<number>(length);
     this.windowLength = length;
     this.windowSum = 0;
@@ -25,12 +27,6 @@ export class SimpleMovingAverage {
     this.lastIndex = length - 1;
     this.primed = false;
   }
-
-  /** The name of the indicator. */
-  public getName(): string { return this.name; }
-
-  /** Indicates whether the indicator is primed. */
-  public isPrimed(): boolean { return this.primed; }
 
   /** Updates the value of the indicator given the next sample. */
   public update(sample: number): number {

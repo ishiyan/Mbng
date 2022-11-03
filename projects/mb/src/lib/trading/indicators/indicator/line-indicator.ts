@@ -19,7 +19,7 @@ export abstract class LineIndicator implements Indicator {
   private quoteComponentFunc!: ((quote: Quote) => number);
 
   protected type!: IndicatorType;
-  protected name!: string;
+  protected mnemonic!: string;
   protected description!: string;
   protected primed!: boolean;
 
@@ -31,11 +31,11 @@ export abstract class LineIndicator implements Indicator {
     this.quoteComponentFunc = quoteComponentValue(component);
   }
 
-  /** The name of the indicator. */
-  public getName(): string { return this.name; }
+  /** The mnemonic of the indicator. */
+  public getMnemonic(): string { return this.mnemonic; }
 
   /** The description of the indicator. */
-  public getDescription(): string { return this.name; }
+  public getDescription(): string { return this.description; }
 
   /** Indicates whether an indicator is primed. */
   public isPrimed(): boolean { return this.primed; }
@@ -44,7 +44,7 @@ export abstract class LineIndicator implements Indicator {
   public metadata(): IndicatorMetadata {
     return {
       type: this.type,
-      outputs: [{kind: 0, type: IndicatorOutputType.Scalar, name: this.name, description: this.description }]
+      outputs: [{kind: 0, type: IndicatorOutputType.Scalar, mnemonic: this.mnemonic, description: this.description }]
     };
   }
 

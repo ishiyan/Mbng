@@ -13,7 +13,7 @@ export interface IndicatorOutputMetadata {
     type: IndicatorOutputType;
 
     /** A short name (mnemonic) of this indicator output. */
-    name: string;
+    mnemonic: string;
 
     /** A description of this indicator output. */
     description: string;

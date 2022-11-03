@@ -9,7 +9,7 @@ export class FrequencyResponse {
 
         const spectrumLength = signalLength / 2 - 1;
         const fr: FrequencyResponseResult = {
-            label: filter.getName(),
+            label: filter.getMnemonic(),
             frequencies: FrequencyResponse.prepareFrequencyDomain(spectrumLength),
             powerPercent: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),
             powerDecibel: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),

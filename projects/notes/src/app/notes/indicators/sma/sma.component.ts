@@ -85,13 +85,13 @@ export class SmaComponent {
   };
 
   protected indicators = [
-    new SimpleMovingAverage(5),
-    new SimpleMovingAverage(15),
-    new SimpleMovingAverage(25),
-    new SimpleMovingAverage(35),
-    new SimpleMovingAverage(45),
-    new SimpleMovingAverage(55),
-    new SimpleMovingAverage(65)
+    new SimpleMovingAverage({length: 5}),
+    new SimpleMovingAverage({length: 15}),
+    new SimpleMovingAverage({length: 25}),
+    new SimpleMovingAverage({length: 35}),
+    new SimpleMovingAverage({length: 45}),
+    new SimpleMovingAverage({length: 55}),
+    new SimpleMovingAverage({length: 65})
   ];
 
   private selectedIndex = 0;
@@ -120,7 +120,7 @@ export class SmaComponent {
     for (let i = 0; i < this.indicators.length; ++i) {
       const indicator = this.indicators[i];
       const lineData = new LineData();
-      lineData.name = indicator.getName();
+      lineData.name = indicator.getMnemonic();
       lineData.data = calculateSma(this.dataSelection.data, indicator);
       lineData.color = this.selectedPalette[i];
       lineData.width = 1.5;

@@ -1,7 +1,7 @@
 import { Filter } from 'mb';
 
 export class IdentityFilter implements Filter {
-  getName(): string {
+  getMnemonic(): string {
     return 'identity';
   }
 
