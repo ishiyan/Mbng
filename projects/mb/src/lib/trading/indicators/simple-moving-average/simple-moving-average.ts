@@ -1,6 +1,12 @@
-import { LineIndicator } from "../indicator/line-indicator";
-import { SimpleMovingAverageParams } from "./simple-moving-average-params.interface";
+import { componentPairMnemonic } from '../indicator/component-pair-mnemonic';
+import { LineIndicator } from '../indicator/line-indicator';
+import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
 
+/** Function to calculate mnemonic of a __SimpleMovingAverage__ indicator. */
+export const simpleMovingAverageMnemonic = (params: SimpleMovingAverageParams): string =>
+  'sma('.concat(length.toString(), componentPairMnemonic(params.barComponent, params.quoteComponent) + ')');
+
+/** Simple Moving Average line indicator. */
 export class SimpleMovingAverage extends LineIndicator {
   private window: Array<number>;
   private windowLength: number;
@@ -10,7 +16,7 @@ export class SimpleMovingAverage extends LineIndicator {
 
   /**
    * Constructs an instance given a length in samples.
-   * Th length should be an integer greater than 1.
+   * The length should be an integer greater than 1.
    **/
   public constructor(params: SimpleMovingAverageParams){
     super();
@@ -19,7 +25,7 @@ export class SimpleMovingAverage extends LineIndicator {
       throw new Error('length should be greater than 1');
     }
 
-    this.mnemonic = 'sma('.concat(length.toString(), ')');
+    this.mnemonic = simpleMovingAverageMnemonic(params);
     this.window = new Array<number>(length);
     this.windowLength = length;
     this.windowSum = 0;

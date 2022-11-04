@@ -20,6 +20,9 @@ export class SimpleMovingAverageParamsComponent implements OnInit {
     return this.params.length;
   }
   protected set lengthParam(value: number) {
+    if (!value || value < 2) {
+      value = 2;
+    }
     this.params.length = value;
     this.params = { ...this.params };
     this.selectionChange.emit(this.params);

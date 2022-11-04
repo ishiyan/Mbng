@@ -13,14 +13,14 @@ export interface SimpleMovingAverageParams {
     /**
      * A component of a bar to use when updating the indicator with a bar sample.
      *
-     * If _undefined_, the bar component will have a default value and will not be shown in the indicator mnemonic. 
+     * If _undefined_, the bar component will have a default value and will not be shown in the indicator mnemonic.
      */
     barComponent?: BarComponent;
 
     /**
      * A component of a quote to use when updating the indicator with a quote sample.
      *
-     * If _undefined_, the quote component will have a default value and will not be shown in the indicator mnemonic. 
+     * If _undefined_, the quote component will have a default value and will not be shown in the indicator mnemonic.
      */
     quoteComponent?: QuoteComponent;
 }
