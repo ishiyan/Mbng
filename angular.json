@@ -29,7 +29,7 @@
               {
                 "glob": "**/*",
                 "input": "./projects/mb/assets",
-                "output": "/assets/"                
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -143,7 +143,7 @@
               {
                 "glob": "**/*",
                 "input": "./projects/mb/assets",
-                "output": "/assets/"                
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -279,5 +279,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

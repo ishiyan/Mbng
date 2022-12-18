@@ -1,5 +1,5 @@
 <div class="sample">
-  <mat-card class="example-card">
+  <mat-card appearance="outlined" class="example-card">
     <mat-card-header>
       <mat-card-title>Parametric procedural palette</mat-card-title>
       <mat-card-subtitle>
@@ -22,38 +22,38 @@
         <mat-expansion-panel-header>
           <mat-panel-title>a [{{a1}}, {{a2}}, {{a3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a1" (input)="a1Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a2" (input)="a2Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="a3" (input)="a3Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a1" #ngSlider><input matSliderThumb (input)="a1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a2" #ngSlider><input matSliderThumb (input)="a2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a3" #ngSlider><input matSliderThumb (input)="a3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>b [{{b1}}, {{b2}}, {{b3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b1" (input)="b1Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b2" (input)="b2Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="b3" (input)="b3Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b1" #ngSlider><input matSliderThumb (input)="b1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b2" #ngSlider><input matSliderThumb (input)="b2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b3" #ngSlider><input matSliderThumb (input)="b3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>c [{{c1}}, {{c2}}, {{c3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c1" (input)="c1Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c2" (input)="c2Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="c3" (input)="c3Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c1" #ngSlider><input matSliderThumb (input)="c1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c2" #ngSlider><input matSliderThumb (input)="c2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c3" #ngSlider><input matSliderThumb (input)="c3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>d [{{d1}}, {{d2}}, {{d3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d1" (input)="d1Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d2" (input)="d2Changed($event)"></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" [thumbLabel]="true" color="primary" [(ngModel)]="d3" (input)="d3Changed($event)"></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d1" #ngSlider><input matSliderThumb (input)="d1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d2" #ngSlider><input matSliderThumb (input)="d2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d3" #ngSlider><input matSliderThumb (input)="d3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="example-card">
+  <mat-card appearance="outlined" class="example-card">
     <mat-card-header>
       <mat-card-title>Examples</mat-card-title>
       <mat-card-subtitle>

@@ -7,41 +7,43 @@
   $is-dark-theme: map-get($theme, is-dark);
 
   mb-linear-chart {
-    .mat-button-toggle {
+    /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    .mat-mdc-button-toggle {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, hint-text);
       }
     }
-
-    .mat-button-toggle-appearance-standard {
+    /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    .mat-mdc-button-toggle-appearance-standard {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, secondary-text);
       }
     }
-
-    .mat-button-toggle-checked {
+    /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    .mat-mdc-button-toggle-checked {
       .svg-icon {
         stroke: mat.get-color-from-palette($accent, text);
       }
-
-      &.mat-button-toggle-appearance-standard {
+      /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+      &.mat-mdc-button-toggle-appearance-standard {
         .svg-icon {
           stroke: mat.get-color-from-palette($accent, text);
         }
       }
     }
-
-    .mat-button-toggle-disabled {
+    /* TODO(+mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    .mat-mdc-button-toggle-disabled {
       .svg-icon {
         stroke: mat.get-color-from-palette($foreground, disabled-button);
       }
     }
-
-    mat-slide-toggle:not(.mat-disabled) .mat-icon {
+    /* TODO(+mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.*/
+    mat-mdc-slide-toggle:not(.mat-disabled) .mat-icon {
       color: mat.get-color-from-palette($accent, text);
     }
-
-    mat-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
+    /* TODO(+mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version.*/
+    mat-mdc-slide-toggle:not(.mat-checked):not(.mat-disabled) .mat-icon {
       color: mat.get-color-from-palette($foreground, secondary-text);
     }
 

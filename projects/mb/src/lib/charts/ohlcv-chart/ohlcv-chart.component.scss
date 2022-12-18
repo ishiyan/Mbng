@@ -18,7 +18,8 @@
   vertical-align: middle;
 }
 
-mat-slide-toggle .mat-icon {
+/* TODO(+mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
+mat-mdc-slide-toggle .mat-icon {
   vertical-align: bottom;
 }
 
