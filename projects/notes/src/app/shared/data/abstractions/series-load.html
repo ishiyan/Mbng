@@ -2,7 +2,7 @@
 <input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
     accept=".csv, .csv.gz" />
 <div>
-    <button mat-button color="primary" mat-mini-fab (click)="fileInput.click()">
+    <button color="primary" mat-mini-fab (click)="fileInput.click()">
         <mat-icon>add</mat-icon>
     </button>
     <ng-container *ngIf="filePath.length > 0">
