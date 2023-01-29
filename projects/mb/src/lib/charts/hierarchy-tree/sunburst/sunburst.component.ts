@@ -110,7 +110,7 @@ export class SunburstComponent implements OnChanges {
       if (sortFunc !== sortNone) {
         rootNode = rootNode.sort((a: d3.HierarchyNode<HierarchyTreeNode>, b: d3.HierarchyNode<HierarchyTreeNode>) => sortFunc(a, b));
       }
-      return d3.partition().size([twoPi, rootNode.height + 1])(rootNode);
+      return d3.partition<HierarchyTreeNode>().size([twoPi, rootNode.height + 1])(rootNode);
     };
     const root = partition(dat);
     root.each((d: any) => d.current = d);

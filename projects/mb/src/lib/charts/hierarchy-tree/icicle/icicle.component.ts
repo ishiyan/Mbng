@@ -117,7 +117,7 @@ export class IcicleComponent implements OnChanges {
         rootNode = rootNode.sort((a: d3.HierarchyNode<HierarchyTreeNode>, b: d3.HierarchyNode<HierarchyTreeNode>) => sortFunc(a, b));
       }
       const n: number = (this.levels < 1 ? rootNode.height : this.levels) + (this.rootVisible ? 1 : 0);
-      return d3.partition().size([computed[1], (rootNode.height + 1) * computed[0] / n])(rootNode);
+      return d3.partition<HierarchyTreeNode>().size([computed[1], (rootNode.height + 1) * computed[0] / n])(rootNode);
     };
     const root = partition(dat);
     let focus = root;
