@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as d3tc from '../../../../shared/d3tc';
 
@@ -7,7 +8,7 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'd3-sample-d3tc-zooming',
+  selector: 'app-d3-sample-d3tc-zooming',
   templateUrl: './d3tc-zooming.component.html',
   styleUrls: ['./d3tc-zooming.component.scss']
 })

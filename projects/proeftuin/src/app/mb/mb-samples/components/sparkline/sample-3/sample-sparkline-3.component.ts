@@ -17,7 +17,7 @@ interface DataItem {
 }
 
 @Component({
-  selector: 'mb-sample-sparkline-3',
+  selector: 'app-sample-sparkline-3',
   templateUrl: './sample-sparkline-3.component.html',
   styleUrls: ['./sample-sparkline-3.component.scss']
 })

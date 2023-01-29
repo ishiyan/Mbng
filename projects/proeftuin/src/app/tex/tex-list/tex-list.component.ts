@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { Sample } from '../samples/sample';
 
 @Component({
-  selector: 'tex-sample-list',
+  selector: 'app-tex-sample-list',
   templateUrl: './tex-list.component.html',
   styleUrls: ['./tex-list.component.scss']
 })

@@ -1,18 +1,21 @@
 .toolbar {
-    height: 42px;
     padding: 0px;
-    padding-left: 0px;
     vertical-align: middle;
+    margin-top: -16px;
+}
+
+.tags {
+    margin-top: 0px;
 }
 
 .search {
-    font-size: 14px;
+    margin-top: 18px;
 }
 
 .fullwidth {
     width: 98%;
     margin-left: 4px;
-    margin-top: 8px;
+    margin-top: 4px;
     margin-bottom: 4px;
 }
 

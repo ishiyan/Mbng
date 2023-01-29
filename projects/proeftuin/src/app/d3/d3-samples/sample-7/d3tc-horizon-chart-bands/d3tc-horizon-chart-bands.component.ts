@@ -6,7 +6,7 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'd3-sample-d3tc-horizon-chart-bands',
+  selector: 'app-d3-sample-d3tc-horizon-chart-bands',
   templateUrl: './d3tc-horizon-chart-bands.component.html',
   styleUrls: ['./d3tc-horizon-chart-bands.component.scss']
 })

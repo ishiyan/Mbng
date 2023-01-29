@@ -1,17 +1,10 @@
 <h1>{{sma.title}}</h1>
 <app-bar-series-select label="example data" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
-<mb-swatches-select [colors]="palettes" (selectionChange)="selectionChanged($event);"></mb-swatches-select>
+<mb-swatches-select style="vertical-align: bottom;" [colors]="palettes" (selectionChange)="selectionChanged($event);"></mb-swatches-select>
 
 <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 <br />
 <hr />
-■ | ■□ | ■■□□ | ■■■□□□ | ■■■■□□□□ | ■■■■■□□□□□
-<hr />
-● | ●○ | ●●○○ | ●●●○○○ | ●●●●○○○○ | ●●●●●○○○○○
-<hr />
-▬▬ | ▬ 1 | ▬ 2 | ▬ 3 | ▬ 4 | ▬ 5 | ▬ 6 | ▬ 7
-<hr />
-&nbsp; | 1,1 | 2,2 | 3,3 | 4,3 | 5,5 | 6,6 | 7,7
 <h1>From [Ehlers2001]</h1>
 <div style="width:100%">
   An <mb-ki>n</mb-ki>-day SMA is formed by adding the samples over <mb-ki>n</mb-ki> days and dividing by <mb-ki>n

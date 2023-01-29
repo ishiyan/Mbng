@@ -3,11 +3,12 @@ import * as d3 from 'd3';
 
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as hilbert from '../hilbert';
 
 @Component({
-  selector: 'd3-sample-hilbert-stocks',
+  selector: 'app-d3-sample-hilbert-stocks',
   templateUrl: './hilbert-stocks.component.html',
   styleUrls: ['./hilbert-stocks.component.scss']
 })
@@ -26,6 +27,7 @@ export class HilbertStocksComponent implements OnInit {
       const dat: number[] = data.map((d): number => +d[open]);
       const level2 = Math.pow(2, lev / 2); // 1 << lev
       const x = d3.scaleLinear().domain([-.5, level2]).range([0, w]);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const colour = d3.scaleLog<string>().domain([Math.max(.0001, d3.min(dat)), d3.max(dat)]).range(['#00c', '#f90']);
 

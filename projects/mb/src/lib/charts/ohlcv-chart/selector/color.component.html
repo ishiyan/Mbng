@@ -1,5 +1,6 @@
-<mat-form-field style="width:8em" appearance="fill" floatLabel="always">
+<span>
   <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
-  <input type="text" matInput mbColorPicker [colorPicker]="color" [style.background]="color"
-    (colorChanged)="color=$event" (colorSelected)="color=$event" />
-</mat-form-field>
+  <br/>
+  <input type="text" readonly mbColorPicker [colorPicker]="color" [style.background]="color"
+  (colorChanged)="color=$event" (colorSelected)="color=$event" />    
+</span>      

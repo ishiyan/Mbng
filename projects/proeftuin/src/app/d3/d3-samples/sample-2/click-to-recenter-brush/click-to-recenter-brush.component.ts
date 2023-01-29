@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 // https://observablehq.com/@d3/click-to-recenter-brush
 
 @Component({
-  selector: 'd3-sample-click-to-recenter-brush',
+  selector: 'app-d3-sample-click-to-recenter-brush',
   templateUrl: './click-to-recenter-brush.component.html',
   styleUrls: ['./click-to-recenter-brush.component.scss']
 })
@@ -63,6 +63,7 @@ export class ClickToRecenterBrushComponent implements OnInit {
         const cx = d3.pointers(event)[0][0];
         const x0 = cx - dx / 2;
         const x1 = cx + dx / 2;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const s = d3.select(this.parentNode);
         s.call(brush.move, x1 > width ? [width - dx, width] : x0 < 0 ? [0, dx] : [x0, x1]);

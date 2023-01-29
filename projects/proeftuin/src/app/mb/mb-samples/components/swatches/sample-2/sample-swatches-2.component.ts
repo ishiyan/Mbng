@@ -4,7 +4,7 @@ import { materialPalettesA } from 'projects/mb/src/lib/colors/material-palettes-
 import { materialPalettes } from 'projects/mb/src/lib/colors/material-palettes';
 
 @Component({
-  selector: 'mb-sample-swatches-2',
+  selector: 'app-sample-swatches-2',
   templateUrl: './sample-swatches-2.component.html',
   styleUrls: ['./sample-swatches-2.component.scss']
 })

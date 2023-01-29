@@ -23,7 +23,7 @@ interface DataGroup {
 }
 
 @Component({
-  selector: 'mb-sample-sparkline-2',
+  selector: 'app-sample-sparkline-2',
   templateUrl: './sample-sparkline-2.component.html',
   styleUrls: ['./sample-sparkline-2.component.scss']
 })

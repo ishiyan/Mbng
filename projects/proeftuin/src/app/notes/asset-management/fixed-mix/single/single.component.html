@@ -43,11 +43,23 @@
     </mat-card-content>
 
     <mat-card-content>
-      <div class="rightmargin"><mat-slider [min]="5000" [max]="500000" [step]="5000" [discrete]="false" [(ngModel)]="initialAmount" color="primary" #ngSlider><input matSliderThumb (input)="initialAmountChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>&nbsp;Initial amount&nbsp;€{{initialAmount / 1000}}.000</div>
+      <div class="rightmargin">
+        <mat-slider [min]="5000" [max]="500000" [step]="5000" [discrete]="false" color="primary">
+          <input matSliderThumb [value]="initialAmount" (valueChange)="initialAmountChanged({value: ngSliderThumbInitialAmount.value})" #ngSliderThumbInitialAmount="matSliderThumb" />
+        </mat-slider>&nbsp;Initial amount&nbsp;€{{initialAmount / 1000}}.000
+      </div>
 
-      <div class="rightmargin"><mat-slider [max]="100" [min]="0" [step]="1" [discrete]="true" [(ngModel)]="hrIdeal" color="primary" #ngSlider><input matSliderThumb (input)="hrIdealChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>&nbsp;HR&nbsp;percentage&nbsp;{{hrIdeal}}%</div>
+      <div class="rightmargin">
+        <mat-slider [max]="100" [min]="0" [step]="1" [discrete]="true" color="primary">
+          <input matSliderThumb [value]="hrIdeal" (valueChange)="hrIdealChanged({value: ngSliderThumbHrIdeal.value})" #ngSliderThumbHrIdeal="matSliderThumb" />
+        </mat-slider>&nbsp;HR&nbsp;percentage&nbsp;{{hrIdeal}}%
+      </div>
 
-      <div class="rightmargin"><mat-slider [max]="100" [min]="0" [step]="1" [discrete]="true" [(ngModel)]="hrThreshold" color="primary" #ngSlider><input matSliderThumb (input)="hrThresholdChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>&nbsp;HR&nbsp;tolerance&nbsp;±{{hrThreshold}}%</div>
+      <div class="rightmargin">
+        <mat-slider [max]="100" [min]="0" [step]="1" [discrete]="true" color="primary">
+          <input matSliderThumb [value]="hrThreshold" (valueChange)="hrThresholdChanged({value: ngSliderThumbHrThreshold.value})" #ngSliderThumbHrThreshold="matSliderThumb" />
+        </mat-slider>&nbsp;HR&nbsp;tolerance&nbsp;±{{hrThreshold}}%
+      </div>
 
       <p>
         <mb-swatches-select class="rightmargin" [colors]="palettes" (selectionChange)="paletteSelectionChanged($event);"></mb-swatches-select>

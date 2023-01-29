@@ -9,7 +9,7 @@ import { icbTaxonomy } from 'projects/mb/src/lib/trading/instruments/industry-cl
 import { gicsTaxonomy } from 'projects/mb/src/lib/trading/instruments/industry-classification/gics-taxonomy';
 
 @Component({
-  selector: 'mb-hierarchies-industry-classifications',
+  selector: 'app-hierarchies-industry-classifications',
   templateUrl: './industry-classifications.component.html',
   styleUrls: ['./industry-classifications.component.scss']
 })

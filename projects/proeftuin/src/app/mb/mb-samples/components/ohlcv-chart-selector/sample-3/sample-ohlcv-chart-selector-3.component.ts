@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'mb-sample-ohlcv-chart-selector-3',
+  selector: 'app-sample-ohlcv-chart-selector-3',
   templateUrl: './sample-ohlcv-chart-selector-3.component.html',
   styleUrls: ['./sample-ohlcv-chart-selector-3.component.scss']
 })

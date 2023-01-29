@@ -10,7 +10,7 @@ import { testDataBbLo } from '../../../test-data/indicators/test-data-bb-lo';
 import { testDataBbUp } from '../../../test-data/indicators/test-data-bb-up';
 
 @Component({
-  selector: 'mb-sample-stackline-1',
+  selector: 'app-sample-stackline-1',
   templateUrl: './sample-stackline-1.component.html',
   styleUrls: ['./sample-stackline-1.component.scss']
 })

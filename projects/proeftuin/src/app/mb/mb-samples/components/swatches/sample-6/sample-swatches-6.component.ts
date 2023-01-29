@@ -4,7 +4,7 @@ import { colorsCoSequential5Palettes } from 'projects/mb/src/lib/colors/colors-c
 import { colorsCoSequential5PalettesSelection } from 'projects/mb/src/lib/colors/colors-co-sequential-5-palettes-selection';
 
 @Component({
-  selector: 'mb-sample-swatches-6',
+  selector: 'app-sample-swatches-6',
   templateUrl: './sample-swatches-6.component.html',
   styleUrls: ['./sample-swatches-6.component.scss']
 })

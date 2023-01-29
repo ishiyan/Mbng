@@ -1,8 +1,8 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'd3-sample-brush-handles-2',
+  selector: 'app-d3-sample-brush-handles-2',
   templateUrl: './brush-handles-2.component.html',
   styleUrls: ['./brush-handles-2.component.scss']
 })

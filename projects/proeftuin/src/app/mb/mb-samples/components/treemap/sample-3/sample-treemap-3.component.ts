@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
-import { HierarchyTreeSumFunction, sumNumberOfLeafNodes, sumNumberOfNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
+import { HierarchyTreeSumFunction, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
 import { HierarchyTreeFillFunction, coolFill, coolFillInverted, warmFill, warmFillInverted, viridisFill, viridisFillInverted, bluesFill, bluesFillInverted, rainbowFill, rainbowFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { coolFillFirstLevel, coolFillFirstLevelInverted, warmFillFirstLevel, warmFillFirstLevelInverted, viridisFillFirstLevel, viridisFillFirstLevelInverted, bluesFillFirstLevel, bluesFillFirstLevelInverted, rainbowFillFirstLevel, rainbowFillFirstLevelInverted, greensFillFirstLevel, greensFillFirstLevelInverted, greysFillFirstLevel, greysFillFirstLevelInverted, gradientFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { coolValueFill, coolValueFillInverted, warmValueFill, warmValueFillInverted, viridisValueFill, viridisValueFillInverted, bluesValueFill, bluesValueFillInverted, rainbowValueFill, rainbowValueFillInverted, greensValueFill, greensValueFillInverted, greysValueFill, greysValueFillInverted, gradientValueFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
@@ -79,7 +79,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-treemap-3',
+  selector: 'app-sample-treemap-3',
   templateUrl: './sample-treemap-3.component.html',
   styleUrls: ['./sample-treemap-3.component.scss']
 })
@@ -190,7 +190,7 @@ export class SampleTreemap3Component {
     { key: 'cool 1st inv', value: coolFillFirstLevelInverted },
     { key: 'warm 1st inv', value: warmFillFirstLevelInverted },
     { key: 'viridis 1st inv', value: viridisFillFirstLevelInverted },
-    { key: 'rainbow 1st inve', value: rainbowFillFirstLevelInverted },
+    { key: 'rainbow 1st inv', value: rainbowFillFirstLevelInverted },
 
     { key: 'blues val', value: bluesValueFill },
     { key: 'leaves val', value: (d: any, min: number, max: number) => gradientValueFill(d, min, max, 'lightgreen', 'seagreen', false, false, false) },
@@ -261,10 +261,10 @@ export class SampleTreemap3Component {
   readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
     { key: 'linear', value: linearFontSize },
     { key: '8', value: equalFontSize8 },
-    { key: '6', value: (t: any) => 6 },
-    { key: '7', value: (t: any) => 7 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
     { key: '8', value: equalFontSize8 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '10', value: equalFontSize10 },
     { key: '12', value: equalFontSize12 },
     { key: '14', value: equalFontSize14 },

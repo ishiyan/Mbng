@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
-import { HierarchyTreeSumFunction, sumNumberOfNodes, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
+import { HierarchyTreeSumFunction, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
 import { HierarchyTreeFillFunction, coolFill, coolFillInverted, warmFill, warmFillInverted, viridisFill, viridisFillInverted, bluesFill, bluesFillInverted, rainbowFill, rainbowFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { HierarchyTreeFillOpacityFunction, transparentFillOpacity, opaqueFillOpacity, linearFillOpacity } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-opacity-function';
 import { HierarchyTreeStrokeFunction, noStroke, blackStroke, whiteStroke, transparentStroke } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/stroke-function';
@@ -13,8 +13,6 @@ import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from
 import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize14, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 
 import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../../test-data/hierarchies/aex-index';
-
-const sumFuncValue: HierarchyTreeSumFunction = (d: HierarchyTreeNode) => d.value ? d.value : 0;
 
 interface Dataset {
   value: AexIndexHierarchyTreeNode;
@@ -74,7 +72,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-circlepack-3',
+  selector: 'app-sample-circlepack-3',
   templateUrl: './sample-circlepack-3.component.html',
   styleUrls: ['./sample-circlepack-3.component.scss']
 })
@@ -147,15 +145,15 @@ export class SampleCirclepack3Component {
   readonly fillOpacityFuncArray: FillOpacityFunc[] = [
     { key: 'opaque', value: opaqueFillOpacity },
     { key: 'linear', value: linearFillOpacity },
-    { key: '90%', value: (d: any) => 0.9 },
-    { key: '80%', value: (d: any) => 0.8 },
-    { key: '70%', value: (d: any) => 0.7 },
-    { key: '60%', value: (d: any) => 0.6 },
-    { key: '50%', value: (d: any) => 0.5 },
-    { key: '60%', value: (d: any) => 0.4 },
-    { key: '70%', value: (d: any) => 0.3 },
-    { key: '80%', value: (d: any) => 0.2 },
-    { key: '10%', value: (d: any) => 0.1 },
+    { key: '90%', value: () => 0.9 },
+    { key: '80%', value: () => 0.8 },
+    { key: '70%', value: () => 0.7 },
+    { key: '60%', value: () => 0.6 },
+    { key: '50%', value: () => 0.5 },
+    { key: '60%', value: () => 0.4 },
+    { key: '70%', value: () => 0.3 },
+    { key: '80%', value: () => 0.2 },
+    { key: '10%', value: () => 0.1 },
     { key: 'transparent', value: transparentFillOpacity }
   ];
   fillOpacityFuncSelected: HierarchyTreeFillOpacityFunction = this.fillOpacityFuncArray[0].value;
@@ -200,10 +198,10 @@ export class SampleCirclepack3Component {
     { key: '14', value: equalFontSize14 },
     { key: '12', value: equalFontSize12 },
     { key: '10', value: equalFontSize10 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '8', value: equalFontSize8 },
-    { key: '7', value: (t: any) => 7 },
-    { key: '6', value: (t: any) => 6 }
+    { key: '7', value: () => 7 },
+    { key: '6', value: () => 6 }
   ];
   labelFontSizeFuncSelected: HierarchyTreeFontSizeFunction = this.labelFontSizeFuncArray[0].value;
 

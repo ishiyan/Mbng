@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { randomPalette } from 'projects/mb/src/lib/colors/random-procedural-palettes';
 
 @Component({
-  selector: 'mb-sample-swatches-4',
+  selector: 'app-sample-swatches-4',
   templateUrl: './sample-swatches-4.component.html',
   styleUrls: ['./sample-swatches-4.component.scss']
 })

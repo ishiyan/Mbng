@@ -8,28 +8,41 @@
   margin-bottom: 16px;
 }
 
-.form-field {
+mat-form-field {
   margin-right: 16px;
 }
 
-.form-field-60 {
-  margin-right: 16px;
-  width: 60px;
-}
-
-.form-field-80 {
-  margin-right: 16px;
+.w80 {
   width: 80px;
 }
 
-.form-field-90 {
-  margin-right: 16px;
+.w90 {
   width: 90px;
 }
 
-.form-field-190 {
+.w110 {
+  width: 110px;
+}
+
+.w130 {
+  width: 130px;
+}
+
+.w140 {
+  width: 140px;
+}
+
+.w160 {
+  width: 160px;
+}
+
+.w250 {
+  width: 250px;
+}
+
+mat-slide-toggle {
   margin-right: 16px;
-  width: 190px;
+  vertical-align: middle;
 }
 
 /*

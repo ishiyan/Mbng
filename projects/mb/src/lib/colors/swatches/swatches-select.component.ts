@@ -1,10 +1,10 @@
 import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 
-const SELECT_PADDING_PIXELS = 20;
+const SELECT_PADDING_PIXELS = 48;
 const TRIGGER_HEIGHT_PIXELS = 24;
-const OPTION_HEIGHT_PIXELS = 32;
-const NUMBER_OF_SWATCHES = 3;
+const OPTION_HEIGHT_PIXELS = 24;
+const MIN_SWATCHES = 1;
 
 @Component({
   selector: 'mb-swatches-select',
@@ -17,14 +17,23 @@ export class SwatchesSelectComponent {
   /** Specifies an array of color palettes. */
   @Input() set colors(newColors: string[][]) {
     if (newColors && newColors.length > 0) {
+      const l = newColors.length;
       this.palettes = newColors;
       this.selectedPalette = this.palettes[0];
       let length = 0;
-      for (const palette in this.palettes) {
-        if (length < palette.length) {
-          length = palette.length;
+
+      for (let i = 0; i < l; ++i) {
+        const p = newColors[i];
+        const pl = p.length;
+        if (length < pl) {
+          length = pl;
         }
       }
+
+      if (length < MIN_SWATCHES) {
+        length = MIN_SWATCHES;
+      }
+
       this.optionWidthPixels = length * this.optionHeightPixels;
       this.triggerWidthPixels = length * this.triggerHeightPixels;
       this.selectWidthPixels = SELECT_PADDING_PIXELS + this.triggerWidthPixels;
@@ -40,8 +49,8 @@ export class SwatchesSelectComponent {
   readonly optionHeightPixels = OPTION_HEIGHT_PIXELS;
   readonly triggerHeightPixels = TRIGGER_HEIGHT_PIXELS;
 
-  optionWidthPixels = OPTION_HEIGHT_PIXELS * NUMBER_OF_SWATCHES;
-  triggerWidthPixels = TRIGGER_HEIGHT_PIXELS * NUMBER_OF_SWATCHES;
+  optionWidthPixels = OPTION_HEIGHT_PIXELS * MIN_SWATCHES;
+  triggerWidthPixels = TRIGGER_HEIGHT_PIXELS * MIN_SWATCHES;
   selectWidthPixels = SELECT_PADDING_PIXELS + this.triggerWidthPixels;
 
   palettes: string[][] = [];

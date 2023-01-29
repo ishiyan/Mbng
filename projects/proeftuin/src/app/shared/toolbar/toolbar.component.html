@@ -6,7 +6,7 @@
     <mat-icon svgIcon="mbrane-top" class="logo"></mat-icon>
     <a mat-button class="hide-small" *ngFor="let key of itemKeys" [routerLink]="key">{{items[key]}}</a>
     <span class="fill-remaining-space"></span>
-    <mb-theme-picker></mb-theme-picker>
+    <app-theme-picker></app-theme-picker>
     <a mat-button routerLink="/">
       <mat-icon>fingerprint</mat-icon>
     </a>

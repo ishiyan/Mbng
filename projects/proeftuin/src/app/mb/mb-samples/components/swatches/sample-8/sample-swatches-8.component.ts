@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { predefinedInterpolatedPalettes } from 'projects/mb/src/lib/colors/predefined-interpolated-palettes';
 
 @Component({
-  selector: 'mb-sample-swatches-8',
+  selector: 'app-sample-swatches-8',
   templateUrl: './sample-swatches-8.component.html',
   styleUrls: ['./sample-swatches-8.component.scss']
 })

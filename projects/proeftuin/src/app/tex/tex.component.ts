@@ -5,7 +5,7 @@ import { Category } from './categories/category';
 import { categories } from './categories/categories';
 
 @Component({
-  selector: 'tex-sample-collection',
+  selector: 'app-tex-sample-collection',
   templateUrl: './tex.component.html',
   styleUrls: ['./tex.component.scss']
 })

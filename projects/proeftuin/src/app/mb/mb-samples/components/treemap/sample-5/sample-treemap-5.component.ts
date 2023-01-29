@@ -65,7 +65,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-treemap-5',
+  selector: 'app-sample-treemap-5',
   templateUrl: './sample-treemap-5.component.html',
   styleUrls: ['./sample-treemap-5.component.scss']
 })
@@ -161,7 +161,7 @@ export class SampleTreemap5Component {
     { key: 'cool 1st inv', value: coolFillFirstLevelInverted },
     { key: 'warm 1st inv', value: warmFillFirstLevelInverted },
     { key: 'viridis 1st inv', value: viridisFillFirstLevelInverted },
-    { key: 'rainbow 1st inve', value: rainbowFillFirstLevelInverted },
+    { key: 'rainbow 1st inv', value: rainbowFillFirstLevelInverted },
 
     { key: 'blues val', value: bluesValueFill },
     { key: 'leaves val', value: (d: any, min: number, max: number) => gradientValueFill(d, min, max, 'lightgreen', 'seagreen', false, false, false) },
@@ -232,10 +232,10 @@ export class SampleTreemap5Component {
   readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
     { key: 'linear', value: linearFontSize },
     { key: '8', value: equalFontSize8 },
-    { key: '6', value: (t: any) => 6 },
-    { key: '7', value: (t: any) => 7 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
     { key: '8', value: equalFontSize8 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '10', value: equalFontSize10 },
     { key: '12', value: equalFontSize12 },
     { key: '14', value: equalFontSize14 },

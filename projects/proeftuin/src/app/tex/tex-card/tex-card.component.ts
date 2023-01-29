@@ -3,7 +3,7 @@ import { Component, Input, ChangeDetectorRef, AfterViewChecked } from '@angular/
 import { Sample } from '../samples/sample';
 
 @Component({
-  selector: 'tex-sample-card',
+  selector: 'app-tex-sample-card',
   templateUrl: './tex-card.component.html',
   styleUrls: ['./tex-card.component.scss']
 })

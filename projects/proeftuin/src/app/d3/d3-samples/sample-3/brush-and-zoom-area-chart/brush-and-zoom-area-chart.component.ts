@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 
 import { D3DatePrice } from '../../data/d3-date-price';
@@ -7,7 +7,7 @@ import { d3Sp500 } from '../../data/d3-sp500';
 // https://observablehq.com/@d3/focus-context
 
 @Component({
-  selector: 'd3-sample-brush-and-zoom-area-chart',
+  selector: 'app-d3-sample-brush-and-zoom-area-chart',
   templateUrl: './brush-and-zoom-area-chart.component.html',
   styleUrls: ['./brush-and-zoom-area-chart.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -79,8 +79,10 @@ export class BrushAndZoomAreaChartComponent implements OnInit {
       .attr('transform', 'translate(' + margin2.left + ',' + margin2.top + ')');
 
     // data begin ----------------------------------
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     x.domain(d3.extent(data, d => d.date));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     y.domain([0, d3.max(data, d => d.price)]);
     x2.domain(x.domain());

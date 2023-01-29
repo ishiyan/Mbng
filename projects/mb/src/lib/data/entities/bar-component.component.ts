@@ -21,10 +21,10 @@ export class BarComponentComponent implements OnInit {
     { enumeration: BarComponent.High, name: 'Highest', tex: 'h', selected: false },
     { enumeration: BarComponent.Low, name: 'Lowest', tex: 'l', selected: false },
     { enumeration: BarComponent.Close, name: 'Closing', tex: 'c', selected: false },
-    { enumeration: BarComponent.Median, name: 'Median', tex: '\\frac{h·l}{2}', selected: false },
-    { enumeration: BarComponent.Typical, name: 'Typical', tex: '\\frac{h·l·c}{3}', selected: true },
-    { enumeration: BarComponent.Weighted, name: 'Weighted', tex: '\\frac{h·l·c·c}{4}', selected: false },
-    { enumeration: BarComponent.Average, name: 'Average', tex: '\\frac{o·h·l·c}{4}', selected: false }
+    { enumeration: BarComponent.Median, name: 'Median', tex: '\\frac{h+l}{2}', selected: false },
+    { enumeration: BarComponent.Typical, name: 'Typical', tex: '\\frac{h+l+c}{3}', selected: true },
+    { enumeration: BarComponent.Weighted, name: 'Weighted', tex: '\\frac{h+l+c+c}{4}', selected: false },
+    { enumeration: BarComponent.Average, name: 'Average', tex: '\\frac{o+h+l+c}{4}', selected: false }
   ];
 
   protected compSelected = this.comps[BarComponent.Typical.valueOf()];

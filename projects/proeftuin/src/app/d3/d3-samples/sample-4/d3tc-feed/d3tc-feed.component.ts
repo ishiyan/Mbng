@@ -1,14 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
-// zzz@ts-ignore
-import { primitives } from 'projects/mb/src/lib/charts/d3-primitives' //'../../../../shared/d3tc';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives'; //'../../../../shared/d3tc';
 import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
 // import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-  selector: 'd3-sample-d3tc-feed',
+  selector: 'app-d3-sample-d3tc-feed',
   templateUrl: './d3tc-feed.component.html',
   styleUrls: ['./d3tc-feed.component.scss']
 })
@@ -30,25 +29,31 @@ export class D3tcFeedComponent implements OnInit {
     const width = w - margin.left - margin.right;
     const height = this.svgheight - margin.top - margin.bottom;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
     const yVolume = d3.scaleLinear().range([y(0) as number, y(0.2) as number]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const ohlc = primitives.plot.ohlc().xScale(x).yScale(y);
     const accessor = ohlc.accessor();
     // Set the accessor to a ohlc accessor so we get highlighted bars.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const volume = primitives.plot.volume().accessor(ohlc.accessor()).xScale(x).yScale(yVolume);
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
     const volumeAxis = d3.axisRight(yVolume).ticks(3).tickFormat(d3.format(',.3s'));
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const timeAnnotation = primitives.plot.axisannotation().axis(xAxis).orient('bottom')
       .format(d3.timeFormat('%Y-%m-%d')).width(65).translate([0, height]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const ohlcAnnotation = primitives.plot.axisannotation().axis(yAxis).orient('left').format(d3.format(',.2f'));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const volumeAnnotation = primitives.plot.axisannotation().axis(volumeAxis).orient('right').width(35);
 

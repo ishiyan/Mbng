@@ -1,8 +1,8 @@
-<mat-form-field style="width:9em;margin-right:0.55em;" appearance="fill" floatLabel="always">
+<mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
   <mat-label>Length</mat-label>
-  <input type="number" matInput min="2" max="1000" step="1" [(ngModel)]="lengthParam" />
+  <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="lengthParam" />
 </mat-form-field>
-<mb-bar-component *ngIf="barComponentVisible" [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" style="margin-right:0.55em;">
+<mb-bar-component *ngIf="barComponentVisible" [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
 </mb-bar-component>
-<mb-quote-component *ngIf="quoteComponentVisible" [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" style="margin-right:0.55em;">
+<mb-quote-component *ngIf="quoteComponentVisible" [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
 </mb-quote-component>

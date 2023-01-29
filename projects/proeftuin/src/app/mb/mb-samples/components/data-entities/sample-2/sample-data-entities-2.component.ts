@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { QuoteComponent } from 'mb';
 
 @Component({
-  selector: 'mb-sample-data-entities-2',
+  selector: 'app-sample-data-entities-2',
   templateUrl: './sample-data-entities-2.component.html',
   styleUrls: ['./sample-data-entities-2.component.scss']
 })

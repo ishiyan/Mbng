@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
-import { HierarchyTreeSumFunction, sumNodeValues, sumNumberOfNodes, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
+import { HierarchyTreeSumFunction, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
 import { HierarchyTreeFillFunction, coolFill, coolFillInverted, warmFill, warmFillInverted, viridisFill, viridisFillInverted, bluesFill, bluesFillInverted, rainbowFill, rainbowFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { HierarchyTreeFillOpacityFunction, transparentFillOpacity, opaqueFillOpacity, linearFillOpacity } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-opacity-function';
 import { HierarchyTreeTapFunction } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tap-function';
@@ -54,7 +54,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-icicle-4',
+  selector: 'app-sample-icicle-4',
   templateUrl: './sample-icicle-4.component.html',
   styleUrls: ['./sample-icicle-4.component.scss']
 })
@@ -170,10 +170,10 @@ export class SampleIcicle4Component {
     { key: '14', value: equalFontSize14 },
     { key: '12', value: equalFontSize12 },
     { key: '10', value: equalFontSize10 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '8', value: equalFontSize8 },
-    { key: '7', value: (t: any) => 7 },
-    { key: '6', value: (t: any) => 6 }
+    { key: '7', value: () => 7 },
+    { key: '6', value: () => 6 }
   ];
   labelFontSizeFuncSelected: HierarchyTreeFontSizeFunction = this.labelFontSizeFuncArray[0].value;
 

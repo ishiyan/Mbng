@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 import { ColorPickerModule } from '../../../colors/picker/color-picker.module';
 
@@ -31,6 +32,7 @@ import { LineStyleComponent } from './line-style.component';
         MatButtonModule,
         MatIconModule,
         MatDialogModule,
+        MatCardModule,
         ColorPickerModule
     ],
     exports: [

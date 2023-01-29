@@ -1,10 +1,11 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as hilbert from './hilbert2d';
 
 @Component({
-  selector: 'd3-sample-hilbert-paths',
+  selector: 'app-d3-sample-hilbert-paths',
   templateUrl: './hilbert-paths.component.html',
   styleUrls: ['./hilbert-paths.component.scss']
 })

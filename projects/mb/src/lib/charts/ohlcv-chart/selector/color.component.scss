@@ -1,16 +1,9 @@
-mat-form-field {
-  margin: 0px;
-  padding: 0px;
+span {
+  display: inline-block;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+input {
+  width: 7em;
+  height: 28px;
+  border: 0px;
 }

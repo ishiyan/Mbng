@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'd3-sample-click-to-recenter-brush-2',
+  selector: 'app-d3-sample-click-to-recenter-brush-2',
   templateUrl: './click-to-recenter-brush-2.component.html',
   styleUrls: ['./click-to-recenter-brush-2.component.scss']
 })
@@ -79,6 +79,7 @@ export class ClickToRecenterBrush2Component implements OnInit {
         const cx = d3.pointers(event)[0][0];
         const x0 = cx - dx / 2;
         const x1 = cx + dx / 2;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const s = d3.select(this.parentNode);
         s.call(brush.move, x1 > width ? [width - dx, width] : x0 < 0 ? [0, dx] : [x0, x1]);

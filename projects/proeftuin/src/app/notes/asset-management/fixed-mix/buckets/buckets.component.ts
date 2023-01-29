@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'mb-fixed-buckets',
+  selector: 'app-fixed-buckets',
   templateUrl: './buckets.component.html',
   styleUrls: ['./buckets.component.scss']
 })

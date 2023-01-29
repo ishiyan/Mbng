@@ -41,10 +41,10 @@
             <textarea matInput minlength="1" placeholder="description" rows="1" [(ngModel)]="description"></textarea>
         </mat-form-field>
     </div>
-    <button mat-raised-button color="primary" (click)="add()">
-        <mat-icon>add_library</mat-icon>
+    <button mat-mini-fab color="primary" (click)="add()">
+        <mat-icon>done</mat-icon>
     </button>
-    <button mat-raised-button color="warn" class="mleft" (click)="clear()">
-        <mat-icon>backspace</mat-icon>
+    <button mat-mini-fab color="warn" class="mleft" (click)="clear()">
+        <mat-icon>close</mat-icon>
     </button>
 </ng-container>

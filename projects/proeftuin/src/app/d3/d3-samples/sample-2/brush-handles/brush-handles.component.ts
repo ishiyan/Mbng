@@ -1,10 +1,10 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 
 // https://observablehq.com/@d3/brush-handles
 
 @Component({
-  selector: 'd3-sample-brush-handles',
+  selector: 'app-d3-sample-brush-handles',
   templateUrl: './brush-handles.component.html',
   styleUrls: ['./brush-handles.component.scss'],
   encapsulation: ViewEncapsulation.None

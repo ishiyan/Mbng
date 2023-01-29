@@ -27,7 +27,7 @@ import { stoxxGlobal1800ExApacNr } from '../../test-data/stoxx-global-1800-ex-as
 import { stoxx1800Nr } from '../../test-data/stoxx-1800-nr';
 
 @Component({
-  selector: 'mb-fixed-single',
+  selector: 'app-fixed-single',
   templateUrl: './single.component.html',
   styleUrls: ['./single.component.scss']
 })

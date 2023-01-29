@@ -29,7 +29,7 @@ const sumFuncOmxN40ValueEur: HierarchyTreeSumFunction = (d: any) => d.constituen
 const sumFuncAexWeightPerc: HierarchyTreeSumFunction = (d: any) => d.constituent ? d.constituent.weightPerc : 0;
 
 @Component({
-  selector: 'mb-hierarchies-demo',
+  selector: 'app-hierarchies-demo',
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss']
 })

@@ -1,5 +1,6 @@
 <div class="sample">
-  <mat-card appearance="outlined" class="example-card">
+
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Dense single selection list</mat-card-title>
       <mat-card-subtitle>With responsive width capped on 400px</mat-card-subtitle>
@@ -27,7 +28,7 @@
     </mat-card-actions>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Dense multiple selection list</mat-card-title>
       <mat-card-subtitle>With responsive width capped on 400px</mat-card-subtitle>
@@ -67,7 +68,7 @@
     </mat-card-actions -->
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Single selection list</mat-card-title>
       <mat-card-subtitle>With fixed width of 300px and two-line items</mat-card-subtitle>
@@ -82,9 +83,9 @@
     <mat-card-content>
       <mat-selection-list style="width:300px" color="primary" multiple="false" [(ngModel)]="arrayItemsSelected3" [compareWith]="compareFunction">
         <mat-list-option *ngFor="let d of dataArray" [value]="d">
-          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+          <mb-sparkline matListItemLine [width]="180" [height]="24" [data]="d.data"
             [configuration]="arrayItemIsLine3 ? configLine : configFill"></mb-sparkline>
-          <p matLine>{{d.name}}</p>
+          <span matListItemLine>{{d.name}}</span>
         </mat-list-option>
       </mat-selection-list>
     </mat-card-content>
@@ -96,7 +97,7 @@
     </mat-card-actions>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Multiple selection list</mat-card-title>
       <mat-card-subtitle>With responsive width capped on 400px and two-line items</mat-card-subtitle>
@@ -111,8 +112,9 @@
     <mat-card-content>
       <mat-selection-list style="max-width:400px" color="primary" multiple="true" [(ngModel)]="arrayItemsSelected4" [compareWith]="compareFunction">
         <mat-list-option *ngFor="let d of dataArray" [value]="d" checkboxPosition="before">
-          <mb-sparkline [width]="180" [height]="24" [data]="d.data"
-            [configuration]="arrayItemIsLine4 ? configLine : configFill"></mb-sparkline> {{d.name}}
+          <mb-sparkline matListItemLine [width]="180" [height]="24" [data]="d.data"
+            [configuration]="arrayItemIsLine4 ? configLine : configFill"></mb-sparkline>
+          <span matListItemLine>{{d.name}}</span>
         </mat-list-option>
       </mat-selection-list>
     </mat-card-content>
@@ -126,7 +128,7 @@
     </mat-card-actions>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Single selection list</mat-card-title>
       <mat-card-subtitle>With responsive unlimited width and two-line items</mat-card-subtitle>
@@ -141,9 +143,9 @@
     <mat-card-content>
       <mat-selection-list color="primary" multiple="false" [(ngModel)]="arrayItemsSelected5" [compareWith]="compareFunction">
         <mat-list-option *ngFor="let d of dataArray" [value]="d">
-          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+          <mb-sparkline matListItemLine [width]="180" [height]="24" [data]="d.data"
             [configuration]="arrayItemIsLine5 ? configLine : configFill"></mb-sparkline>
-          <p matLine>{{d.name}}</p>
+          <span matListItemLine>{{d.name}}</span>
         </mat-list-option>
       </mat-selection-list>
     </mat-card-content>
@@ -155,7 +157,7 @@
     </mat-card-actions>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Simple list</mat-card-title>
       <mat-card-subtitle>With fixed width of 300px and two-line items</mat-card-subtitle>
@@ -170,15 +172,15 @@
     <mat-card-content>
       <mat-list style="max-width:300px">
         <mat-list-item *ngFor="let d of dataArray">
-          <mb-sparkline matLine [width]="180" [height]="24" [data]="d.data"
+          <mb-sparkline matListItemLine [width]="180" [height]="24" [data]="d.data"
             [configuration]="arrayItemIsLine6 ? configLine : configFill"></mb-sparkline>
-          <p matLine>{{d.name}}</p>
+          <span matListItemLine>{{d.name}}</span>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Simple dense list</mat-card-title>
       <mat-card-subtitle>

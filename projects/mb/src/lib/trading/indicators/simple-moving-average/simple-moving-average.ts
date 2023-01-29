@@ -4,7 +4,7 @@ import { SimpleMovingAverageParams } from './simple-moving-average-params.interf
 
 /** Function to calculate mnemonic of a __SimpleMovingAverage__ indicator. */
 export const simpleMovingAverageMnemonic = (params: SimpleMovingAverageParams): string =>
-  'sma('.concat(length.toString(), componentPairMnemonic(params.barComponent, params.quoteComponent) + ')');
+  'sma('.concat(params.length.toString(), componentPairMnemonic(params.barComponent, params.quoteComponent), ')');
 
 /** Simple Moving Average line indicator. */
 export class SimpleMovingAverage extends LineIndicator {

@@ -1,6 +1,6 @@
 <div #dialogPopup class="color-picker mat-elevation-z16" [class.open]="show" [style.display]="!show ? 'none' : 'block'"
   [style.visibility]="hidden ? 'hidden' : 'visible'" [style.top.px]="top" [style.left.px]="left"
-  [style.position]="position" [style.width.px]="252" (click)="$event.stopPropagation()">
+  [style.position]="position" [style.width.px]="widthDialog" (click)="$event.stopPropagation()">
   <mat-expansion-panel hideToggle expanded="true">
     <div class="saturation-lightness" mbCpSlider [rgX]="1" [rgY]="1" [style.background-color]="hueSliderColor"
       (newValue)="onColorChange($event)">
@@ -27,72 +27,72 @@
     </button>
 
     <span class="rm4" [style.display]="isCmyk ? 'inline' : 'none'">
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>C</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="cmykCyan" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>M</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="cmykMagenta" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>Y</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="cmykYellow" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>K</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="cmykBlack" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" style="width:46px" floatLabel="always">
+      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
         <mat-label>A</mat-label>
         <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="cmykAlpha" />
       </mat-form-field>
     </span>
 
     <span class="rm4" [style.display]="isHsla ? 'inline' : 'none'">
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>H</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="360" step="1" [(ngModel)]="hslaHue" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>S</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="hslaSaturation" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>L</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="hslaLightness" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" style="width:46px" floatLabel="always">
+      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
         <mat-label>A</mat-label>
         <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hslaAlpha" />
       </mat-form-field>
     </span>
 
     <span class="rm4" [style.display]="isRgba ? 'inline' : 'none'">
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>R</mat-label>
         <input matInput type="number" pattern="[0-9]*" min="0" max="255" step="1" [(ngModel)]="rgbaRed" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>G</mat-label>
         <input matInput type="number" pattern="[0-9]*" min="0" max="255" step="1" [(ngModel)]="rgbaGreen" />
       </mat-form-field>
-      <mat-form-field style="width:40px" floatLabel="always">
+      <mat-form-field class="w82" appearance="fill" floatLabel="always">
         <mat-label>B</mat-label>
         <input matInput type="number" pattern="[0-9]*" min="0" max="255" step="1" [(ngModel)]="rgbaBlue" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" style="width:46px" floatLabel="always">
+      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
         <mat-label>A</mat-label>
         <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="rgbaAlpha" />
       </mat-form-field>
     </span>
 
     <span class="rm4" [style.display]="isHex ? 'inline' : 'none'">
-      <mat-form-field style="width:60px" floatLabel="always">
+      <mat-form-field  class="w98" appearance="fill" floatLabel="always">
         <mat-label>HEX</mat-label>
         <input matInput type="text" pattern="^#([a-f0-9]{3}|[a-f0-9]{6})$" [(ngModel)]="hexT" minlength="4" maxlength="7" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" style="width:46px" floatLabel="always">
+      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
         <mat-label>A</mat-label>
         <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hexA" />
       </mat-form-field>

@@ -58,7 +58,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-circlepack-5',
+  selector: 'app-sample-circlepack-5',
   templateUrl: './sample-circlepack-5.component.html',
   styleUrls: ['./sample-circlepack-5.component.scss']
 })
@@ -117,15 +117,15 @@ export class SampleCirclepack5Component {
   readonly fillOpacityFuncArray: FillOpacityFunc[] = [
     { key: 'opaque', value: opaqueFillOpacity },
     { key: 'linear', value: linearFillOpacity },
-    { key: '90%', value: (d: any) => 0.9 },
-    { key: '80%', value: (d: any) => 0.8 },
-    { key: '70%', value: (d: any) => 0.7 },
-    { key: '60%', value: (d: any) => 0.6 },
-    { key: '50%', value: (d: any) => 0.5 },
-    { key: '60%', value: (d: any) => 0.4 },
-    { key: '70%', value: (d: any) => 0.3 },
-    { key: '80%', value: (d: any) => 0.2 },
-    { key: '10%', value: (d: any) => 0.1 },
+    { key: '90%', value: () => 0.9 },
+    { key: '80%', value: () => 0.8 },
+    { key: '70%', value: () => 0.7 },
+    { key: '60%', value: () => 0.6 },
+    { key: '50%', value: () => 0.5 },
+    { key: '60%', value: () => 0.4 },
+    { key: '70%', value: () => 0.3 },
+    { key: '80%', value: () => 0.2 },
+    { key: '10%', value: () => 0.1 },
     { key: 'transparent', value: transparentFillOpacity }
   ];
   fillOpacityFuncSelected: HierarchyTreeFillOpacityFunction = this.fillOpacityFuncArray[0].value;
@@ -170,10 +170,10 @@ export class SampleCirclepack5Component {
     { key: '14', value: equalFontSize14 },
     { key: '12', value: equalFontSize12 },
     { key: '10', value: equalFontSize10 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '8', value: equalFontSize8 },
-    { key: '7', value: (t: any) => 7 },
-    { key: '6', value: (t: any) => 6 }
+    { key: '7', value: () => 7 },
+    { key: '6', value: () => 6 }
   ];
   labelFontSizeFuncSelected: HierarchyTreeFontSizeFunction = this.labelFontSizeFuncArray[0].value;
 

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-  selector: 'mb-sample-swatches-1',
+  selector: 'app-sample-swatches-1',
   templateUrl: './sample-swatches-1.component.html',
   styleUrls: ['./sample-swatches-1.component.scss']
 })

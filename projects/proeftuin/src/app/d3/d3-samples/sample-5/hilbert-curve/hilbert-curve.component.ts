@@ -3,11 +3,12 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import * as d3 from 'd3';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as hilbert from '../hilbert';
 
 @Component({
-  selector: 'd3-sample-hilbert-curve',
+  selector: 'app-d3-sample-hilbert-curve',
   templateUrl: './hilbert-curve.component.html',
   styleUrls: ['./hilbert-curve.component.scss']
 })

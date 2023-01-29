@@ -73,7 +73,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-treemap-2',
+  selector: 'app-sample-treemap-2',
   templateUrl: './sample-treemap-2.component.html',
   styleUrls: ['./sample-treemap-2.component.scss']
 })
@@ -248,10 +248,10 @@ export class SampleTreemap2Component {
   readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
     { key: 'linear', value: linearFontSize },
     { key: '8', value: equalFontSize8 },
-    { key: '6', value: (t: any) => 6 },
-    { key: '7', value: (t: any) => 7 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
     { key: '8', value: equalFontSize8 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '10', value: equalFontSize10 },
     { key: '12', value: equalFontSize12 },
     { key: '14', value: equalFontSize14 },

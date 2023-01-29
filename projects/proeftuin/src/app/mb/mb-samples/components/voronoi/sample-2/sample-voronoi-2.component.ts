@@ -70,7 +70,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-voronoi-2',
+  selector: 'app-sample-voronoi-2',
   templateUrl: './sample-voronoi-2.component.html',
   styleUrls: ['./sample-voronoi-2.component.scss']
 })
@@ -162,7 +162,7 @@ export class SampleVoronoi2Component {
     { key: 'cool inv', value: coolFillFirstLevelInverted },
     { key: 'warm inv', value: warmFillFirstLevelInverted },
     { key: 'viridis inv', value: viridisFillFirstLevelInverted },
-    { key: 'rainbow inve', value: rainbowFillFirstLevelInverted },
+    { key: 'rainbow inv', value: rainbowFillFirstLevelInverted },
 
     { key: 'cool light', value: coolFill },
     { key: 'warm light', value: warmFill },
@@ -198,15 +198,15 @@ export class SampleVoronoi2Component {
 
   readonly fillOpacityFuncArray: FillOpacityFunc[] = [
     { key: 'opaque', value: opaqueFillOpacity },
-    { key: '90%', value: (d: any) => 0.9 },
-    { key: '80%', value: (d: any) => 0.8 },
-    { key: '70%', value: (d: any) => 0.7 },
-    { key: '60%', value: (d: any) => 0.6 },
-    { key: '50%', value: (d: any) => 0.5 },
-    { key: '60%', value: (d: any) => 0.4 },
-    { key: '70%', value: (d: any) => 0.3 },
-    { key: '80%', value: (d: any) => 0.2 },
-    { key: '10%', value: (d: any) => 0.1 },
+    { key: '90%', value: () => 0.9 },
+    { key: '80%', value: () => 0.8 },
+    { key: '70%', value: () => 0.7 },
+    { key: '60%', value: () => 0.6 },
+    { key: '50%', value: () => 0.5 },
+    { key: '60%', value: () => 0.4 },
+    { key: '70%', value: () => 0.3 },
+    { key: '80%', value: () => 0.2 },
+    { key: '10%', value: () => 0.1 },
     { key: 'transparent', value: transparentFillOpacity }
   ];
   fillOpacityFuncSelected: HierarchyTreeFillOpacityFunction = this.fillOpacityFuncArray[0].value;
@@ -246,10 +246,10 @@ export class SampleVoronoi2Component {
 
   readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
     { key: '8', value: equalFontSize8 },
-    { key: '6', value: (t: any) => 6 },
-    { key: '7', value: (t: any) => 7 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
     { key: '8', value: equalFontSize8 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '10', value: equalFontSize10 },
     { key: '12', value: equalFontSize12 },
     { key: '14', value: equalFontSize14 },

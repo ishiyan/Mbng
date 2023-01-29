@@ -1,7 +1,8 @@
 <div class="sample">
-  <mat-card appearance="outlined" class="example-card">
+
+  <mat-card appearance="raised" class="example-card">
     <mat-card-content>
-      <mat-form-field class="form-field-60">
+      <mat-form-field class="w90">
         <mat-label>width</mat-label>
         <mat-select [(ngModel)]="widthSelected" name="width">
           <mat-option *ngFor="let width of widthArray" [value]="width.value">
@@ -9,7 +10,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-90">
+      <mat-form-field class="w130">
         <mat-label>height</mat-label>
         <mat-select [(ngModel)]="heightSelected" name="height">
           <mat-option *ngFor="let height of heightArray" [value]="height.value">
@@ -17,7 +18,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-60">
+      <mat-form-field class="w90">
         <mat-label>levels</mat-label>
         <mat-select [(ngModel)]="levelsSelected" name="levels">
           <mat-option *ngFor="let levels of levelsArray" [value]="levels">
@@ -25,7 +26,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-190">
+      <mat-form-field class="w250">
         <mat-label>sumFunc</mat-label>
         <mat-select [(ngModel)]="sumFuncSelected" name="sumFunc">
           <mat-option *ngFor="let sumFunc of sumFuncArray" [value]="sumFunc.value">
@@ -33,7 +34,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-60">
+      <mat-form-field class="w80">
         <mat-label>sort</mat-label>
         <mat-select [(ngModel)]="sortSelected" name="sort">
           <mat-option *ngFor="let sort of sortArray" [value]="sort">
@@ -41,7 +42,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-190">
+      <mat-form-field class="w130">
         <mat-label>fillFunc</mat-label>
         <mat-select [(ngModel)]="fillFuncSelected" name="fillFunc">
           <mat-option *ngFor="let fillFunc of fillFuncArray" [value]="fillFunc.value">
@@ -49,7 +50,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-90">
+      <mat-form-field class="w140">
         <mat-label>fillOpacityFunc</mat-label>
         <mat-select [(ngModel)]="fillOpacityFuncSelected" name="fillOpacityFunc">
           <mat-option *ngFor="let fillOpacityFunc of fillOpacityFuncArray" [value]="fillOpacityFunc.value">
@@ -57,7 +58,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-60">
+      <mat-form-field class="w110">
         <mat-label>labelFunc</mat-label>
         <mat-select [(ngModel)]="labelFuncSelected" name="labelFunc">
           <mat-option *ngFor="let labelFunc of labelFuncArray" [value]="labelFunc.value">
@@ -65,7 +66,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-90">
+      <mat-form-field class="w130">
         <mat-label>labelFill</mat-label>
         <mat-select [(ngModel)]="labelFillSelected" name="labelFill">
           <mat-option *ngFor="let labelFill of labelFillArray" [value]="labelFill">
@@ -73,7 +74,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="form-field-90">
+      <mat-form-field class="w160">
         <mat-label>labelFontSizeFunc</mat-label>
         <mat-select [(ngModel)]="labelFontSizeFuncSelected" name="labelFontSizeFunc">
           <mat-option *ngFor="let labelFontSizeFunc of labelFontSizeFuncArray" [value]="labelFontSizeFunc.value">
@@ -81,12 +82,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-slide-toggle [(ngModel)]="rootVisible" color="primary" class="form-field">root</mat-slide-toggle>  
-      <mat-slide-toggle [(ngModel)]="zoom" color="primary" class="form-field">zoom</mat-slide-toggle>  
+      <mat-slide-toggle [(ngModel)]="rootVisible" color="primary">root</mat-slide-toggle>  
+      <mat-slide-toggle [(ngModel)]="zoom" color="primary">zoom</mat-slide-toggle>  
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-content>
       <mb-icicle [data]="contriesHierarchy" [width]="widthSelected" [height]="heightSelected" [levels]="levelsSelected"
         [sumFunc]="sumFuncSelected" [sort]="sortSelected" [fillFunc]="fillFuncSelected" [fillOpacityFunc]="fillOpacityFuncSelected"

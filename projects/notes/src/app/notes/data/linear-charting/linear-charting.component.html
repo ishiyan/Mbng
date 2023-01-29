@@ -3,7 +3,7 @@
   <button mat-raised-button color="accent" class="button">EMA component</button>
 </p>
 <div>
-  <app-series-select color="steelblue" label="all series" (selectionChange)="seriesSelectionChanged($event)"></app-series-select>
+  <app-series-select style="width:auto" color="steelblue" label="all series" (selectionChange)="seriesSelectionChanged($event)"></app-series-select>
 </div>
 <br/>
 <mb-linear-chart [dataSeries]="seriesSelection.data" [title]="seriesSelection.mnemonic">

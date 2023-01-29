@@ -151,6 +151,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
   protected cpColorMode = 1;
   protected cpPresetColors!: string[];
   protected cpTriggerElement!: ElementRef;
+  protected readonly widthDialog = widthSaturation;
 
   protected get isHex(): boolean {
     return this.format === ColorFormats.HEX;

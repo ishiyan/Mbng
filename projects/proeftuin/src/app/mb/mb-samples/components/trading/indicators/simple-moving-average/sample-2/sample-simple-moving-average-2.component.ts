@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 
+// eslint-disable-next-line max-len
+import { SimpleMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
-import { SimpleMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-sample-simple-moving-average-2',
+  selector: 'app-sample-simple-moving-average-2',
   templateUrl: './sample-simple-moving-average-2.component.html',
   styleUrls: ['./sample-simple-moving-average-2.component.scss']
 })

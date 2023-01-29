@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@ang
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'd3-sample-barchart',
+  selector: 'app-d3-sample-barchart',
   templateUrl: './barchart.component.html',
   styleUrls: ['./barchart.component.scss']
 })

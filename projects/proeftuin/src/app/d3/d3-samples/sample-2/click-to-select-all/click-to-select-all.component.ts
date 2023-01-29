@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'd3-sample-click-to-select-all',
+  selector: 'app-d3-sample-click-to-select-all',
   templateUrl: './click-to-select-all.component.html',
   styleUrls: ['./click-to-select-all.component.scss']
 })
@@ -57,7 +57,7 @@ export class ClickToSelectAllComponent implements OnInit {
       .selectAll('.overlay')
       .on('mousedown touchstart', function(event: any) { // Recenter before brushing.
         event.stopImmediatePropagation();
-        // eslint-disable-next-line @typescript-eslint/no-shadow
+        // eslint-disable-next-line @typescript-eslint/no-shadow, @typescript-eslint/ban-ts-comment
         // @ts-ignore
         d3.select(this.parentNode).transition().call(brush.move, x.range());
       }, true);

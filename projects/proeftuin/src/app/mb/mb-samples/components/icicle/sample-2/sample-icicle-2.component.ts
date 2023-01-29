@@ -55,7 +55,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-icicle-2',
+  selector: 'app-sample-icicle-2',
   templateUrl: './sample-icicle-2.component.html',
   styleUrls: ['./sample-icicle-2.component.scss']
 })
@@ -167,10 +167,10 @@ export class SampleIcicle2Component {
     { key: '14', value: equalFontSize14 },
     { key: '12', value: equalFontSize12 },
     { key: '10', value: equalFontSize10 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '8', value: equalFontSize8 },
-    { key: '7', value: (t: any) => 7 },
-    { key: '6', value: (t: any) => 6 }
+    { key: '7', value: () => 7 },
+    { key: '6', value: () => 6 }
   ];
   labelFontSizeFuncSelected: HierarchyTreeFontSizeFunction = this.labelFontSizeFuncArray[0].value;
 

@@ -1,26 +1,24 @@
 <mat-toolbar class="toolbar">
-  <button mat-icon-button (click)="toggleTagsVisibility()">
+  <button mat-icon-button (click)="toggleTagsVisibility()" class="tags">
     <mat-icon>discount</mat-icon>
   </button>
-  <mat-icon>search</mat-icon>
   &nbsp;
-  <div class="search">
-    <mat-form-field>
-      <input matInput #search type="search" (keyup)="searchChanged($event.target.value)" placeholder="">
+  <div>
+    <mat-form-field appearance="fill" class="search">
+      <mat-icon matPrefix>search</mat-icon>
+      <!-- mat-label>search</mat-label -->
+      <input matInput #search type="text" (keyup)="searchChanged($event.target.value)">
+      <button *ngIf="search.value.length > 0" matSuffix mat-icon-button (click)="search.value=''; searchChanged('')">
+        <mat-icon>clear</mat-icon>
+      </button>
     </mat-form-field>
   </div>
-  <ng-container *ngIf="search.value.length > 0">
-    <button mat-icon-button (click)="search.value=''; searchChanged('')">
-      <mat-icon>clear</mat-icon>
-    </button>
-  </ng-container>
 </mat-toolbar>
 <ng-container *ngIf="tagsVisible">
   <div class="fullwidth">
-    <mat-chip-listbox selectable multiple>
+    <mat-chip-listbox [selectable]="true" [multiple]="true">
       <mat-chip-option *ngFor="let tag of tags" [selectable]="true" [selected]="tag.enabled"
-        (selectionChange)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
-        <mat-icon class="check" *ngIf="tag.enabled">check</mat-icon>
+        (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
         {{tag.title}}
       </mat-chip-option>
     </mat-chip-listbox>

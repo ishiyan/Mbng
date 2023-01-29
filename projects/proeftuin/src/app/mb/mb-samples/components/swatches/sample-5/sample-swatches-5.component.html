@@ -1,5 +1,6 @@
 <div class="sample">
-  <mat-card appearance="outlined" class="example-card">
+
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Parametric procedural palette</mat-card-title>
       <mat-card-subtitle>
@@ -15,6 +16,7 @@
       <mb-katex [expression]="katex3"></mb-katex>
     </mat-card-content>
     <mat-card-content>
+      <br/>
       <mb-swatches [width]="260" [height]="32" [colors]="generatedPalette"></mb-swatches>
     </mat-card-content>
     <mat-card-content>
@@ -22,38 +24,62 @@
         <mat-expansion-panel-header>
           <mat-panel-title>a [{{a1}}, {{a2}}, {{a3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a1" #ngSlider><input matSliderThumb (input)="a1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a2" #ngSlider><input matSliderThumb (input)="a2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="a3" #ngSlider><input matSliderThumb (input)="a3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="a1" (valueChange)="a1=ngSliderThumbA1.value;" #ngSliderThumbA1="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="a2" (valueChange)="a2=ngSliderThumbA2.value;" #ngSliderThumbA2="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="a3" (valueChange)="a3=ngSliderThumbA3.value;" #ngSliderThumbA3="matSliderThumb" />
+        </mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>b [{{b1}}, {{b2}}, {{b3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b1" #ngSlider><input matSliderThumb (input)="b1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b2" #ngSlider><input matSliderThumb (input)="b2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="b3" #ngSlider><input matSliderThumb (input)="b3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="b1" (valueChange)="b1=ngSliderThumbB1.value;" #ngSliderThumbB1="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="b2" (valueChange)="b2=ngSliderThumbB2.value;" #ngSliderThumbB2="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="b3" (valueChange)="b3=ngSliderThumbB3.value;" #ngSliderThumbB3="matSliderThumb" />
+        </mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>c [{{c1}}, {{c2}}, {{c3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c1" #ngSlider><input matSliderThumb (input)="c1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c2" #ngSlider><input matSliderThumb (input)="c2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="c3" #ngSlider><input matSliderThumb (input)="c3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="c1" (valueChange)="c1=ngSliderThumbC1.value;" #ngSliderThumbC1="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="c2" (valueChange)="c2=ngSliderThumbC2.value;" #ngSliderThumbC2="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="c3" (valueChange)="c3=ngSliderThumbC3.value;" #ngSliderThumbC3="matSliderThumb" />
+        </mat-slider>
       </mat-expansion-panel>
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>d [{{d1}}, {{d2}}, {{d3}}]</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d1" #ngSlider><input matSliderThumb (input)="d1Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d2" #ngSlider><input matSliderThumb (input)="d2Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
-        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary" [(ngModel)]="d3" #ngSlider><input matSliderThumb (input)="d3Changed({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" /></mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="d1" (valueChange)="d1=ngSliderThumbD1.value;" #ngSliderThumbD1="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="d2" (valueChange)="d2=ngSliderThumbD2.value;" #ngSliderThumbD2="matSliderThumb" />
+        </mat-slider>
+        <mat-slider [min]="0" [step]="0.01" [max]="1" discrete color="primary">
+          <input matSliderThumb [value]="d3" (valueChange)="d3=ngSliderThumbD3.value;" #ngSliderThumbD3="matSliderThumb" />
+        </mat-slider>
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined" class="example-card">
+  <mat-card appearance="raised" class="example-card">
     <mat-card-header>
       <mat-card-title>Examples</mat-card-title>
       <mat-card-subtitle>
@@ -69,4 +95,5 @@
       </span>
     </mat-card-content>
   </mat-card>
+
 </div>

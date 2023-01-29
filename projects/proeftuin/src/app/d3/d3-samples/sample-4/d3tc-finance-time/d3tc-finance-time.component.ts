@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as d3tc from '../../../../shared/d3tc';
 
@@ -8,7 +9,7 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 import { dataOhlcvIntraday } from '../../data/data-ohlcv-intraday';
 
 @Component({
-  selector: 'd3-sample-d3tc-finance-time',
+  selector: 'app-d3-sample-d3tc-finance-time',
   templateUrl: './d3tc-finance-time.component.html',
   styleUrls: ['./d3tc-finance-time.component.scss'],
   encapsulation: ViewEncapsulation.None // does not see css without this

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { BarComponent } from 'mb';
 
 @Component({
-  selector: 'mb-sample-data-entities-1',
+  selector: 'app-sample-data-entities-1',
   templateUrl: './sample-data-entities-1.component.html',
   styleUrls: ['./sample-data-entities-1.component.scss']
 })

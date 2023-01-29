@@ -1,14 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
-// zzz@ts-ignore
-import { primitives } from 'projects/mb/src/lib/charts/d3-primitives' //'../../../../shared/d3tc';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives'; //'../../../../shared/d3tc';
 import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
 // import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-  selector: 'd3-sample-d3tc-candlesticks',
+  selector: 'app-d3-sample-d3tc-candlesticks',
   templateUrl: './d3tc-candlesticks.component.html',
   styleUrls: ['./d3tc-candlesticks.component.scss']
 })
@@ -32,9 +31,11 @@ export class D3tcCandlesticksComponent implements OnInit {
     const width = w - margin.left - margin.right;
     const height = this.svgheight - margin.top - margin.bottom;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
     const accessor = candlestick.accessor();

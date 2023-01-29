@@ -7,7 +7,7 @@ import { D3Sample } from './d3-samples/d3-sample';
 import { treeNodes } from './d3-samples/d3-samples';
 
 @Component({
-  selector: 'd3-sample-collection',
+  selector: 'app-d3-sample-collection',
   templateUrl: './d3.component.html',
   styleUrls: ['./d3.component.scss']
 })

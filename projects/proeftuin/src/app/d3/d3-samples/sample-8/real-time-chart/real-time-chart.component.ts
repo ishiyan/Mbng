@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as rtc from './realTimeChart.js';
 
 @Component({
-  selector: 'd3-sample-real-time-chart',
+  selector: 'app-d3-sample-real-time-chart',
   templateUrl: './real-time-chart.component.html',
   styleUrls: ['./real-time-chart.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -21,8 +22,8 @@ export class RealTimeChartComponent implements OnInit, OnDestroy {
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
     const w = this.container.nativeElement.getBoundingClientRect().width;
     const viewDiv: any = d3.select(this.element.nativeElement).select('#viewDiv');
-    const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    // const width = w - margin.left - margin.right;
+    // const height = this.svgheight - margin.top - margin.bottom;
 
     // define time scale
     const timeScale = d3.scaleLinear().domain([300, 1700]).range([300, 1700]).clamp(true);

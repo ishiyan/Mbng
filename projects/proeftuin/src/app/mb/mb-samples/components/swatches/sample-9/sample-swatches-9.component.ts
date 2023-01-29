@@ -1,14 +1,14 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { materialPalettesA } from 'mb';
 
-const colorChanged = (log: string, color:string): string => {
+const colorChanged = (log: string, color: string): string => {
   log += ' ' + color + ',' ;
   return log;
 };
 
 @Component({
-  selector: 'mb-sample-swatches-9',
+  selector: 'app-sample-swatches-9',
   templateUrl: './sample-swatches-9.component.html',
   styleUrls: ['./sample-swatches-9.component.scss']
 })
@@ -20,20 +20,20 @@ export class SampleSwatches9Component {
   private clr2 = '#0000ff';
   private clr3 = this.selectedPalette3[0];
   private clr4 = '#00aaff';
-  
+
   protected alpha2 = false;
   protected selected1 = '';
   protected selected2 = '';
   protected selected3 = '';
   protected selected4 = '';
-  
+
   protected get color1(): string {
     return this.clr1;
   }
   protected set color1(value: string) {
     if (this.clr1 !== value) {
       this.clr1 = value;
-      this.selected1 = colorChanged(this.selected1, value);  
+      this.selected1 = colorChanged(this.selected1, value);
     }
   }
 
@@ -67,7 +67,7 @@ export class SampleSwatches9Component {
       this.selected4 = colorChanged(this.selected4, value);
     }
   }
-  
+
   protected paletteSelectionChanged3(selection: string[]) {
     this.selectedPalette3 = selection;
     this.color3 = this.selectedPalette3[0];

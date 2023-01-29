@@ -7,7 +7,7 @@ import { NotesSample } from './notes-sample';
 import { treeNodes } from './notes-samples';
 
 @Component({
-  selector: 'mb-notes-collection',
+  selector: 'app-notes-collection',
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })

@@ -12,7 +12,7 @@ const initialStyle = (): LineStyle => {
 };
 
 @Component({
-  selector: 'mb-sample-ohlcv-chart-selector-5',
+  selector: 'app-sample-ohlcv-chart-selector-5',
   templateUrl: './sample-ohlcv-chart-selector-5.component.html',
   styleUrls: ['./sample-ohlcv-chart-selector-5.component.scss']
 })

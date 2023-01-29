@@ -18,12 +18,19 @@
   vertical-align: middle;
 }
 
-/* TODO(+mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-mat-mdc-slide-toggle .mat-icon {
+.download {
+  vertical-align: middle;
+}
+
+mat-slide-toggle .mat-icon {
   vertical-align: bottom;
 }
 
 :host ::ng-deep {
+  path.candle.body {
+    stroke-width: 1px; // 0;
+  }
+
   path.ohlc {
     stroke-width: 1px;
   }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
-import { HierarchyTreeSumFunction, sumNodeValues, sumNumberOfLeafNodes, sumNumberOfNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
+import { HierarchyTreeSumFunction, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
 import { HierarchyTreeFillFunction, coolFill, coolFillInverted, warmFill, warmFillInverted, viridisFill, viridisFillInverted, bluesFill, bluesFillInverted, rainbowFill, rainbowFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { coolFillFirstLevel, coolFillFirstLevelInverted, warmFillFirstLevel, warmFillFirstLevelInverted, viridisFillFirstLevel, viridisFillFirstLevelInverted, bluesFillFirstLevel, bluesFillFirstLevelInverted, rainbowFillFirstLevel, rainbowFillFirstLevelInverted, greensFillFirstLevel, greensFillFirstLevelInverted, greysFillFirstLevel, greysFillFirstLevelInverted, gradientFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { coolValueFill, coolValueFillInverted, warmValueFill, warmValueFillInverted, viridisValueFill, viridisValueFillInverted, bluesValueFill, bluesValueFillInverted, rainbowValueFill, rainbowValueFillInverted, greensValueFill, greensValueFillInverted, greysValueFill, greysValueFillInverted, gradientValueFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
@@ -12,7 +12,7 @@ import { HierarchyTreeStrokeWidthFunction, noStrokeWidth, linearStrokeWidthThin,
 import { HierarchyTreeTapFunction } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tap-function';
 import { pathParentTooltips } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tooltip-function';
 import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/label-function';
-import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize14, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
+import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 
 import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../../test-data/hierarchies/aex-index';
 
@@ -75,7 +75,7 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'mb-sample-voronoi-3',
+  selector: 'app-sample-voronoi-3',
   templateUrl: './sample-voronoi-3.component.html',
   styleUrls: ['./sample-voronoi-3.component.scss']
 })
@@ -173,7 +173,7 @@ export class SampleVoronoi3Component {
     { key: 'cool inv', value: coolFillFirstLevelInverted },
     { key: 'warm inv', value: warmFillFirstLevelInverted },
     { key: 'viridis inv', value: viridisFillFirstLevelInverted },
-    { key: 'rainbow inve', value: rainbowFillFirstLevelInverted },
+    { key: 'rainbow inv', value: rainbowFillFirstLevelInverted },
 
     { key: 'cool light', value: coolFill },
     { key: 'warm light', value: warmFill },
@@ -209,15 +209,15 @@ export class SampleVoronoi3Component {
 
   readonly fillOpacityFuncArray: FillOpacityFunc[] = [
     { key: 'opaque', value: opaqueFillOpacity },
-    { key: '90%', value: (d: any) => 0.9 },
-    { key: '80%', value: (d: any) => 0.8 },
-    { key: '70%', value: (d: any) => 0.7 },
-    { key: '60%', value: (d: any) => 0.6 },
-    { key: '50%', value: (d: any) => 0.5 },
-    { key: '60%', value: (d: any) => 0.4 },
-    { key: '70%', value: (d: any) => 0.3 },
-    { key: '80%', value: (d: any) => 0.2 },
-    { key: '10%', value: (d: any) => 0.1 },
+    { key: '90%', value: () => 0.9 },
+    { key: '80%', value: () => 0.8 },
+    { key: '70%', value: () => 0.7 },
+    { key: '60%', value: () => 0.6 },
+    { key: '50%', value: () => 0.5 },
+    { key: '60%', value: () => 0.4 },
+    { key: '70%', value: () => 0.3 },
+    { key: '80%', value: () => 0.2 },
+    { key: '10%', value: () => 0.1 },
     { key: 'transparent', value: transparentFillOpacity }
   ];
   fillOpacityFuncSelected: HierarchyTreeFillOpacityFunction = this.fillOpacityFuncArray[0].value;
@@ -257,10 +257,10 @@ export class SampleVoronoi3Component {
 
   readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
     { key: '8', value: equalFontSize8 },
-    { key: '6', value: (t: any) => 6 },
-    { key: '7', value: (t: any) => 7 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
     { key: '8', value: equalFontSize8 },
-    { key: '9', value: (t: any) => 9 },
+    { key: '9', value: () => 9 },
     { key: '10', value: equalFontSize10 },
     { key: '12', value: equalFontSize12 },
     { key: '16', value: equalFontSize16 },

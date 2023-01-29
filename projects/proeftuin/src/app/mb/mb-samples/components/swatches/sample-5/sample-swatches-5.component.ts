@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { parametricProceduralPalette } from 'projects/mb/src/lib/colors/parametric-procedural-palettes';
 
 @Component({
-  selector: 'mb-sample-swatches-5',
+  selector: 'app-sample-swatches-5',
   templateUrl: './sample-swatches-5.component.html',
   styleUrls: ['./sample-swatches-5.component.scss']
 })
@@ -152,53 +152,5 @@ export class SampleSwatches5Component {
   set d3(value: number) {
     this.d[2] = value;
     this.regenerate();
-  }
-
-  a1Changed(event: any) {
-    this.a1 = event.value;
-  }
-
-  a2Changed(event: any) {
-    this.a2 = event.value;
-  }
-
-  a3Changed(event: any) {
-    this.a3 = event.value;
-  }
-
-  b1Changed(event: any) {
-    this.b1 = event.value;
-  }
-
-  b2Changed(event: any) {
-    this.b2 = event.value;
-  }
-
-  b3Changed(event: any) {
-    this.b3 = event.value;
-  }
-
-  c1Changed(event: any) {
-    this.c1 = event.value;
-  }
-
-  c2Changed(event: any) {
-    this.c2 = event.value;
-  }
-
-  c3Changed(event: any) {
-    this.c3 = event.value;
-  }
-
-  d1Changed(event: any) {
-    this.d1 = event.value;
-  }
-
-  d2Changed(event: any) {
-    this.d2 = event.value;
-  }
-
-  d3Changed(event: any) {
-    this.d3 = event.value;
   }
 }

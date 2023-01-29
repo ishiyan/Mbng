@@ -8,7 +8,7 @@ import { ThemeManagerService } from './theme-manager.service';
 import { ThemeStorageService } from './theme-storage.service';
 
 @Component({
-  selector: 'mb-theme-picker',
+  selector: 'app-theme-picker',
   templateUrl: 'theme-picker.component.html',
   styleUrls: ['theme-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

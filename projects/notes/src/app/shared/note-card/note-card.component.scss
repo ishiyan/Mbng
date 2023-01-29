@@ -5,15 +5,11 @@
 .note-card {
   margin: 8px;
   width: fit-content;
+  cursor: pointer;
 }
 
 .chip-list {
   font-size: xx-small;
-  //width:100%;
-  //margin-bottom: 10px;
-}
-
-/*TODO(+mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/
-mat-mdc-card-title {
-  cursor: pointer;
+  // width:100%;
+  // margin-bottom: 10px;
 }

@@ -19,10 +19,10 @@ export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [
     { enumeration: QuoteComponent.Bid, name: 'Bid', tex: 'b_p', selected: false },
     { enumeration: QuoteComponent.Ask, name: 'Ask', tex: 'a_p', selected: false },
-    { enumeration: QuoteComponent.Mid, name: 'Mid', tex: '\\frac{b_p·a_p}{2}', selected: false },
+    { enumeration: QuoteComponent.Mid, name: 'Mid', tex: '\\frac{b_p+a_p}{2}', selected: false },
     { enumeration: QuoteComponent.Weighted, name: 'Weighted', tex: '\\frac{b_p·b_s+a_p·a_s}{b_s+a_s}', selected: false },
     { enumeration: QuoteComponent.WeightedMid, name: 'Weighted Mid', tex: '\\frac{b_p·a_s+a_p·b_s}{b_s+a_s}', selected: false },
-    { enumeration: QuoteComponent.SpreadBp, name: 'Spread bp', tex: '', selected: true },
+    { enumeration: QuoteComponent.SpreadBp, name: 'Spread bp', tex: '10000\\frac{a_p-b_p}{mid}', selected: true },
   ];
 
   protected compSelected = this.comps[QuoteComponent.Mid.valueOf()];
