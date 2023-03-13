@@ -18,8 +18,12 @@ export class SwatchesSelectComponent {
   @Input() set colors(newColors: string[][]) {
     if (newColors && newColors.length > 0) {
       const l = newColors.length;
+      if (this.selectedIndex >= l) {
+        this.selectedIndex = l - 1;
+      }
+
       this.palettes = newColors;
-      this.selectedPalette = this.palettes[0];
+      this.selectedPalette = this.palettes[this.selectedIndex];
       let length = 0;
 
       for (let i = 0; i < l; ++i) {
@@ -55,8 +59,10 @@ export class SwatchesSelectComponent {
 
   palettes: string[][] = [];
   selectedPalette: string[] = [];
+  selectedIndex = 0;
 
   selectionChanged(selection: MatSelectChange) {
+    this.selectedIndex = this.palettes.indexOf(selection.value);
     this.selectionChange.emit(selection.value);
   }
 

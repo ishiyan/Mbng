@@ -1,0 +1,9 @@
+<app-sma-params *ngFor="let sma of smaArray" [initial]="sma"
+    (changed)="updated($event);" (removed)="removed($event);">
+</app-sma-params>
+
+<div>
+    <button mat-mini-fab color="primary" (click)="add();">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

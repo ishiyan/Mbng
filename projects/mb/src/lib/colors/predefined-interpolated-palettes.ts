@@ -1,5 +1,10 @@
 import {
-  interpolateCividis, interpolateCool, interpolatePlasma, interpolateTurbo, interpolateViridis, interpolateWarm
+  interpolateCividis, interpolateCool, interpolatePlasma, interpolateTurbo, interpolateViridis, interpolateWarm,
+  interpolateInferno, interpolateMagma, interpolateCubehelixDefault,
+  interpolateBlues, interpolateGreens, interpolateGreys, interpolateOranges, interpolatePurples, interpolateReds,
+  interpolateBuGn, interpolateBuPu, interpolateGnBu, interpolateOrRd, interpolatePuBuGn, interpolatePuBu,
+  interpolatePuRd, interpolateRdPu, interpolateYlGnBu, interpolateYlGn, interpolateYlOrBr, interpolateYlOrRd,
+  interpolateRainbow, interpolateSinebow
 } from 'd3';
 
 /**
@@ -14,7 +19,12 @@ export const predefinedInterpolatedPalettes = (numberOfSwatches: number): string
   }
 
   const interpolators = [
-    interpolateCool, interpolateWarm, interpolatePlasma, interpolateViridis, interpolateCividis, interpolateTurbo
+    interpolateCool, interpolateWarm, interpolatePlasma, interpolateViridis, interpolateCividis, interpolateTurbo,
+    interpolateInferno, interpolateMagma, interpolateCubehelixDefault,
+    interpolateBlues, interpolateGreens, interpolateGreys, interpolateOranges, interpolatePurples, interpolateReds,
+    interpolateBuGn, interpolateBuPu, interpolateGnBu, interpolateOrRd, interpolatePuBuGn, interpolatePuBu,
+    interpolatePuRd, interpolateRdPu, interpolateYlGnBu, interpolateYlGn, interpolateYlOrBr, interpolateYlOrRd,
+    interpolateRainbow, interpolateSinebow
   ];
 
   const coef = 1 / (numberOfSwatches - 1);

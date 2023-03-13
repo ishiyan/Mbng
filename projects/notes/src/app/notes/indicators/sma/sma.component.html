@@ -1,10 +1,72 @@
-<h1>{{sma.title}}</h1>
-<app-bar-series-select label="example data" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
-<mb-swatches-select style="vertical-align: bottom;" [colors]="palettes" (selectionChange)="selectionChanged($event);"></mb-swatches-select>
+<h1>{{smaNote.title}}</h1>
 
-<mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+<mat-slide-toggle class="slide-toggle" [(ngModel)]="unLocked">
+  <mat-icon>tune</mat-icon>
+</mat-slide-toggle>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mb-swatches-select style="vertical-align: bottom;" [colors]="palettes"
+      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'"></mb-swatches-select>
+    <app-sma-list [initial]="initialIndicators" [colors]="selectedPalette"
+      (changed)="indicatorsChanged($event);"></app-sma-list>
+  </mat-expansion-panel>
+
+  <figcaption>{{dataSelection.description}}.</figcaption>
+</figure>
+
 <br />
-<hr />
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Max period to display</mat-label>
+      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Height</mat-label>
+      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+    </mat-form-field>
+
+    <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
+  </mat-expansion-panel>
+
+  <figcaption>An amplitude as a function of a period.</figcaption>
+</figure>
+<br />
+
+<figure class="figwide">
+  <!--div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%"-->
+    <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'"
+      [xmode]="'period'" [maxPeriod]="15" [data]="[sma2, sma4, sma6]"
+      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'"
+      [xmode]="'period'" [maxPeriod]="15" [data]="[sma3, sma5, sma7]"
+      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <!--/div-->
+  <figcaption>An amplitude as a function of a period for even (a) and odd (b) SMA length.</figcaption>
+</figure>
+
+<br />
+
 <h1>From [Ehlers2001]</h1>
 <div style="width:100%">
   An <mb-ki>n</mb-ki>-day SMA is formed by adding the samples over <mb-ki>n</mb-ki> days and dividing by <mb-ki>n
