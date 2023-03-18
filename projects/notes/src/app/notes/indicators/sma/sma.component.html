@@ -1,9 +1,10 @@
 <h1>{{smaNote.title}}</h1>
 
-<mat-slide-toggle class="slide-toggle" [(ngModel)]="unLocked">
-  <mat-icon>tune</mat-icon>
+<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
+  <mat-icon class="icon">tune</mat-icon>
 </mat-slide-toggle>
-<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)"></app-bar-series-select>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)">
+</app-bar-series-select>
 
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
@@ -13,15 +14,51 @@
       <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
     </mat-expansion-panel-header>
     <mb-swatches-select style="vertical-align: bottom;" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'"></mb-swatches-select>
+      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+    </mb-swatches-select>
     <app-sma-list [initial]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);"></app-sma-list>
+      (changed)="indicatorsChanged($event);">
+    </app-sma-list>
   </mat-expansion-panel>
 
   <figcaption>{{dataSelection.description}}.</figcaption>
 </figure>
 
-<br />
+<div style="width:100%">
+  A simple moving average of length <mb-ki>n</mb-ki> is just the mean of the last <mb-ki>n</mb-ki> observations
+  of <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>, where <mb-ki>{{"x_{k}"}}</mb-ki>
+  is the most recent value:
+  <mb-kd>{{"\\tag*{}m_{k}=\\frac{1}{n}\\sum_{i=k-n+1}^{k}x_{i}"}}</mb-kd>
+
+  In the beginning, when <mb-ki>k \lt n</mb-ki>, this is a cumulative moving average:
+  <mb-kd>{{"\\tag*{}m_{k}=\\frac{1}{k}\\sum_{i=1}^{k}x_{i}"}}</mb-kd>
+
+  Actually the last equation is the particular case of the first one for <mb-ki>k=n</mb-ki>.
+  The recurrence for the first equation is
+  <mb-kd>
+    {{"\\tag*{}m_{k}=\\frac{1}{n}\\left[x_{k}+\\sum_{i=k-n}^{k-1}x_{i}-x_{k-n}\\right]=m_{k-1}+\\frac{x_{k}-x_{k-n}}{n}"}}
+  </mb-kd>
+
+  Similarly for the second equation
+  <mb-kd>
+    {{"\\tag*{}m_{k}=\\frac{1}{k-1}\\left[x_{k}+\\sum_{i=1}^{k-1}x_{i}\\right]\\frac{k-1}{k}=m_{k-1}+\\frac{x_{k}-m_{k-1}}{k}"}}
+  </mb-kd>
+
+  Note that both can be rewritten as
+  <mb-kd>{{"\\tag{2.1}m_{k}=m_{k-1}+\\frac{\\delta_{k}-\\delta_{k-n}}{N_{k}}"}}</mb-kd>
+
+  where
+  <mb-kd>{{"\\tag{2.2}\\begin{cases}
+    \\delta_{l}=x_{l}-m_{k-1} & l\\gt 0\\\\
+    \\delta_{l}=0 & l\\leq0
+    \\end{cases}"}}</mb-kd>
+
+  and
+  <mb-kd>{{"\\tag{2.3}\\begin{cases}
+    N_{k}=n & k\\geq n\\\\
+    N_{k}=k & k\\lt n
+    \\end{cases}"}}</mb-kd>
+</div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
@@ -49,20 +86,52 @@
     <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
   </mat-expansion-panel>
 
-  <figcaption>An amplitude as a function of a period.</figcaption>
+  <figcaption>An amplitude (a) and a phase (b) as a function of a period of a wave.</figcaption>
 </figure>
 <br />
 
 <figure class="figwide">
-  <!--div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px" style="width:100%"-->
-    <mb-frequency-response-chart [subfig]="'(a)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'"
-      [xmode]="'period'" [maxPeriod]="15" [data]="[sma2, sma4, sma6]"
-      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-    <mb-frequency-response-chart [subfig]="'(b)'" [width]="'50%'" [height]="200" [ymode]="'amplitudePct'"
-      [xmode]="'period'" [maxPeriod]="15" [data]="[sma3, sma5, sma7]"
-      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <!--/div-->
-  <figcaption>An amplitude as a function of a period for even (a) and odd (b) SMA length.</figcaption>
+  <!--mat-grid-list cols="2" rowHeight="260px">
+    <mat-grid-tile>
+    </mat-grid-tile>
+  </mat-grid-list-->
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="15" [data]="[sma2, sma4, sma6]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="15" [data]="[sma3, sma5, sma7]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a wave for even (a) and odd (b) SMA length.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[sma2, sma4, sma6]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[sma2, sma4, sma6]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[sma3, sma5, sma7]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) SMA length.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[sma2, sma4, sma6]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[sma3, sma5, sma7]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <br />

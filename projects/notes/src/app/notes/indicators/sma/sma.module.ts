@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { SvgViewerModule } from 'projects/mb/src/lib/svg-viewer/svg-viewer.module';
@@ -28,7 +28,6 @@ import { SmaRoutingModule } from './sma-routing.module';
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -36,6 +35,7 @@ import { SmaRoutingModule } from './sma-routing.module';
     MatIconModule,
     MatExpansionModule,
     MatSlideToggleModule,
+    MatGridListModule,
     KatexModule,
     SvgViewerModule,
     LinearChartModule,
