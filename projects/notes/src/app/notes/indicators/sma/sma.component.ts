@@ -5,7 +5,7 @@ import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
 import { SimpleMovingAverage } from 'mb';
-import { predefinedInterpolatedPalettes } from 'mb';
+import { predefinedLinePalettes } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
 import { simpleMovingAverage } from '../../../notes';
@@ -64,7 +64,7 @@ export class SmaComponent implements AfterViewInit {
 
   private indicators: Sma[] = [];
   private initialized = false;
-  private selectedIndex = 0;
+  protected selectedIndex = 0; // 20
 
   protected readonly initialIndicators: SmaInput = {
     length: [5,10,20], barComponent: BarComponent.Median, showStyle: true
@@ -105,7 +105,7 @@ export class SmaComponent implements AfterViewInit {
     this.render();
   }
 
-  protected palettes: string[][] = predefinedInterpolatedPalettes(this.initialIndicators.length.length);
+  protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected smaNote = simpleMovingAverage;
   protected dataSelection!: BarSeries;
@@ -138,7 +138,7 @@ export class SmaComponent implements AfterViewInit {
   protected indicatorsChanged(arr: Sma[]) {
     const n = arr.length > 2 ? arr.length : 2;
     if (n !== this.selectedPalette.length) {
-      this.palettes = predefinedInterpolatedPalettes(n);
+      this.palettes = predefinedLinePalettes(n);
       if (this.selectedIndex >= n) {
         this.selectedIndex = 0;
       }

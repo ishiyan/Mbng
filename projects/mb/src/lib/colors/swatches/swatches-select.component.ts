@@ -13,6 +13,20 @@ const MIN_SWATCHES = 1;
   encapsulation: ViewEncapsulation.None
 })
 export class SwatchesSelectComponent {
+  /** Specifies a selection index. */
+  @Input() set selected(value: number) {
+    this.selectedIndex = value;
+    const l = this.palettes.length;
+    if (l > 0) {
+      if (value >= l) {
+        value = l - 1;
+      }
+  
+      this.selectedIndex = value;
+      this.selectedPalette = this.palettes[this.selectedIndex];
+      this.selectionChange.emit(this.selectedPalette);
+    }
+}
 
   /** Specifies an array of color palettes. */
   @Input() set colors(newColors: string[][]) {
@@ -41,6 +55,8 @@ export class SwatchesSelectComponent {
       this.optionWidthPixels = length * this.optionHeightPixels;
       this.triggerWidthPixels = length * this.triggerHeightPixels;
       this.selectWidthPixels = SELECT_PADDING_PIXELS + this.triggerWidthPixels;
+
+      this.selectionChange.emit(this.selectedPalette);
     }
   }
 

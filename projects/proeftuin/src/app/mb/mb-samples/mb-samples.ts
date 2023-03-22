@@ -106,6 +106,7 @@ export const treeNodes: MbSample[] = [
           { name: 'Features', header: 'Swatches features', route: 'comp-swatches/s1' },
           { name: 'Material palettes', header: 'Material palettes', route: 'comp-swatches/s2' },
           { name: 'Linear interpolated palettes', header: 'Linear interpolated palettes', route: 'comp-swatches/s3' },
+          { name: 'Triple interpolated palettes', header: 'Triple interpolated palettes', route: 'comp-swatches/s10' },
           { name: 'Random procedural palettes', header: 'Random procedural', route: 'comp-swatches/s4' },
           { name: 'Parametric procedural palettes', header: 'Parametric procedural', route: 'comp-swatches/s5' },
           { name: 'Coolors.co palettes', header: 'Coolors.co palettes', route: 'comp-swatches/s6' },

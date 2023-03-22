@@ -13,7 +13,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
     </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [colors]="palettes"
+    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
       (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
     </mb-swatches-select>
     <app-sma-list [initial]="initialIndicators" [colors]="selectedPalette"

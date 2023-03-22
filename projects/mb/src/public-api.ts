@@ -26,6 +26,8 @@ export * from './lib/snack-bar/snack-bar.service';
 export * from './lib/snack-bar/snack-bar.module';
 
 export * from './lib/colors/linear-interpolated-palette';
+export * from './lib/colors/triple-interpolated-palette';
+export * from './lib/colors/predefined-line-palettes';
 export * from './lib/colors/predefined-interpolated-palettes';
 export * from './lib/colors/parametric-procedural-palettes';
 export * from './lib/colors/random-procedural-palettes';
