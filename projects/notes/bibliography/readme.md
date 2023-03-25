@@ -1,6 +1,14 @@
 # Styles and converters
 
+## Bibtex to APA citations
+
+- [https://www.bibguru.com/c/apa-citation-generator](https://www.bibguru.com/c/apa-citation-generator/)
+- [https://www.bibtex.com/c/bibtex-to-apa-converter](https://www.bibtex.com/c/bibtex-to-apa-converter/)
+- [https://www.bibtex.com/s/bibliography-style-misc-apa](https://www.bibtex.com/s/bibliography-style-misc-apa/)
+- [https://apastyle.apa.org](https://apastyle.apa.org/)
+
 ## Format descriptions
+
 - [https://www.bibtex.com/format](https://www.bibtex.com/format/)
 - [https://www.bibtex.com/styles](https://www.bibtex.com/styles/)
 - [https://www.bibtex.com/s/bibliography-style-misc-apa](https://www.bibtex.com/s/bibliography-style-misc-apa/)

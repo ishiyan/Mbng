@@ -11,7 +11,7 @@ export const linearInterpolatedPalette = (colorStart: string, colorEnd: string, 
     numberOfSwatches = 2;
   }
 
-  const interpolator = d3.interpolate(colorStart, colorEnd);
+  const interpolator = d3.interpolateLab(colorStart, colorEnd);
   const coef = 1 / (numberOfSwatches - 1);
   const swatches: string[] = [];
 

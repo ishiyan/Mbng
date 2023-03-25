@@ -11,6 +11,7 @@ import { SampleSwatches7Component } from './sample-7/sample-swatches-7.component
 import { SampleSwatches8Component } from './sample-8/sample-swatches-8.component';
 import { SampleSwatches9Component } from './sample-9/sample-swatches-9.component';
 import { SampleSwatches10Component } from './sample-10/sample-swatches-10.component';
+import { SampleSwatches11Component } from './sample-11/sample-swatches-11.component';
 
 const routes: Routes = [
   { path: 's1', component: SampleSwatches1Component },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 's7', component: SampleSwatches7Component },
   { path: 's8', component: SampleSwatches8Component },
   { path: 's9', component: SampleSwatches9Component },
-  { path: 's10', component: SampleSwatches10Component } // ,
+  { path: 's10', component: SampleSwatches10Component },
+  { path: 's11', component: SampleSwatches11Component } // ,
   // { path: '**', redirectTo: 's1' }
 ];
 

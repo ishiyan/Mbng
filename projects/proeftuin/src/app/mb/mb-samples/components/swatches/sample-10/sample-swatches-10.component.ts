@@ -3,8 +3,10 @@ import { tripleInterpolatedPalette } from 'projects/mb/src/lib/colors/triple-int
 
 // https://medialab.github.io/iwanthue/
 const triplets: string[][] = [
-  ['#8c00ff', '#009dfd', '#81d600'],
+  ['#8c00ff', '#009dfd', '#d6d600'],
+  ['#8c00ff', '#009dfd', '#cce000'],
   ['#8c00ff', '#0099f0', '#a2c200'],
+  ['#8c00ff', '#009dfd', '#81d600'],
   ['#006fe6', '#00a9cd', '#81d600'],
   ['#006fe6', '#00b8ba', '#d6d600'],
   ['#73e6bb', '#99e95a', '#e1d468'], // Fluo.
@@ -43,6 +45,7 @@ const triplets: string[][] = [
   ['#5900ff', '#9800f9', '#ce00d1'],
   ['#1077f3', '#4f890e', '#997600'],
   ['#1077f3', '#4f890e', '#9b54f3'],
+  ['#4591e3', '#8265ae', '#e85847'],
   ['#1077f3', '#9b54f3', '#e83326'],
   ['#33b983', '#9b54f3', '#c85b00'],
   ['#648000', '#ba6c00', '#ff3300'],

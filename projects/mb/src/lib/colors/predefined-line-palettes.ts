@@ -1,10 +1,15 @@
+import { linearInterpolatedPalette } from './linear-interpolated-palette';
 import { tripleInterpolatedPalette } from './triple-interpolated-palette';
 
 // https://leonardocolor.io/scales.html#
 // https://medialab.github.io/iwanthue/
-const triplets: string[][] = [
+const predefined: string[][] = [
+  // ['#8c00ff', '#d6d600'],
+  ['#ad4dff', '#009dfd', '#00d605'],
   ['#8c00ff', '#009dfd', '#81d600'],
   ['#8c00ff', '#0099f0', '#a2c200'],
+  ['#8c00ff', '#009dfd', '#cce000'],
+  ['#8c00ff', '#009dfd', '#d6d600'],
   ['#006fe6', '#00a9cd', '#81d600'],
   ['#006fe6', '#00b8ba', '#d6d600'],
   ['#73e6bb', '#99e95a', '#e1d468'], // Fluo.
@@ -43,6 +48,7 @@ const triplets: string[][] = [
   ['#5900ff', '#9800f9', '#ce00d1'],
   ['#1077f3', '#4f890e', '#997600'],
   ['#1077f3', '#4f890e', '#9b54f3'],
+  ['#4591e3', '#8265ae', '#e85847'],
   ['#1077f3', '#9b54f3', '#e83326'],
   ['#33b983', '#9b54f3', '#c85b00'],
   ['#648000', '#ba6c00', '#ff3300'],
@@ -95,7 +101,7 @@ const triplets: string[][] = [
   ['#35546d', '#007998', '#557d89'] // Blue ocean.
   ];
 
-  const tripletsCount = triplets.length;
+  const predefinedCount = predefined.length;
 
 /**
  * Generates a palette from a collection of predefined palettes for drawing a set of lines.
@@ -110,9 +116,13 @@ export const predefinedLinePalettes = (numberOfSwatches: number): string[][] => 
 
   const palettes: string[][] = [];
 
-  for (let i = 0; i < tripletsCount; ++i){
-    const tr = triplets[i];
-    palettes.push(tripleInterpolatedPalette(tr[0], tr[1], tr[2], numberOfSwatches));
+  for (let i = 0; i < predefinedCount; ++i){
+    const pr = predefined[i];
+    if (pr.length > 2) {
+      palettes.push(tripleInterpolatedPalette(pr[0], pr[1], pr[2], numberOfSwatches));
+    } else if (pr.length > 1) {
+      palettes.push(linearInterpolatedPalette(pr[0], pr[1], numberOfSwatches));
+    }
   }
 
   return palettes;

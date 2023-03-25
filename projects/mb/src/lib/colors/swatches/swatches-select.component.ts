@@ -21,7 +21,7 @@ export class SwatchesSelectComponent {
       if (value >= l) {
         value = l - 1;
       }
-  
+
       this.selectedIndex = value;
       this.selectedPalette = this.palettes[this.selectedIndex];
       this.selectionChange.emit(this.selectedPalette);

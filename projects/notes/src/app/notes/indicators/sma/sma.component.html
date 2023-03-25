@@ -25,39 +25,35 @@
 </figure>
 
 <div style="width:100%">
-  A simple moving average of length <mb-ki>n</mb-ki> is just the mean of the last <mb-ki>n</mb-ki> observations
-  of <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>, where <mb-ki>{{"x_{k}"}}</mb-ki>
-  is the most recent value:
-  <mb-kd>{{"\\tag*{}m_{k}=\\frac{1}{n}\\sum_{i=k-n+1}^{k}x_{i}"}}</mb-kd>
+  A simple moving average (SMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
+  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
+  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
+  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{i=k-l+1}^{k}x_{i}"}}</mb-kd>
 
-  In the beginning, when <mb-ki>k \lt n</mb-ki>, this is a cumulative moving average:
-  <mb-kd>{{"\\tag*{}m_{k}=\\frac{1}{k}\\sum_{i=1}^{k}x_{i}"}}</mb-kd>
+  When a next sample <mb-ki>{{"x_{k+1}"}}</mb-ki> arrives, it will be added to the sum, and the
+  <mb-ki>{{"x_{k-l}"}}</mb-ki> sample will be dropped from the sum. Thus, the window of <mb-ki>l</mb-ki>
+  samples "moves", which explains the "moving average" part of the name.
+  <p></p>
+  When <mb-ki>k \lt l</mb-ki>, the equation (1) above transforms into a cumulative moving average:
+  <mb-kd>{{"\\tag*{}y_{k}=\\frac{1}{k}\\sum_{i=1}^{k}x_{i}"}}</mb-kd>
 
-  Actually the last equation is the particular case of the first one for <mb-ki>k=n</mb-ki>.
-  The recurrence for the first equation is
+  Since the effective length <mb-ki>k \lt l</mb-ki>, we consider SMA values undefined in this case.
+  A scientific way to say this is "an indicator is not primed".
+  <p></p>
+
+  The equation (1) can be rewritten in the recurrenct form, which gives an efficient method of SMA calculation:
   <mb-kd>
-    {{"\\tag*{}m_{k}=\\frac{1}{n}\\left[x_{k}+\\sum_{i=k-n}^{k-1}x_{i}-x_{k-n}\\right]=m_{k-1}+\\frac{x_{k}-x_{k-n}}{n}"}}
+    {{"\\tag*{}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{i=k-l}^{k-1}x_{i}-x_{k-l}\\right]"}}
   </mb-kd>
-
-  Similarly for the second equation
   <mb-kd>
-    {{"\\tag*{}m_{k}=\\frac{1}{k-1}\\left[x_{k}+\\sum_{i=1}^{k-1}x_{i}\\right]\\frac{k-1}{k}=m_{k-1}+\\frac{x_{k}-m_{k-1}}{k}"}}
+    {{"\\tag*{(2)}=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
   </mb-kd>
+  <!--
+  <mb-kd>
+    {{"\\tag*{(2)}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{i=k-l}^{k-1}x_{i}-x_{k-l}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
+  </mb-kd>
+  -->
 
-  Note that both can be rewritten as
-  <mb-kd>{{"\\tag{2.1}m_{k}=m_{k-1}+\\frac{\\delta_{k}-\\delta_{k-n}}{N_{k}}"}}</mb-kd>
-
-  where
-  <mb-kd>{{"\\tag{2.2}\\begin{cases}
-    \\delta_{l}=x_{l}-m_{k-1} & l\\gt 0\\\\
-    \\delta_{l}=0 & l\\leq0
-    \\end{cases}"}}</mb-kd>
-
-  and
-  <mb-kd>{{"\\tag{2.3}\\begin{cases}
-    N_{k}=n & k\\geq n\\\\
-    N_{k}=k & k\\lt n
-    \\end{cases}"}}</mb-kd>
 </div>
 
 <figure class="figwide">

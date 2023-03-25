@@ -18,6 +18,7 @@ import { SampleSwatches7Component } from './sample-7/sample-swatches-7.component
 import { SampleSwatches8Component } from './sample-8/sample-swatches-8.component';
 import { SampleSwatches9Component } from './sample-9/sample-swatches-9.component';
 import { SampleSwatches10Component } from './sample-10/sample-swatches-10.component';
+import { SampleSwatches11Component } from './sample-11/sample-swatches-11.component';
 
 import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
 
@@ -42,7 +43,8 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     SampleSwatches7Component,
     SampleSwatches8Component,
     SampleSwatches9Component,
-    SampleSwatches10Component
+    SampleSwatches10Component,
+    SampleSwatches11Component
   ]
 })
 export class SampleSwatchesModule { }

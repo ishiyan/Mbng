@@ -112,6 +112,7 @@ export const treeNodes: MbSample[] = [
           { name: 'Coolors.co palettes', header: 'Coolors.co palettes', route: 'comp-swatches/s6' },
           { name: 'Palettes from web', header: 'Palettes from web', route: 'comp-swatches/s7' },
           { name: 'Predefined interpolated palettes', header: 'Predefined interpolated palettes', route: 'comp-swatches/s8' },
+          { name: 'Predefined line palettes', header: 'Predefined line palettes', route: 'comp-swatches/s11' },
           { name: 'Color picker', header: 'Color picker', route: 'comp-swatches/s9' }
         ]
       },
