@@ -1,0 +1,5 @@
+SMA
+https://github.com/tttapa
+https://tttapa.github.io/Pages/Mathematics/Systems-and-Control-Theory/Digital-filters/Simple%20Moving%20Average/Simple-Moving-Average.html
+
+https://blog.mbedded.ninja/programming/signal-processing/digital-filters/windowed-moving-average-filters/

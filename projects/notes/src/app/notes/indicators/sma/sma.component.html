@@ -28,31 +28,60 @@
   A simple moving average (SMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
   <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
   where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{i=k-l+1}^{k}x_{i}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
 
   When a next sample <mb-ki>{{"x_{k+1}"}}</mb-ki> arrives, it will be added to the sum, and the
   <mb-ki>{{"x_{k-l}"}}</mb-ki> sample will be dropped from the sum. Thus, the window of <mb-ki>l</mb-ki>
-  samples "moves", which explains the "moving average" part of the name.
+  samples "moves", which explains the "moving average" in its name.
   <p></p>
   When <mb-ki>k \lt l</mb-ki>, the equation (1) above transforms into a cumulative moving average:
-  <mb-kd>{{"\\tag*{}y_{k}=\\frac{1}{k}\\sum_{i=1}^{k}x_{i}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}y_{k}=\\frac{1}{k}\\sum_{m=1}^{k}x_{m}"}}</mb-kd>
 
   Since the effective length <mb-ki>k \lt l</mb-ki>, we consider SMA values undefined in this case.
   A scientific way to say this is "an indicator is not primed".
   <p></p>
 
-  The equation (1) can be rewritten in the recurrenct form, which gives an efficient method of SMA calculation:
+  The equation (1) can be rewritten in the recurrent form
+  (the <mb-ki>{{"x_{k}"}}</mb-ki> is taken out of the summation, the <mb-ki>{{"x_{k-l}"}}</mb-ki> is added and subtracted),
+  which gives an efficient method of SMA calculation:
   <mb-kd>
-    {{"\\tag*{}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{i=k-l}^{k-1}x_{i}-x_{k-l}\\right]"}}
+    {{"\\tag*{}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{i}-x_{k-l}\\right]"}}
   </mb-kd>
   <mb-kd>
     {{"\\tag*{(2)}=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
   </mb-kd>
   <!--
   <mb-kd>
-    {{"\\tag*{(2)}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{i=k-l}^{k-1}x_{i}-x_{k-l}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
+    {{"\\tag*{(2a)}\\begin{aligned}y_{k}&&=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{m}-x_{k-l}\\right]\\ &&=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}\\end{aligned}"}}
   </mb-kd>
   -->
+  <!--
+  <mb-kd>
+    {{"\\tag*{(2)}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{m}-x_{k-l}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
+  </mb-kd>
+  -->
+  <p></p>
+
+  From the digital signal processing (DSP) point of view, SMA is a
+  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  <mb-kd>
+    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+  </mb-kd>
+  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+  <p></p>
+</div>
+
+<h2>Frequency response</h2>
+<div style="width:100%">
+  The figure below shows an amplitude and a phase lag of the unit sample response of an SMA as a function
+  of a period of various signal frequencies.
+  <p></p>
+  A period is a duration of a cycle in samples.
+  The smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
+  To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
+  continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
+  We need at least two samples (peak and through) to represent a cycle.
+  <p></p>
 
 </div>
 
@@ -82,9 +111,16 @@
     <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
   </mat-expansion-panel>
 
-  <figcaption>An amplitude (a) and a phase (b) as a function of a period of a wave.</figcaption>
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
-<br />
+
+<div style="width:100%">
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
+
+</div>
 
 <figure class="figwide">
   <!--mat-grid-list cols="2" rowHeight="260px">
@@ -97,7 +133,7 @@
   <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[sma3, sma5, sma7]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>An amplitude as a function of a period of a wave for even (a) and odd (b) SMA length.</figcaption>
+  <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
@@ -107,7 +143,7 @@
   <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>An amplitude as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
+  <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
@@ -129,6 +165,54 @@
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
+
+<p></p>
+<div style="width:100%">
+  The frequency response of an SMA can be derived analytically (Mak, 2021).
+  <p></p>
+  The frequency response function of a discrete-time linear time-invariant (DTLTI) system
+  is the discrete-time Fourier transform (DTFT) of the unit impulse response <mb-ki>{{"h_k"}}</mb-ki> (Oppenheim, 2009):
+  <mb-kd>
+    {{"\\tag*{(4)}H(\\omega)=\\sum_{k=0}^{l-1}h(k)\\exp(-i k \\omega)"}}
+  </mb-kd>
+  where <mb-ki>{{"\\omega"}}</mb-ki> is an angular frequency, <mb-ki>{{"\\nu"}}</mb-ki> is a frequency, and <mb-ki>{{"\\tau"}}</mb-ki> is a period of a cycle in samples:
+  <mb-kd>
+    {{"\\tag*{}\\omega = 2\\pi\\nu = \\frac{2\\pi}{\\tau}"}}
+  </mb-kd>
+  The unit impulse response is the output of the SMA when a Kronecker delta function
+  <mb-kd>
+    {{"\\tag*{}\\delta[k] = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
+  </mb-kd>
+  is applied to the input. Since SMA has equal weight coefficients, the unit impulse response
+  can be obtained from equation (3):
+  <mb-kd>
+    {{"\\tag*{}h(k)=\\sum_{m=0}^{l-1}c_m\\delta[k-m]"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{1}{l}\\sum_{m=0}^{l-1}\\delta[k-m]"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(5)}=\\begin{cases} 1/l, & 0 \\leq k \\lt l \\\\ 0, & \\text{otherwise} \\end{cases}"}}
+  </mb-kd>
+  Substituting (5) into equation (4) gives
+  <mb-kd>
+    {{"\\tag*{}H(\\omega)=\\sum_{k=0}^{l-1}h(k)\\exp(-i k \\omega)"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(6)}=\\frac{1}{l}\\sum_{k=0}^{l-1}\\exp(-i k \\omega)"}}
+  </mb-kd>
+  To simplify (6), we can use an identity
+  <mb-kd>
+    {{"\\tag*{}\\sum_{k=P}^{Q}a^k = \\frac{a^P - a^{Q+1}}{1-a}"}}
+  </mb-kd>
+  to write the frequency response function as
+  <mb-kd>
+    {{"\\tag*{(7)}H(\\omega)=\\frac{1}{l}\\cdot\\frac{1 - \\exp(-i l \\omega)}{1 - \\exp(-i \\omega)}"}}
+  </mb-kd>
+  where we have let <mb-ki>{{"a = \\exp(-i \\omega))"}}</mb-ki>, <mb-ki>{{"P = 0"}}</mb-ki>,
+  and <mb-ki>{{"Q = l-1"}}</mb-ki>.
+
+</div>
 
 <br />
 
