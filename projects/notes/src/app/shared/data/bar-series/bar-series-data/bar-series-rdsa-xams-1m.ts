@@ -3,7 +3,7 @@ import { Series } from '../../series.interface';
 
 export const barSeriesRdsaXams1m: Series = {
   mnemonic: 'rdsa:xams 1m',
-  description: 'Royal Dutch Shell (€), XAMS, GB00B03MLX29, not adjusted',
+  description: 'Royal Dutch Shell (€, RDSA:XAMS, GB00B03MLX29)',
   timeStart: new Date(2020, 1, 3, 9, 0),
   timeEnd: new Date(2020, 3, 30, 17, 35),
   timeGranularity: TimeGranularity.Minute1,

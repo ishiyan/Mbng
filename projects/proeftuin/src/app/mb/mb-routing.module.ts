@@ -62,6 +62,16 @@ const routes: Routes = [
             .then(m => m.SampleSimpleMovingAverageModule)
       },
       {
+        path: 'comp-tra-ind-trima', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/triangular-moving-average/sample-triangular-moving-average.module')
+            .then(m => m.SampleTriangularMovingAverageModule)
+      },
+      {
+        path: 'comp-tra-ind-wma', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/weighted-moving-average/sample-weighted-moving-average.module')
+            .then(m => m.SampleWeightedMovingAverageModule)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module').then(m => m.SampleOhlcvChartSelectorModule)
       },

@@ -178,6 +178,18 @@ export * from './lib/trading/indicators/simple-moving-average/simple-moving-aver
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average.module';
 
+export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average';
+export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
+export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.component';
+export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
+
+export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average';
+export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.interface';
+export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.component';
+export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average.module';
+
 export * from './lib/trading/trading.module';
 
 // export * from './lib/charts/d3ts/index.js';

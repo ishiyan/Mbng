@@ -3,7 +3,7 @@ import { Series } from '../../series.interface';
 
 export const barSeriesTalib1d: Series = {
   mnemonic: 'talib 1d',
-  description: 'Data used for testing indicators in TALib.',
+  description: 'Data used for testing indicators in TALib',
   timeStart: new Date(2011, 0, 3),
   timeEnd: new Date(2011, 11, 20),
   timeGranularity: TimeGranularity.Day1,

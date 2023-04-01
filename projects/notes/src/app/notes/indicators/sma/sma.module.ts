@@ -19,7 +19,6 @@ import { OhlcvChartSelectorModule } from 'projects/mb/src/lib/charts/ohlcv-chart
 import { FrequencyResponseChartModule } from 'projects/mb/src/lib/charts/frequency-response-chart/frequency-response-chart.module';
 
 import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
-import { ScrollerModule } from '../../../shared/scroller/scroller.module';
 import { SmaComponent } from './sma.component';
 import { SmaParamsComponent } from './sma-params.component';
 import { SmaListComponent } from './sma-list.component';
@@ -45,7 +44,6 @@ import { SmaRoutingModule } from './sma-routing.module';
     OhlcvChartSelectorModule,
     BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    ScrollerModule,
     SmaRoutingModule
   ],
   declarations: [SmaComponent, SmaParamsComponent, SmaListComponent]

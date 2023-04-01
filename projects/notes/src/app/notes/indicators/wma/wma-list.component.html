@@ -1,0 +1,9 @@
+<app-wma-params *ngFor="let wma of wmaArray" [initial]="wma"
+    (changed)="updated($event);" (removed)="removed($event);">
+</app-wma-params>
+
+<div>
+    <button mat-mini-fab color="primary" (click)="add();">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

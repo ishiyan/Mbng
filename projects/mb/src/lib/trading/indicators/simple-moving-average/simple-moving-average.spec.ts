@@ -20,13 +20,13 @@ const input = [
 describe('SimpleMovingAverage', () => {
   const epsilon = 10e-2;
 
-  it('should return expected name', () => {
-    const sma = new SimpleMovingAverage(7);
-    expect(sma.getName()).toBe('sma(7)');
+  it('should return expected mnemonic', () => {
+    const sma = new SimpleMovingAverage({length: 7});
+    expect(sma.getMnemonic()).toBe('sma(7)');
   });
 
   it('should throw if length is less than 2', () => {
-    expect(() => { new SimpleMovingAverage(1); }).toThrow();
+    expect(() => { new SimpleMovingAverage({length: 1}); }).toThrow();
   });
 
   it('should calculate expected output and prime state for length 3', () => {
@@ -39,7 +39,7 @@ describe('SimpleMovingAverage', () => {
       67.70,
     ];
     const len = 3;
-    const sma = new SimpleMovingAverage(len);
+    const sma = new SimpleMovingAverage({length: len});
 
     for (let i = 0; i < len - 1; i++) {
       expect(sma.update(input[i])).toBeNaN();
@@ -64,7 +64,7 @@ describe('SimpleMovingAverage', () => {
       67.59,
     ];
     const len = 5;
-    const sma = new SimpleMovingAverage(len);
+    const sma = new SimpleMovingAverage({length: len});
 
     for (let i = 0; i < len - 1; i++) {
       expect(sma.update(input[i])).toBeNaN();
@@ -89,7 +89,7 @@ describe('SimpleMovingAverage', () => {
       67.47,
     ];
     const len = 10;
-    const sma = new SimpleMovingAverage(len);
+    const sma = new SimpleMovingAverage({length: len});
 
     for (let i = 0; i < len - 1; i++) {
       expect(sma.update(input[i])).toBeNaN();

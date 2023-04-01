@@ -1,5 +1,13 @@
 import { Note } from './shared/note.interface';
 
+export const triangularMovingAverage: Note = {
+  title: 'Triangular moving average',
+  summary: 'Exploring triangular moving average',
+  route: '5',
+  created: '2021-07-08',
+  tags: ['Trading', 'Indicators', 'Moving averages']
+};
+
 export const weightedMovingAverage: Note = {
   title: 'Weighted moving average',
   summary: 'Exploring weighted moving average',
@@ -55,6 +63,7 @@ export const notes: Note[] = [
     created: '2021-05-06',
     tags: ['Trading', 'Indicators', 'Moving averages']
   },
+  triangularMovingAverage,
   weightedMovingAverage,
   exponentialMovingAverage,
   simpleMovingAverage,

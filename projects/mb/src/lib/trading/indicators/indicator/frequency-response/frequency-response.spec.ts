@@ -2,7 +2,7 @@ import { } from 'jasmine';
 
 import { Filter } from './frequency-response.interface';
 import { FrequencyResponse } from './frequency-response';
-import { SimpleMovingAverage } from '../../simple-moving-average';
+import { SimpleMovingAverage } from '../../simple-moving-average/simple-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
 // ng test mb  --code-coverage --include='**/frequency-response/*.spec.ts'
@@ -56,7 +56,7 @@ describe('FrequencyResponse', () => {
     const expected = [1000, 0, 0, 0, 0, 0, 0];
 
     class IdentityFilter implements Filter {
-      getName(): string {
+      getMnemonic(): string {
         return 'identity';
       }
       update(sample: number): number {
@@ -219,12 +219,12 @@ describe('FrequencyResponse', () => {
   });
 
   it('calculation throws if signal length is invalid', () => {
-    expect(() => FrequencyResponse.calculate(129, new SimpleMovingAverage(5), 7)).toThrow();
+    expect(() => FrequencyResponse.calculate(129, new SimpleMovingAverage({length: 7}), 7)).toThrow();
   });
 
   it('calculates the response', () => {
     const len = 5;
-    const actual = FrequencyResponse.calculate(16, new SimpleMovingAverage(len), len);
+    const actual = FrequencyResponse.calculate(16, new SimpleMovingAverage({length: len}), len);
 
     expect(actual.label).toEqual('sma(5)');
 

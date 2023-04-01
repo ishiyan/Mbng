@@ -144,6 +144,18 @@ export const treeNodes: MbSample[] = [
                   { name: 'Params', header: 'Simple moving average params', route: 'comp-tra-ind-sma/s1' },
                   { name: 'Selector', header: 'Simple moving average selector', route: 'comp-tra-ind-sma/s2' }
                 ]
+              },
+              { name: 'Triangular Moving Average',
+                children: [
+                  { name: 'Params', header: 'Triangular moving average params', route: 'comp-tra-ind-trima/s1' },
+                  { name: 'Selector', header: 'Triangular moving average selector', route: 'comp-tra-ind-trima/s2' }
+                ]
+              },
+              { name: 'Weighted Moving Average',
+                children: [
+                  { name: 'Params', header: 'Weighted moving average params', route: 'comp-tra-ind-wma/s1' },
+                  { name: 'Selector', header: 'Weighted moving average selector', route: 'comp-tra-ind-wma/s2' }
+                ]
               }
             ]
           }

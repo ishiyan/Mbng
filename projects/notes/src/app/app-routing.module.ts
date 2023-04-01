@@ -5,6 +5,8 @@ import { NoteListComponent } from './shared/note-list/note-list.component';
 
 const routes: Routes = [
   { path: '', component: NoteListComponent },
+  { path: '5', loadChildren: () => import('./notes/indicators/trima/trima.module')
+    .then(m => m.TrimaModule) },
   { path: '4', loadChildren: () => import('./notes/indicators/wma/wma.module')
     .then(m => m.WmaModule) },
   { path: '3', loadChildren: () => import('./notes/indicators/ema/ema.module')
