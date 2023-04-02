@@ -190,6 +190,18 @@ export * from './lib/trading/indicators/triangular-moving-average/triangular-mov
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average.module';
 
+export * from './lib/trading/indicators/statistics/variance/variance';
+export * from './lib/trading/indicators/statistics/variance/variance-params.interface';
+export * from './lib/trading/indicators/statistics/variance/variance-params.component';
+export * from './lib/trading/indicators/statistics/variance/variance-params-dialog.component';
+export * from './lib/trading/indicators/statistics/variance/variance.module';
+
+export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation';
+export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.interface';
+export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.component';
+export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params-dialog.component';
+export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation.module';
+
 export * from './lib/trading/trading.module';
 
 // export * from './lib/charts/d3ts/index.js';

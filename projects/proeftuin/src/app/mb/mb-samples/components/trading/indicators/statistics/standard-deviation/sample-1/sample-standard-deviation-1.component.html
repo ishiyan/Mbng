@@ -1,0 +1,68 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Defaullt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-standard-deviation-params (selectionChange)="selected1 = $event;">
+      </mb-standard-deviation-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected1 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial: no quote component, unbiased is true</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-standard-deviation-params [initial]="initial2" (selectionChange)="selected2 = $event;">
+      </mb-standard-deviation-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected2 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial: no bar component, unbiased is false</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-standard-deviation-params [initial]="initial3" (selectionChange)="selected3 = $event;">
+      </mb-standard-deviation-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected3 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial: no bar no quote, unbiased is true</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-standard-deviation-params [initial]="initial4" (selectionChange)="selected4 = $event;">
+      </mb-standard-deviation-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected4 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial: both bar and quote, unbiased is false</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-standard-deviation-params [initial]="initial5" (selectionChange)="selected5 = $event;">
+      </mb-standard-deviation-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected5 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+</div>

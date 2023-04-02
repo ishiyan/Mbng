@@ -72,6 +72,16 @@ const routes: Routes = [
             .then(m => m.SampleWeightedMovingAverageModule)
       },
       {
+        path: 'comp-tra-ind-statistics-var', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/statistics/variance/sample-variance.module')
+            .then(m => m.SampleVarianceModule)
+      },
+      {
+        path: 'comp-tra-ind-statistics-stdev', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/statistics/standard-deviation/sample-standard-deviation.module')
+            .then(m => m.SampleStandardDeviationModule)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module').then(m => m.SampleOhlcvChartSelectorModule)
       },

@@ -156,6 +156,22 @@ export const treeNodes: MbSample[] = [
                   { name: 'Params', header: 'Weighted moving average params', route: 'comp-tra-ind-wma/s1' },
                   { name: 'Selector', header: 'Weighted moving average selector', route: 'comp-tra-ind-wma/s2' }
                 ]
+              },
+              { name: 'Statistics',
+                children: [
+                  { name: 'Variance',
+                    children: [
+                      { name: 'Params', header: 'Variance params', route: 'comp-tra-ind-statistics-var/s1' },
+                      { name: 'Selector', header: 'Variance selector', route: 'comp-tra-ind-statistics-var/s2' }
+                    ]
+                  },
+                  { name: 'Standard Deviation',
+                    children: [
+                      { name: 'Params', header: 'Standard Deviation params', route: 'comp-tra-ind-statistics-stdev/s1' },
+                      { name: 'Selector', header: 'Standard Deviation selector', route: 'comp-tra-ind-statistics-stdev/s2' }
+                    ]
+                  }
+                ]
               }
             ]
           }
