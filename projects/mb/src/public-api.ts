@@ -190,6 +190,12 @@ export * from './lib/trading/indicators/triangular-moving-average/triangular-mov
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average.module';
 
+export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average';
+export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.component';
+export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average.module';
+
 export * from './lib/trading/indicators/statistics/variance/variance';
 export * from './lib/trading/indicators/statistics/variance/variance-params.interface';
 export * from './lib/trading/indicators/statistics/variance/variance-params.component';

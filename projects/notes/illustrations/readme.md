@@ -1,6 +1,9 @@
 # SVG editors and converters
 
+- [https://editor.method.ac](https://editor.method.ac/)
+
 ## Svgbob
+
 - [https://github.com/ivanceras/svgbob](https://github.com/ivanceras/svgbob)
 - [https://ivanceras.github.io/svgbob-editor](https://ivanceras.github.io/svgbob-editor/)
 
