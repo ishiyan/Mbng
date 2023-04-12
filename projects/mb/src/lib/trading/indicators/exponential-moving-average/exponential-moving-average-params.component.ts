@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, AfterViewInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, AfterContentInit, Output } from '@angular/core';
 
 import { BarComponent } from '../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../data/entities/quote-component.enum';
@@ -14,10 +14,10 @@ const guardLength = (object: any): object is ExponentialMovingAverageLengthParam
   templateUrl: './exponential-moving-average-params.component.html',
   styleUrls: ['./exponential-moving-average-params.component.scss']
 })
-export class ExponentialMovingAverageParamsComponent implements AfterViewInit {
+export class ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;
   private firstIsAverage = firstIsAverageDefault;
-  protected useAlpha = false;
+  private useAlphaInternal = false;
 
   protected paramsLength: ExponentialMovingAverageLengthParams = {
     length: 6, firstIsAverage: firstIsAverageDefault, barComponent: BarComponent.Close
@@ -43,6 +43,25 @@ export class ExponentialMovingAverageParamsComponent implements AfterViewInit {
     this.paramsLength.length = value;
     this.paramsLength = { ...this.paramsLength };
     this.notify();
+  }
+
+  protected get useAlpha(): boolean {
+    return this.useAlphaInternal;
+  }
+  protected set useAlpha(value: boolean) {
+    if (this.useAlphaInternal === value) {
+      return;
+    }
+
+    this.useAlphaInternal = value;
+
+    if (this.useAlphaInternal) {
+      this.paramsAlpha = { ...this.paramsAlpha };
+      this.notify();
+    } else {
+      this.paramsLength = { ...this.paramsLength };
+      this.notify();
+    }
   }
 
   protected get alphaParam(): number {
@@ -110,7 +129,7 @@ export class ExponentialMovingAverageParamsComponent implements AfterViewInit {
     this.quoteComponentVisible = value.quoteComponent !== undefined;
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.initialized = true;
     this.notify();
   }

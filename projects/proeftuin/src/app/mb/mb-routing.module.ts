@@ -72,6 +72,11 @@ const routes: Routes = [
             .then(m => m.SampleWeightedMovingAverageModule)
       },
       {
+        path: 'comp-tra-ind-ema', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/exponential-moving-average/sample-exponential-moving-average.module')
+            .then(m => m.SampleExponentialMovingAverageModule)
+      },
+      {
         path: 'comp-tra-ind-statistics-var', loadChildren: () =>
           import('./mb-samples/components/trading/indicators/statistics/variance/sample-variance.module')
             .then(m => m.SampleVarianceModule)

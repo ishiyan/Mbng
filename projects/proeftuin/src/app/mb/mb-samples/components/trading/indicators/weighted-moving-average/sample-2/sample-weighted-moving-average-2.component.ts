@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-// eslint-disable-next-line max-len
-import { WeightedMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
+import { WeightedMovingAverageParams }
+  from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 

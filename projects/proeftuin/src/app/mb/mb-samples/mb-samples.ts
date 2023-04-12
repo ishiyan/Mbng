@@ -157,6 +157,12 @@ export const treeNodes: MbSample[] = [
                   { name: 'Selector', header: 'Weighted moving average selector', route: 'comp-tra-ind-wma/s2' }
                 ]
               },
+              { name: 'Exponential Moving Average',
+                children: [
+                  { name: 'Params', header: 'Exponential moving average params', route: 'comp-tra-ind-ema/s1' },
+                  { name: 'Selector', header: 'Exponential moving average selector', route: 'comp-tra-ind-ema/s2' }
+                ]
+              },
               { name: 'Statistics',
                 children: [
                   { name: 'Variance',

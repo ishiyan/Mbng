@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { StandardDeviationParams } from 'projects/mb/src/lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.interface';
+import { StandardDeviationParams }
+  from 'projects/mb/src/lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 

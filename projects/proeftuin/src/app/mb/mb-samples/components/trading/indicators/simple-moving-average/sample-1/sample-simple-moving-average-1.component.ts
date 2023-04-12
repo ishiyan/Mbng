@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-// eslint-disable-next-line max-len
-import { SimpleMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
+import { SimpleMovingAverageParams }
+  from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 

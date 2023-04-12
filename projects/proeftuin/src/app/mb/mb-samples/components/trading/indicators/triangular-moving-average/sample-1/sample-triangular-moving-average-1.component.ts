@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-// eslint-disable-next-line max-len
-import { TriangularMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.interface';
+import { TriangularMovingAverageParams }
+  from 'projects/mb/src/lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 
