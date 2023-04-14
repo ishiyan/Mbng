@@ -1,4 +1,5 @@
-import { TimeGranularity } from 'projects/mb/src/public-api';
+import { TimeGranularity } from 'mb';
+
 import { Series } from '../../series.interface';
 
 export const quoteSeriesSp500Aperiodic: Series = {

@@ -1,6 +1,6 @@
 import { Note } from './shared/note.interface';
 
-export const triangularMovingAverage: Note = {
+export const triangularMovingAverageNote: Note = {
   title: 'Triangular moving average',
   summary: 'Exploring triangular moving average',
   route: '5',
@@ -8,7 +8,7 @@ export const triangularMovingAverage: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
-export const weightedMovingAverage: Note = {
+export const weightedMovingAverageNote: Note = {
   title: 'Weighted moving average',
   summary: 'Exploring weighted moving average',
   route: '4',
@@ -16,7 +16,7 @@ export const weightedMovingAverage: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
-export const exponentialMovingAverage: Note = {
+export const exponentialMovingAverageNote: Note = {
   title: 'Exponential moving average',
   summary: 'Exploring exponential moving average',
   route: '3',
@@ -24,7 +24,7 @@ export const exponentialMovingAverage: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
-export const simpleMovingAverage: Note = {
+export const simpleMovingAverageNote: Note = {
   title: 'Simple moving average',
   summary: 'Exploring simple moving average',
   route: '2',
@@ -32,7 +32,7 @@ export const simpleMovingAverage: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
-export const frequencyResponseOfAnIndicator: Note = {
+export const frequencyResponseOfAnIndicatorNote: Note = {
   title: 'Frequency response of an indicator',
   summary: 'Indicators as Digital Signal Processing filters',
   route: '1',
@@ -40,7 +40,7 @@ export const frequencyResponseOfAnIndicator: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
-export const visualisingFinancialDataWithLinearChart: Note = {
+export const visualisingFinancialDataWithLinearChartNote: Note = {
   title: 'Visualising financial data with linear chart',
   summary: 'Plot various data types in linar chart and export SVG',
   route: '0',
@@ -63,10 +63,10 @@ export const notes: Note[] = [
     created: '2021-05-06',
     tags: ['Trading', 'Indicators', 'Moving averages']
   },
-  triangularMovingAverage,
-  weightedMovingAverage,
-  exponentialMovingAverage,
-  simpleMovingAverage,
-  frequencyResponseOfAnIndicator,
-  visualisingFinancialDataWithLinearChart
+  triangularMovingAverageNote,
+  weightedMovingAverageNote,
+  exponentialMovingAverageNote,
+  simpleMovingAverageNote,
+  frequencyResponseOfAnIndicatorNote,
+  visualisingFinancialDataWithLinearChartNote
 ];

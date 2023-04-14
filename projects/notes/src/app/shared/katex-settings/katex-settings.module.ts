@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
+import { KatexModule } from 'mb';
 
 import { KatexSettingsComponent } from './katex-settings.component';
 

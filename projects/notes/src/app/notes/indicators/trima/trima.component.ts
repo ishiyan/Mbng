@@ -6,11 +6,11 @@ import { Configuration } from 'mb';
 import { LineData } from 'mb';
 import { TriangularMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
+import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { triangularMovingAverage } from '../../../notes';
+import { triangularMovingAverageNote } from '../../../notes';
 import { TrimaInput } from './trima-input.interface';
-import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'projects/mb/src/public-api';
 import { Trima } from './trima.interface';
 
 const isUnlocked = false;
@@ -107,7 +107,7 @@ export class TrimaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
-  protected trimaNote = triangularMovingAverage;
+  protected trimaNote = triangularMovingAverageNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];

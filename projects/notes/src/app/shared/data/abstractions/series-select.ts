@@ -1,4 +1,4 @@
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
+import { SparklineConfiguration } from 'mb';
 
 import { primaryColor } from '../../theme-colors';
 import { Series } from '../series.interface';

@@ -1,4 +1,5 @@
-import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+import { Bar } from 'mb';
+
 import { Series } from '../series.interface';
 
 /** Contains a series of bars. */

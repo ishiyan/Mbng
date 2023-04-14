@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { FrequencyResponse, SimpleMovingAverage } from 'projects/mb/src/public-api';
+import { FrequencyResponse, SimpleMovingAverage } from 'mb';
 
-import { frequencyResponseOfAnIndicator, simpleMovingAverage } from '../../../notes';
+import { frequencyResponseOfAnIndicatorNote, simpleMovingAverageNote } from '../../../notes';
 import { IdentityFilter } from './identity-filter';
 
 const sl = 4096;
@@ -13,8 +13,8 @@ const sl = 4096;
   styleUrls: ['./frequency-response.component.scss']
 })
 export class FrequencyResponseComponent {
-  protected fr = frequencyResponseOfAnIndicator;
-  protected sma = simpleMovingAverage;
+  protected frNote = frequencyResponseOfAnIndicatorNote;
+  protected smaNote = simpleMovingAverageNote;
 
   protected sma2 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 2}), 4);
   protected sma3 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 3}), 6);

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { Trade } from 'projects/mb/src/lib/data/entities/trade';
-import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
-import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.type';
+import { Trade } from 'mb';
+import { TimeGranularity } from 'mb';
+import { TemporalEntity } from 'mb';
 
 import { Series } from '../../series.interface';
 import { SeriesLoad } from '../../abstractions/series-load';

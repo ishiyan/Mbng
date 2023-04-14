@@ -6,9 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 
-import { SparklineModule } from 'projects/mb/src/lib/charts/sparkline/sparkline.module';
-import { MultilineModule } from 'projects/mb/src/lib/charts/multiline/multiline.module';
-
+import { SparklineModule } from 'mb';
+import { MultilineModule } from 'mb';
 
 import { SeriesCardComponent } from './series-card.component';
 

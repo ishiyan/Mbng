@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
-// import { barSeriesTalib1d } from './bar-series-data/bar-series-talib-1d';
-import { barSeriesRcoXpar1dSmall } from './bar-series-data/bar-series-rco-xpar-1d-small';
-import { barSeriesMbwsXpar1dSmall } from './bar-series-data/bar-series-mbws-xpar-1d-small';
+import { barSeriesRcoXpar1dSmall }
+  from './bar-series-data/bar-series-rco-xpar-1d-small';
+import { barSeriesMbwsXpar1dSmall }
+  from './bar-series-data/bar-series-mbws-xpar-1d-small';
 import { barSeriesOrXpar1d } from './bar-series-data/bar-series-or-xpar-1d';
 import { barSeriesCdiXpar1d } from './bar-series-data/bar-series-cdi-xpar-1d';
 import { barSeriesRdsaXams1d } from './bar-series-data/bar-series-rdsa-xams-1d';

@@ -1,4 +1,5 @@
-import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
+import { Scalar } from 'mb';
+
 import { Series } from '../series.interface';
 
 /** Contains a series of scalars. */

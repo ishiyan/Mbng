@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-// eslint-disable-next-line max-len
-import { TriangularMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.interface';
-import { LineStyle } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/line-style';
+import { LineStyle } from 'mb';
+import { TriangularMovingAverageParams } from 'mb';
+
 import { Trima } from './trima.interface';
 
 @Component({

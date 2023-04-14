@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-// eslint-disable-next-line max-len
-import { SimpleMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
-import { LineStyle } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/line-style';
+import { SimpleMovingAverageParams } from 'mb';
+import { LineStyle } from 'mb';
+
 import { Sma } from './sma.interface';
 
 @Component({

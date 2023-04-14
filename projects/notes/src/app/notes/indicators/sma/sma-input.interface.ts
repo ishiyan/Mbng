@@ -1,4 +1,4 @@
-import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
+import { BarComponent } from 'mb';
 
 export interface SmaInput {
   length: number[];

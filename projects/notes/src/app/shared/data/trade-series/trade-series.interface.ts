@@ -1,4 +1,5 @@
-import { Trade } from 'projects/mb/src/lib/data/entities/trade';
+import { Trade } from 'mb';
+
 import { Series } from '../series.interface';
 
 /** Contains a series of trades. */

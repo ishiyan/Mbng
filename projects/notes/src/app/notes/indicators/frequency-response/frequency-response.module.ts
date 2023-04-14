@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
-import { SvgViewerModule } from 'projects/mb/src/lib/svg-viewer/svg-viewer.module';
-import { FrequencyResponseChartModule } from 'projects/mb/src/lib/charts/frequency-response-chart/frequency-response-chart.module';
+import { KatexModule } from 'mb';
+import { SvgViewerModule } from 'mb';
+import { FrequencyResponseChartModule } from 'mb';
 
-import { ScrollerModule } from '../../../shared/scroller/scroller.module';
 import { FrequencyResponseComponent } from './frequency-response.component';
 import { FrequencyResponseRoutingModule } from './frequency-response-routing.module';
 
@@ -17,7 +16,6 @@ import { FrequencyResponseRoutingModule } from './frequency-response-routing.mod
     KatexModule,
     SvgViewerModule,
     FrequencyResponseChartModule,
-    ScrollerModule,
     FrequencyResponseRoutingModule
   ],
   declarations: [FrequencyResponseComponent]

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
+import { SparklineConfiguration } from 'mb';
 
 import { primaryColor } from '../../theme-colors';
 import { BarSeriesService } from '../bar-series/bar-series.service';

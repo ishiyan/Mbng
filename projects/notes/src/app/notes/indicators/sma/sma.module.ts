@@ -9,14 +9,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatGridListModule } from '@angular/material/grid-list';
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
-import { SvgViewerModule } from 'projects/mb/src/lib/svg-viewer/svg-viewer.module';
-import { LinearChartModule } from 'projects/mb/src/lib/charts/linear-chart/linear-chart.module';
-import { OhlcvChartModule } from 'projects/mb/src/lib/charts/ohlcv-chart/ohlcv-chart.module';
-import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
-import { SimpleMovingAverageModule } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average.module';
-import { OhlcvChartSelectorModule } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/ohlcv-chart-selector.module';
-import { FrequencyResponseChartModule } from 'projects/mb/src/lib/charts/frequency-response-chart/frequency-response-chart.module';
+import { KatexModule } from 'mb';
+import { SvgViewerModule } from 'mb';
+import { LinearChartModule } from 'mb';
+import { OhlcvChartModule } from 'mb';
+import { ColorsModule } from 'mb';
+import { SimpleMovingAverageModule } from 'mb';
+import { OhlcvChartSelectorModule } from 'mb';
+import { FrequencyResponseChartModule } from 'mb';
 
 import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
 import { SmaComponent } from './sma.component';

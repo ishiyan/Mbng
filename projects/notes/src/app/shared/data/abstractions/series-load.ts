@@ -1,6 +1,6 @@
 import { LineConfiguration } from 'mb';
-import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.type';
-import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
+import { TemporalEntity } from 'mb';
+import { TimeGranularity } from 'mb';
 
 import { primaryColor } from '../../theme-colors';
 import { Series } from '../series.interface';

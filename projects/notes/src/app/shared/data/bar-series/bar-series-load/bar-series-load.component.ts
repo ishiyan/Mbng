@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { Bar } from 'projects/mb/src/lib/data/entities/bar';
-import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
-import { TemporalEntity } from 'projects/mb/src/lib/data/entities/temporal-entity.type';
+import { Bar } from 'mb';
+import { TimeGranularity } from 'mb';
+import { TemporalEntity } from 'mb';
 
 import { determineTimeGranularity } from '../../determine-time-granularity';
 import { Series } from '../../series.interface';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
+import { SparklineConfiguration } from 'mb';
 import { LineConfiguration } from 'mb';
 
 import { Series } from '../series.interface';

@@ -1,4 +1,5 @@
-import { Quote } from 'projects/mb/src/lib/data/entities/quote';
+import { Quote } from 'mb';
+
 import { Series } from '../series.interface';
 
 /** Contains a series of quotes. */

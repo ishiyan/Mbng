@@ -6,11 +6,11 @@ import { Configuration } from 'mb';
 import { LineData } from 'mb';
 import { WeightedMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
+import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverage, weightedMovingAverage } from '../../../notes';
+import { simpleMovingAverageNote, weightedMovingAverageNote } from '../../../notes';
 import { WmaInput } from './wma-input.interface';
-import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'projects/mb/src/public-api';
 import { Wma } from './wma.interface';
 
 const isUnlocked = false;
@@ -107,8 +107,8 @@ export class WmaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
-  protected smaNote = simpleMovingAverage;
-  protected wmaNote = weightedMovingAverage;
+  protected smaNote = simpleMovingAverageNote;
+  protected wmaNote = weightedMovingAverageNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];

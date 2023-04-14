@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { BarComponent } from 'mb';
 
-import { LineStyle } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/line-style';
+import { BarComponent } from 'mb';
+import { LineStyle } from 'mb';
+
 import { TrimaInput } from './trima-input.interface';
 import { Trima } from './trima.interface';
 

@@ -6,11 +6,11 @@ import { Configuration } from 'mb';
 import { LineData } from 'mb';
 import { SimpleMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
+import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverage } from '../../../notes';
+import { simpleMovingAverageNote } from '../../../notes';
 import { SmaInput } from './sma-input.interface';
-import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'projects/mb/src/public-api';
 import { Sma } from './sma.interface';
 
 const isUnlocked = false;
@@ -107,7 +107,7 @@ export class SmaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
-  protected smaNote = simpleMovingAverage;
+  protected smaNote = simpleMovingAverageNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -192,5 +192,4 @@ export class SmaComponent implements AfterViewInit {
 
     this.configuration = cloned;
   }
-
 }

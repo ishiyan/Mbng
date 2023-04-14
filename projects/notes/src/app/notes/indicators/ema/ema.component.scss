@@ -1,9 +1,25 @@
+.ohlcv-chart-study {
+  margin: 0px;
+  padding: 0px;
+}
+
 .button {
   margin-right: 8px;
 }
 
+.slide-toggle {
+  float: right;
+  margin: 0;
+  margin-right: 8px;
+}
+
+.icon {
+  vertical-align: bottom;
+}
+
 /*
-:host ::ng-deep .mat-horizontal-content-container {
-  padding: 0px !important;
+:host mb-kd ::ng-deep .katex {
+  text-align: left;
+  margin-left: 2em;
 }
 */

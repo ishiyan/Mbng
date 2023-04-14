@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { MultilineModule } from 'projects/mb/src/lib/charts/multiline/multiline.module';
+import { MultilineModule } from 'mb';
 
 import { FilesizeModule } from '../../filesize/filesize.module';
 import { BarSeriesLoadComponent } from './bar-series-load.component';

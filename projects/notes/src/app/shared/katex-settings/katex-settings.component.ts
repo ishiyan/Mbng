@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
-import { KatexSettingsService } from 'projects/mb/src/lib/katex/katex-settings.service';
+import { KatexSettingsService } from 'mb';
 
 @Component({
   selector: 'app-katex-settings',

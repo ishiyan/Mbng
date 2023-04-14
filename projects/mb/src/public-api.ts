@@ -229,6 +229,7 @@ export * from './lib/charts/ohlcv-chart/selector/line-width.component';
 export * from './lib/charts/ohlcv-chart/selector/line-dash.component';
 export * from './lib/charts/ohlcv-chart/selector/line-interpolation.component';
 export * from './lib/charts/ohlcv-chart/selector/color.component';
+export * from './lib/charts/ohlcv-chart/selector/line-style';
 export * from './lib/charts/ohlcv-chart/selector/line-style.component';
 export * from './lib/charts/ohlcv-chart/selector/line-style-dialog.component';
 export * from './lib/charts/ohlcv-chart/selector/line-style-selector.component';

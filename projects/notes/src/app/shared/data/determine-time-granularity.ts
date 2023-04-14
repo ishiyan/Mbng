@@ -1,4 +1,4 @@
-import { TimeGranularity } from 'projects/mb/src/lib/trading/time/time-granularity.enum';
+import { TimeGranularity } from 'mb';
 
 const msecsInSec = 1000;
 const secsInMin = 60;

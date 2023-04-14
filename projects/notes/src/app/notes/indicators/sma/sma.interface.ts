@@ -1,6 +1,5 @@
-// eslint-disable-next-line max-len
-import { SimpleMovingAverageParams } from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
-import { LineStyle } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/line-style';
+import { LineStyle } from 'mb';
+import { SimpleMovingAverageParams } from 'mb';
 
 export interface Sma {
   params: SimpleMovingAverageParams;
