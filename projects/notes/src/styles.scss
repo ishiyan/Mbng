@@ -71,6 +71,14 @@ body {
 
 // External references. Uses hardcoded primary color.
 
+a:link {
+  color: $primary;
+}
+
+a:visited {
+  color: $primary;
+}
+
 a[href^="http"]:after {
   content: '';
   background: no-repeat left .25em center url('data:image/svg+xml,\
