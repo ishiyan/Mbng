@@ -21,53 +21,53 @@
     </app-sma-list>
   </mat-expansion-panel>
 
-  <figcaption>{{dataSelection.description}}.</figcaption>
+  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a></span></figcaption>
 </figure>
 
 <div style="width:100%">
-  A simple moving average (SMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
+  A simple moving average (SMA) of length <mb-ki>L \ge 2</mb-ki> is the arithmetic mean of the last
+  <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
+  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>:
+  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{L}\\sum_{m=k-L+1}^{k}x_{m}"}}</mb-kd>
 
   When a next sample <mb-ki>{{"x_{k+1}"}}</mb-ki> arrives, it will be added to the sum, and the
-  <mb-ki>{{"x_{k-l}"}}</mb-ki> sample will be dropped from the sum. Thus, the window of <mb-ki>l</mb-ki>
+  <mb-ki>{{"x_{k-L}"}}</mb-ki> sample will be dropped from the sum. Thus, the window of <mb-ki>L</mb-ki>
   samples "moves", which explains the "moving average" in its name.
   <p></p>
-  When <mb-ki>k \lt l</mb-ki>, the equation (1) above transforms into a cumulative moving average:
+  When <mb-ki>k \lt L</mb-ki>, the equation (1) above transforms into a cumulative moving average:
   <mb-kd>{{"\\tag*{}y_{k}=\\frac{1}{k}\\sum_{m=1}^{k}x_{m}"}}</mb-kd>
 
-  Since the effective length <mb-ki>k \lt l</mb-ki>, we consider SMA values undefined in this case.
+  Since the effective length <mb-ki>k \lt L</mb-ki>, we consider SMA values undefined in this case.
   A scientific way to say this is "an indicator is not primed".
   <p></p>
 
   The equation (1) can be rewritten in the recurrent form
-  (the <mb-ki>{{"x_{k}"}}</mb-ki> is taken out of the summation, the <mb-ki>{{"x_{k-l}"}}</mb-ki> is added and subtracted),
+  (the <mb-ki>{{"x_{k}"}}</mb-ki> is taken out of the summation, the <mb-ki>{{"x_{k-L}"}}</mb-ki> is added and subtracted),
   which gives an efficient method of SMA calculation:
   <mb-kd>
-    {{"\\tag*{}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{i}-x_{k-l}\\right]"}}
+    {{"\\tag*{}y_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(2)}=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
+    {{"\\tag*{(2)}=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
   </mb-kd>
   <!--
   <mb-kd>
-    {{"\\tag*{(2a)}\\begin{aligned}y_{k}&&=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{m}-x_{k-l}\\right]\\ &&=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}\\end{aligned}"}}
+    {{"\\tag*{(2a)}\\begin{aligned}y_{k}&&=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]\\ &&=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}\\end{aligned}"}}
   </mb-kd>
   -->
   <!--
   <mb-kd>
-    {{"\\tag*{(2)}y_{k}=\\frac{1}{l}\\left[x_{k}+\\sum_{m=k-l}^{k-1}x_{m}-x_{k-l}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-l}}{l}"}}
+    {{"\\tag*{(2b)}y_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
   </mb-kd>
   -->
   <p></p>
 
   From the digital signal processing (DSP) point of view, SMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  finite impulse response (FIR) filter with all <mb-ki>{{"L"}}</mb-ki> weight coefficients equal:
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{L-1}w_{m}x_{k-m},\\ k\\ge L,\\ \\forall m\\ w_{m}=\\frac{1}{L}"}}
   </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+  The filter is finite because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
   <p></p>
 </div>
 
@@ -188,42 +188,42 @@
   is applied to the input. Since SMA has equal weight coefficients, the unit impulse response
   can be obtained from equation (3):
   <mb-kd>
-    {{"\\tag*{}h(k)=\\sum_{m=0}^{l-1}c_m\\delta[k-m]"}}
+    {{"\\tag*{}h(k)=\\sum_{m=0}^{L-1}w_m\\delta[k-m]"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}=\\frac{1}{l}\\sum_{m=0}^{l-1}\\delta[k-m]"}}
+    {{"\\tag*{}=\\frac{1}{l}\\sum_{m=0}^{L-1}\\delta[k-m]"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(5)}=\\begin{cases} 1/l, & 0 \\leq k \\lt l \\\\ 0, & \\text{otherwise} \\end{cases}"}}
+    {{"\\tag*{(5)}=\\begin{cases} 1/L, & 0 \\leq k \\lt L \\\\ 0, & \\text{otherwise} \\end{cases}"}}
   </mb-kd>
   Substituting (5) into equation (4) and reducing to the finite sum gives
   <mb-kd>
-    {{"\\tag*{}H(\\omega)=\\sum_{k=0}^{l-1}h(k)\\exp(-i k \\omega)"}}
+    {{"\\tag*{}H(\\omega)=\\sum_{k=0}^{L-1}h(k)\\exp(-i k \\omega)"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(6)}=\\frac{1}{l}\\sum_{k=0}^{l-1}\\exp(-i k \\omega)"}}
+    {{"\\tag*{(6)}=\\frac{1}{L}\\sum_{k=0}^{L-1}\\exp(-i k \\omega)"}}
   </mb-kd>
   To simplify (6), we can recall a sum of geometric series
   <mb-kd>
-    {{"\\tag*{}\\sum_{k=0}^{l-1}x^k = 1 + x + x^2 + \\ldots + x^{l-1}"}}
+    {{"\\tag*{}\\sum_{k=0}^{L-1}x^k = 1 + x + x^2 + \\ldots + x^{L-1}"}}
   </mb-kd>
   Multiplying both sides by <mb-ki>{{"1-x"}}</mb-ki> and simplifying
   <mb-kd>
-    {{"\\tag*{}(1-x)\\sum_{k=0}^{l-1}x^k = (1-x)(1 + x + x^2 + \\ldots + x^{l-1})"}}
+    {{"\\tag*{}(1-x)\\sum_{k=0}^{L-1}x^k = (1-x)(1 + x + x^2 + \\ldots + x^{L-1})"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}= 1 + x + x^2 + \\ldots + x^{l-1} - x - x^2 - \\ldots - x^{l-1} - x^l"}}
+    {{"\\tag*{}= 1 + x + x^2 + \\ldots + x^{L-1} - x - x^2 - \\ldots - x^{L-1} - x^L"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}= 1 - x^l"}}
+    {{"\\tag*{}= 1 - x^L"}}
   </mb-kd>
   gives a well-known identity for a sum of geometric series (Jeffrey and Dai, 2008, 1.2.2.2):
   <mb-kd>
-    {{"\\tag*{}\\sum_{k=0}^{l-1}x^k = \\begin{cases} (1-x^l)/(1-x), & x \\neq l \\\\ l, & x = 1 \\end{cases}"}}
+    {{"\\tag*{}\\sum_{k=0}^{L-1}x^k = \\begin{cases} (1-x^L)/(1-x), & x \\neq 1 \\\\ L, & x = 1 \\end{cases}"}}
   </mb-kd>
   Now we can write the frequency response function as
   <mb-kd>
-    {{"\\tag*{(7)}H(\\omega)=\\frac{1}{l}\\cdot\\frac{1 - \\exp(-i\\omega\\cdot l)}{1 - \\exp(-i \\omega)}"}}
+    {{"\\tag*{(7)}H(\\omega)=\\frac{1}{L}\\frac{1 - \\exp(-i\\omega L)}{1 - \\exp(-i \\omega)}"}}
   </mb-kd>
   where we have let <mb-ki>{{"x = \\exp(-i \\omega)"}}</mb-ki>.
   At <mb-ki>{{"\\omega = 0"}}</mb-ki> equation (7) is indeterminate,
@@ -233,27 +233,27 @@
   </mb-kd>
   to show that
   <mb-kd>
-    {{"\\tag*{}\\lim_{\\omega\\to 0}{H(\\omega)}=\\frac{1}{l}\\lim_{\\omega\\to 0}{\\frac{1 - \\exp(-i\\omega\\cdot l)}{1 - \\exp(-i \\omega)}}"}}
+    {{"\\tag*{}\\lim_{\\omega\\to 0}{H(\\omega)}=\\frac{1}{L}\\lim_{\\omega\\to 0}{\\frac{1 - \\exp(-i\\omega L)}{1 - \\exp(-i \\omega)}}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}\\overset{\\left[\\frac{0}{0}\\right]}{\\underset{\\mathrm{H}}{=}}\\ \\frac{1}{l}\\lim_{\\omega\\to 0}{\\frac{il\\exp(-i\\omega\\cdot l)}{i\\exp(-i \\omega)}}"}}
+    {{"\\tag*{}\\overset{\\left[\\frac{0}{0}\\right]}{\\underset{\\mathrm{H}}{=}}\\ \\frac{1}{L}\\lim_{\\omega\\to 0}{\\frac{iL\\exp(-i\\omega L)}{i\\exp(-i \\omega)}}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}=\\frac{1}{l}\\cdot\\frac{il}{i} = 1"}}
+    {{"\\tag*{}=\\frac{1}{L}\\frac{iL}{i} = 1"}}
   </mb-kd>
   The frequency response <mb-ki>{{"H(\\omega)"}}</mb-ki> is zero when
   <mb-kd>
-    {{"\\tag*{}\\exp(-i\\omega l)=\\cos(\\omega l) - i\\cdot\\sin{\\omega l} = 1"}}
+    {{"\\tag*{}\\exp(-i\\omega L)=\\cos(\\omega L) - i\\cdot\\sin{\\omega L} = 1"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}\\omega l=2\\pi m\\quad m=1,2,3,\\ldots"}}
+    {{"\\tag*{}\\omega L=2\\pi m\\quad m=1,2,3,\\ldots"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}\\omega=\\frac{2\\pi m}{l}"}}
+    {{"\\tag*{}\\omega=\\frac{2\\pi m}{L}"}}
   </mb-kd>
   Thus, <mb-ki>{{"H(\\omega)"}}</mb-ki> is zero at cycle periods
   <mb-kd>
-    {{"\\tag*{(8)}\\tau=\\frac{2\\pi}{\\omega}=\\frac{2\\pi l}{2\\pi m} = l/m,\\quad m=1,2,3,\\ldots"}}
+    {{"\\tag*{(8)}\\tau=\\frac{2\\pi}{\\omega}=\\frac{2\\pi L}{2\\pi m} = L/m,\\quad m=1,2,3,\\ldots"}}
   </mb-kd>
   Now let's recall the well nown formula for <mb-ki>{{"\\exp(i\\theta)-\\exp(-i\\theta)"}}</mb-ki>:
   <mb-kd>
@@ -270,39 +270,39 @@
   </mb-kd>
   Equipped with this, we can transform equation (7) into:
   <mb-kd>
-    {{"\\tag*{}H(\\omega)=\\frac{1}{l}\\frac{1 - \\exp(-i\\omega l)}{1 - \\exp(-i \\omega)}"}}
+    {{"\\tag*{}H(\\omega)=\\frac{1}{L}\\frac{1 - \\exp(-i\\omega L)}{1 - \\exp(-i \\omega)}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}=\\frac{1}{l}\\frac{\\exp(-i\\omega l/2)}{\\exp(-i\\omega/2)}\\frac{\\exp(i\\omega l/2) - \\exp(-i\\omega l/2)}{\\exp(i\\omega/2) - \\exp(-i\\omega/2)}"}}
+    {{"\\tag*{}=\\frac{1}{L}\\frac{\\exp(-i\\omega L/2)}{\\exp(-i\\omega/2)}\\frac{\\exp(i\\omega L/2) - \\exp(-i\\omega L/2)}{\\exp(i\\omega/2) - \\exp(-i\\omega/2)}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}=\\frac{1}{l}\\frac{\\exp(-i\\omega l/2)}{\\exp(-i\\omega/2)}\\frac{2i\\sin(\\omega l/2)}{2i\\sin(\\omega /2)}"}}
+    {{"\\tag*{}=\\frac{1}{l}\\frac{\\exp(-i\\omega L/2)}{\\exp(-i\\omega/2)}\\frac{2i\\sin(\\omega L/2)}{2i\\sin(\\omega /2)}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(9)}=\\frac{\\exp(-i\\omega\\frac{l-1}{2})}{l}\\frac{\\sin(\\omega l/2)}{\\sin(\\omega /2)}"}}
+    {{"\\tag*{(9)}=\\frac{\\exp(-i\\omega\\frac{L-1}{2})}{L}\\frac{\\sin(\\omega L/2)}{\\sin(\\omega /2)}"}}
   </mb-kd>
   The magnitude of the frequency response is the modulus of <mb-ki>{{"H(\\omega)"}}</mb-ki>:
   <mb-kd>
-    {{"\\tag*{}|H(\\omega)|=\\left|\\frac{\\exp(-i\\omega\\frac{l-1}{2})}{l}\\frac{\\sin(\\omega l/2)}{\\sin(\\omega /2)}\\right|"}}
+    {{"\\tag*{}|H(\\omega)|=\\left|\\frac{\\exp(-i\\omega\\frac{L-1}{2})}{L}\\frac{\\sin(\\omega L/2)}{\\sin(\\omega /2)}\\right|"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(10)}=\\frac{1}{l}\\frac{|\\sin(\\omega l/2)|}{|\\sin(\\omega /2)|}"}}
+    {{"\\tag*{(10)}=\\frac{1}{L}\\frac{|\\sin(\\omega L/2)|}{|\\sin(\\omega /2)|}"}}
   </mb-kd>
   Here <mb-ki>{{"\\omega"}}</mb-ki> is an angular frequency in radians per sample.
   In terms of cycle period (recall <mb-ki>{{"\\omega=2\\pi/\\tau"}}</mb-ki>) this will be:
   <mb-kd>
-    {{"\\tag*{(11)}|H(\\tau)|=\\frac{1}{l}\\frac{|\\sin(\\pi l/\\tau)|}{|\\sin(\\pi /\\tau)|}"}}
+    {{"\\tag*{(11)}|H(\\tau)|=\\frac{1}{L}\\frac{|\\sin(\\pi L/\\tau)|}{|\\sin(\\pi /\\tau)|}"}}
   </mb-kd>
   The phase (in radians) of the frequency response is the complex argument of the exponent in equation (9):
   <mb-kd>
-    {{"\\tag*{(12)}\\phi(\\omega)=\\arg(H(\\omega))=-\\frac{l-1}{2}\\omega"}}
+    {{"\\tag*{(12)}\\phi(\\omega)=\\arg(H(\\omega))=-\\frac{L-1}{2}\\omega"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(13)}\\phi(\\tau)=-\\pi\\frac{l-1}{\\tau}"}}
+    {{"\\tag*{(13)}\\phi(\\tau)=-\\pi\\frac{L-1}{\\tau}"}}
   </mb-kd>
   And, finally, the number of samples lagging behind the signal is independent of angular frequency <mb-ki>{{"\\omega"}}</mb-ki>:
   <mb-kd>
-    {{"\\tag*{(14)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}=-\\frac{l-1}{2}"}}
+    {{"\\tag*{(14)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}=-\\frac{L-1}{2}"}}
   </mb-kd>
 
 </div>
@@ -310,14 +310,14 @@
 <h2 class="counter-skip">References</h2>
 <div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC"></a>
+  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
 </div>
 <div><!-- @Book Mak2021 -->Mak, D. K. (2021).
   <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
   doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ"></a>
+  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
 </div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ"></a>
+  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
 </div>

@@ -10,6 +10,7 @@ import { Series } from '../../series.interface';
 export const barSeriesCdiXpar1d: Series = {
   mnemonic: 'cdi:xpar 1d',
   description: 'Christian Dior SE stock (€, CDI:XPAR, FR000013040)',
+  url: 'https://live.euronext.com/en/product/equities/FR000013040-XPAR',
   timeStart: new Date(2008, 2, 18),
   timeEnd: new Date(2023, 2, 10),
   timeGranularity: TimeGranularity.Day1,

@@ -5,6 +5,7 @@ import { Series } from '../../series.interface';
 export const barSeriesRcoXpar1dSmall: Series = {
   mnemonic: 'rco:xpar 1d',
   description: 'Rémy Cointreau stock (€, RCO:XPAR, FR0000130395)',
+  url: 'https://live.euronext.com/en/product/equities/FR0000130395-XPAR',
   timeStart: new Date(2021, 6, 12),
   timeEnd: new Date(2023, 1, 20),
   timeGranularity: TimeGranularity.Day1,

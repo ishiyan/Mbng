@@ -21,38 +21,107 @@
     </app-trima-list>
   </mat-expansion-panel>
 
-  <figcaption>{{dataSelection.description}}.</figcaption>
-</figure>
-
-<figure class="figleft">
-  (a)
-  <mb-svg-viewer src="assets/indicators/weights-trima-6.svg" [scaleToContainer]="true">    
-  </mb-svg-viewer>
-  (b)
-  <mb-svg-viewer src="assets/indicators/weights-trima-5.svg" [scaleToContainer]="true">    
-  </mb-svg-viewer>
-  (c)
-  <mb-svg-viewer src="assets/indicators/weights-sma-5.svg" [scaleToContainer]="true">    
-  </mb-svg-viewer>
-
-  <figcaption>Weight coefficients of the (a) SMA(5), (b) TRIMA(5) and (c) TRIMA(6).</figcaption>
+  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a></span></figcaption>
 </figure>
 
 <div style="width:100%">
-  A triangular moving average (TRIMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
+  <figure class="figleft">
+    (a)
+    <mb-svg-viewer src="assets/indicators/trima-weights-6.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+    (b)
+    <mb-svg-viewer src="assets/indicators/trima-weights-5.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+    (c)
+    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+  
+    <figcaption>Weight coefficients of the (a) TRIMA(6), (b) TRIMA(5) and (c) SMA(5).</figcaption>
+  </figure>
+
+  A triangular moving average (TRIMA) of length <mb-ki>L \ge 2</mb-ki> is a weighted mean of the last
+  <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
+  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>:
+  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{\\displaystyle \\sum_{m=1}^{L}w_{m}x_{k-L+m}}{\\displaystyle \\sum_{m=1}^{L}w_{m}}"}}</mb-kd>
+
+  The values of the weighting coefficients <mb-ki>w_m</mb-ki> form a triangle shape with the top angle
+  centered in the middle of the moving average window. In case of even value of <mb-ki>L</mb-ki>, there
+  are two samples located in the "middle" of the window and the top angle of the imaginary triangle is
+  located between them. Figure 2 shows TRIMA weighting coefficients for even and odd values of
+  <mb-ki>L</mb-ki>, comparing them with weighting coefficients of the SMA, which are all equal.
+  <p></p>
+  Knowing this difference, we can represent the values of the weighting coefficients <mb-ki>w_m</mb-ki>
+  for both even and odd values of <mb-ki>L</mb-ki> as:
+  <mb-kd>
+    {{"\\tag*{(2)}w_{m}=\\begin{cases}L=2l\\ \\text{(even):}\\\\m, & 1\\le m\\le l\\\\L+1-m, & l\\lt m\\le L\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\m, & 1\\le m\\le l+1\\\\L+1-m, & l+1\\lt m\\le L\\end{cases}"}}
+  </mb-kd>
+
+  It is easy to see that <mb-ki>w_m</mb-ki> values form two arithmetic progressions, one ascending and
+  one descending. This allows us to calculate the sum of weighting coefficients in denominator of equation (1).
+  <p></p>  
+  Let's consider an arithmetic progression:
+  <mb-kd>{{"\\tag*{}a_n=a_{n-1}+d,\\ a_1=const, d=const"}}</mb-kd>
+  Its sum when starting summation from the very first element:
+  <mb-kd>{{"\\tag*{}s_n=a_1+(a_1+d)+\\dots +(a_1+(n-1)d)"}}</mb-kd>
+  If we start summation from the very last element, the sum is:
+  <mb-kd>{{"\\tag*{}s_n=a_n+(a_n-d)+\\dots +(a_n-(n-1)d)"}}</mb-kd>
+  Summing up the two above equations gives:
+  <mb-kd>{{"\\tag*{}s_n=\\frac{n}{2}(a_1+a_n)"}}</mb-kd>
+
+  Let's apply this equation to sum up all weighting coefficients from equation (2).
+  For an even <mb-ki>L=2l</mb-ki>:
+  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l}m+\\sum_{m=l+1}^{2l}(2l+1-m)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l}m+l(L+1)-\\sum_{m=l+1}^{2l}m"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l)+l(2l+1)-\\frac{l}{2}(l+1+2l)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l+4l+2-3l-1)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l}{2}(2l+2)=l(l+1)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(3)}=\\frac{1}{4}L(L+2)"}}</mb-kd>
+  For an odd <mb-ki>L=2l+1</mb-ki>:
+  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l+1}m+\\sum_{m=l+2}^{2l+1}(L+1-m)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l+1}m+l(L+1)-\\sum_{m=l+2}^{2l+1}m"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(l+2)+l(2l+2)-\\frac{l}{2}(3l+3)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(l+2+4l-3l)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(2l+2)=(l+1)^2"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(4)}=\\frac{1}{4}(L+1)^2"}}</mb-kd>
+
+  Hence, combining equations (2), (3) and (4), we can write equation (1) only in terms of <mb-ki>L</mb-ki>:
+  <mb-kd>
+    {{"\\tag*{(5)}y_{k}=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle \\frac{4}{L(L+2)}\\left[\\sum_{m=1}^{l}mx_{k-L+m}+\\sum_{m=l+1}^{L}(L+1-m)x_{k-L+m}\\right]\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle \\frac{4}{(L+1)^2}\\left[\\sum_{m=1}^{l+1}mx_{k-L+m}+\\sum_{m=l+2}^{L}(L+1-m)x_{k-L+m}\\right]\\end{cases}"}}
+  </mb-kd>
+  The TRIMA is a finite filter (FIR) because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
   <p></p>
 
-  From the digital signal processing (DSP) point of view, TRIMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  The TRIMA is equivalent to doing an SMA of an SMA. As usial, the odd and even cases are slightly different.
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+    {{"\\tag*{(6)}trima(x,L)=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L}{2}),\\frac{L}{2}+1\\right)\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L+1}{2}),\\frac{L+1}{2}\\right)\\end{cases}"}}
   </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
-  <p></p>
-</div>
+
+  <figure class="figleft">
+    (a)
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-6.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+    (b)
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-5.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+  
+    <figcaption>SMA over SMA calculation grid for the even and odd length of the TRIMA: (a) TRIMA(6) and (b) TRIMA(5).</figcaption>
+  </figure>
+
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+ </div>
+
 
 <h2>Frequency response</h2>
 <div style="width:100%">
@@ -156,14 +225,14 @@
 <h2 class="counter-skip">References</h2>
 <div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC"></a>
+  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
 </div>
 <div><!-- @Book Mak2021 -->Mak, D. K. (2021).
   <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
   doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ"></a>
+  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
 </div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ"></a>
+  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
 </div>

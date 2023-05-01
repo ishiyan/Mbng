@@ -9,6 +9,9 @@ export interface Series {
   /** Text describing the series. */
   description: string;
 
+  /** URL describing the series. */
+  url?: string;
+
   /** The time of the first element of the series. */
   timeStart: Date;
 

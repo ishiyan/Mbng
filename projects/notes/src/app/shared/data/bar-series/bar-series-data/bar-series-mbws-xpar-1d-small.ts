@@ -10,6 +10,7 @@ import { Series } from '../../series.interface';
 export const barSeriesMbwsXpar1dSmall: Series = {
   mnemonic: 'mbws:xpar 1d',
   description: 'Marie Brizard Wine & Spirits stock (€, MBWS:XPAR, FR0000060873)',
+  url: 'https://live.euronext.com/en/product/equities/FR0000060873-XPAR',
   timeStart: new Date(2021, 3, 1),
   timeEnd: new Date(2022, 7, 1),
   timeGranularity: TimeGranularity.Day1,
