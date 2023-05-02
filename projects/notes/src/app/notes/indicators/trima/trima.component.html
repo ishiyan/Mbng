@@ -60,7 +60,7 @@
   one descending. This allows us to calculate the sum of weighting coefficients in denominator of equation (1).
   <p></p>  
   Let's consider an arithmetic progression:
-  <mb-kd>{{"\\tag*{}a_n=a_{n-1}+d,\\ a_1=const, d=const"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}a_n=a_{n-1}+d,\\ d=const"}}</mb-kd>
   Its sum when starting summation from the very first element:
   <mb-kd>{{"\\tag*{}s_n=a_1+(a_1+d)+\\dots +(a_1+(n-1)d)"}}</mb-kd>
   If we start summation from the very last element, the sum is:
@@ -70,7 +70,7 @@
 
   Let's apply this equation to sum up all weighting coefficients from equation (2).
   For an even <mb-ki>L=2l</mb-ki>:
-  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l}m+\\sum_{m=l+1}^{2l}(2l+1-m)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l}m+\\sum_{m=l+1}^{2l}(L+1-m)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l}m+l(L+1)-\\sum_{m=l+1}^{2l}m"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l)+l(2l+1)-\\frac{l}{2}(l+1+2l)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l+4l+2-3l-1)"}}</mb-kd>
@@ -88,7 +88,7 @@
   <mb-kd>
     {{"\\tag*{(5)}y_{k}=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle \\frac{4}{L(L+2)}\\left[\\sum_{m=1}^{l}mx_{k-L+m}+\\sum_{m=l+1}^{L}(L+1-m)x_{k-L+m}\\right]\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle \\frac{4}{(L+1)^2}\\left[\\sum_{m=1}^{l+1}mx_{k-L+m}+\\sum_{m=l+2}^{L}(L+1-m)x_{k-L+m}\\right]\\end{cases}"}}
   </mb-kd>
-  The TRIMA is a finite filter (FIR) because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
+  The TRIMA is a finite impulse response (FIR) filter because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
   <p></p>
 
   The TRIMA is equivalent to doing an SMA of an SMA. As usial, the odd and even cases are slightly different.
