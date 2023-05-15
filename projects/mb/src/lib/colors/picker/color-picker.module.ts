@@ -24,7 +24,6 @@ import { ColorPickerSliderDirective } from './color-picker-slider.directive';
   ],
   exports: [ ColorPickerDirective ],
   providers: [ ColorPickerService ],
-  declarations: [ ColorPickerComponent, ColorPickerDirective, ColorPickerSliderDirective ],
-  entryComponents: [ ColorPickerComponent ]
+  declarations: [ ColorPickerComponent, ColorPickerDirective, ColorPickerSliderDirective ]
 })
 export class ColorPickerModule {}
