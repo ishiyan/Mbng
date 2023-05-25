@@ -21,40 +21,44 @@ export const tripleExponentialMovingAverageMnemonic =
 
 /** __Triple Exponential Moving Average__ line indicator computes the triple exponential, or triple exponentially weighted, moving average (_TEMA_).
  *
- * Given a constant smoothing percentage factor 0 < α ≤ 1, _TEMA_ is calculated by applying a constant
- * smoothing factor α to a difference of today's sample and yesterday's _TEMA_ value:
+ * The TEMA was developed by Patrick G. Mulloy and is described in two articles:
  *
- *    EMAᵢ = αPᵢ + (1-α)EMAᵢ₋₁ = EMAᵢ₋₁ + α(Pᵢ - EMAᵢ₋₁), 0 < α ≤ 1.
+ * ❶ Technical Analysis of Stocks &amp; Commodities v.12:1 (11-19), Smoothing Data With Faster Moving Averages.
  *
- * Thus, the weighting for each older sample is given by the geometric progression 1, α, α², α³, …,
- * giving much more importance to recent observations while not discarding older ones: all data
- * previously used are always part of the new _TEMA_ value.
+ * ❷ Technical Analysis of Stocks &amp; Commodities v.12:2 (72-80), Smoothing Data With Less Lag.
  *
- * α may be expressed as a percentage, so a smoothing factor of 10% is equivalent to α = 0.1. A higher α
- * discounts older observations faster. Alternatively, α may be expressed in terms of ℓ time periods (length),
- * where:
+ * The calculation is as follows:
  *
- *    α = 2 / (ℓ + 1) and ℓ = 2/α - 1.
+ * EMA¹ᵢ = EMA(Pᵢ) = αPᵢ + (1-α)EMA¹ᵢ₋₁ = EMA¹ᵢ₋₁ + α(Pᵢ - EMA¹ᵢ₋₁), 0 < α ≤ 1
  *
- * The indicator is not primed during the first ℓ-1 updates.
+ * EMA²ᵢ = EMA(EMA¹ᵢ) = αEMA¹ᵢ + (1-α)EMA²ᵢ₋₁ = EMA²ᵢ₋₁ + α(EMA¹ᵢ - EMA²ᵢ₋₁), 0 < α ≤ 1
  *
- * The 12- and 26-day EMAs are the most popular short-term averages, and they are used to create indicators
- * like MACD and PPO. In general, the 50- and 200-day EMAs are used as signals of long-term trends.
+ * EMA³ᵢ = EMA(EMA²ᵢ) = αEMA²ᵢ + (1-α)EMA³ᵢ₋₁ = EMA³ᵢ₋₁ + α(EMA²ᵢ - EMA³ᵢ₋₁), 0 < α ≤ 1
+ *
+ * TEMAᵢ = 3(EMA¹ᵢ - EMA²ᵢ) + EMA³ᵢ
  *
  * The very first EMA value (the seed for subsequent values) is calculated differently.
- * This implementation, when using a length as an input parameter, allows for two algorithms for this seed.
+ * This implementation allows for two algorithms for this seed.
  *
  * ❶ Use a simple average of the first 'period'. This is the most widely documented approach.
  *
  * ❷ Use first sample value as a seed. This is used in Metastock.
  */
 export class TripleExponentialMovingAverage extends LineIndicator {
-  private length = 0;
-  private sum = 0;
-  private count = 0;
-  private value = 0;
-  private smoothingFactor: number;
-  private firstIsAverage = false;
+  private readonly smoothingFactor: number;
+  private readonly firstIsAverage: boolean;
+  private readonly length: number;
+  private readonly length2: number;
+  private readonly length3: number;
+  private sum1 = 0;
+  private sum2 = 0;
+  private sum3 = 0;
+  private count1 = 0;
+  private count2 = 0;
+  private count3 = 0;
+  private value1 = 0;
+  private value2 = 0;
+  private value3 = 0;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -80,8 +84,12 @@ export class TripleExponentialMovingAverage extends LineIndicator {
       }
 
       this.smoothingFactor = p.smoothingFactor;
+      this.length = Math.round(2 / this.smoothingFactor) - 1;
+      this.firstIsAverage = false;
     }
 
+    this.length2 = this.length * 2;
+    this.length3 = this.length2 + this.length - 2;
     this.mnemonic = tripleExponentialMovingAverageMnemonic(params);
     this.primed = false;
   }
@@ -93,31 +101,65 @@ export class TripleExponentialMovingAverage extends LineIndicator {
     }
 
     if (this.primed) {
-      this.value += (sample - this.value) * this.smoothingFactor;
+      this.value1 += (sample - this.value1) * this.smoothingFactor;
+      this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+      this.value3 += (this.value2 - this.value3) * this.smoothingFactor;
+      return  3 * (this.value1 - this.value2) + this.value3;
     } else { // Not primed.
-      this.count++;
       if (this.firstIsAverage) {
-        this.sum += sample;
-        if (this.count < this.length) {
-          return Number.NaN;
-        }
-
-        this.value = this.sum / this.length;
-      } else {
-        if (this.count === 1) {
-          this.value = sample;
+        if (this.length > this.count1) {
+          this.sum1 += sample;
+          if (this.length === ++this.count1) {
+            this.value1 = this.sum1 / this.length;
+            this.sum2 += this.value1;
+            ++this.count2;
+          }
+        } else if (this.length > this.count2) {
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          this.sum2 += this.value1;
+          if (this.length === ++this.count2) {
+            this.value2 = this.sum2 / this.length;
+            this.sum3 += this.value2;
+            ++this.count3;
+          }
         } else {
-          this.value += (sample - this.value) * this.smoothingFactor;
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+          this.sum3 += this.value2;
+          if (this.length === ++this.count3) {
+            this.primed = true;
+            this.value3 = this.sum3 / this.length;
+            return 3 * (this.value1 - this.value2) + this.value3;
+          }
         }
-
-        if (this.count < this.length) {
-          return Number.NaN;
+      } else { // firstIsAverage is false.
+        if (this.length > this.count1) {
+          if (1 === ++this.count1) {
+            this.value1 = sample;
+          } else {
+            this.value1 += (sample - this.value1) * this.smoothingFactor;
+            if (this.length === this.count1) {
+              this.value2 = this.value1;
+            }
+          }
+        } else if (this.length2 > this.count1) {
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+          if (this.length2 === ++this.count1) {
+            this.value3 = this.value2;
+          }
+        } else {
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+          this.value3 += (this.value2 - this.value3) * this.smoothingFactor;
+          if (this.length3 === ++this.count1) {
+              this.primed = true;
+              return 3 * (this.value1 - this.value2) + this.value3;
+          }
         }
-      }
-
-      this.primed = true;
+      }  
     }
 
-    return this.value;
+    return Number.NaN;
   }
 }

@@ -19,6 +19,9 @@ export const doubleExponentialMovingAverageMnemonic =
   }
 };
 
+// https://store.traders.com/-v12-c01-smoothi-pdf.html
+// https://store.traders.com/-v12-c02-smoothi-pdf.html
+
 /** __Double Exponential Moving Average__ (_DEMA_) line indicator computes the double exponential, or double exponentially weighted, moving average.
  *
  * _DEMA_ has a lag less than a straight exponential moving average.
@@ -45,12 +48,16 @@ export const doubleExponentialMovingAverageMnemonic =
  * ❷ Use first sample value as a seed. This is used in Metastock.
 */
 export class DoubleExponentialMovingAverage extends LineIndicator {
-  private length = 0;
-  private sum = 0;
-  private count = 0;
-  private value = 0;
-  private smoothingFactor: number;
-  private firstIsAverage = false;
+  private readonly smoothingFactor: number;
+  private readonly firstIsAverage: boolean;
+  private readonly length: number;
+  private readonly length2: number;
+  private sum1 = 0;
+  private sum2 = 0;
+  private count1 = 0;
+  private count2 = 0;
+  private value1 = 0;
+  private value2 = 0;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -68,7 +75,6 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
       this.length = len;
       this.smoothingFactor = 2 / (len + 1);
       this.firstIsAverage = p.firstIsAverage;
-
     } else {
       const p = params as DoubleExponentialMovingAverageSmoothingFactorParams;
       if (p.smoothingFactor <= 0 || p.smoothingFactor >= 1) {
@@ -76,8 +82,11 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
       }
 
       this.smoothingFactor = p.smoothingFactor;
+      this.length = Math.round(2 / this.smoothingFactor) - 1;
+      this.firstIsAverage = false;
     }
 
+    this.length2 = this.length * 2;
     this.mnemonic = doubleExponentialMovingAverageMnemonic(params);
     this.primed = false;
   }
@@ -89,31 +98,48 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
     }
 
     if (this.primed) {
-      this.value += (sample - this.value) * this.smoothingFactor;
+      this.value1 += (sample - this.value1) * this.smoothingFactor;
+      this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+      return  2 * this.value1 - this.value2;
     } else { // Not primed.
-      this.count++;
       if (this.firstIsAverage) {
-        this.sum += sample;
-        if (this.count < this.length) {
-          return Number.NaN;
-        }
-
-        this.value = this.sum / this.length;
-      } else {
-        if (this.count === 1) {
-          this.value = sample;
+        if (this.length > this.count1) {
+          this.sum1 += sample;
+          if (this.length === ++this.count1) {
+            this.value1 = this.sum1 / this.length;
+            this.sum2 += this.value1;
+          }
         } else {
-          this.value += (sample - this.value) * this.smoothingFactor;
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          this.sum2 += this.value1;
+          if (this.length === ++this.count2) {
+            this.primed = true;
+            this.value2 = this.sum2 / this.length;
+            return 2 * this.value1 - this.value2;
+          }
         }
-
-        if (this.count < this.length) {
-          return Number.NaN;
+      } else { // firstIsAverage is false.
+        if (this.length > this.count1) {
+          if (1 === ++this.count1) {
+            this.value1 = sample;
+          } else {
+            this.value1 += (sample - this.value1) * this.smoothingFactor;
+          }
+        } else {
+          this.value1 += (sample - this.value1) * this.smoothingFactor;
+          if (this.length === this.count1++) {
+            this.value2 = this.value1;
+          } else {
+            this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
+            if (this.length2 == this.count1) {
+              this.primed = true;
+              return 2 * this.value1 - this.value2;
+            }            
+          }
         }
-      }
-
-      this.primed = true;
+      }  
     }
 
-    return this.value;
+    return Number.NaN;
   }
 }

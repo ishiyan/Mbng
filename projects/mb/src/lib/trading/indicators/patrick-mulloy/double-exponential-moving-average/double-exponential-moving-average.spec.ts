@@ -3,7 +3,7 @@ import { } from 'jasmine';
 import { DoubleExponentialMovingAverage } from './double-exponential-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
-// ng test mb  --code-coverage --include='**/indicators/*.spec.ts'
+// ng test mb  --code-coverage --include='**/indicators/patrick-mulloy/double-exponential-moving-average/*.spec.ts'
 
 /* eslint-disable max-len */
 // Input data is taken from the TA-Lib (http://ta-lib.org/) tests,
@@ -12,60 +12,32 @@ import { DoubleExponentialMovingAverage } from './double-exponential-moving-aver
 // Output data is taken from TA-Lib (http://ta-lib.org/) tests,
 //    test_ma.c.
 //
-// /*******************************/
-// /*   EMA TEST - Classic        */
-// /*******************************/
-// /* No output value. */
-// { 0, TA_ANY_MA_TEST, 0, 1, 1,  14, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 0, 0, 0, 0},
-// #ifndef TA_FUNC_NO_RANGE_CHECK
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  0, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_BAD_PARAM, 0, 0, 0, 0 },
-// #endif
-// /* Misc tests: period 2, 10 */
-// { 1, TA_ANY_MA_TEST, 0, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,   0,  93.15, 1, 251 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,   1,  93.96, 1, 251 },
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 250, 108.21, 1, 251 }, /* Last Value */
+//   /*******************************/
+//   /*  DEMA TEST - Metastock      */
+//   /*******************************/
 //
-// { 1, TA_ANY_MA_TEST, 0, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,    0,  93.22,  9, 243 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,    1,  93.75,  9, 243 },
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,   20,  86.46,  9, 243 },
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,  242, 108.97,  9, 243 }, /* Last Value */
-// /*******************************/
-// /*   EMA TEST - Metastock      */
-// /*******************************/
-// /* No output value. */
-// { 0, TA_ANY_MA_TEST, 0, 1, 1,  14, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 0, 0, 0, 0},
-// #ifndef TA_FUNC_NO_RANGE_CHECK
-// { 0, TA_ANY_MA_TEST, 0, 0, 251,  0, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_BAD_PARAM, 0, 0, 0, 0 },
-// #endif
-// /* Test with 1 unstable price bar. Test for period 2, 10 */
-// { 1, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  94.15, 1+1, 251-1 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  94.78, 1+1, 251-1 },
-// { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 250-1, 108.21, 1+1, 251-1 }, /* Last Value */
+//   /* No output value. */
+//   { 0, TA_ANY_MA_TEST, 0, 1, 1,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 0, 0, 0, 0},
+//#ifndef TA_FUNC_NO_RANGE_CHECK
+//   { 0, TA_ANY_MA_TEST, 0, 0, 251,  0, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_BAD_PARAM, 0, 0, 0, 0 },
+//#endif
 //
-// { 1, TA_ANY_MA_TEST, 1, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    0,  93.24,  9+1, 243-1 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 1, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    1,  93.97,  9+1, 243-1 },
-// { 0, TA_ANY_MA_TEST, 1, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   20,  86.23,  9+1, 243-1 },
-// { 0, TA_ANY_MA_TEST, 1, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 242-1, 108.97,  9+1, 243-1 }, /* Last Value */
+//   /* Test with period 14 */
+//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  83.785, 26, 252-26 }, /* First Value */
+//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  84.768, 26, 252-26 },
+//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-27, 109.467, 26, 252-26 }, /* Last Value */
 //
-// /* Test with 2 unstable price bar. Test for period 2, 10 */
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  94.78, 1+2, 251-2 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  94.11, 1+2, 251-2 },
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  2, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 250-2, 108.21, 1+2, 251-2 }, /* Last Value */
+//   /* Test with 1 unstable price bar. Test for period 2, 14 */
+//   { 1, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  93.960, 4, 252-4 }, /* First Value */
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  94.522, 4, 252-4 },
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-5, 107.94, 4, 252-4 }, /* Last Value */
 //
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    0,  93.97,  9+2, 243-2 }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    1,  94.79,  9+2, 243-2 },
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   20,  86.39,  9+2, 243-2 },
-// { 0, TA_ANY_MA_TEST, 2, 0, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,  242-2, 108.97,  9+2, 243-2 }, /* Last Value */
-//
-// /* Last 3 value with 1 unstable, period 10 */
-// { 0, TA_ANY_MA_TEST, 1, 249, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1, 109.22, 249, 3 },
-// { 0, TA_ANY_MA_TEST, 1, 249, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   2, 108.97, 249, 3 },
-//
-// /* Last 3 value with 2 unstable, period 10 */
-// { 0, TA_ANY_MA_TEST, 2, 249, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   2, 108.97, 249, 3 },
-//
-// /* Last 3 value with 3 unstable, period 10 */
-// { 0, TA_ANY_MA_TEST, 3, 249, 251,  10, TA_MAType_EMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   2, 108.97, 249, 3 }
+//   { 1, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    0,  84.91,  (13*2)+2, 252-((13*2)+2) }, /* First Value */
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    1,  84.97,  (13*2)+2, 252-((13*2)+2) },
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    2,  84.80,  (13*2)+2, 252-((13*2)+2) },
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    3,  85.14,  (13*2)+2, 252-((13*2)+2) },
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   20,  89.83,  (13*2)+2, 252-((13*2)+2) },
+//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-((13*2)+2+1), 109.4676, (13*2)+2, 252-((13*2)+2) }, /* Last Value */
 
 const input = [
   91.500000,94.815000,94.375000,95.095000,93.780000,94.625000,92.530000,92.750000,90.315000,92.470000,96.125000,
@@ -123,50 +95,38 @@ describe('DoubleExponentialMovingAverage', () => {
     const len = 2;
     const dema = new DoubleExponentialMovingAverage({length: len, firstIsAverage: true});
 
-    for (let i = 0; i < len - 1; i++) {
+    for (let i = 0; i < 2*len - 1; i++) {
       expect(dema.update(input[i])).toBeNaN();
       expect(dema.isPrimed()).toBe(false);
     }
 
-    for (let i = len - 1; i < input.length; i++) {
+    for (let i = 2*len - 1; i < input.length; i++) {
       const act = dema.update(input[i]);
       expect(dema.isPrimed()).toBe(true);
 
-      if (i === 1) {
-        expect(act).toBeCloseTo(93.15, epsilon);
-      } else if (i === 2) {
-        expect(act).toBeCloseTo(93.96, epsilon);
-      } else if (i === 3) {
-        expect(act).toBeCloseTo(94.71, epsilon);
-      } else if (i === 251) {
-        expect(act).toBeCloseTo(108.21, epsilon);
+      if (i === 251) {
+        expect(act).toBeCloseTo(107.94, epsilon);
       }
     }
 
     expect(dema.update(Number.NaN)).toBeNaN();
   });
 
-  it('should calculate expected output and prime state for length 10, first is SMA', () => {
-    const len = 10;
+  it('should calculate expected output and prime state for length 14, first is SMA', () => {
+    const len = 14;
     const dema = new DoubleExponentialMovingAverage({length: len, firstIsAverage: true});
 
-    for (let i = 0; i < len - 1; i++) {
+    for (let i = 0; i < 2*len - 1; i++) {
       expect(dema.update(input[i])).toBeNaN();
       expect(dema.isPrimed()).toBe(false);
     }
 
-    for (let i = len - 1; i < input.length; i++) {
+    for (let i = 2*len - 1; i < input.length; i++) {
       const act = dema.update(input[i]);
       expect(dema.isPrimed()).toBe(true);
 
-      if (i === 9) {
-        expect(act).toBeCloseTo(93.22, epsilon);
-      } else if (i === 10) {
-        expect(act).toBeCloseTo(93.75, epsilon);
-      } else if (i === 29) {
-        expect(act).toBeCloseTo(86.46, epsilon);
-      } else if (i === 251) {
-        expect(act).toBeCloseTo(108.97, epsilon);
+      if (i === 251) {
+        expect(act).toBeCloseTo(109.4676, epsilon);
       }
     }
 
@@ -177,52 +137,38 @@ describe('DoubleExponentialMovingAverage', () => {
     const len = 2;
     const dema = new DoubleExponentialMovingAverage({length: len, firstIsAverage: false});
 
-    for (let i = 0; i < len - 1; i++) {
+    for (let i = 0; i < 2*len - 1; i++) {
       expect(dema.update(input[i])).toBeNaN();
       expect(dema.isPrimed()).toBe(false);
     }
 
-    for (let i = len - 1; i < input.length; i++) {
+    for (let i = 2*len - 1; i < input.length; i++) {
       const act = dema.update(input[i]);
       expect(dema.isPrimed()).toBe(true);
 
-      if (i === 1) {
-        expect(act).toBeCloseTo(93.71, epsilon);
-      } else if (i === 2) {
-        expect(act).toBeCloseTo(94.15, epsilon);
-      } else if (i === 3) {
-        expect(act).toBeCloseTo(94.78, epsilon);
-      } else if (i === 251) {
-        expect(act).toBeCloseTo(108.21, epsilon);
+      if (i === 251) {
+        expect(act).toBeCloseTo(107.94, epsilon);
       }
     }
 
     expect(dema.update(Number.NaN)).toBeNaN();
   });
 
-  it('should calculate expected output and prime state for length 10, first is NOT SMA', () => {
-    const len = 10;
+  it('should calculate expected output and prime state for length 14, first is NOT SMA', () => {
+    const len = 14;
     const dema = new DoubleExponentialMovingAverage({length: len, firstIsAverage: false});
 
-    for (let i = 0; i < len - 1; i++) {
+    for (let i = 0; i < 2*len - 1; i++) {
       expect(dema.update(input[i])).toBeNaN();
       expect(dema.isPrimed()).toBe(false);
     }
 
-    for (let i = len - 1; i < input.length; i++) {
+    for (let i = 2*len - 1; i < input.length; i++) {
       const act = dema.update(input[i]);
       expect(dema.isPrimed()).toBe(true);
 
-      if (i === 9) {
-        expect(act).toBeCloseTo(92.60, epsilon);
-      } else if (i === 10) {
-        expect(act).toBeCloseTo(93.24, epsilon);
-      } else if (i === 11) {
-        expect(act).toBeCloseTo(93.97, epsilon);
-      } else if (i === 30) {
-        expect(act).toBeCloseTo(86.23, epsilon);
-      } else if (i === 251) {
-        expect(act).toBeCloseTo(108.97, epsilon);
+      if (i === 251) {
+        expect(act).toBeCloseTo(109.4676, epsilon);
       }
     }
 
