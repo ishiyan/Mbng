@@ -42,6 +42,20 @@ error, increase the memory using
 export NODE_OPTIONS="--max-old-space-size=8192"
 ```
 
+## ESLint problems -- .eslintrc.json
+
+```json
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/recommended--extra",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on"
+      ],
+```
+
 ## Updates
 
 1. [angular cli](https://github.com/angular/angular-cli/releases)
