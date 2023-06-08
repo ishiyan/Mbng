@@ -118,7 +118,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     return { width: totalWidth, chart: { left: chartLeft, width: chartWidth }, content: { left: contentLeft, width: contentWidth } };
   }
 
-  private static textBoundingClientRect(t: any, remove: boolean = false): any {
+  private static textBoundingClientRect(t: any, remove = false): any {
     const node = t.node();
     let rect: any;
     if (node && node != null) {
@@ -197,7 +197,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   }
 
   private static appendLegend(g: any, top: number, lineHeight: number, left: number, width: number,
-                              pane: Template.Pane, instrument: string = ''): number {
+                              pane: Template.Pane, instrument = ''): number {
     g = g.append('g').attr('class', 'legend');
     top += lineHeight / 2;
     left += whitespaceBetweenAxisAndLegend;

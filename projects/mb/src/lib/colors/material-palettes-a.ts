@@ -7,7 +7,7 @@
  *
  * For instance, *'27'* defines A200-A700 palettes.
  */
-export const materialPalettesA = (sequence: string = '7241'): string[][] => {
+export const materialPalettesA = (sequence = '7241'): string[][] => {
   const palettes: string[][] = [
     [],
     [],

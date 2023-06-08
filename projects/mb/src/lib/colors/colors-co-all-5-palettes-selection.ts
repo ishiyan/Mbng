@@ -7,7 +7,7 @@ import { colorsCoAll5Palettes } from './colors-co-all-5-palettes';
  *
  * The number of digits determines the number of colors, their order determines the order of colors.
  */
-export const colorsCoAll5PalettesSelection = (sequence: string = '54321'): string[][] => {
+export const colorsCoAll5PalettesSelection = (sequence = '54321'): string[][] => {
   const palettes: string[][] = [];
 
   if (sequence.length < 1) {

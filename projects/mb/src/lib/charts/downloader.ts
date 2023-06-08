@@ -41,7 +41,7 @@ export class Downloader {
     return child;
   }
 
-  public static serializeToSvg(svgNativeElement: any, textBefore: string = '', textAfter: string = ''): Blob {
+  public static serializeToSvg(svgNativeElement: any, textBefore = '', textAfter = ''): Blob {
     if (svgNativeElement === null) {
       return svgNativeElement;
     }

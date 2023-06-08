@@ -7,7 +7,7 @@
  *
  * For instance, *'270'* defines 200-700-50 palettes.
  */
-export const materialPalettes = (sequence: string = '9785634120'): string[][] => {
+export const materialPalettes = (sequence = '9785634120'): string[][] => {
   const palettes: string[][] = [
     [],
     [],

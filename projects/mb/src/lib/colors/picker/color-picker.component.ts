@@ -367,7 +367,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
     this.closeDialog();
   }
 
-  public openDialog(color: any, emit: boolean = true): void {
+  public openDialog(color: any, emit = true): void {
     this.service.setActive(this);
     this.initialColor = color;
     this.setColorFromString(color, emit);
@@ -397,7 +397,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
     this.cpPresetColors = cpPresetColors;
   }
 
-  public setColorFromString(value: string, emit: boolean = true, update: boolean = true): void {
+  public setColorFromString(value: string, emit = true, update = true): void {
     let localHsva: Hsva | null = stringToHsva(value, false);
     if (!localHsva && !this.hsva) {
       localHsva = stringToHsva(this.fallbackColor, false);
@@ -521,7 +521,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateColorPicker(emit: boolean = true, update: boolean = true, cmykInput: boolean = false): void {
+  private updateColorPicker(emit = true, update = true, cmykInput = false): void {
     if (this.sliderDimMax) {
       const lastOutput = this.outputColor;
       const hslaTmp: Hsla = hsva2hsla(this.hsva);

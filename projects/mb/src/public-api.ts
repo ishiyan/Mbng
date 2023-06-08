@@ -208,6 +208,24 @@ export * from './lib/trading/indicators/statistics/standard-deviation/standard-d
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params-dialog.component';
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation.module';
 
+export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average';
+export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params.component';
+export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
+
+export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average';
+export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.component';
+export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
+
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.component';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
+
 export * from './lib/trading/trading.module';
 
 // export * from './lib/charts/d3ts/index.js';

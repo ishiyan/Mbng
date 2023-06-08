@@ -189,7 +189,7 @@ export const denormalizeRGBA = (rgba: Rgba): Rgba => new Rgba(
   Math.round(rgba.b * 255),
   rgba.a);
 
-export const stringToHsva = (colorString: string = '', allowHex8: boolean = false): Hsva | null => {
+export const stringToHsva = (colorString = '', allowHex8 = false): Hsva | null => {
   colorString = (colorString || '').toLowerCase();
   const stringParsers = [
     {

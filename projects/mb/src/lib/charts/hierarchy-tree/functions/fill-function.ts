@@ -29,9 +29,9 @@ export const gradientValueFill = (
   maxValue: number,
   colorFirst: string,
   colorLast: string,
-  invert: boolean = false,
-  brighter: boolean = false,
-  darker: boolean = false) => {
+  invert = false,
+  brighter = false,
+  darker = false) => {
   const func = (t: any) => d3.interpolateHslLong(colorFirst, colorLast)(t);
   return interpolationValueFill(d, minValue, maxValue, func, invert, brighter, darker);
 };
@@ -41,9 +41,9 @@ export const interpolationValueFill = (
   minValue: number,
   maxValue: number,
   func: any,
-  invert: boolean = false,
-  brighter: boolean = false,
-  darker: boolean = false) => {
+  invert = false,
+  brighter = false,
+  darker = false) => {
   const delta = maxValue === minValue ? 1 : (maxValue - minValue);
   const v = d.value ? d.value : (d.data.value ? d.data.value : 0);
   const t = (v - minValue) / delta;
@@ -108,10 +108,10 @@ export const gradientFill = (
   d: d3.HierarchyNode<HierarchyTreeNode>,
   colorFirst: string,
   colorLast: string,
-  invert: boolean = false,
-  brighter: boolean = false,
-  darker: boolean = false,
-  lighterWithDepth: boolean = true) => {
+  invert = false,
+  brighter = false,
+  darker = false,
+  lighterWithDepth = true) => {
     const func = (t: any) => d3.interpolateHslLong(colorFirst, colorLast)(t);
     return interpolationFill(d, func, invert, brighter, darker, lighterWithDepth);
   };
@@ -119,10 +119,10 @@ export const gradientFill = (
 export const interpolationFill = (
   d: d3.HierarchyNode<HierarchyTreeNode>,
   func: any,
-  invert: boolean = false,
-  brighter: boolean = false,
-  darker: boolean = false,
-  lighterWithDepth: boolean = true) => {
+  invert = false,
+  brighter = false,
+  darker = false,
+  lighterWithDepth = true) => {
   let firstLevel = d;
   while (firstLevel.depth > 1 && firstLevel.parent != null) {
     firstLevel = firstLevel.parent;

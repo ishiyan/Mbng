@@ -10,8 +10,8 @@ import { HierarchyTreeNode } from '../hierarchy-tree';
  */
 export type HierarchyTreeTapFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) => void;
 
-
 /**
  * Provides a *'do nothing'* implementation of the **HierarchyTreeTapFunction** type.
  */
+// eslint-disable-next-line  @typescript-eslint/no-empty-function
 export const doNothingTap: HierarchyTreeTapFunction = () => {};
