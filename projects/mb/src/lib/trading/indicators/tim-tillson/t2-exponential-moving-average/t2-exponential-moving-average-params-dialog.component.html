@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <mb-t2-exponential-moving-average-params [initial]="params" (selectionChange)="changed($event);">
+  </mb-t2-exponential-moving-average-params>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="params" color="primary">
+    <mat-icon>done</mat-icon>
+  </button>
+</mat-dialog-actions>

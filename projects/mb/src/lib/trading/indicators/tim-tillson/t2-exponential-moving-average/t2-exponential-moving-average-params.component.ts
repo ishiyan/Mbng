@@ -3,28 +3,28 @@ import { Component, EventEmitter, Input, AfterContentInit, Output } from '@angul
 import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
-import { T3ExponentialMovingAverageLengthParams } from './t3-exponential-moving-average-params.interface';
-import { T3ExponentialMovingAverageSmoothingFactorParams } from './t3-exponential-moving-average-params.interface';
+import { T2ExponentialMovingAverageLengthParams } from './t2-exponential-moving-average-params.interface';
+import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponential-moving-average-params.interface';
 
 const firstIsAverageDefault = true;
-const guardLength = (object: any): object is T3ExponentialMovingAverageLengthParams => 'length' in object;
+const guardLength = (object: any): object is T2ExponentialMovingAverageLengthParams => 'length' in object;
 
 @Component({
-  selector: 'mb-t3-exponential-moving-average-params',
-  templateUrl: './t3-exponential-moving-average-params.component.html',
-  styleUrls: ['./t3-exponential-moving-average-params.component.scss']
+  selector: 'mb-t2-exponential-moving-average-params',
+  templateUrl: './t2-exponential-moving-average-params.component.html',
+  styleUrls: ['./t2-exponential-moving-average-params.component.scss']
 })
-export class T3ExponentialMovingAverageParamsComponent implements AfterContentInit {
+export class T2ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;
   private firstIsAverage = firstIsAverageDefault;
   private useAlphaInternal = false;
   private vFactorInternal = 0.7;
 
-  protected paramsLength: T3ExponentialMovingAverageLengthParams = {
+  protected paramsLength: T2ExponentialMovingAverageLengthParams = {
     length: 6, vFactor: 0.7, firstIsAverage: firstIsAverageDefault, barComponent: BarComponent.Close
   };
 
-  protected paramsAlpha: T3ExponentialMovingAverageSmoothingFactorParams = {
+  protected paramsAlpha: T2ExponentialMovingAverageSmoothingFactorParams = {
     smoothingFactor: 0.285, vFactor: 0.7, barComponent: BarComponent.Close
   };
 
@@ -130,17 +130,17 @@ export class T3ExponentialMovingAverageParamsComponent implements AfterContentIn
   protected quoteComponentVisible = this.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<T3ExponentialMovingAverageLengthParams | T3ExponentialMovingAverageSmoothingFactorParams> =
-    new EventEmitter<T3ExponentialMovingAverageLengthParams | T3ExponentialMovingAverageSmoothingFactorParams>();
+  @Output() readonly selectionChange: EventEmitter<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams> =
+    new EventEmitter<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams>();
 
   /** Specifies an initial value. */
-  @Input() set initial(value: T3ExponentialMovingAverageLengthParams | T3ExponentialMovingAverageSmoothingFactorParams) {
+  @Input() set initial(value: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams) {
     if (guardLength(value)) {
-      this.paramsLength = value as T3ExponentialMovingAverageLengthParams;
+      this.paramsLength = value as T2ExponentialMovingAverageLengthParams;
       this.firstIsAverage = this.paramsLength.firstIsAverage;
       this.useAlpha = false;
     } else {
-      this.paramsAlpha = value as T3ExponentialMovingAverageSmoothingFactorParams;
+      this.paramsAlpha = value as T2ExponentialMovingAverageSmoothingFactorParams;
       this.useAlpha = true;
       this.firstIsAverage = false;
     }

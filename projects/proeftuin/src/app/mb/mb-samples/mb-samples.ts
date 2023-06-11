@@ -178,6 +178,38 @@ export const treeNodes: MbSample[] = [
                     ]
                   }
                 ]
+              },
+              { name: 'Patrick Mulloy',
+                children: [
+                  { name: 'Double Exponential Moving Average',
+                    children: [
+                      { name: 'Params', header: 'Double Exponential Moving Average params', route: 'comp-tra-ind-patrick-mulloy-dema/s1' },
+                      { name: 'Selector', header: 'Double Exponential Moving Average selector', route: 'comp-tra-ind-patrick-mulloy-dema/s2' }
+                    ]
+                  },
+                  { name: 'Triple Exponential Moving Average',
+                    children: [
+                      { name: 'Params', header: 'Triple Exponential Moving Average params', route: 'comp-tra-ind-patrick-mulloy-tema/s1' },
+                      { name: 'Selector', header: 'Triple Exponential Moving Average selector', route: 'comp-tra-ind-patrick-mulloy-tema/s2' }
+                    ]
+                  }
+                ]
+              },
+              { name: 'Tim Tillson',
+                children: [
+                  { name: 'T2 Exponential Moving Average',
+                    children: [
+                      { name: 'Params', header: 'T2 Exponential Moving Average params', route: 'comp-tra-ind-tim-tillson-t2ema/s1' },
+                      { name: 'Selector', header: 'T2 Exponential Moving Average selector', route: 'comp-tra-ind-tim-tillson-t2ema/s2' }
+                    ]
+                  },
+                  { name: 'T3 Exponential Moving Average',
+                    children: [
+                      { name: 'Params', header: 'T3 Exponential Moving Average params', route: 'comp-tra-ind-tim-tillson-t3ema/s1' },
+                      { name: 'Selector', header: 'T3 Exponential Moving Average selector', route: 'comp-tra-ind-tim-tillson-t3ema/s2' }
+                    ]
+                  }
+                ]
               }
             ]
           }

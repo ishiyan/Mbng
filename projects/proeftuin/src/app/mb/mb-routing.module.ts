@@ -87,6 +87,26 @@ const routes: Routes = [
             .then(m => m.SampleStandardDeviationModule)
       },
       {
+        path: 'comp-tra-ind-patrick-mulloy-dema', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/patrick-mulloy/double-exponential-moving-average/sample-double-exponential-moving-average.module')
+            .then(m => m.SampleDoubleExponentialMovingAverageModule)
+      },
+      {
+        path: 'comp-tra-ind-patrick-mulloy-tema', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/patrick-mulloy/triple-exponential-moving-average/sample-triple-exponential-moving-average.module')
+            .then(m => m.SampleTripleExponentialMovingAverageModule)
+      },
+      {
+        path: 'comp-tra-ind-tim-tillson-t2ema', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/tim-tillson/t2-exponential-moving-average/sample-t2-exponential-moving-average.module')
+            .then(m => m.SampleT2ExponentialMovingAverageModule)
+      },
+      {
+        path: 'comp-tra-ind-tim-tillson-t3ema', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/tim-tillson/t3-exponential-moving-average/sample-t3-exponential-moving-average.module')
+            .then(m => m.SampleT3ExponentialMovingAverageModule)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module').then(m => m.SampleOhlcvChartSelectorModule)
       },

@@ -214,6 +214,12 @@ export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-averag
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
 
+export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average';
+export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.component';
+export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average.module';
+
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.component';

@@ -1,9 +1,9 @@
 import { } from 'jasmine';
 
-import { T3ExponentialMovingAverage } from './t3-exponential-moving-average';
+import { T2ExponentialMovingAverage } from './t2-exponential-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
-// ng test mb  --code-coverage --include='**/indicators/tim-tillson/t3-exponential-moving-average/*.spec.ts'
+// ng test mb  --code-coverage --include='**/indicators/tim-tillson/t2-exponential-moving-average/*.spec.ts'
 
 /* eslint-disable max-len */
 // Input data is taken from the TA-Lib (http://ta-lib.org/) tests,
@@ -13,12 +13,12 @@ import { T3ExponentialMovingAverage } from './t3-exponential-moving-average';
 //    test_ma.c.
 //
 // /************/
-// /*  T3 TEST */
+// /*  T2 TEST */
 // /************/
-// { 1, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T3, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,      0,  85.73, 24,  252-24  }, /* First Value */
-// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T3, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,      1,  84.37, 24,  252-24  },
-// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T3, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 252-26, 109.03, 24,  252-24  },
-// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T3, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 252-25, 108.88, 24,  252-24  }, /* Last Value */
+// { 1, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T2, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,      0,  85.73, 24,  252-24  }, /* First Value */
+// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T2, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS,      1,  84.37, 24,  252-24  },
+// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T2, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 252-26, 109.03, 24,  252-24  },
+// { 0, TA_ANY_MA_TEST, 0, 0, 251, 5, TA_MAType_T2, TA_COMPATIBILITY_DEFAULT, TA_SUCCESS, 252-25, 108.88, 24,  252-24  }, /* Last Value */
 
 const input = [
   91.500000,94.815000,94.375000,95.095000,93.780000,94.625000,92.530000,92.750000,90.315000,92.470000,96.125000,
@@ -48,7 +48,7 @@ const input = [
   109.810000,109.000000,108.750000,107.870000
 ];
 
-/** Taken from TA-Lib (http://ta-lib.org/) tests, test_T3.xls, T3, I5…I256, 252 entries.
+/** Taken from TA-Lib (http://ta-lib.org/) tests, reworked test_T3.xls, T3, I5…I256, 252 entries.
  * Length is 5, responce is 0.7.
  */
 const expected5sma = [
@@ -93,43 +93,43 @@ const expected5sma = [
   108.9382930540510, 109.0247660433720, 109.0321034127580, 108.8791500044930
 ];
 
-describe('T3ExponentialMovingAverage', () => {
+describe('T2ExponentialMovingAverage', () => {
   const epsilon = 10e-2;
 
   it('should return expected mnemonic', () => {
-    let t3ema = new T3ExponentialMovingAverage({length: 7, vFactor: 0.6781, firstIsAverage: true});
-    expect(t3ema.getMnemonic()).toBe('t3ema(7, 0.678, sma)');
-    t3ema = new T3ExponentialMovingAverage({length: 7, vFactor: 0.6789, firstIsAverage: false});
-    expect(t3ema.getMnemonic()).toBe('t3ema(7, 0.679)');
-    t3ema = new T3ExponentialMovingAverage({smoothingFactor: 0.12345, vFactor: 0.56789});
-    expect(t3ema.getMnemonic()).toBe('t3ema(0.123, 0.568)');
+    let t2ema = new T2ExponentialMovingAverage({length: 7, vFactor: 0.6781, firstIsAverage: true});
+    expect(t2ema.getMnemonic()).toBe('t2ema(7, 0.678, sma)');
+    t2ema = new T2ExponentialMovingAverage({length: 7, vFactor: 0.6789, firstIsAverage: false});
+    expect(t2ema.getMnemonic()).toBe('t2ema(7, 0.679)');
+    t2ema = new T2ExponentialMovingAverage({smoothingFactor: 0.12345, vFactor: 0.56789});
+    expect(t2ema.getMnemonic()).toBe('t2ema(0.123, 0.568)');
   });
 
   it('should throw if length is less than 2', () => {
-    expect(() => { new T3ExponentialMovingAverage({length: 1, vFactor: 0.7, firstIsAverage: true}); }).toThrow();
+    expect(() => { new T2ExponentialMovingAverage({length: 1, vFactor: 0.7, firstIsAverage: true}); }).toThrow();
   });
 
   it('should throw if smoothing factor is less or equal to 0', () => {
-    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: 0, vFactor: 0.7}); }).toThrow();
+    expect(() => { new T2ExponentialMovingAverage({smoothingFactor: 0, vFactor: 0.7}); }).toThrow();
   });
 
   it('should throw if smoothing factor is greater or equal to 1', () => {
-    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: 1, vFactor: 0.7}); }).toThrow();
+    expect(() => { new T2ExponentialMovingAverage({smoothingFactor: 1, vFactor: 0.7}); }).toThrow();
   });
 
   it('should calculate expected output and prime state for length 5, first is NOT SMA', () => {
     const len = 5;
     const lenPrimed = 6*(len - 1);
-    const t3ema = new T3ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: false});
+    const t2ema = new T2ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: false});
 
     for (let i = 0; i < lenPrimed; i++) {
-      expect(t3ema.update(input[i])).toBeNaN();
-      expect(t3ema.isPrimed()).toBe(false);
+      expect(t2ema.update(input[i])).toBeNaN();
+      expect(t2ema.isPrimed()).toBe(false);
     }
 
     for (let i = lenPrimed; i < input.length; i++) {
-      const act = t3ema.update(input[i]);
-      expect(t3ema.isPrimed()).toBe(true);
+      const act = t2ema.update(input[i]);
+      expect(t2ema.isPrimed()).toBe(true);
 
       if (i === 24) {
         expect(act).toBeCloseTo(85.73, epsilon);
@@ -142,22 +142,22 @@ describe('T3ExponentialMovingAverage', () => {
       }
     }
 
-    expect(t3ema.update(Number.NaN)).toBeNaN();
+    expect(t2ema.update(Number.NaN)).toBeNaN();
   });
 
   it('should calculate expected output and prime state for length 5, first is SMA', () => {
     const len = 5;
     const lenPrimed = 6*(len - 1);
-    const t3ema = new T3ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: true});
+    const t2ema = new T2ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: true});
 
     for (let i = 0; i < lenPrimed; i++) {
-      expect(t3ema.update(input[i])).toBeNaN();
-      expect(t3ema.isPrimed()).toBe(false);
+      expect(t2ema.update(input[i])).toBeNaN();
+      expect(t2ema.isPrimed()).toBe(false);
     }
 
     for (let i = lenPrimed; i < input.length; i++) {
-      const act = t3ema.update(input[i]);
-      expect(t3ema.isPrimed()).toBe(true);
+      const act = t2ema.update(input[i]);
+      expect(t2ema.isPrimed()).toBe(true);
 
       if (i === 250) {
         expect(act).toBeCloseTo(109.03, epsilon);
@@ -166,26 +166,26 @@ describe('T3ExponentialMovingAverage', () => {
       }
     }
 
-    expect(t3ema.update(Number.NaN)).toBeNaN();
+    expect(t2ema.update(Number.NaN)).toBeNaN();
   });
 
   it('should calculate expected output (Excel) and prime state for length 5, first is NOT SMA', () => {
     const eps = 1e-13;
     const len = 5;
     const lenPrimed = 6*(len - 1);
-    const t3ema = new T3ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: true});
+    const t2ema = new T2ExponentialMovingAverage({length: len, vFactor: 0.7, firstIsAverage: true});
 
     for (let i = 0; i < lenPrimed; i++) {
-      expect(t3ema.update(input[i])).toBeNaN();
-      expect(t3ema.isPrimed()).toBe(false);
+      expect(t2ema.update(input[i])).toBeNaN();
+      expect(t2ema.isPrimed()).toBe(false);
     }
 
     for (let i = lenPrimed; i < input.length; i++) {
-      const act = t3ema.update(input[i]);
-      expect(t3ema.isPrimed()).toBe(true);
+      const act = t2ema.update(input[i]);
+      expect(t2ema.isPrimed()).toBe(true);
       expect(act).toBeCloseTo(expected5sma[i], eps);
     }
 
-    expect(t3ema.update(Number.NaN)).toBeNaN();
+    expect(t2ema.update(Number.NaN)).toBeNaN();
   });
 });
