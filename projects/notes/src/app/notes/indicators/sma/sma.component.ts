@@ -122,7 +122,7 @@ export class SmaComponent implements AfterViewInit {
   protected sma6 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 6}), 12);
   protected sma7 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 7}), 14);
   protected sma10 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 10}), 20);
-  protected sma20 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 20}), 40);
+  protected sma20 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 20}), 40, 13);
 
   ngAfterViewInit() {
     this.initialized = true;
@@ -154,7 +154,7 @@ export class SmaComponent implements AfterViewInit {
     const frrs: FrequencyResponseResult[] = [];
     for (const el of arr) {
       const l = el.params.length;
-      const frr = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: l}), l*2);
+      const frr = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: l}), l*2, 43);
       frrs.push(frr);
     }
 

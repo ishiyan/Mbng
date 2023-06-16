@@ -87,10 +87,10 @@
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [xmode]="'frequency'" [maxPeriod]="maxPeriod" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
-    [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'frequency'"
+    [maxPeriod]="maxPeriod" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">

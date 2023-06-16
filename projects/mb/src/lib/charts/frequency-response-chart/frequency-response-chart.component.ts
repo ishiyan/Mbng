@@ -23,10 +23,11 @@ const yPowerPercents = 1;
 const yAmplitudeDecibels = 2;
 const yAmplitudePercents = 3;
 const yPhaseDegrees = 4;
-const yModeMax = 5;
-type yModeType = 0 | 1 | 2 | 3 | 4;
-const yModeLabels = ['Power, dB', 'Power, %', 'Amplitude, dB', 'Amplitude, %', 'Phase, deg °'];
-const yModeSuffices = [' dB', ' %', ' dB', ' %', ' °'];
+const yPhaseDegreesUnwrapped = 5;
+const yModeMax = 6;
+type yModeType = 0 | 1 | 2 | 3 | 4 | 5;
+const yModeLabels = ['Power, dB', 'Power, %', 'Amplitude, dB', 'Amplitude, %', 'Phase, deg °', 'Phase, deg °'];
+const yModeSuffices = [' dB', ' %', ' dB', ' %', ' °', ' °'];
 
 interface xComponentType {
   data: number[];
@@ -76,7 +77,6 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private clipId = 'frchart-clip-' +  this.random;
   private pointerEventsId = 'frchart-pointer-events-' + this.random;
   protected svgContainerId = 'frchart-svg-' + this.random;
-  // xxx protected widthContainerId = 'frchart-width-' + this.random;
 
   /** If chart settings panel is visible. */
   @Input() settingsPanelVisible = false;
@@ -97,11 +97,6 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     this.heightValue = value;
     this.render();
   }
-
-  // xxx /** The width of the chart as a fraction of the window width. */
-  // xxx @Input() widthFraction = 1;
-  // xxx /** The height of the chart as a fraction of the chart width. */
-  // xxx @Input() heightFraction = 0.6180340;
 
   /** The array of frequency responses to use. */
   @Input() set data(dat: FrequencyResponseResult[]) {
@@ -143,7 +138,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
         }
       }
 
-      const yData = [d.powerDecibel, d.powerPercent, d.amplitudeDecibel, d.amplitudePercent, d.phaseDegrees];
+      const yData = [d.powerDecibel, d.powerPercent, d.amplitudeDecibel, d.amplitudePercent, d.phaseDegrees, d.phaseDegreesUnwrapped];
 
       for (let i = yPowerDecibels; i < yModeMax; ++i) {
         const yd = yData[i];
@@ -197,7 +192,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   }
 
   /** The y mode. */
-  @Input() set ymode(value: 'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg') {
+  @Input() set ymode(value: 'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg' | 'phaseDegUnwrapped') {
     switch (value) {
       case 'powerDb':
         this.yModeValue = yPowerDecibels;
@@ -213,6 +208,9 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
         break;
       case 'phaseDeg':
         this.yModeValue = yPhaseDegrees;
+        break;
+      case 'phaseDegUnwrapped':
+        this.yModeValue = yPhaseDegreesUnwrapped;
         break;
     }
   }
@@ -240,6 +238,9 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   }
   protected get yModePhaseDegrees(): yModeType {
     return yPhaseDegrees;
+  }
+  protected get yModePhaseDegreesUnwrapped(): yModeType {
+    return yPhaseDegreesUnwrapped;
   }
 
   private subFigureLetter = '';
@@ -319,11 +320,8 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisOne = this;
-    const margin = { top: 20, bottom: 30, right: 10, left: 35 };
+    const margin = { top: 20, bottom: 30, right: 10, left: 40 };
 
-    // xxx const e = d3.select('#' + this.widthContainerId).node() as Element;
-    // xxx const w = this.widthFraction * e.getBoundingClientRect().width;
-    // xxx const h = this.heightFraction * (w - margin.left - margin.right) + margin.top + margin.bottom;
     const computed = computeDimensions(this.elementRef, this.widthValue, this.heightValue, defaultWidth, defaultHeight);
     const w = computed[0];
     const h = computed[1];
@@ -490,9 +488,6 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     const d = new Date();
     const filename =
       `frequency-response-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
-    // xxx const e = d3.select('#' + this.widthContainerId).node() as Element;
-    // xxx Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
-    // xxx textBeforeSvg, textAfterSvg), filename);
     Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.elementRef.nativeElement, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);
   }

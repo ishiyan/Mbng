@@ -2,7 +2,8 @@ import { Filter, FrequencyResponseResult, FrequencyResponseComponent } from './f
 
 export class FrequencyResponse {
 
-    public static calculate(signalLength: number, filter: Filter, warmup: number): FrequencyResponseResult {
+    public static calculate(signalLength: number, filter: Filter, warmup: number,
+        phaseDegreesUnwrappingLimit = 179): FrequencyResponseResult {
         if (!FrequencyResponse.isValidSignalLength(signalLength)) {
             throw new Error('signal length should be power of 2 and not less than 4');
         }
@@ -15,12 +16,14 @@ export class FrequencyResponse {
             powerDecibel: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),
             amplitudePercent: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),
             amplitudeDecibel: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),
-            phaseDegrees: FrequencyResponse.createFrequencyResponseComponent(spectrumLength)
+            phaseDegrees: FrequencyResponse.createFrequencyResponseComponent(spectrumLength),
+            phaseDegreesUnwrapped: FrequencyResponse.createFrequencyResponseComponent(spectrumLength)
         };
 
         const signal = FrequencyResponse.prepareFilteredSignal(signalLength, filter, warmup);
         FrequencyResponse.directRealFastFourierTransform(signal);
-        FrequencyResponse.parseSpectrum(spectrumLength, signal, fr.powerPercent, fr.amplitudePercent, fr.phaseDegrees);
+        FrequencyResponse.parseSpectrum(spectrumLength, signal, fr.powerPercent, fr.amplitudePercent,
+            fr.phaseDegrees, fr.phaseDegreesUnwrapped, phaseDegreesUnwrappingLimit);
         FrequencyResponse.toDecibels(spectrumLength, fr.powerPercent, fr.powerDecibel);
         FrequencyResponse.toPercents(spectrumLength, fr.powerPercent, fr.powerPercent);
         FrequencyResponse.toDecibels(spectrumLength, fr.amplitudePercent, fr.amplitudeDecibel);
@@ -70,7 +73,9 @@ export class FrequencyResponse {
     }
 
     protected static parseSpectrum(len: number, spectrum: number[],
-        power: FrequencyResponseComponent, amplitude: FrequencyResponseComponent, phase: FrequencyResponseComponent) {
+        power: FrequencyResponseComponent, amplitude: FrequencyResponseComponent,
+        phase: FrequencyResponseComponent, phaseUnwrapped: FrequencyResponseComponent,
+        phaseDegreesUnwrappingLimit: number) {
         const rad2deg = 180 / Math.PI;
         let pmin = Infinity;
         let pmax = -Infinity;
@@ -81,8 +86,10 @@ export class FrequencyResponse {
             const re = spectrum[k++];
             const im = spectrum[k++];
 
-            const ph = FrequencyResponse.normalizeDegrees(-Math.atan2(im, re) * rad2deg);
-            phase.data[i] = ph;
+            // Wrapped phase -- atan2 returns radians in the [-π, π] range.
+            // We convert them into [-180, 180] dergee range.
+            phase.data[i] = -Math.atan2(im, re) * rad2deg;
+            phaseUnwrapped.data[i] = 0;
 
             const pwr = re * re + im * im;
             power.data[i] = pwr;
@@ -95,6 +102,7 @@ export class FrequencyResponse {
             amax = Math.max(amax, amp);
         }
 
+        FrequencyResponse.unwrapPhaseDegrees(len, phase.data, phaseUnwrapped, phaseDegreesUnwrappingLimit);
         phase.min = -180;
         phase.max = 180;
         power.min = pmin;
@@ -103,19 +111,32 @@ export class FrequencyResponse {
         amplitude.max = amax;
     }
 
-    /** Normalizes degrees to the [-180, 180] range. */
-    protected static normalizeDegrees(deg: number): number {
-        const limit = 180;
+    /** Unwraps phase degrees from the [-180, 180] range. */
+    protected static unwrapPhaseDegrees(len: number, wrapped: number[],
+        unwrapped: FrequencyResponseComponent, phaseDegreesUnwrappingLimit: number) {
+        let k = 0;
 
-        while (deg > limit) {
-            deg -= limit;
+        let min = wrapped[0];
+        let max = min;
+        unwrapped.data[0] = min;
+
+        for (let i = 1; i < len; ++i) {
+            let w = wrapped[i];
+            const increment = wrapped[i] - wrapped[i-1];
+            if (increment > phaseDegreesUnwrappingLimit) {
+                k -= increment;
+            } else if (increment < -phaseDegreesUnwrappingLimit) {
+                k += increment;
+            }
+
+            w += k;
+            min = Math.min(min, w);
+            max = Math.max(max, w);
+            unwrapped.data[i] = w;
         }
 
-        while (deg < -limit) {
-            deg += limit;
-        }
-
-        return deg;
+        unwrapped.min = min;
+        unwrapped.max = max;
     }
 
     protected static toDecibels(len: number, src: FrequencyResponseComponent, tgt: FrequencyResponseComponent) {

@@ -30,6 +30,8 @@
     amplitudeDecibel: FrequencyResponseComponent;
     /** Phase in degrees in range [-180, 180]. */
     phaseDegrees: FrequencyResponseComponent;
+    /** Phase in degrees unwrapped. */
+    phaseDegreesUnwrapped: FrequencyResponseComponent;
 }
 
 /**

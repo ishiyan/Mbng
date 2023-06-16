@@ -124,6 +124,16 @@
 
   <mat-card appearance="outlined" class="example-card">
     <mat-card-header>
+      <mat-card-title>Y mode: phaseDegUnwrapped</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[ymode]="'phaseDegUnwrapped'"</mat-card-subtitle>
+      <mb-frequency-response-chart [ymode]="'phaseDegUnwrapped'" [data]="[sma7, sma20]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="example-card">
+    <mat-card-header>
       <mat-card-title>X period [min, max]</mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -177,6 +187,16 @@
     <mat-card-content>
       <mat-card-subtitle>[minDeg]="-150" [maxDeg]="90" [ymode]="'phaseDeg'"</mat-card-subtitle>
       <mb-frequency-response-chart [minDeg]="-150" [maxDeg]="90" [ymode]="'phaseDeg'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Y phase degrees unwrapped [min, max]</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[minDeg]="-360" [maxDeg]="10" [ymode]="'phaseDegUnwrapped'"</mat-card-subtitle>
+      <mb-frequency-response-chart [minDeg]="-360" [maxDeg]="10" [ymode]="'phaseDegUnwrapped'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
     </mat-card-content>
   </mat-card>
 
