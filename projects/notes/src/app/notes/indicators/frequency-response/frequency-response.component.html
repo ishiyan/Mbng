@@ -1,6 +1,105 @@
 <h1>{{frNote.title}}</h1>
 
 <p>
+    In digital signal processing (DSP), most of trading indicators can be viewed as discrete digital filters.
+    A digital filter is a mathematical operator (computation) that maps an input sequence of numbers
+    <mb-ki>{{"x_k"}}</mb-ki> into an output sequence of numbers
+    <mb-ki>{{"y_k=\\mathcal\{F\}\\{x_k\\}"}}</mb-ki>. Snce this definition is very general, there are several
+    more useful narrower classes of digital filters  (Oppenheim et al., 2009, pp.19-24).
+</p>
+<p>
+    <i>Linear</i> filters have a <i>superposition</i> property. If
+    <mb-ki>{{"y1_k=\\mathcal\{F\}\\{x1_k\\}"}}</mb-ki> and <mb-ki>{{"y2_k=\\mathcal\{F\}\\{x2_k\\}"}}</mb-ki>
+    are the responses of a filter to the corresponding inputs <mb-ki>{{"x1_k"}}</mb-ki> and <mb-ki>{{"x2_k"}}</mb-ki>,
+    then the filter is linear if and only if
+    <mb-kd>
+        {{"\\tag*{}\\mathcal{F}\\{ax1_k + bx2_k\\}=a\\mathcal{F}\\{x1_k\\}+b\\mathcal{F}\\{x2_k\\}"}}
+    </mb-kd>
+    <mb-kd>
+        {{"\\tag*{}=ay1_k+by2_k"}}
+    </mb-kd>
+</p>
+<p>
+    For <i>Time-Invariant</i> filters, a time delay of <mb-ki>{{"m"}}</mb-ki> samples in the input sequence
+    causes the same time delay in the output sequence (the invariance of time delay).
+    Mathematically, if <mb-ki>{{"y_k=\\mathcal\{F\}\\{x_k\\}"}}</mb-ki>
+    <mb-kd>
+        {{"\\tag*{}x1_k=x_{k-m}\\implies y1_k=y_{k-m}\\ \\forall m"}}
+    </mb-kd>
+</p>
+<p>
+   The combination of these two filter classes defines the most important type --
+   <i>Linear Time-Invariant</i> (LTI) filters. The third important property, although not
+   directly related to frequency response, is casuality.
+</p>
+<p>
+    A filter is <i>casual</i> (nonanticipative) if the output values <mb-ki>{{"y_k"}}</mb-ki>
+    depend only on pervious input values <mb-ki>{{"x_m"}}</mb-ki> where <mb-ki>{{"m \\le k"}}</mb-ki>.
+    In plain words, a casual filter cannot see the "future" input values to calculate the output "now".
+ </p>
+ <p>
+    LTI filters have a property which makes them very useful.
+    Such filters can be completely characterized by their <i>impulse response</i>.
+    Let Kronecker delta function
+    <mb-kd>
+      {{"\\tag*{}\\delta_k = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
+    </mb-kd>
+    represent an impulse occuring at input <mb-ki>{{"k"}}</mb-ki> and
+    <mb-kd>
+      {{"\\tag*{}y_k=\\mathcal{F}\\{\\sum_{m=-\\infty}^{\\infty}x_m\\delta_{k-m}\\}"}}
+    </mb-kd>
+    The <i>linearity</i> of the filter <mb-ki>{{"\\mathcal{F}"}}</mb-ki> means we can apply
+    the <i>superposition</i> property to the equation above and get
+    <mb-kd>
+        {{"\\tag*{}y_k=\\sum_{m=-\\infty}^{\\infty}x_m\\\mathcal{F}\\{\\delta_{k-m}\\}=\\sum_{m=-\\infty}^{\\infty}x_m h_{k,m}"}}
+    </mb-kd>
+    where <mb-ki>{{"h_{k,m}=\\mathcal{F}\\{\\delta_{k-m}\\}"}}</mb-ki> is a response
+    to an impulse <mb-ki>{{"\\delta_{k-m}"}}</mb-ki>. Note that the value of
+    <mb-ki>{{"h_{k,m}"}}</mb-ki> depends on both <mb-ki>{{"k"}}</mb-ki> and <mb-ki>{{"m"}}</mb-ki>.
+    The <i>time invariance</i> of the filter <mb-ki>{{"\\mathcal{F}"}}</mb-ki> implies that if
+    <mb-ki>{{"h_{k}"}}</mb-ki> is the response to <mb-ki>{{"\\delta_{k}"}}</mb-ki>, then the
+    <mb-ki>{{"h_{k-m}"}}</mb-ki> is the response to <mb-ki>{{"\\delta_{k-m}"}}</mb-ki>.
+    Thus, the time invariance of the fiter allows us to write our equation as
+    <mb-kd>
+        {{"\\tag*{(1)}y_k=\\sum_{m=-\\infty}^{\\infty}x_m h_{k-m}=x_k\\circledast h_k"}}
+    </mb-kd>
+    where <mb-ki>{{"\\circledast"}}</mb-ki> is a mathematical operation known as <i>convolution</i>.
+</p>
+<p>
+    To summarize, the output sequence of an LTI filter, when the input sequence is a weighted sum
+    of delayed impulses, is a weighted sum of delayed impulse responses. 
+</p>
+<p>
+    If the input sequence of an LTI filter is a complex exponential
+    <mb-ki>{{"x_k=e^{i\\omega k}, -\\infty\\lt k \\lt\\infty"}}</mb-ki>,
+    then, substituting it in equation (1),
+    <mb-kd>
+        {{"\\tag*{}y_k=\\sum_{m=-\\infty}^{\\infty}h_{k-m}x_m=\\sum_{m=-\\infty}^{\\infty}h_{k-m}e^{i\\omega m}"}}
+    </mb-kd>
+    <mb-kd>
+        {{"\\tag*{}=e^{i\\omega k}\\sum_{m=-\\infty}^{\\infty}h_{k-m}e^{i\\omega m}e^{-i\\omega k}"}}
+    </mb-kd>
+    <mb-kd>
+        {{"\\tag*{}=e^{i\\omega k}\\sum_{m=-\\infty}^{\\infty}h_{k-m}e^{-i\\omega (k-m)}"}}
+    </mb-kd>
+    <mb-kd>
+        {{"\\tag*{(2)}=e^{i\\omega k}\\sum_{m=-\\infty}^{\\infty}h_{m}e^{-i\\omega m}=H(e^{i\\omega})e^{i\\omega k}"}}
+    </mb-kd>
+    where
+    <mb-kd>
+        {{"\\tag*{(3)}H(e^{i\\omega})=\\sum_{m=-\\infty}^{\\infty}h_{m}e^{-i\\omega m}"}}
+    </mb-kd>
+    Hence, the <mb-ki>{{"exp(i\\omega k)"}}</mb-ki> is the eigenfunction of the filter,
+    and <mb-ki>{{"H(exp(i\\omega))"}}</mb-ki> is the associated eigenvalue.
+</p>
+<p>
+    Equation (2) shows that <mb-ki>{{"H(exp(i\\omega))"}}</mb-ki> describes the change in complex amplitude
+    of a complex exponential input sequence as a function of the frequency <mb-ki>{{"\\omega"}}</mb-ki>.
+    Another way of saying this is the <mb-ki>{{"H(exp(i\\omega))"}}</mb-ki> is the <i>frequency response</i>
+    of the filter. <mb-ki>{{"H(exp(i\\omega))"}}</mb-ki> is complex function and can be represented as a
+    <i>real</i> and <i>imaginary</i> parts or as a <i>magnitude</i> and <i>phase</i> parts. 
+</p>
+ <p>
     What is a digital filter? It is simply a computation that takes a sequence of numbers (the input signal) and
     produces a new sequence of output numbers (the output signal).
 </p>
@@ -87,23 +186,33 @@
 
 <!-- @article{Brittain_2010 -->
 <div class="citation">
-    Brittain, J. E. (2010). Electrical Engineering Hall of Fame: Harry Nyquist [Scanning Our Past]. <i>Proceedings of
-        the IEEE</i>, <i>98</i>(8), 1535–1537. https://doi.org/10.1109/JPROC.2010.2050378 <a
-        href="https://doi.org/10.1109/JPROC.2010.2050378" target="_blank" rel="noopener noreferrer"></a>
+    Brittain, J. E. (2010). Electrical Engineering Hall of Fame: Harry Nyquist [Scanning Our Past].
+    <i>Proceedings of the IEEE</i>, <i>98</i>(8), 1535–1537. https://doi.org/10.1109/JPROC.2010.2050378
+    <a href="https://doi.org/10.1109/JPROC.2010.2050378" target="_blank" rel="noopener noreferrer"></a>
 </div>
-
+<!-- @Book Jeffrey2008 -->
+<div class="citation">
+    Jeffrey, A., &amp; Dai, H. H. (2008).
+    <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
+    <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank" rel="noopener noreferrer"></a>
+</div>
+<!-- @Book Oppenheim2009 -->
+<div class="citation">
+    Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
+    <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
+    <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank" rel="noopener noreferrer"></a>
+</div>
 <!-- @inproceedings{Shannon_CommunicationinthePresenceofNoise_1984 -->
 <div class="citation">
-    Shannon, C. E. (1984). Communication in the presence of noise. <i>Proceedings of the IEEE</i>, <i>72</i>, 1192-1201.
-    <a href="http://ieeexplore.ieee.org/xpls/abs\_all.jsp?arnumber=1457266" target="_blank"
-        rel="noopener noreferrer"></a>
+    Shannon, C. E. (1984). Communication in the presence of noise.
+    <i>Proceedings of the IEEE</i>, <i>72</i>, 1192-1201.
+    <a href="http://ieeexplore.ieee.org/xpls/abs\_all.jsp?arnumber=1457266" target="_blank" rel="noopener noreferrer"></a>
 </div>
-
 <!-- @misc{soni_goodman_2021 -->
 <!-- shannon1.webp, shannon2.webp -->
 <div class="citation">
-    Soni, J., &amp; Goodman, R. (2021). <i>A man in a hurry: Claude Shannon's New York years</i>. IEEE Spectrum.
-    Retrieved August 14, 2022, from https://spectrum.ieee.org/a-man-in-a-hurry-claude-shannons-new-york-years <a
-        href="https://spectrum.ieee.org/a-man-in-a-hurry-claude-shannons-new-york-years" target="_blank"
-        rel="noopener noreferrer"></a>
+    Soni, J., &amp; Goodman, R. (2021).
+    <i>A man in a hurry: Claude Shannon's New York years</i>. IEEE Spectrum.
+    Retrieved August 14, 2022, from https://spectrum.ieee.org/a-man-in-a-hurry-claude-shannons-new-york-years
+    <a href="https://spectrum.ieee.org/a-man-in-a-hurry-claude-shannons-new-york-years" target="_blank" rel="noopener noreferrer"></a>
 </div>
