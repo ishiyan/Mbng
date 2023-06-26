@@ -99,24 +99,24 @@
     of the filter. <mb-ki>{{"H(exp(i\\omega))"}}</mb-ki> is complex function and can be represented as a
     <i>real</i> and <i>imaginary</i> parts or as a <i>magnitude</i> and <i>phase</i> parts. 
 </p>
- <p>
-    What is a digital filter? It is simply a computation that takes a sequence of numbers (the input signal) and
-    produces a new sequence of output numbers (the output signal).
-</p>
 <p>
-    Presuming that every digital signal can be approximated by a superposition of periodic functions (e.g.,
-    sinusoidal with increasing frequencies) with the amplitude and the phase parameters, a digital filter changes the
-    values of these parameters. So we can plot the changes in the amplitude and the phase on a chart, depending on the
-    frequency.
-</p>
-<p>
-    What are the highest and the lowest frequency we should plot on a chart? To illustrate this, let's consider a
-    discrete time series of daily weather temperature measurements, which represent 24-hour averages. Such data cannot
-    provide information about variation in the data at a timescale less than 24 hours. We cannot learn from this data
-    that it's always hotter at 4 PM than at 4 AM.
     <figure class="figleft">
         <img src="assets/photos/nyquist1.gif">
         <figcaption>Harry Nyquist, 1889-1976 (Brittain 2010).</figcaption>
+    </figure>
+    Presuming that every discrete signal can be approximated by a superposition of periodic functions
+    with increasing frequencies and the amplitude and the phase parameters, an LTI filter changes the
+    values of these parameters. So we can plot the changes in the amplitude and the phase on a chart,
+    depending on the frequency.
+</p>
+<p>
+    What are the highest and the lowest frequency we should plot? To illustrate this, let's consider a
+    discrete time series of daily weather temperature measurements, which represent 24-hour averages.
+    Such series cannot provide information about variation in timescale less than 24 hours.
+    We cannot learn from this data that it's always hotter at 4 PM than at 4 AM.
+    <figure class="figright">
+        <img src="assets/photos/shannon2.webp">
+        <figcaption>Claude Shannon, 1916-2001 (soni goodman 2021).</figcaption>
     </figure>
 </p>
 <p>
@@ -128,10 +128,6 @@
     highest frequency about which data can inform us is <mb-ki>{{"\\frac{1}{2}"}}</mb-ki>, which corresponds to the
     period of <mb-ki>2</mb-ki> data points. In digital signal processing, this frequency is called the <em>Nyquist
     frequency</em> and is related to the <em>Nyquist-Shannon sampling theorem.</em>
-    <figure class="figright">
-        <img src="assets/photos/shannon2.webp">
-        <figcaption>Claude Shannon, 1916-2001 (soni goodman 2021).</figcaption>
-    </figure>
 </p>
 <p>
     Claude Shannon's original formulation of the theorem is (Shannon 1984):
@@ -143,6 +139,28 @@
         apart.
     </q>
 </p>
+<p>
+    To summarize, the smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples
+    (we need at least two samples, peak and through, to represent a cycle), which
+    corresponds to the Nyquist frequency.
+    The longest period is one cycle per whole data series. We can assume it to be an infinity
+    for a very long time series.
+</p>
+<p>
+    A frequency <mb-ki>{{"\\nu"}}</mb-ki> is an  inverse of the cycle's period <mb-ki>{{"\\tau"}}</mb-ki>:
+    <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+</p>
+<p>
+</p>
+<ul>
+    <li>chart can use period or frequency as abscissa</li>
+    <li>frequency is normalized, 1 being the Nyquist frequency</li>
+    <li>example: sma, hyperbolic reltion between period and frequency curves</li>
+    <li>what can be used as ordinate? since H(*) is a complex function we can use amplitude or power, and phase</li>
+    <li>Amplitude and power can be displayed as percentage or as decibels. formula.</li>
+    <li>Phase is arctabgent of Im/Re. By definition, it is bounded between (-pi, +pi) radians or (-180, 180) degrees. We use degrees</li>
+    <li>The arctangent values we call wrapped phase. we can also display unwrapped phase</li>
+</ul>
 <mb-frequency-response-chart [data]="[sma2,sma6]"></mb-frequency-response-chart>
 <p></p>
 
