@@ -4,7 +4,8 @@ import { KatexOptions } from 'katex';
 @Component({
   selector: 'mb-katex',
   templateUrl: './katex.component.html',
-  styleUrls: ['./katex.component.scss']
+  styleUrls: ['./katex.component.scss'],
+  host: {'collision-id': 'KatexComponent'}
 })
 export class KatexComponent {
   @Input() expression!: string;

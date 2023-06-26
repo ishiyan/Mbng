@@ -19,6 +19,7 @@ const defaultOptions: KatexOptions = {
   templateUrl: './katex-display.component.html',
   styleUrls: ['./katex-display.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {'collision-id': 'KatexDisplayComponent'}
 })
 export class KatexDisplayComponent implements AfterContentInit, OnInit {
   protected options: KatexOptions = defaultOptions;
