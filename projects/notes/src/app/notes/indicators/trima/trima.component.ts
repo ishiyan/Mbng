@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Bar } from 'mb';
+import { Bar, generateStep } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -15,12 +15,28 @@ import { Trima } from './trima.interface';
 
 const isUnlocked = false;
 const sl = 4096;
+const stepMin = 10;
+const stepMax = 90;
+const stepCount = 32;
 
 const calculateTrima = (bars: Bar[], trima: TriangularMovingAverage, barComponent: BarComponent): Scalar[]  => {
   const scalars: Scalar[] = [];
   const f = barComponentValue(barComponent);
   for (const bar of bars) {
     scalars.push({time: bar.time, value: trima.update(f(bar))});
+  }
+
+  return scalars;
+};
+
+const calculateStep = (bars: Bar[], trima: TriangularMovingAverage, len: number): Scalar[]  => {
+  for (let i = 0; i < len; ++i) {
+    trima.update(stepMin);
+  }
+
+  const scalars: Scalar[] = [];
+  for (const bar of bars) {
+    scalars.push({time: bar.time, value: trima.update(bar.close)});
   }
 
   return scalars;
@@ -115,6 +131,9 @@ export class TrimaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
+  protected configurationStep!: Configuration;
+  protected dataStep = generateStep(stepMin, stepCount, stepMax, stepCount * 3);
+
   protected trima2 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 2}), 4);
   protected trima3 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 3}), 6);
   protected trima4 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 4}), 8);
@@ -191,6 +210,28 @@ export class TrimaComponent implements AfterViewInit {
     }
 
     this.configuration = cloned;
+    this.renderStep();
   }
 
+  private renderStep() {
+    const cloned = getConfigTemplate();
+    cloned.menuVisible = this.unlocked;
+    cloned.ohlcv.name = '';
+    cloned.ohlcv.data = this.dataStep;
+
+    for (const el of this.indicators) {
+      const indicator = new TriangularMovingAverage(el.params);
+      const lineData = new LineData();
+      lineData.name = indicator.getMnemonic();
+      lineData.data = calculateStep(cloned.ohlcv.data, indicator, el.params.length);
+      const s = el.style;
+      lineData.color = s.color;
+      lineData.width = s.width;
+      lineData.dash = s.dash;
+      lineData.interpolation = s.interpolation;
+      cloned.pricePane.lines.push(lineData);
+    }
+
+    this.configurationStep = cloned;
+  }
 }

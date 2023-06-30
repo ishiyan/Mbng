@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Bar } from 'mb';
+import { Bar, generateStep } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -16,6 +16,9 @@ import { Ema } from './ema.interface';
 
 const isUnlocked = false;
 const sl = 4096;
+const stepMin = 10;
+const stepMax = 90;
+const stepCount = 32;
 
 const guardLength = (object: any): object is ExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -24,6 +27,19 @@ const calculateEma = (bars: Bar[], ema: ExponentialMovingAverage, barComponent: 
   const f = barComponentValue(barComponent);
   for (const bar of bars) {
     scalars.push({time: bar.time, value: ema.update(f(bar))});
+  }
+
+  return scalars;
+};
+
+const calculateStep = (bars: Bar[], ema: ExponentialMovingAverage, len: number): Scalar[]  => {
+  for (let i = 0; i < len; ++i) {
+    ema.update(stepMin);
+  }
+
+  const scalars: Scalar[] = [];
+  for (const bar of bars) {
+    scalars.push({time: bar.time, value: ema.update(bar.close)});
   }
 
   return scalars;
@@ -119,6 +135,9 @@ export class EmaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
+  protected configurationStep!: Configuration;
+  protected dataStep = generateStep(stepMin, stepCount, stepMax, stepCount * 3);
+
   protected ema2 = FrequencyResponse.calculate(sl, new ExponentialMovingAverage({length: 2, firstIsAverage: false}), 4);
   protected ema5 = FrequencyResponse.calculate(sl, new ExponentialMovingAverage({length: 5, firstIsAverage: false}), 10);
   protected ema10 = FrequencyResponse.calculate(sl, new ExponentialMovingAverage({length: 10, firstIsAverage: false}), 20);
@@ -199,5 +218,28 @@ export class EmaComponent implements AfterViewInit {
     }
 
     this.configuration = cloned;
+    this.renderStep();
+  }
+
+  private renderStep() {
+    const cloned = getConfigTemplate();
+    cloned.menuVisible = this.unlocked;
+    cloned.ohlcv.name = '';
+    cloned.ohlcv.data = this.dataStep;
+
+    for (const el of this.indicators) {
+      const indicator = new ExponentialMovingAverage(el.params);
+      const lineData = new LineData();
+      lineData.name = indicator.getMnemonic();
+      lineData.data = calculateStep(cloned.ohlcv.data, indicator, stepCount*2);
+      const s = el.style;
+      lineData.color = s.color;
+      lineData.width = s.width;
+      lineData.dash = s.dash;
+      lineData.interpolation = s.interpolation;
+      cloned.pricePane.lines.push(lineData);
+    }
+
+    this.configurationStep = cloned;
   }
 }

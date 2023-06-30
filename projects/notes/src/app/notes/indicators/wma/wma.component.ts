@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Bar } from 'mb';
+import { Bar, generateStep } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -15,12 +15,28 @@ import { Wma } from './wma.interface';
 
 const isUnlocked = false;
 const sl = 4096;
+const stepMin = 10;
+const stepMax = 90;
+const stepCount = 32;
 
 const calculateWma = (bars: Bar[], wma: WeightedMovingAverage, barComponent: BarComponent): Scalar[]  => {
   const scalars: Scalar[] = [];
   const f = barComponentValue(barComponent);
   for (const bar of bars) {
     scalars.push({time: bar.time, value: wma.update(f(bar))});
+  }
+
+  return scalars;
+};
+
+const calculateStep = (bars: Bar[], wma: WeightedMovingAverage, len: number): Scalar[]  => {
+  for (let i = 0; i < len; ++i) {
+    wma.update(stepMin);
+  }
+
+  const scalars: Scalar[] = [];
+  for (const bar of bars) {
+    scalars.push({time: bar.time, value: wma.update(bar.close)});
   }
 
   return scalars;
@@ -116,6 +132,9 @@ export class WmaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
+  protected configurationStep!: Configuration;
+  protected dataStep = generateStep(stepMin, stepCount, stepMax, stepCount * 3);
+
   protected wma2 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 2}), 4);
   protected wma3 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 3}), 6);
   protected wma4 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 4}), 8);
@@ -192,6 +211,28 @@ export class WmaComponent implements AfterViewInit {
     }
 
     this.configuration = cloned;
+    this.renderStep();
   }
 
+  private renderStep() {
+    const cloned = getConfigTemplate();
+    cloned.menuVisible = this.unlocked;
+    cloned.ohlcv.name = '';
+    cloned.ohlcv.data = this.dataStep;
+
+    for (const el of this.indicators) {
+      const indicator = new WeightedMovingAverage(el.params);
+      const lineData = new LineData();
+      lineData.name = indicator.getMnemonic();
+      lineData.data = calculateStep(cloned.ohlcv.data, indicator, el.params.length);
+      const s = el.style;
+      lineData.color = s.color;
+      lineData.width = s.width;
+      lineData.dash = s.dash;
+      lineData.interpolation = s.interpolation;
+      cloned.pricePane.lines.push(lineData);
+    }
+
+    this.configurationStep = cloned;
+  }
 }
