@@ -17,6 +17,7 @@ const isUnlocked = false;
 const sl = 4096;
 const stepMin = 10;
 const stepMax = 90;
+const stepSpread = 1;
 const stepCount = 32;
 
 const calculateWma = (bars: Bar[], wma: WeightedMovingAverage, barComponent: BarComponent): Scalar[]  => {
@@ -29,14 +30,16 @@ const calculateWma = (bars: Bar[], wma: WeightedMovingAverage, barComponent: Bar
   return scalars;
 };
 
-const calculateStep = (bars: Bar[], wma: WeightedMovingAverage, len: number): Scalar[]  => {
-  for (let i = 0; i < len; ++i) {
-    wma.update(stepMin);
+const calculateStep = (bars: Bar[], wma: WeightedMovingAverage, barComponent: BarComponent): Scalar[]  => {
+  const f = barComponentValue(barComponent);
+  const val = f(bars[0]);
+  while (!wma.isPrimed) {
+    wma.update(val);
   }
 
   const scalars: Scalar[] = [];
   for (const bar of bars) {
-    scalars.push({time: bar.time, value: wma.update(bar.close)});
+    scalars.push({time: bar.time, value: wma.update(f(bar))});
   }
 
   return scalars;
@@ -132,8 +135,10 @@ export class WmaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
-  protected configurationStep!: Configuration;
-  protected dataStep = generateStep(stepMin, stepCount, stepMax, stepCount * 3);
+  protected configurationStepUp!: Configuration;
+  protected configurationStepDn!: Configuration;
+  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
+  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
   protected wma2 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 2}), 4);
   protected wma3 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 3}), 6);
@@ -191,17 +196,23 @@ export class WmaComponent implements AfterViewInit {
       return;
     }
 
+    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false);
+    this.configurationStepUp = this.prepareConfig('', this.dataStepUp, true);
+    this.configurationStepDn = this.prepareConfig('', this.dataStepDn, true);
+  }
+
+  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean): Configuration {
     const cloned = getConfigTemplate();
     cloned.menuVisible = this.unlocked;
-    cloned.ohlcv.name = this.dataSelection.mnemonic;
-    cloned.ohlcv.data = this.dataSelection.data;
+    cloned.ohlcv.name = mnemonic;
+    cloned.ohlcv.data = bars;
 
     for (const el of this.indicators) {
       const component = el.params.barComponent ? el.params.barComponent : BarComponent.Close;
       const indicator = new WeightedMovingAverage(el.params);
       const lineData = new LineData();
       lineData.name = indicator.getMnemonic();
-      lineData.data = calculateWma(this.dataSelection.data, indicator, component);
+      lineData.data = doStep ? calculateStep(bars, indicator, component) : calculateWma(bars, indicator, component);
       const s = el.style;
       lineData.color = s.color;
       lineData.width = s.width;
@@ -210,29 +221,6 @@ export class WmaComponent implements AfterViewInit {
       cloned.pricePane.lines.push(lineData);
     }
 
-    this.configuration = cloned;
-    this.renderStep();
-  }
-
-  private renderStep() {
-    const cloned = getConfigTemplate();
-    cloned.menuVisible = this.unlocked;
-    cloned.ohlcv.name = '';
-    cloned.ohlcv.data = this.dataStep;
-
-    for (const el of this.indicators) {
-      const indicator = new WeightedMovingAverage(el.params);
-      const lineData = new LineData();
-      lineData.name = indicator.getMnemonic();
-      lineData.data = calculateStep(cloned.ohlcv.data, indicator, el.params.length);
-      const s = el.style;
-      lineData.color = s.color;
-      lineData.width = s.width;
-      lineData.dash = s.dash;
-      lineData.interpolation = s.interpolation;
-      cloned.pricePane.lines.push(lineData);
-    }
-
-    this.configurationStep = cloned;
+    return cloned;
   }
 }

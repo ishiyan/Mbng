@@ -122,12 +122,21 @@
   <p>&nbsp;</p>
  </div>
 
+ <h2>Step response</h2>
+ Two figures below demonstrate the response to the step-up and step-down data.
+ The transition is clearly not linear.
+ Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
+The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+ 
  <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStep"></mb-ohlcv-chart>
-
-  <figcaption>Response to the step data.</figcaption>
-</figure>
-
+   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
+   <figcaption>Step-up response.</figcaption>
+ </figure>
+ <figure class="figwide">
+   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
+   <figcaption>Step-down response.</figcaption>
+ </figure>
+ 
 <h2>Frequency response</h2>
 <div style="width:100%">
   The figure below shows an amplitude and a phase lag of the unit sample response of an TRIMA as a function

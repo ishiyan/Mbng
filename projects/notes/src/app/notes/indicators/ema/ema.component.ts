@@ -18,6 +18,7 @@ const isUnlocked = false;
 const sl = 4096;
 const stepMin = 10;
 const stepMax = 90;
+const stepSpread = 1;
 const stepCount = 32;
 
 const guardLength = (object: any): object is ExponentialMovingAverageLengthParams => 'length' in object;
@@ -32,14 +33,16 @@ const calculateEma = (bars: Bar[], ema: ExponentialMovingAverage, barComponent: 
   return scalars;
 };
 
-const calculateStep = (bars: Bar[], ema: ExponentialMovingAverage, len: number): Scalar[]  => {
-  for (let i = 0; i < len; ++i) {
-    ema.update(stepMin);
+const calculateStep = (bars: Bar[], ema: ExponentialMovingAverage, barComponent: BarComponent): Scalar[]  => {
+  const f = barComponentValue(barComponent);
+  const val = f(bars[0]);
+  while (!ema.isPrimed) {
+    ema.update(val);
   }
 
   const scalars: Scalar[] = [];
   for (const bar of bars) {
-    scalars.push({time: bar.time, value: ema.update(bar.close)});
+    scalars.push({time: bar.time, value: ema.update(f(bar))});
   }
 
   return scalars;
@@ -135,8 +138,10 @@ export class EmaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
-  protected configurationStep!: Configuration;
-  protected dataStep = generateStep(stepMin, stepCount, stepMax, stepCount * 3);
+  protected configurationStepUp!: Configuration;
+  protected configurationStepDn!: Configuration;
+  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
+  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
   protected ema2 = FrequencyResponse.calculate(sl, new ExponentialMovingAverage({length: 2, firstIsAverage: false}), 4);
   protected ema5 = FrequencyResponse.calculate(sl, new ExponentialMovingAverage({length: 5, firstIsAverage: false}), 10);
@@ -198,17 +203,23 @@ export class EmaComponent implements AfterViewInit {
       return;
     }
 
+    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false);
+    this.configurationStepUp = this.prepareConfig('', this.dataStepUp, true);
+    this.configurationStepDn = this.prepareConfig('', this.dataStepDn, true);
+  }
+
+  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean): Configuration {
     const cloned = getConfigTemplate();
     cloned.menuVisible = this.unlocked;
-    cloned.ohlcv.name = this.dataSelection.mnemonic;
-    cloned.ohlcv.data = this.dataSelection.data;
+    cloned.ohlcv.name = mnemonic;
+    cloned.ohlcv.data = bars;
 
     for (const el of this.indicators) {
       const component = el.params.barComponent ? el.params.barComponent : BarComponent.Close;
       const indicator = new ExponentialMovingAverage(el.params);
       const lineData = new LineData();
       lineData.name = indicator.getMnemonic();
-      lineData.data = calculateEma(this.dataSelection.data, indicator, component);
+      lineData.data = doStep ? calculateStep(bars, indicator, component) : calculateEma(bars, indicator, component);
       const s = el.style;
       lineData.color = s.color;
       lineData.width = s.width;
@@ -217,29 +228,6 @@ export class EmaComponent implements AfterViewInit {
       cloned.pricePane.lines.push(lineData);
     }
 
-    this.configuration = cloned;
-    this.renderStep();
-  }
-
-  private renderStep() {
-    const cloned = getConfigTemplate();
-    cloned.menuVisible = this.unlocked;
-    cloned.ohlcv.name = '';
-    cloned.ohlcv.data = this.dataStep;
-
-    for (const el of this.indicators) {
-      const indicator = new ExponentialMovingAverage(el.params);
-      const lineData = new LineData();
-      lineData.name = indicator.getMnemonic();
-      lineData.data = calculateStep(cloned.ohlcv.data, indicator, stepCount*2);
-      const s = el.style;
-      lineData.color = s.color;
-      lineData.width = s.width;
-      lineData.dash = s.dash;
-      lineData.interpolation = s.interpolation;
-      cloned.pricePane.lines.push(lineData);
-    }
-
-    this.configurationStep = cloned;
+    return cloned;
   }
 }
