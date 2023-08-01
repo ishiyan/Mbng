@@ -5,6 +5,14 @@ import { NoteListComponent } from './shared/note-list/note-list.component';
 
 const routes: Routes = [
   { path: '', component: NoteListComponent },
+  { path: '9', loadChildren: () => import('./notes/indicators/tim-tillson/t3ema/t3ema.module')
+    .then(m => m.T3emaModule) },
+  { path: '8', loadChildren: () => import('./notes/indicators/tim-tillson/t2ema/t2ema.module')
+    .then(m => m.T2emaModule) },
+  { path: '7', loadChildren: () => import('./notes/indicators/patrick-mulloy/tema/tema.module')
+    .then(m => m.TemaModule) },
+  { path: '6', loadChildren: () => import('./notes/indicators/patrick-mulloy/dema/dema.module')
+    .then(m => m.DemaModule) },
   { path: '5', loadChildren: () => import('./notes/indicators/trima/trima.module')
     .then(m => m.TrimaModule) },
   { path: '4', loadChildren: () => import('./notes/indicators/wma/wma.module')

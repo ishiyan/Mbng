@@ -1,0 +1,9 @@
+<app-t2ema-params *ngFor="let t2ema of t2emaArray" [initial]="t2ema"
+    (changed)="updated($event);" (removed)="removed($event);">
+</app-t2ema-params>
+
+<div>
+    <button mat-mini-fab color="primary" (click)="add();">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

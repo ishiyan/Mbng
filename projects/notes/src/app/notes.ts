@@ -1,5 +1,37 @@
 import { Note } from './shared/note.interface';
 
+export const t3ExponentialMovingAverageNote: Note = {
+  title: 'T3 Exponential moving average',
+  summary: 'T3 Exploring exponential moving average',
+  route: '9',
+  created: '2021-07-27',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Tillson']
+};
+
+export const t2ExponentialMovingAverageNote: Note = {
+  title: 'T2 Exponential moving average',
+  summary: 'T2 Exploring exponential moving average',
+  route: '8',
+  created: '2021-07-25',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Tillson']
+};
+
+export const tripleExponentialMovingAverageNote: Note = {
+  title: 'Triple exponential moving average',
+  summary: 'Triple exploring exponential moving average',
+  route: '7',
+  created: '2021-07-17',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Mulloy']
+};
+
+export const doubleExponentialMovingAverageNote: Note = {
+  title: 'Double exponential moving average',
+  summary: 'Double exploring exponential moving average',
+  route: '6',
+  created: '2021-07-15',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Mulloy']
+};
+
 export const triangularMovingAverageNote: Note = {
   title: 'Triangular moving average',
   summary: 'Exploring triangular moving average',
@@ -56,13 +88,10 @@ export const notes: Note[] = [
     created: '2021-12-04',
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
   },
-  {
-    title: 'Triple exponential moving average',
-    summary: 'Exploring triple exponential moving average',
-    route: '1',
-    created: '2021-05-06',
-    tags: ['Trading', 'Indicators', 'Moving averages']
-  },
+  t3ExponentialMovingAverageNote,
+  t2ExponentialMovingAverageNote,
+  tripleExponentialMovingAverageNote,
+  doubleExponentialMovingAverageNote,
   triangularMovingAverageNote,
   weightedMovingAverageNote,
   exponentialMovingAverageNote,
