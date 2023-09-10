@@ -25,35 +25,84 @@
 </figure>
 
 <div style="width:100%">
-  A weighted moving average (WMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
+  <figure class="figleft">
+    (a)
+    <mb-svg-viewer src="assets/indicators/wma-weights-5.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+    (b)
+    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">    
+    </mb-svg-viewer>
+  
+    <figcaption>Weighting factors of the (a) WMA and (b) SMA.</figcaption>
+  </figure>
 
-  Close to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but multiplier coefficients
-  are not constant across the window width but are linearly weighted.
-  <mb-kd>{{"\\tag*{}WMA_N = \\frac{\\sum\\limits_{i=0}^{N-1}{(N-i)P_i}}{\\sum\\limits_{i=0}^{N-1}{(N-i)}}"}}</mb-kd>
-
-  The sum of the data and coefficient products are divided by the sum of coefficients to normalize the averaging process.
-
-  The major advantage of WMA is the reduced lag which results from the most recent data being the most heavily weighted.
-  WMA coefficients form triangle across the width of the filter, resulting a center of gravity being
-  <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
+  A Weighted Moving Average (WMA) or, in academic parlance, Linear Weighted Moving Average (LWMA)
+  of length <mb-ki>L \ge 2</mb-ki> is the weighted mean of the last
+  <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
+  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>.
+  
   <p></p>
+  It is similar to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but the multiplier 
+  weighting coefficients linearly descend from <mb-ki>L</mb-ki> at the last to <mb-ki>1</mb-ki>
+  at the first element of the moving average window, so the earlier samples have less impact on the WMA.
+  <mb-kd>{{"\\tag*{(1)}wma_{k}=\\frac{\\sum\\limits_{m=k-L+1}^{L}{m\\cdot x_{m}}}{\\sum\\limits_{m=1}^{L}{m}}"}}</mb-kd>
 
-  From the digital signal processing (DSP) point of view, WMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  The sum of the data and the weighting coefficient products is divided by the sum
+  of the weighting coefficients to normalize the averaging process.
+
+  The major advantage of the WMA is the reduced lag which results from the most recent data being
+  the most heavily weighted.
+  
+  The WMA coefficients form triangle across the width of the moving average window, resulting a center
+  of the gravity being <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
+  <p></p>
+  The denominator in the equation (1) is a triangular number:
+  <mb-kd>{{"\\tag*{(2)}\\sum\\limits_{m=1}^{L}{m}=1+2+3+\\ldots+L=\\frac{L(L+1)}{2}"}}</mb-kd>
+
+  This can be easily shown using the induction. Assuming that for certain <mb-ki>{{"n"}}</mb-ki>
+  <mb-kd>{{"\\tag*{}\\sum\\limits_{m=1}^{n}{m}=\\frac{n(n+1)}{2}"}}</mb-kd>
+
+  and adding <mb-ki>{{"n+1"}}</mb-ki> to both sides gives
+  <mb-kd>{{"\\tag*{}\\sum\\limits_{m=1}^{n}{m+(n+1)}=\\frac{n(n+1)}{2}+n+1"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{n(n+1)+2n+2}{2}=\\frac{n^2+3n+2}{2}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\frac{(n+1)(n+2)}{2}"}}</mb-kd>
+
+  Now we can substitutethe the summation in the denominator of the equation (1) with the triangular number:
+  <mb-kd>{{"\\tag*{(3)}wma_{k}=\\frac{2}{L(L+1)}\\sum\\limits_{m=k-L+1}^{L}{m\\cdot x_{m}}"}}</mb-kd>
+
+  The numerator in of the equation (1) can be re-written for <mb-ki>{{"k+1"}}</mb-ki> as
+  <mb-kd>{{"\\tag*{}wma_{k+1}=wma_{k}+(k+1)x_{k+1}-x_{k}-?-x_{k-L+1}-\\sum\\limits_{m=k-L+1}^{k}{x_{k}}"}}</mb-kd>
+
+  Denoting
+  <mb-kd>{{"\\tag*{}sum_{k}=\\sum\\limits_{m=k-L+1}^{k}"}}</mb-kd>
+
+  we get
+  <mb-kd>{{"\\tag*{}sum_{k+1}=sum_{k}+x_{k+1}-x_{k-L+1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}numerator_{k+1}=numerator_{k}+Lx_{k+1}-sum_{k}"}}</mb-kd>
+
+  and
+  <mb-kd>{{"\\tag*{}wma_{k+1}=\\frac{2\\cdot numerator_{k+1}}{L(L+1)}=numerator_{k+1}\\frac{2}{L(L+1)}"}}</mb-kd>
+
+  which gives an efficient formula to calculate WMA:
+  <mb-kd>{{"\\tag*{}wma_{k}=\\frac{2}{L(L+1)}\\cdot\\sum\\limits_{m=0}^{L-1}{(L-m)x_{k-m}}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(4)}=\\frac{2}{L(L+1)}\\cdot\\sum\\limits_{m=1}^{L}{m\\cdot x_{k-L+m}},\\ \\forall k=1,\\, 2,\\,\\ldots\\,,\\, L"}}</mb-kd>
+
+  <p></p>
+  From the digital signal processing (DSP) point of view, WMA is a finite impulse response (FIR)
+  filter with the weight coefficients
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+    {{"\\tag*{(5)}w_{k}=\\frac{2k}{L(L+1)},\\ \\forall k=1,\\, 2,\\,\\ldots\\,,\\, L"}}
   </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+
+  The filter is finite because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples
+  contribute to its value.
   <p></p>
 </div>
 
 <h2>Step response</h2>
 Two figures below demonstrate the response to the step-up and step-down data.
 The transition is clearly not linear.
-Both responses touch the step data with the lag equal to the length <mb-ki>{{"l"}}</mb-ki> of the filter.
+Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
 The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
 
 <figure class="figwide">

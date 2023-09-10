@@ -25,16 +25,16 @@
 </figure>
 
 <div style="width:100%">
-  A simple moving average (SMA) of length <mb-ki>L \ge 2</mb-ki> is the arithmetic mean of the last
+  A Simple Moving Average (SMA) of length <mb-ki>L \ge 2</mb-ki> is the arithmetic mean of the last
   <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
   where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{L}\\sum_{m=k-L+1}^{k}x_{m}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}sma_{k}=\\frac{1}{L}\\sum_{m=k-L+1}^{k}x_{m}"}}</mb-kd>
 
   When a next sample <mb-ki>{{"x_{k+1}"}}</mb-ki> arrives, it will be added to the sum, and the
   <mb-ki>{{"x_{k-L}"}}</mb-ki> sample will be dropped from the sum. Thus, the window of <mb-ki>L</mb-ki>
   samples "moves", which explains the "moving average" in its name.
   <p></p>
-  When <mb-ki>k \lt L</mb-ki>, the equation (1) above transforms into a cumulative moving average:
+  When <mb-ki>k \lt L</mb-ki>, the equation (1) transforms into a cumulative moving average:
   <mb-kd>{{"\\tag*{}y_{k}=\\frac{1}{k}\\sum_{m=1}^{k}x_{m}"}}</mb-kd>
 
   Since the effective length <mb-ki>k \lt L</mb-ki>, we consider SMA values undefined in this case.
@@ -45,19 +45,19 @@
   (the <mb-ki>{{"x_{k}"}}</mb-ki> is taken out of the summation, the <mb-ki>{{"x_{k-L}"}}</mb-ki> is added and subtracted),
   which gives an efficient method of SMA calculation:
   <mb-kd>
-    {{"\\tag*{}y_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]"}}
+    {{"\\tag*{}sma_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{(2)}=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
+    {{"\\tag*{(2)}=sma_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
   </mb-kd>
   <!--
   <mb-kd>
-    {{"\\tag*{(2a)}\\begin{aligned}y_{k}&&=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]\\ &&=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}\\end{aligned}"}}
+    {{"\\tag*{(2a)}\\begin{aligned}sma_{k}&&=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]\\ &&=sma_{k-1}+\\frac{x_{k}-x_{k-L}}{L}\\end{aligned}"}}
   </mb-kd>
   -->
   <!--
   <mb-kd>
-    {{"\\tag*{(2b)}y_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]=y_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
+    {{"\\tag*{(2b)}sma_{k}=\\frac{1}{L}\\left[x_{k}+\\sum_{m=k-L}^{k-1}x_{m}-x_{k-L}\\right]=sma_{k-1}+\\frac{x_{k}-x_{k-L}}{L}"}}
   </mb-kd>
   -->
   <p></p>
@@ -65,15 +65,15 @@
   From the digital signal processing (DSP) point of view, SMA is a
   finite impulse response (FIR) filter with all <mb-ki>{{"L"}}</mb-ki> weight coefficients equal:
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{L-1}w_{m}x_{k-m},\\ k\\ge L,\\ \\forall m\\ w_{m}=\\frac{1}{L}"}}
+    {{"\\tag*{(3)}sma_{k}=\\sum_{m=0}^{L-1}w_{m}x_{k-m},\\ k\\ge L,\\ \\forall m\\ w_{m}=\\frac{1}{L}"}}
   </mb-kd>
   The filter is finite because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
   <p></p>
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response to the step-up and step-down data.
-The transition is clearly linear.
+Two figures below demonstrate the response of an SMA to the step-up and step-down data.
+The step transition is clearly linear.
 Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
 The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
 
