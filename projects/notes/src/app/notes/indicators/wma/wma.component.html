@@ -45,53 +45,59 @@
   It is similar to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but the multiplier 
   weighting coefficients linearly descend from <mb-ki>L</mb-ki> at the last to <mb-ki>1</mb-ki>
   at the first element of the moving average window, so the earlier samples have less impact on the WMA.
-  <mb-kd>{{"\\tag*{(1)}wma_{k}=\\frac{\\sum\\limits_{m=k-L+1}^{L}{m\\cdot x_{m}}}{\\sum\\limits_{m=1}^{L}{m}}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}wma_{k}=\\frac{\\sum\\limits_{m=1}^{L}{m x_{k-L+m}}}{\\sum\\limits_{m=1}^{L}{m}}"}}</mb-kd>
 
   The sum of the data and the weighting coefficient products is divided by the sum
   of the weighting coefficients to normalize the averaging process.
 
-  The major advantage of the WMA is the reduced lag which results from the most recent data being
-  the most heavily weighted.
+  <p></p>
+  The WMA has a reduced lag which results from the most recent data being the most heavily weighted.
   
-  The WMA coefficients form triangle across the width of the moving average window, resulting a center
-  of the gravity being <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
+  The WMA coefficient values form a triangle across the width of the moving average window,
+  resulting a center of the gravity being <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
+
+  That is, the bar lag of the WMA is <mb-ki>{{"\\frac{L}{3}"}}</mb-ki>.
+
   <p></p>
   The denominator in the equation (1) is a triangular number:
   <mb-kd>{{"\\tag*{(2)}\\sum\\limits_{m=1}^{L}{m}=1+2+3+\\ldots+L=\\frac{L(L+1)}{2}"}}</mb-kd>
 
-  This can be easily shown using the induction. Assuming that for certain <mb-ki>{{"n"}}</mb-ki>
+  This can be easily shown using the induction. Assuming that for a certain <mb-ki>{{"n"}}</mb-ki>
   <mb-kd>{{"\\tag*{}\\sum\\limits_{m=1}^{n}{m}=\\frac{n(n+1)}{2}"}}</mb-kd>
 
-  and adding <mb-ki>{{"n+1"}}</mb-ki> to both sides gives
+  and adding <mb-ki>{{"n+1"}}</mb-ki> to the both sides gives
   <mb-kd>{{"\\tag*{}\\sum\\limits_{m=1}^{n}{m+(n+1)}=\\frac{n(n+1)}{2}+n+1"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{n(n+1)+2n+2}{2}=\\frac{n^2+3n+2}{2}"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{(n+1)(n+2)}{2}"}}</mb-kd>
 
-  Now we can substitutethe the summation in the denominator of the equation (1) with the triangular number:
-  <mb-kd>{{"\\tag*{(3)}wma_{k}=\\frac{2}{L(L+1)}\\sum\\limits_{m=k-L+1}^{L}{m\\cdot x_{m}}"}}</mb-kd>
+  Now we can substitute the summation in the denominator of the equation (1) with the triangular number:
+  <mb-kd>{{"\\tag*{}wma_{k}=\\frac{2}{L(L+1)}\\sum\\limits_{m=1}^{L}{m x_{k-L+m}}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(3)}=\\frac{2}{L(L+1)}q_{k},\\, q_{k}=\\sum\\limits_{m=1}^{L}{m x_{k-L+m}}"}}</mb-kd>
 
-  The numerator in of the equation (1) can be re-written for <mb-ki>{{"k+1"}}</mb-ki> as
-  <mb-kd>{{"\\tag*{}wma_{k+1}=wma_{k}+(k+1)x_{k+1}-x_{k}-?-x_{k-L+1}-\\sum\\limits_{m=k-L+1}^{k}{x_{k}}"}}</mb-kd>
-
+  We can write the difference between <mb-ki>{{"q_{k+1}"}}</mb-ki> and <mb-ki>{{"q_{k}"}}</mb-ki> as
+  <mb-kd>{{"\\tag*{}q_{k+1}-q_{k}=\\sum\\limits_{m=1}^{L}{m x_{k+1-L+m}}-\\sum\\limits_{m=1}^{L}{m x_{k-L+m}}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=x_{k-L+2}+2x_{k-L+3}+\\,\\ldots\\,+(L-2)x_{k-1}+(L-1)x_{k}+Lx_{k+1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}-x_{k-L+1}-2x_{k-L+2}-3x_{k-L+3}-\\,\\ldots\\,-(L-1)x_{k-1}-Lx_{k}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=-x_{k-L+1}-x_{k-L+2}-x_{k-L+3}-\\,\\ldots\\,-x_{k-1}-x_{k}+Lx_{k+1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=Lx_{k+1}-\\sum\\limits_{n=k-L+1}^{k}{x_{n}}"}}</mb-kd>
+  
   Denoting
-  <mb-kd>{{"\\tag*{}sum_{k}=\\sum\\limits_{m=k-L+1}^{k}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(4)}s_{k}=\\sum\\limits_{n=k-L+1}^{k}{x_{n}}"}}</mb-kd>
 
   we get
-  <mb-kd>{{"\\tag*{}sum_{k+1}=sum_{k}+x_{k+1}-x_{k-L+1}"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}numerator_{k+1}=numerator_{k}+Lx_{k+1}-sum_{k}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(5)}s_{k+1}=s_{k}+x_{k+1}-x_{k-L+1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(6)}q_{k+1}=q_{k}+Lx_{k+1}-s_{k}"}}</mb-kd>
 
   and
-  <mb-kd>{{"\\tag*{}wma_{k+1}=\\frac{2\\cdot numerator_{k+1}}{L(L+1)}=numerator_{k+1}\\frac{2}{L(L+1)}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(7)}wma_{k+1}=\\frac{2}{L(L+1)}q_{k+1}"}}</mb-kd>
 
-  which gives an efficient formula to calculate WMA:
-  <mb-kd>{{"\\tag*{}wma_{k}=\\frac{2}{L(L+1)}\\cdot\\sum\\limits_{m=0}^{L-1}{(L-m)x_{k-m}}"}}</mb-kd>
-  <mb-kd>{{"\\tag*{(4)}=\\frac{2}{L(L+1)}\\cdot\\sum\\limits_{m=1}^{L}{m\\cdot x_{k-L+m}},\\ \\forall k=1,\\, 2,\\,\\ldots\\,,\\, L"}}</mb-kd>
+  which gives an efficient formula to calculate WMA.
 
   <p></p>
   From the digital signal processing (DSP) point of view, WMA is a finite impulse response (FIR)
   filter with the weight coefficients
   <mb-kd>
-    {{"\\tag*{(5)}w_{k}=\\frac{2k}{L(L+1)},\\ \\forall k=1,\\, 2,\\,\\ldots\\,,\\, L"}}
+    {{"\\tag*{(8)}w_{k}=\\frac{2k}{L(L+1)},\\ \\forall k=1,\\, 2,\\,\\ldots\\,,\\, L"}}
   </mb-kd>
 
   The filter is finite because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples
@@ -100,7 +106,7 @@
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response to the step-up and step-down data.
+The two figures below demonstrate the response to the step-up and step-down data.
 The transition is clearly not linear.
 Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
 The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
@@ -124,8 +130,8 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
   continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
   We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
-
 </div>
 
 <figure class="figwide">
@@ -158,72 +164,26 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 </figure>
 
 <div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
   A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
   (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
   The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
-  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
-
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
 </div>
 
 <figure class="figwide">
-  <!--mat-grid-list cols="2" rowHeight="260px">
-    <mat-grid-tile>
-    </mat-grid-tile>
-  </mat-grid-list-->
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="15" [data]="[wma2, wma4, wma6]"
+    [xmode]="'frequency'" [data]="[wma5, wma10, wma20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="15" [data]="[wma3, wma5, wma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) WMA length.</figcaption>
-</figure>
-
-<figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[wma2, wma4, wma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[wma3, wma5, wma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) WMA length.</figcaption>
-</figure>
-
-<figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[wma2, wma4, wma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[wma3, wma5, wma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) WMA length.</figcaption>
-</figure>
-
-<figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[wma2, wma4, wma6]"
+    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="50" [data]="[wma5, wma10, wma20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[wma3, wma5, wma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) WMA length.</figcaption>
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a normalized frequency of a cycle.</figcaption>
 </figure>
 
-<p></p>
 <div style="width:100%">
-</div>
-<hr />
-<h2 class="counter-skip">References</h2>
-<div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
-  <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
-</div>
-<div><!-- @Book Mak2021 -->Mak, D. K. (2021).
-  <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
-  doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
-</div>
-<div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
-  <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
 </div>

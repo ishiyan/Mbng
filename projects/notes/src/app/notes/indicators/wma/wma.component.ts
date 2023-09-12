@@ -9,7 +9,7 @@ import { predefinedLinePalettes } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverageNote, weightedMovingAverageNote } from '../../../notes';
+import { simpleMovingAverageNote, weightedMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { WmaInput } from './wma-input.interface';
 import { Wma } from './wma.interface';
 
@@ -128,6 +128,7 @@ export class WmaComponent implements AfterViewInit {
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected smaNote = simpleMovingAverageNote;
   protected wmaNote = weightedMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -140,12 +141,7 @@ export class WmaComponent implements AfterViewInit {
   protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
   protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
-  protected wma2 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 2}), 4);
-  protected wma3 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 3}), 6);
-  protected wma4 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 4}), 8);
   protected wma5 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 5}), 10);
-  protected wma6 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 6}), 12);
-  protected wma7 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 7}), 14);
   protected wma10 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 10}), 20);
   protected wma20 = FrequencyResponse.calculate(sl, new WeightedMovingAverage({length: 20}), 40);
 
