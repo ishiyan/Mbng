@@ -26,7 +26,7 @@ const yPhaseDegrees = 4;
 const yPhaseDegreesUnwrapped = 5;
 const yModeMax = 6;
 type yModeType = 0 | 1 | 2 | 3 | 4 | 5;
-const yModeLabels = ['Power, dB', 'Power, %', 'Amplitude, dB', 'Amplitude, %', 'Phase, deg °', 'Phase, deg °'];
+const yModeLabels = ['Power, dB', 'Power, %', 'Amplitude, dB', 'Amplitude, %', 'Phase, deg °', 'Unwrapped phase, deg °'];
 const yModeSuffices = [' dB', ' %', ' dB', ' %', ' °', ' °'];
 
 interface xComponentType {

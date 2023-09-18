@@ -23,3 +23,30 @@
   margin-left: 2em;
 }
 */
+
+body {
+  counter-reset: cntTable;
+}
+
+table {
+  border-collapse: collapse;
+  counter-increment: cntTable;
+  display: table;
+  margin: 1em 1.2em 0.5em 0;
+}
+
+.tablecaption:before {
+  content: "Table " counter(cntTable) ".";
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+tr {
+  text-align: left;
+  text-align: start;
+}
+
+td, tbody, thead {
+  border: thin solid;
+  padding: 0.2em;
+}

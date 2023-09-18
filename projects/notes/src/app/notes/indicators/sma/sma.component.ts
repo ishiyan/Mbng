@@ -9,7 +9,7 @@ import { predefinedLinePalettes } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverageNote } from '../../../notes';
+import { simpleMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { SmaInput } from './sma-input.interface';
 import { Sma } from './sma.interface';
 
@@ -127,6 +127,7 @@ export class SmaComponent implements AfterViewInit {
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected smaNote = simpleMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -141,7 +142,7 @@ export class SmaComponent implements AfterViewInit {
   
   protected sma2 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 2}), 4);
   protected sma3 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 3}), 6);
-  protected sma4 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 4}), 8);
+  protected sma4 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 4}), 8, 44);
   protected sma5 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 5}), 10);
   protected sma6 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 6}), 12);
   protected sma7 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({length: 7}), 14);

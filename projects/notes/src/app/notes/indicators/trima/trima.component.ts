@@ -9,7 +9,7 @@ import { predefinedLinePalettes } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { triangularMovingAverageNote } from '../../../notes';
+import { simpleMovingAverageNote, triangularMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { TrimaInput } from './trima-input.interface';
 import { Trima } from './trima.interface';
 
@@ -126,7 +126,9 @@ export class TrimaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected smaNote = simpleMovingAverageNote;
   protected trimaNote = triangularMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -145,8 +147,8 @@ export class TrimaComponent implements AfterViewInit {
   protected trima5 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 5}), 10);
   protected trima6 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 6}), 12);
   protected trima7 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 7}), 14);
-  protected trima10 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 10}), 20);
-  protected trima20 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 20}), 40);
+  protected trima10 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 10}), 20, 1);
+  protected trima20 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 20}), 40, 1);
 
   ngAfterViewInit() {
     this.initialized = true;
@@ -156,8 +158,7 @@ export class TrimaComponent implements AfterViewInit {
 
   protected indicatorPaletteChanged(palette: string[]) {
     this.selectedIndex = this.palettes.indexOf(palette);
-    this.selectedPalette = palette;
-  }
+    this.selectedPalette = palette;  }
 
   protected indicatorsChanged(arr: Trima[]) {
     const n = arr.length > 2 ? arr.length : 2;

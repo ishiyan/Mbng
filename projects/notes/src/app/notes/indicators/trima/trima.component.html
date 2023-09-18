@@ -42,13 +42,13 @@
   A triangular moving average (TRIMA) of length <mb-ki>L \ge 2</mb-ki> is a weighted mean of the last
   <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
   where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{\\displaystyle \\sum_{m=1}^{L}w_{m}x_{k-L+m}}{\\displaystyle \\sum_{m=1}^{L}w_{m}}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}trima_{k}=\\frac{\\displaystyle \\sum_{m=1}^{L}w_{m}x_{k-L+m}}{\\displaystyle \\sum_{m=1}^{L}w_{m}}"}}</mb-kd>
 
   The values of the weighting coefficients <mb-ki>w_m</mb-ki> form a triangle shape with the top angle
-  centered in the middle of the moving average window. In case of even value of <mb-ki>L</mb-ki>, there
-  are two samples located in the "middle" of the window and the top angle of the imaginary triangle is
-  located between them. Figure 2 shows TRIMA weighting coefficients for even and odd values of
-  <mb-ki>L</mb-ki>, comparing them with weighting coefficients of the SMA, which are all equal.
+  centered in the middle of the moving average window. In case of the even value of <mb-ki>L</mb-ki>,
+  there are two samples located in the "middle" of the window and the top angle of the imaginary triangle
+  is located between them. Figure 2 shows TRIMA weighting coefficients for the even and odd values of
+  <mb-ki>L</mb-ki>, comparing them with the weighting coefficients of the <a href="/{{smaNote.route}}">Simple Moving Average</a>, which are all equal.
   <p></p>
   Knowing this difference, we can represent the values of the weighting coefficients <mb-ki>w_m</mb-ki>
   for both even and odd values of <mb-ki>L</mb-ki> as:
@@ -61,7 +61,7 @@
   <p></p>  
   Let's consider an arithmetic progression:
   <mb-kd>{{"\\tag*{}a_n=a_{n-1}+d,\\ d=const"}}</mb-kd>
-  Its sum when starting summation from the very first element:
+  Its sum when starting summation from the very first element is:
   <mb-kd>{{"\\tag*{}s_n=a_1+(a_1+d)+\\dots +(a_1+(n-1)d)"}}</mb-kd>
   If we start summation from the very last element, the sum is:
   <mb-kd>{{"\\tag*{}s_n=a_n+(a_n-d)+\\dots +(a_n-(n-1)d)"}}</mb-kd>
@@ -70,15 +70,15 @@
 
   Let's apply this equation to sum up all weighting coefficients from equation (2).
   For an even <mb-ki>L=2l</mb-ki>:
-  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l}m+\\sum_{m=l+1}^{2l}(L+1-m)"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l}m+l(L+1)-\\sum_{m=l+1}^{2l}m"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l}m+\\sum_{m=l+1}^{2l}(2l+1-m)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l}m+l(2l+1)-\\sum_{m=l+1}^{2l}m"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l)+l(2l+1)-\\frac{l}{2}(l+1+2l)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l}{2}(1+l+4l+2-3l-1)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l}{2}(2l+2)=l(l+1)"}}</mb-kd>
   <mb-kd>{{"\\tag*{(3)}=\\frac{1}{4}L(L+2)"}}</mb-kd>
   For an odd <mb-ki>L=2l+1</mb-ki>:
-  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l+1}m+\\sum_{m=l+2}^{2l+1}(L+1-m)"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l+1}m+l(L+1)-\\sum_{m=l+2}^{2l+1}m"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}\\sum_{m=1}^{L}w_{m}=\\sum_{m=1}^{l+1}m+\\sum_{m=l+2}^{2l+1}(2l+1-m)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\sum_{m=1}^{l+1}m+l(2l+1)-\\sum_{m=l+2}^{2l+1}m"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(l+2)+l(2l+2)-\\frac{l}{2}(3l+3)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(l+2+4l-3l)"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=\\frac{l+1}{2}(2l+2)=(l+1)^2"}}</mb-kd>
@@ -86,12 +86,13 @@
 
   Hence, combining equations (2), (3) and (4), we can write equation (1) only in terms of <mb-ki>L</mb-ki>:
   <mb-kd>
-    {{"\\tag*{(5)}y_{k}=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle \\frac{4}{L(L+2)}\\left[\\sum_{m=1}^{l}mx_{k-L+m}+\\sum_{m=l+1}^{L}(L+1-m)x_{k-L+m}\\right]\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle \\frac{4}{(L+1)^2}\\left[\\sum_{m=1}^{l+1}mx_{k-L+m}+\\sum_{m=l+2}^{L}(L+1-m)x_{k-L+m}\\right]\\end{cases}"}}
+    {{"\\tag*{(5)}trima_{k}=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle \\frac{4}{L(L+2)}\\left[\\sum_{m=1}^{l}mx_{k-L+m}+\\sum_{m=l+1}^{L}(L+1-m)x_{k-L+m}\\right]\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle \\frac{4}{(L+1)^2}\\left[\\sum_{m=1}^{l+1}mx_{k-L+m}+\\sum_{m=l+2}^{L}(L+1-m)x_{k-L+m}\\right]\\end{cases}"}}
   </mb-kd>
-  The TRIMA is a finite impulse response (FIR) filter because only a finite number of <mb-ki>{{"L"}}</mb-ki> last samples contribute to its value.
+  The TRIMA is a finite impulse response (FIR) filter because only a finite number of <mb-ki>{{"L"}}</mb-ki>
+  last samples contribute to its value.
   <p></p>
 
-  The TRIMA is equivalent to doing an SMA of an SMA. As usial, the odd and even cases are slightly different.
+  The TRIMA is equivalent to doing an SMA of an SMA. As usial, the even and the odd cases are slightly different.
   <mb-kd>
     {{"\\tag*{(6)}trima(x,L)=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L}{2}),\\frac{L}{2}+1\\right)\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L+1}{2}),\\frac{L+1}{2}\\right)\\end{cases}"}}
   </mb-kd>
@@ -107,22 +108,21 @@
     <figcaption>SMA over SMA calculation grid for the even and odd length of the TRIMA: (a) TRIMA(6) and (b) TRIMA(5).</figcaption>
   </figure>
 
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
+  This equation can be used for an efficient calcultion of the TRIMA.
+  <p></p>
+
+  I couldn't derive the equation (6) algebraically, but its working is illustrated on the figure 3.
+  Here horizontal triplets, representing the inner SMA, are moving over the samples <mb-ki>{{"m"}}</mb-ki>
+  of the TRIMA window. Initially, the triplet resides on the left edge of the window.
+  On every move, it shifts one sample to the right until it reaches the right edge of the window.
+  During this sliding, some samples are covered by the triplet more than once. The bottom row
+  shows the count <mb-ki>{{"w"}}</mb-ki> (weight) for the every sample.
+  The weight values form an imaginary triangular shape, similar to ones on the figure 2.
+  <p></p>
  </div>
 
  <h2>Step response</h2>
+ <div style="width:100%">
  Two figures below demonstrate the response to the step-up and step-down data.
  The transition is clearly not linear.
  Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
@@ -136,10 +136,11 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
    <figcaption>Step-down response.</figcaption>
  </figure>
+</div>
  
 <h2>Frequency response</h2>
 <div style="width:100%">
-  The figure below shows an amplitude and a phase lag of the unit sample response of an TRIMA as a function
+  The figures below show an amplitude and a phase lag of the unit sample response of the TRIMA as a function
   of a period of various signal frequencies.
   <p></p>
   A period is a duration of a cycle in samples.
@@ -147,16 +148,26 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
   continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
   We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
-
+  The same charts can be represented as a function of a cycle's frequency.
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
-    [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
+    [maxPeriod]="maxPeriod" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
@@ -181,72 +192,235 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 </figure>
 
 <div style="width:100%">
-  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
-  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
-  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
-  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
-
+  The shape of the amplitude response is slightly different for the different values of <mb-ki>{{"L"}}</mb-ki>.
+  It is interesting that the amplitude response poles of the TRIMA are formed by the lengthes
+  of the inner and the outer SMAs in equation (6). Only if both <mb-ki>{{"L_{inner}"}}</mb-ki>
+  and <mb-ki>{{"L_{outer}"}}</mb-ki> are odd, the amplitude attenuation percentage at the
+  smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> will stay above zero. If either <mb-ki>{{"L_{inner}"}}</mb-ki>
+  or <mb-ki>{{"L_{outer}"}}</mb-ki> are even, the percentage will be almost zero.
+  The table 1 below illustrates this.
+  <p></p>
+  <table>
+    <thead>
+        <td><mb-ki>{{"L"}}</mb-ki></td>
+        <td><mb-ki>{{"l"}}</mb-ki></td>
+        <td><mb-ki>{{"L_{inner}"}}</mb-ki></td>
+        <td><mb-ki>{{"L_{outer}"}}</mb-ki></td>
+        <td><mb-ki>{{"dB, \\tau = 2"}}</mb-ki></td>
+        <td><mb-ki>{{"poles, \\tau"}}</mb-ki></td>  
+    </thead>
+    <tbody>
+      <tr>
+        <td>2</td>
+        <td>1</td>
+        <td>1</td>
+        <td>2</td>
+        <td>-100</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>1</td>
+        <td>2</td>
+        <td>2</td>
+        <td>-100</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>2</td>
+        <td>2</td>
+        <td>3</td>
+        <td>-100</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>2</td>
+        <td>3</td>
+        <td>3</td>
+        <td>-20</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>3</td>
+        <td>3</td>
+        <td>4</td>
+        <td>-100</td>
+        <td>4, 3</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>3</td>
+        <td>4</td>
+        <td>4</td>
+        <td>-100</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>4</td>
+        <td>4</td>
+        <td>5</td>
+        <td>-100</td>
+        <td>5, 4, 5/2=2.5</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>4</td>
+        <td>5</td>
+        <td>5</td>
+        <td>-30</td>
+        <td>5, 5/2=2.5</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>5</td>
+        <td>5</td>
+        <td>6</td>
+        <td>-100</td>
+        <td>6, 5, 6/2=3, 5/2=2.5</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>5</td>
+        <td>6</td>
+        <td>6</td>
+        <td>-100</td>
+        <td>6, 6/2=3</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>6</td>
+        <td>6</td>
+        <td>7</td>
+        <td>-100</td>
+        <td>7, 6, 7/2=3.5, 6/2=3, 7/3=2.3</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>6</td>
+        <td>7</td>
+        <td>7</td>
+        <td>-35</td>
+        <td>7, 7/2=3.5, 7/3=2.3</td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>7</td>
+        <td>7</td>
+        <td>8</td>
+        <td>-100</td>
+        <td>8, 7, 8/2=4, 7/2=3.5, 8/3=2.7, 7/3=2.3</td>
+      </tr>
+      <!-- tr>
+        <td>15</td>
+        <td>7</td>
+        <td>8</td>
+        <td>8</td>
+        <td>-100</td>
+        <td>8, 8/2=4, 8/3=2.7</td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>8</td>
+        <td>8</td>
+        <td>9</td>
+        <td>-100</td>
+        <td>9, 8, 9/2=4.5, 8/2=4, 9/3=3, 8/3=2.7, 9/4=2.25</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>8</td>
+        <td>9</td>
+        <td>9</td>
+        <td>-40</td>
+        <td>9, 9/2=4.5, 9/3=3, 9/4=2.25</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>9</td>
+        <td>9</td>
+        <td>10</td>
+        <td>-100</td>
+        <td>10, 9, 10/2=5, 9/2=4.5, 10/3=3.3, 9/3=3, 8/3=2.7, 10/4=2.5, 9/4=2.25</td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>9</td>
+        <td>10</td>
+        <td>10</td>
+        <td>-100</td>
+        <td>10, 10/2=5, 10/3=3.3, 10/4=2.5</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>10</td>
+        <td>10</td>
+        <td>11</td>
+        <td>-100</td>
+        <td>11, 10, 11/2=5.5, 10/2=5, 11/3=3.67, 10/3=3.3, 11/4=2.75, 10/4=2.5</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>10</td>
+        <td>11</td>
+        <td>11</td>
+        <td>-43</td>
+        <td>11, 11/2=5.5, 11/3=3.67, 11/4=2.75, 11/5=2.2</td>
+      </tr -->
+    </tbody>  
+  </table>
+  <div class="tablecaption">The poles of the amplitude response for increasing length of the TRIMA.</div>
+  <p></p>
+  The shape of the unwrapped frequency response is linear with respect to a normalized frequency,
+  and is hyperbolic with respect to a period. This is natural because TRIMA is formed by the outer SMA
+  over the inner SMA.
+  <p></p>
+  Amplitude and phase responses are illusrated in figures below both for the period (in samples)
+  and the normalized frequency.
+  <p></p>
 </div>
 
 <figure class="figwide">
-  <!--mat-grid-list cols="2" rowHeight="260px">
-    <mat-grid-tile>
-    </mat-grid-tile>
-  </mat-grid-list-->
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4, trima6]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5, trima7]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima2, trima4, trima6]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima3, trima5, trima7]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[trima2, trima4, trima6]"
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-180" [maxDeg]="180" [data]="[trima3, trima5, trima7]"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[trima2, trima4, trima6]"
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'frequency'" [data]="[trima2, trima4]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-180" [maxDeg]="180" [data]="[trima3, trima5, trima7]"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'frequency'" [data]="[trima3, trima5]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <p></p>
-<div style="width:100%">
-</div>
-<hr />
-<h2 class="counter-skip">References</h2>
-<div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
-  <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
-</div>
-<div><!-- @Book Mak2021 -->Mak, D. K. (2021).
-  <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
-  doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
-</div>
-<div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
-  <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
-</div>
