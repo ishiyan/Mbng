@@ -25,28 +25,42 @@
 </figure>
 
 <div style="width:100%">
-  An exponential moving average (WMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
-
-  Close to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but multiplier coefficients
-  are not constant across the window width but are linearly weighted.
-  <mb-kd>{{"\\tag*{}WMA_N = \\frac{\\sum\\limits_{i=0}^{N-1}{(N-i)P_i}}{\\sum\\limits_{i=0}^{N-1}{(N-i)}}"}}</mb-kd>
-
-  The sum of the data and coefficient products are divided by the sum of coefficients to normalize the averaging process.
-
-  The major advantage of WMA is the reduced lag which results from the most recent data being the most heavily weighted.
-  WMA coefficients form triangle across the width of the filter, resulting a center of gravity being
-  <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
-  <p></p>
-
-  From the digital signal processing (DSP) point of view, EMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  An Exponential Moving Average (EMA), or Exponentially Weighted Moving Average (EWMA) in academic
+  parlance, is defined recursively as
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+    {{"\\tag*{(1)}ema_{k}=\\alpha x_{k} + (1-\\alpha)ema_{k-1}, \\qquad 0\\lt\\alpha\\lt 1"}}
   </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+
+  The parameter <mb-ki>{{"\\alpha"}}</mb-ki> determines the aggressiveness of the EMA.
+  As <mb-ki>{{"\\alpha \\rightarrow 0"}}</mb-ki>, the last sample makes no impact, making the EMA
+  line appear smoother. As <mb-ki>{{"\\alpha \\rightarrow 1"}}</mb-ki>, only the last sample determines
+  the EMA value, so the input samples just pass through the filter.
+  <p></p>
+  In contrast with the <a href="/{{smaNote.route}}">Simple Moving Average</a>, the EMA uses all
+  historical samples, giving them the smaller and smaller weighting factors. This becomes obvious
+  if we re-write equation (1) as
+  <mb-kd>
+    {{"\\tag*{}ema_{k}=\\sum\\limits_{m=0}^{k}{\\alpha(1-\\alpha)^{m}x_{k-m}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(2)}=\\alpha\\sum\\limits_{m=0}^{k}{(1-\\alpha)^{m}x_{k-m}}"}}
+  </mb-kd>
+
+  Sometimes, instead of <mb-ki>{{"\\alpha"}}</mb-ki>, it is convenient to use and equivalent length
+  <mb-ki>{{"L"}}</mb-ki> of the SMA of the same smoothness,  which is related to <mb-ki>{{"\\alpha"}}</mb-ki> as
+  <mb-kd>
+    {{"\\tag*{(3)} L=\\frac{2}{\\alpha}-1, \\qquad \\alpha=\\frac{2}{L+1}"}}
+  </mb-kd>
+
+  As <mb-ki>{{"\\alpha \\rightarrow 0"}}</mb-ki>, <mb-ki>{{"L"}}</mb-ki> becomes infinite,
+  as <mb-ki>{{"\\alpha \\rightarrow 1"}}</mb-ki>, <mb-ki>{{"L"}}</mb-ki> becomes one.
+  The equation (2) can be written in terms of <mb-ki>{{"L"}}</mb-ki> as
+  <mb-kd>
+    {{"\\tag*{(4)}ema_{k}=\\frac{2}{L+1}\\sum\\limits_{m=0}^{k}{ \\left(\\frac{L-1}{L+1}\\right)^{m}x_{k-m}}"}}
+  </mb-kd>
+
+  From the digital signal processing (DSP) point of view, the EMA is an infinite impulse response (IIR)
+  filter wich applies exponentially decresing weighting factors to the input samples.
   <p></p>
 </div>
 
@@ -63,10 +77,66 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
   <figcaption>Step-down response.</figcaption>
 </figure>
+<p></p>
+
+The step response of the EMA can be derived analytically.
+It is the output of the EMA when a Heaviside step function (Oppenheim et al., 2009, p.13)
+<mb-kd>
+  {{"\\tag*{}H_{k} = \\begin{cases} 0, & k \\lt 0 \\\\ 1, & k \\ge 0 \\end{cases}"}}
+</mb-kd>
+is applied as an input. Using equation (2),
+<mb-kd>
+  {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}H_{k-m}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{(5)}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
+</mb-kd>
+To simplify the expression above, we can recall a sum of geometric series
+<mb-kd>
+  {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = 1 + x + x^2 + \\ldots + x^{k-1}"}}
+</mb-kd>
+Multiplying both sides by <mb-ki>{{"1-x"}}</mb-ki> and simplifying
+<mb-kd>
+  {{"\\tag*{}(1-x)\\sum_{m=0}^{k-1}x^m = (1-x)(1 + x + x^2 + \\ldots + x^{k-1})"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}= 1 + x + x^2 + \\ldots + x^{k-1} - x - x^2 - \\ldots - x^{k-1} - x^k"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}= 1 - x^k"}}
+</mb-kd>
+gives a well-known identity for a sum of geometric series (Jeffrey and Dai, 2008, 1.2.2.2):
+<mb-kd>
+  {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = \\begin{cases} (1-x^k)/(1-x), & x \\neq 1 \\\\ k, & x = 1 \\end{cases}"}}
+</mb-kd>
+Substituting the sum of geometric series into equaton (5) gives
+<mb-kd>
+  {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\alpha\\frac{1-(1-\\alpha)^k}{1-(1-\\alpha)}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{(6)}=1-(1-\\alpha)^{k}"}}
+</mb-kd>
+<p></p>
+
+The unit impulse response <mb-ki>{{"h_{k}"}}</mb-ki> of the EMA is the output of the EMA when a Kronecker delta function
+<mb-kd>
+  {{"\\tag*{}\\delta[k] = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
+</mb-kd>
+is applied to the input. Using the equation (2), we get
+<mb-kd>
+  {{"\\tag*{}h_{k}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}x_{k-m}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{(7)}=\\alpha(1-\\alpha)^{k}"}}
+</mb-kd>
+<p></p>
 
 <h2>Frequency response</h2>
 <div style="width:100%">
-  The figure below shows an amplitude and a phase lag of the unit sample response of an EMA as a function
+  The figures below show an amplitude and a phase lag of the unit sample response of the EMA as a function
   of a period of various signal frequencies.
   <p></p>
   A period is a duration of a cycle in samples.
@@ -74,15 +144,25 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
   continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
   We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
-
+  The same charts can be represented as a function of a cycle's frequency.
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
@@ -116,10 +196,6 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 </div>
 
 <figure class="figwide">
-  <!--mat-grid-list cols="2" rowHeight="260px">
-    <mat-grid-tile>
-    </mat-grid-tile>
-  </mat-grid-list-->
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[ema2, ema5, ema10, ema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
@@ -131,15 +207,93 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[ema2, ema5, ema10, ema20]"
+    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[ema2, ema5, ema10, ema20]"
+    [xmode]="'frequency'" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various EMA lengths.</figcaption>
 </figure>
 
 <p></p>
+The frequency response of the EMA can be derived analytically from the transfer function of the EMA.
+The transfer function is defined using the Z-transform (Jeffrey and Dai, 2008, p.403)
+<mb-kd>
+  {{"\\tag*{}Z\\{x[n]\\}\\Leftrightarrow\\sum\\limits_{n=0}^{\\infty}{x[n]z^{-n}}"}}
+</mb-kd>
+where <mb-ki>{{"z"}}</mb-ki> is a complex variable. If 
+<mb-kd>
+  {{"\\tag*{}X(z)=Z\\{x[n]\\}, \\qquad Y(z)=Z\\{y[n]\\}"}}
+</mb-kd>
+are Z-transforms of the input <mb-ki>{{"x[n]"}}</mb-ki> and the output <mb-ki>{{"y[n]"}}</mb-ki>
+respectively, then the transfer function is defined as (Mak, 2006, p.14)
+<mb-kd>
+  {{"\\tag*{}H(z)=\\frac{Y(z)}{X(z)}"}}
+</mb-kd>
+
+<p></p>
+Applying Z-transorm to the equation (1) and using the translation (time shift) and linearity
+properties of the Z-transform translation (Jeffrey and Dai, 2008, p.407)
+<mb-kd>
+  {{"\\tag*{}Z\\{y(n - m)\\}\\Leftrightarrow z^{-m}Y(z)"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}Z\\{ax[n]+by[n]\\}\\Leftrightarrow aX(z)+bY(z)"}}
+</mb-kd>
+we get:
+<mb-kd>
+  {{"\\tag*{}Z\\{y[n]\\}=Z\\{\\alpha x[n]+(1-\\alpha)y[n-1]\\}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)Z\\{y[n-1]\\}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)z^{-1}Z\\{y[n]\\}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}Y(z)=\\alpha X(z)+(1-\\alpha)z^{-1}Y(z)"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}Y(z)(1-(1-\\alpha)z^{-1})=\\alpha X(z)"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{(8)}H(z)=\\frac{Y(z)}{X(z)}=\\frac{\\alpha}{1-(1-\\alpha)z^{-1}}"}}
+</mb-kd>
+
+<p></p>
+The frequency response function is the transfer function where z is located on the unit circle,
+<mb-ki>{{"z=exp(-i\\omega)"}}</mb-ki>. Here <mb-ki>{{"\\omega"}}</mb-ki> is an angular frequency
+(in radians per sample), <mb-ki>{{"\\nu"}}</mb-ki> is a frequency, and <mb-ki>{{"\\tau"}}</mb-ki>
+is a period of a cycle in samples:
+<mb-kd>
+  {{"\\tag*{}\\omega = 2\\pi\\nu = \\frac{2\\pi}{\\tau}"}}
+</mb-kd>
+Then, the equation (8) becomes
+<mb-kd>
+  {{"\\tag*{(9)}H(\\omega)=\\frac{\\alpha}{1-(1-\\alpha)exp(-i\\omega)}"}}
+</mb-kd>
+Let's calculate the squared modulus of the <mb-ki>{{"H(\\omega)"}}</mb-ki> using the Euler's formula
+for writing the exponential as sines and cosines: <mb-ki>{{"exp(ix)=\\cos x+i\\sin x"}}</mb-ki>.
+<mb-kd>
+  {{"\\tag*{}\\left|H(\\omega)\\right|^{2}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)exp(-i\\omega)\\right|^{2}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)(\\cos(-\\omega)+i\\sin(-\\omega))\\right|^{2}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\frac{\\alpha^{2}}{(1-(1-\\alpha)\\cos(\\omega))^{2}+((1-\\alpha)\\sin(\\omega))^{2}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}\\cos^{2}(\\omega)+(1-\\alpha)^{2}\\sin^{2}(\\omega)}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{(10)}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}"}}
+</mb-kd>
+and
+<mb-kd>
+  {{"\\tag*{(11)}\\left|H(\\omega)\\right|=\\frac{\\alpha}{\\sqrt{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}}"}}
+</mb-kd>
+
 <div style="width:100%">
 </div>
 <hr />
@@ -147,6 +301,11 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 <div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
   <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
+</div>
+<div><!-- @Book Mak2006 -->Mak, D. K. (2006).
+  <em>Mathematical Techniques in Financial Market Trading</em> (p. 320).
+  doi:10.1142/6055
+  <a href="https://books.google.com/books?id=18fICgAAQBAJ" target="_blank"></a>
 </div>
 <div><!-- @Book Mak2021 -->Mak, D. K. (2021).
   <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).

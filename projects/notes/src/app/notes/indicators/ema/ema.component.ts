@@ -10,7 +10,7 @@ import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothing
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
-import { simpleMovingAverageNote, exponentialMovingAverageNote } from '../../../notes';
+import { simpleMovingAverageNote, exponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { EmaLengthInput } from './ema-input.interface';
 import { Ema } from './ema.interface';
 
@@ -131,6 +131,7 @@ export class EmaComponent implements AfterViewInit {
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected smaNote = simpleMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
