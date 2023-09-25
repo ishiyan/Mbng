@@ -28,10 +28,11 @@
   An Exponential Moving Average (EMA), or Exponentially Weighted Moving Average (EWMA) in academic
   parlance, is defined recursively as
   <mb-kd>
-    {{"\\tag*{(1)}ema_{k}=\\alpha x_{k} + (1-\\alpha)ema_{k-1}, \\qquad 0\\lt\\alpha\\lt 1"}}
+    {{"\\tag*{(1)}ema_{k}=\\alpha x_{k} + (1-\\alpha)ema_{k-1}"}}
   </mb-kd>
 
-  The parameter <mb-ki>{{"\\alpha"}}</mb-ki> determines the aggressiveness of the EMA.
+  The parameter <mb-ki>{{"\\alpha"}}</mb-ki>, <mb-ki>{{"0\\lt\\alpha\\lt 1"}}</mb-ki>,
+  determines the aggressiveness of the EMA.
   As <mb-ki>{{"\\alpha \\rightarrow 0"}}</mb-ki>, the last sample makes no impact, making the EMA
   line appear smoother. As <mb-ki>{{"\\alpha \\rightarrow 1"}}</mb-ki>, only the last sample determines
   the EMA value, so the input samples just pass through the filter.
@@ -123,11 +124,14 @@ Substituting the sum of geometric series into equaton (5) gives
 
 The unit impulse response <mb-ki>{{"h_{k}"}}</mb-ki> of the EMA is the output of the EMA when a Kronecker delta function
 <mb-kd>
-  {{"\\tag*{}\\delta[k] = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
+  {{"\\tag*{}\\delta_{k} = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
 </mb-kd>
 is applied to the input. Using the equation (2), we get
 <mb-kd>
   {{"\\tag*{}h_{k}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}x_{k-m}}"}}
+</mb-kd>
+<mb-kd>
+  {{"\\tag*{}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}\\delta_{k-m}}"}}
 </mb-kd>
 <mb-kd>
   {{"\\tag*{(7)}=\\alpha(1-\\alpha)^{k}"}}
@@ -217,7 +221,7 @@ is applied to the input. Using the equation (2), we get
 
 <p></p>
 The frequency response of the EMA can be derived analytically from the transfer function of the EMA.
-The transfer function is defined using the Z-transform (Jeffrey and Dai, 2008, p.403)
+The transfer function is defined using the unilateral Z-transform (Oppenheim et al., 2009, p.99)
 <mb-kd>
   {{"\\tag*{}Z\\{x[n]\\}\\Leftrightarrow\\sum\\limits_{n=0}^{\\infty}{x[n]z^{-n}}"}}
 </mb-kd>
@@ -226,14 +230,15 @@ where <mb-ki>{{"z"}}</mb-ki> is a complex variable. If
   {{"\\tag*{}X(z)=Z\\{x[n]\\}, \\qquad Y(z)=Z\\{y[n]\\}"}}
 </mb-kd>
 are Z-transforms of the input <mb-ki>{{"x[n]"}}</mb-ki> and the output <mb-ki>{{"y[n]"}}</mb-ki>
-respectively, then the transfer function is defined as (Mak, 2006, p.14)
+respectively, then the transfer function (sometimes called system function) is defined as
+(Oppenheim et al., 2009, p.131)
 <mb-kd>
   {{"\\tag*{}H(z)=\\frac{Y(z)}{X(z)}"}}
 </mb-kd>
 
 <p></p>
-Applying Z-transorm to the equation (1) and using the translation (time shift) and linearity
-properties of the Z-transform translation (Jeffrey and Dai, 2008, p.407)
+Applying Z-transorm to the equation (1) and using the linearity and the translation (time shift)
+properties of the Z-transform translation (Oppenheim et al., 2009, pp.124-125)
 <mb-kd>
   {{"\\tag*{}Z\\{y(n - m)\\}\\Leftrightarrow z^{-m}Y(z)"}}
 </mb-kd>
@@ -294,6 +299,18 @@ and
   {{"\\tag*{(11)}\\left|H(\\omega)\\right|=\\frac{\\alpha}{\\sqrt{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}}"}}
 </mb-kd>
 
+(Mak, 2006, p.15) mentions that the phase of the <mb-ki>{{"H(\\omega)"}}</mb-ki> can be derived as
+<mb-kd>
+  {{"\\tag*{(12)}\\phi(\\omega)=\\tan^{-1}\\left( \\frac{-(1-\\alpha)\\sin\\omega}{1-(1-\\alpha)\\cos\\omega} \\right)"}}
+</mb-kd>
+We can also express the phase lag <mb-ki>{{"\\phi(\\omega)"}}</mb-ki> in the equation above
+in terms of a lag in a number of bars (data points)
+<mb-kd>
+  {{"\\tag*{(13)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}"}}
+</mb-kd>
+I was not able to derive both equations (12) and (13), and (Mak, 2006, p.15) do not have the simplified
+formula for the equation (13).
+
 <div style="width:100%">
 </div>
 <hr />
@@ -306,11 +323,6 @@ and
   <em>Mathematical Techniques in Financial Market Trading</em> (p. 320).
   doi:10.1142/6055
   <a href="https://books.google.com/books?id=18fICgAAQBAJ" target="_blank"></a>
-</div>
-<div><!-- @Book Mak2021 -->Mak, D. K. (2021).
-  <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
-  doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
 </div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
