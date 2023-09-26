@@ -23,6 +23,7 @@
 
   <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a></span></figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   <figure class="figleft">
@@ -38,6 +39,7 @@
   
     <figcaption>Weight coefficients of the (a) TRIMA(6), (b) TRIMA(5) and (c) SMA(5).</figcaption>
   </figure>
+  <p></p>
 
   A triangular moving average (TRIMA) of length <mb-ki>L \ge 2</mb-ki> is a weighted mean of the last
   <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
@@ -96,6 +98,7 @@
   <mb-kd>
     {{"\\tag*{(6)}trima(x,L)=\\begin{cases}L=2l\\ \\text{(even):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L}{2}),\\frac{L}{2}+1\\right)\\\\ \\\\L=2l+1\\ \\text{(odd):}\\\\ \\displaystyle sma\\left(sma(x,\\frac{L+1}{2}),\\frac{L+1}{2}\\right)\\end{cases}"}}
   </mb-kd>
+  <p></p>
 
   <figure class="figleft">
     (a)
@@ -123,11 +126,12 @@
 
  <h2>Step response</h2>
  <div style="width:100%">
- Two figures below demonstrate the response to the step-up and step-down data.
- The transition is clearly not linear.
- Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
-The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
- 
+  Two figures below demonstrate the response to the step-up and step-down data.
+  The transition is clearly not linear.
+  Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
+  The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+  <p></p>
+
  <figure class="figwide">
    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
    <figcaption>Step-up response.</figcaption>
@@ -136,6 +140,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
    <figcaption>Step-down response.</figcaption>
  </figure>
+ <p></p>
 </div>
  
 <h2>Frequency response</h2>
@@ -190,6 +195,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   The shape of the amplitude response is slightly different for the different values of <mb-ki>{{"L"}}</mb-ki>.
@@ -422,5 +428,4 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
-
 <p></p>

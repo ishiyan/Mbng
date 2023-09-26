@@ -23,6 +23,7 @@
 
   <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a></span></figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   An Exponential Moving Average (EMA), or Exponentially Weighted Moving Average (EWMA) in academic
@@ -66,9 +67,11 @@
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response to the step-up and step-down data.
-The transition is clearly not linear.
-The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+<div style="width:100%">
+  Two figures below demonstrate the response to the step-up and step-down data.
+  The transition is clearly not linear.
+  The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+</div>
 
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
@@ -80,7 +83,8 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 </figure>
 <p></p>
 
-The step response of the EMA can be derived analytically.
+<div style="width:100%">
+  The step response of the EMA can be derived analytically.
 It is the output of the EMA when a Heaviside step function (Oppenheim et al., 2009, p.13)
 <mb-kd>
   {{"\\tag*{}H_{k} = \\begin{cases} 0, & k \\lt 0 \\\\ 1, & k \\ge 0 \\end{cases}"}}
@@ -137,6 +141,7 @@ is applied to the input. Using the equation (2), we get
   {{"\\tag*{(7)}=\\alpha(1-\\alpha)^{k}"}}
 </mb-kd>
 <p></p>
+</div>
 
 <h2>Frequency response</h2>
 <div style="width:100%">
@@ -190,13 +195,14 @@ is applied to the input. Using the equation (2), we get
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
   (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
   The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
   <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
-
+  <p></p>
 </div>
 
 <figure class="figwide">
@@ -218,9 +224,10 @@ is applied to the input. Using the equation (2), we get
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various EMA lengths.</figcaption>
 </figure>
-
 <p></p>
-The frequency response of the EMA can be derived analytically from the transfer function of the EMA.
+
+<div style="width:100%">
+  The frequency response of the EMA can be derived analytically from the transfer function of the EMA.
 The transfer function is defined using the unilateral Z-transform (Oppenheim et al., 2009, p.99)
 <mb-kd>
   {{"\\tag*{}Z\\{x[n]\\}\\Leftrightarrow\\sum\\limits_{n=0}^{\\infty}{x[n]z^{-n}}"}}
@@ -310,6 +317,8 @@ in terms of a lag in a number of bars (data points)
 </mb-kd>
 I was not able to derive both equations (12) and (13), and (Mak, 2006, p.15) do not have the simplified
 formula for the equation (13).
+<p></p>
+</div>
 
 <div style="width:100%">
 </div>

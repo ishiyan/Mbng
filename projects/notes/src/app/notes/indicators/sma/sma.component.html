@@ -23,6 +23,7 @@
 
   <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a></span></figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   A Simple Moving Average (SMA) of length <mb-ki>L \ge 2</mb-ki> is the arithmetic mean of the last
@@ -73,10 +74,13 @@
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response of an SMA to the step-up and step-down data.
-The step transition is clearly linear.
-Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
-The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+<div style="width:100%">
+  Two figures below demonstrate the response of an SMA to the step-up and step-down data.
+  The step transition is clearly linear.
+  Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
+  The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+  <p></p>
+</div>
 
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
@@ -86,6 +90,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
   <figcaption>Step-down response.</figcaption>
 </figure>
+<p></p>
 
 <h2>Frequency response</h2>
 <div style="width:100%">
@@ -139,6 +144,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a cycle.</figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
   The shape of the amplitude response is different for the even and odd values of <mb-ki>{{"L"}}</mb-ki>.
@@ -192,8 +198,8 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
-
 <p></p>
+
 <div style="width:100%">
   The frequency response of an SMA can be derived analytically (Mak, 2021).
   <p></p>
@@ -331,7 +337,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   <mb-kd>
     {{"\\tag*{(14)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}=-\\frac{L-1}{2}"}}
   </mb-kd>
-
+  <p></p>
 </div>
 <hr />
 <h2 class="counter-skip">References</h2>
