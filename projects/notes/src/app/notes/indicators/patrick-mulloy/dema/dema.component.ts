@@ -10,7 +10,8 @@ import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAver
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
-import { exponentialMovingAverageNote, doubleExponentialMovingAverageNote } from '../../../../notes';
+import { simpleMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { doubleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { DemaLengthInput } from './dema-input.interface';
 import { Dema } from './dema.interface';
 
@@ -19,7 +20,7 @@ const sl = 4096;
 const stepMin = 10;
 const stepMax = 90;
 const stepSpread = 1;
-const stepCount = 32;
+const stepCount = 40;
 
 const guardLength = (object: any): object is DoubleExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -138,8 +139,10 @@ export class DemaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected smaNote = simpleMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
   protected demaNote = doubleExponentialMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -149,10 +152,10 @@ export class DemaComponent implements AfterViewInit {
 
   protected configurationStepUp!: Configuration;
   protected configurationStepDn!: Configuration;
-  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
-  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
+  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 2, stepSpread);
+  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 2, stepSpread);
 
-  protected dema2 = calculateFrequencyResponse(new DoubleExponentialMovingAverage({length: 2, firstIsAverage: true}));
+  protected dema2 = calculateFrequencyResponse(new DoubleExponentialMovingAverage({length: 2, firstIsAverage: false}));
   protected dema5 = calculateFrequencyResponse(new DoubleExponentialMovingAverage({length: 5, firstIsAverage: false}));
   protected dema10 = calculateFrequencyResponse(new DoubleExponentialMovingAverage({length: 10, firstIsAverage: false}));
   protected dema20 = calculateFrequencyResponse(new DoubleExponentialMovingAverage({length: 20, firstIsAverage: false}));

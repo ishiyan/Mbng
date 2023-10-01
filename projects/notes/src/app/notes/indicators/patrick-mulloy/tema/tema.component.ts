@@ -10,7 +10,7 @@ import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAver
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
-import { exponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
+import { exponentialMovingAverageNote, tripleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { TemaLengthInput } from './tema-input.interface';
 import { Tema } from './tema.interface';
 
@@ -19,7 +19,7 @@ const sl = 4096;
 const stepMin = 10;
 const stepMax = 90;
 const stepSpread = 1;
-const stepCount = 32;
+const stepCount = 60;
 
 const guardLength = (object: any): object is TripleExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -140,6 +140,7 @@ export class TemaComponent implements AfterViewInit {
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected emaNote = exponentialMovingAverageNote;
   protected temaNote = tripleExponentialMovingAverageNote;
+  protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
@@ -149,8 +150,8 @@ export class TemaComponent implements AfterViewInit {
 
   protected configurationStepUp!: Configuration;
   protected configurationStepDn!: Configuration;
-  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
-  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
+  protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 2, stepSpread);
+  protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 2, stepSpread);
 
   protected tema2 = calculateFrequencyResponse(new TripleExponentialMovingAverage({length: 2, firstIsAverage: true}));
   protected tema5 = calculateFrequencyResponse(new TripleExponentialMovingAverage({length: 5, firstIsAverage: false}));

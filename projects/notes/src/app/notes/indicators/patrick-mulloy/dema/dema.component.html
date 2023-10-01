@@ -25,35 +25,70 @@
 </figure>
 
 <div style="width:100%">
-  An exponential moving average (WMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
-
-  Close to the <a href="/{{emaNote.route}}">Simple Moving Average</a>, but multiplier coefficients
-  are not constant across the window width but are linearly weighted.
-  <mb-kd>{{"\\tag*{}WMA_N = \\frac{\\sum\\limits_{i=0}^{N-1}{(N-i)P_i}}{\\sum\\limits_{i=0}^{N-1}{(N-i)}}"}}</mb-kd>
-
-  The sum of the data and coefficient products are divided by the sum of coefficients to normalize the averaging process.
-
-  The major advantage of WMA is the reduced lag which results from the most recent data being the most heavily weighted.
-  WMA coefficients form triangle across the width of the filter, resulting a center of gravity being
-  <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
+  The Double Exponential Moving Average (DEMA) was introduced by Patrick G. Mulloy in
+  the Technical Analysis of Stocks &amp; Commodities (Mulloy 1994 12(1), Mulloy 1994 12(2)).
+  He wanted to make the DEMA "faster" (more sensitive to changes in the input data) than the
+  <a href="/{{emaNote.route}}">Exponential Moving Average</a> and to have a reduced lag.
   <p></p>
-
-  From the digital signal processing (DSP) point of view, DEMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
-  <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
-  </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+  As Tim Tillson mentions in (Tillson 1998), Mulloy used a technique, well known in Digital
+  Signal Processing, called "twicing" (Oppenheim et al., 2009 p.609), to decrease the lag of
+  a Linear Time-Invariant (LTI) filter. If <mb-ki>{{"E"}}</mb-ki> is a low-pass LTI filter
+  operator, then
+  <mb-kd>{{"\\tag*{}twice(x)=E(x)+E(x-E(x))"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}=2E(x)-E(E(x))"}}</mb-kd>
+  Here we are adding the smoothed residials to the smoothed values.
+  Note that the equation (1) assumes <mb-ki>{{"E"}}</mb-ki> to be an LTI filter, which
+  allows us to expand <mb-ki>{{"E(x-E(x))"}}</mb-ki> to <mb-ki>{{"E(x)-E(E(x))"}}</mb-ki>.
+  <p></p>
+  Patrick Mulloy doesn't mention the "twicing" technique in his articles.
+  Instead, he describes a "nonrigorous derivation" (Mulloy 1994 12(1)), assuming the input
+  data samples <mb-ki>{{"\\{x_k\\}"}}</mb-ki> to form a linear sequence
+  <mb-kd>{{"\\tag*{}x_{k}=a+bk, \\quad a=const, b=const"}}</mb-kd>
+  The EMA that lags <mb-ki>{{"\\{x_k\\}"}}</mb-ki> by <mb-ki>{{"l"}}</mb-ki> samples
+  can be written as
+  <mb-kd>{{"\\tag*{}ema_{k}=a+b(k-l)=a+bk-bl"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=x_{k}-bl"}}</mb-kd>
+  Using the same logic, when applying the EMA over EMA,
+  <mb-kd>{{"\\tag*{}ema2_{k}=ema_{k}-bl"}}</mb-kd>
+  Subtracting two previous equations gives
+  <mb-kd>{{"\\tag*{}ema_{k}-ema2_{k}=x_{k}-bl-(ema_{k}-bl)"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=x_{k}-ema_{k}"}}</mb-kd>
+  from which
+  <mb-kd>{{"\\tag*{}x_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
+  Then, he defines DEMA to be the same as <mb-ki>{{"x_k"}}</mb-ki>
+  <mb-kd>{{"\\tag*{}dema_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
+  This "nonrigorous derivation" seems unclear to me.
+  <p></p>
+  The calculation of DEMA goes as follows.
+  <mb-kd>{{"\\tag*{}ema_{k}=\\alpha x_{k}+(1-\\alpha)ema_{k-1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(2)}=ema_{k-1}+\\alpha(x_{k}-ema_{k-1})"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}ema2_{k}=ema(ema_{k})"}}</mb-kd>
+  <mb-kd>{{"\\tag*{}=\\alpha ema_{k}+(1-\\alpha)ema2_{k-1}"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(3)}=ema2_{k-1}+\\alpha(ema_{k}-ema2_{k-1})"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(4)}dema_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
+  <p></p>
+  The initial EMA values may be calculated in two different ways.
+  The first approach is to use the <a href="/{{smaNote.route}}">Simple Moving Average</a>
+  over the first 
+  <mb-kd>{{"\\tag*{(5)}L=\\frac{2}{\\alpha}-1"}}</mb-kd>
+  input data values, where <mb-ki>{{"L"}}</mb-ki> is an equivalent length of the
+  smoothing parameter <mb-ki>{{"\\alpha"}}</mb-ki>. We assume <mb-ki>{{"\\alpha"}}</mb-ki>
+  to be the same for both EMAs. This approach is the most widely used one.
+  <p></p>
+  The second way to initialize the EMAs is to use the first input data point as the initial value.
+  It is used by the well known (in the past) Metastock tradind software.
+  <p></p>
+  Regardless of the initialization approach, we always consider DEMA to be primed only
+  after the <mb-ki>{{"2L"}}</mb-ki> input data points have been fed into the indicator.
   <p></p>
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response to the step-up and step-down data.
-The transition is clearly not linear.
-The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
+<div style="width:100%">
+  Two figures below demonstrate the response to the step-up and step-down data.
+  The transition is clearly not linear.
+  The step-up response overshoots and the step-down response undershoots the data.
+</div>
 
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
@@ -74,8 +109,8 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
   continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
   We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
-
 </div>
 
 <figure class="figwide">
@@ -106,22 +141,24 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
+<p></p>
 
 <div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
   A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
   (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
   The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
-  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
-
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
 </div>
 
 <figure class="figwide">
-  <!--mat-grid-list cols="2" rowHeight="260px">
-    <mat-grid-tile>
-    </mat-grid-tile>
-  </mat-grid-list-->
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="15" [data]="[dema2, dema5, dema10, dema20]"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[dema2, dema5, dema10, dema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[dema2, dema5, dema10, dema20]"
@@ -131,10 +168,10 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[dema2, dema5, dema10, dema20]"
+    [xmode]="'period'" [maxPeriod]="40" [minDeg]="-80" [maxDeg]="20" [data]="[dema2, dema5, dema10, dema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[dema2, dema5, dema10, dema20]"
+    [xmode]="'frequency'" [minDeg]="-80" [maxDeg]="20" [data]="[dema2, dema5, dema10, dema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various DEMA lengths.</figcaption>
 </figure>
@@ -144,23 +181,19 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 </div>
 <hr />
 <h2 class="counter-skip">References</h2>
-<div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
-  <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
-</div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
+  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
 </div>
 <div class="citation-src"><!-- Article mulloy1994jan -->Mulloy, P. G. (1994).
   Smoothing Data With Faster Moving Averages. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(1), 11–19.
-  <a href="http://traders.com/#Jan1994" target="_blank"></a>
+  <a href="http://traders.com/#Jan1994" target="_blank">traders.com</a>
 </div>
-<div class="citation-src"><!-- Article mulloy1994feb -->
-  Mulloy, P. G. (1994). Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
-  <a href="http://traders.com/#Feb1994" target="_blank"></a>
+<div class="citation-src"><!-- Article mulloy1994feb -->Mulloy, P. G. (1994).
+  Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
+  <a href="http://traders.com/#Feb1994" target="_blank">traders.com</a>
 </div>
 <div class="citation-src"><!-- Article tillson1998jan -->
   Tillson, Tim (1998). Smoothing Techniques For More Accurate Signals. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>16</em>(1), 33–37.
-  <a href="http://traders.com/#Jan1998" target="_blank"></a>
+  <a href="http://traders.com/#Jan1998" target="_blank">traders.com</a>
 </div>

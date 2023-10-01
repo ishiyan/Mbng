@@ -155,16 +155,6 @@ is applied to the input. Using the equation (2), we get
   We need at least two samples (peak and through) to represent a cycle.
   See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
-  The same charts can be represented as a function of a cycle's frequency.
-  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
-  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
-  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
-  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
-  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
-  at the Nyquist frequency.
-  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
-  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
-  <p></p>
 </div>
 
 <figure class="figwide">
@@ -198,16 +188,21 @@ is applied to the input. Using the equation (2), we get
 <p></p>
 
 <div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
   A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
   (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
   The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
-  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
   <p></p>
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="15" [data]="[ema2, ema5, ema10, ema20]"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[ema2, ema5, ema10, ema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[ema2, ema5, ema10, ema20]"
@@ -217,7 +212,7 @@ is applied to the input. Using the equation (2), we get
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
+    [xmode]="'period'" [maxPeriod]="40" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
@@ -326,14 +321,14 @@ formula for the equation (13).
 <h2 class="counter-skip">References</h2>
 <div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
+  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank">google books</a>
 </div>
 <div><!-- @Book Mak2006 -->Mak, D. K. (2006).
   <em>Mathematical Techniques in Financial Market Trading</em> (p. 320).
   doi:10.1142/6055
-  <a href="https://books.google.com/books?id=18fICgAAQBAJ" target="_blank"></a>
+  <a href="https://books.google.com/books?id=18fICgAAQBAJ" target="_blank">google books</a>
 </div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
+  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
 </div>
