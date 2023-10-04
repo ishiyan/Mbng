@@ -12,6 +12,9 @@ export interface Series {
   /** URL describing the series. */
   url?: string;
 
+  /** The name to display URL as. */
+  urlName?: string;
+
   /** The time of the first element of the series. */
   timeStart: Date;
 

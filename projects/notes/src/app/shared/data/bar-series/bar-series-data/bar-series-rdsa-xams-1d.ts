@@ -6,6 +6,7 @@ export const barSeriesRdsaXams1d: Series = {
   mnemonic: 'rdsa:xams 1d',
   description: 'Royal Dutch Shell (€, RDSA:XAMS, GB00B03MLX29)',
   url: 'https://live.euronext.com/en/product/equities/GB00B03MLX29-XAMS',
+  urlName: 'EuroNext',
   timeStart: new Date(1999, 0, 4),
   timeEnd: new Date(2022, 0, 28),
   timeGranularity: TimeGranularity.Day1,

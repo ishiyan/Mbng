@@ -6,6 +6,7 @@ export const barSeriesOrXpar1d: Series = {
   mnemonic: 'or:xpar 1d',
   description: 'L\'Oréal stock (€, OR:XPAR, FR0000120321)',
   url: 'https://live.euronext.com/en/product/equities/FR0000120321-XPAR',
+  urlName: 'EuroNext',
   timeStart: new Date(1990, 6, 6),
   timeEnd: new Date(2023, 2, 10),
   timeGranularity: TimeGranularity.Day1,
