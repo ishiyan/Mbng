@@ -25,6 +25,24 @@
 </figure>
 
 <div style="width:100%">
+  The Triple Exponential Moving Average (TEMA) was introduced by Patrick G. Mulloy in
+  the Technical Analysis of Stocks &amp; Commodities (Mulloy 1994 12(1), Mulloy 1994 12(2))
+  as an extension of the double-smoothing tecnique used in
+  <a href="/{{demaNote.route}}">Double Exponential Moving Average</a> (DEMA) to make
+  the TEMA "faster" (more sensitive to changes in the input data) than the DEMA and to have
+  a reduced lag.
+  <p></p>
+  As Tim Tillson mentions in (Tillson 1998), Mulloy used a technique, well known in Digital
+  Signal Processing, called "twicing" (Oppenheim et al., 2009 p.609), to decrease the lag of
+  a Linear Time-Invariant (LTI) filter. If <mb-ki>{{"E"}}</mb-ki> is a low-pass LTI filter
+  operator, then
+  <mb-kd>{{"\\tag*{}twice(x)=E(x)+E(x-E(x))"}}</mb-kd>
+  <mb-kd>{{"\\tag*{(1)}=2E(x)-E(E(x))"}}</mb-kd>
+  Here we are adding the smoothed residials to the smoothed values.
+  Note that the equation (1) assumes <mb-ki>{{"E"}}</mb-ki> to be an LTI filter, which
+  allows us to expand <mb-ki>{{"E(x-E(x))"}}</mb-ki> to <mb-ki>{{"E(x)-E(E(x))"}}</mb-ki>.
+  <p></p>
+
   An exponential moving average (WMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
   <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
   where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
@@ -156,8 +174,8 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   Smoothing Data With Faster Moving Averages. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(1), 11–19.
   <a href="http://traders.com/#Jan1994" target="_blank">traders.com</a>
 </div>
-<div class="citation-src"><!-- Article mulloy1994feb -->
-  Mulloy, P. G. (1994). Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
+<div class="citation-src"><!-- Article mulloy1994feb -->Mulloy, P. G. (1994).
+  Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
   <a href="http://traders.com/#Feb1994" target="_blank">traders.com</a>
 </div>
 <div class="citation-src"><!-- Article tillson1998jan -->

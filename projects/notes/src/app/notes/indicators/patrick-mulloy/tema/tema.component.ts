@@ -10,7 +10,8 @@ import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAver
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
-import { exponentialMovingAverageNote, tripleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
+import { exponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
+import { doubleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { TemaLengthInput } from './tema-input.interface';
 import { Tema } from './tema.interface';
 
@@ -139,6 +140,7 @@ export class TemaComponent implements AfterViewInit {
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected emaNote = exponentialMovingAverageNote;
+  protected demaNote = doubleExponentialMovingAverageNote;
   protected temaNote = tripleExponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
