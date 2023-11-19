@@ -1,0 +1,14 @@
+<mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr" *ngIf="!useAlpha">
+  <mat-label>Length</mat-label>
+  <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="lengthParam" />
+</mat-form-field>
+<mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="firstIsAverageParam" *ngIf="!useAlpha">First is average</mat-slide-toggle>
+<mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
+<mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr" *ngIf="useAlpha">
+  <mat-label>Alpha</mat-label>
+  <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="alphaParam" />
+</mat-form-field>
+<mb-bar-component *ngIf="barComponentVisible" [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
+</mb-bar-component>
+<mb-quote-component *ngIf="quoteComponentVisible" [initial]="quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
+</mb-quote-component>
