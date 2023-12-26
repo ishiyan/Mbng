@@ -6,7 +6,7 @@ import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-ada
 const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'length' in object;
 
 /** Function to calculate mnemonic of an __KaufmanAdaptiveMovingAverage__ indicator. */
-export const KaufmanAdaptiveMovingAverageMnemonic =
+export const kaufmanAdaptiveMovingAverageMnemonic =
   (params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams): string => {
   if (guardLength(params)) {
     const p = params as KaufmanAdaptiveMovingAverageLengthParams;

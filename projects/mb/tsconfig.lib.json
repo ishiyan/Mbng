@@ -14,6 +14,7 @@
     "**/*.spec.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "src/public-api.ts"
   ]
 }

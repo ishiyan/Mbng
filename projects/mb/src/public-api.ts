@@ -228,6 +228,12 @@ export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
 
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.interface';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.component';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params-dialog.component';
+export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
+
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.interface';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.component';
