@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -18,25 +18,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    FormsModule,
-    FlexLayoutModule,
-    AppRoutingModule,
-    MaterialModule,
-    ToolbarModule,
-    FooterModule,
-    ThemePickerModule,
-    SnackBarModule,
-    KatexModule,
-    MathJaxModule.forRoot(),
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+    declarations: [
+        AppComponent
+    ],
+    bootstrap: [AppComponent],
+    imports: [BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        FlexLayoutModule,
+        AppRoutingModule,
+        MaterialModule,
+        ToolbarModule,
+        FooterModule,
+        ThemePickerModule,
+        SnackBarModule,
+        KatexModule,
+        MathJaxModule.forRoot()
+    ],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

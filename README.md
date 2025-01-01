@@ -8,6 +8,56 @@
 | `proeftuin` | A testing ground for the `mb` library |
 | `notes`     | An interactive assorted notes for various topics |
 
+## temp v18
+
+[migration](https://angular.dev/update-guide?v=17.0-18.0&l=3)
+
+```bash
+** Executing migrations of package '@angular/cdk' **
+
+❯ Updates the Angular CDK to v18.
+    
+      ✓  Updated Angular CDK to version 18
+    
+  Migration completed (No changes made).
+
+** Executing migrations of package '@angular/core' **
+
+❯ Updates two-way bindings that have an invalid expression to use the longform expression instead.
+  Migration completed (No changes made).
+
+❯ Replace deprecated HTTP related modules with provider functions.
+UPDATE projects/notes/src/app/app.module.ts (1354 bytes)
+UPDATE projects/mb/src/lib/svg-viewer/svg-viewer.module.ts (436 bytes)
+UPDATE projects/proeftuin/src/app/app.module.ts (1469 bytes)
+UPDATE projects/proeftuin/src/app/shared/theme-picker/theme-manager.service.spec.ts (2063 bytes)
+  Migration completed (4 files modified).
+
+❯ Updates calls to afterRender with an explicit phase to the new API.
+  Migration completed (No changes made).
+
+** Executing migrations of package '@angular/material' **
+
+❯ Updates Angular Material to v18.
+    
+      ✓  Updated Angular Material to version 18
+   
+UPDATE projects/notes/src/styles.scss (4445 bytes)
+UPDATE projects/proeftuin/src/assets/themes/brown-green.css (80818 bytes)
+UPDATE projects/proeftuin/src/assets/themes/deeppurple-amber.css (92633 bytes)
+UPDATE projects/proeftuin/src/assets/themes/indigo-pink.css (92363 bytes)
+UPDATE projects/proeftuin/src/assets/themes/pink-bluegrey.css (93230 bytes)
+UPDATE projects/proeftuin/src/assets/themes/purple-green.css (93244 bytes)
+UPDATE projects/proeftuin/src/assets/themes/yellow-amber.css (93519 bytes)
+UPDATE projects/proeftuin/src/styles.scss (1546 bytes)
+UPDATE projects/proeftuin/src/themes/deeppurple-amber.scss (1001 bytes)
+UPDATE projects/proeftuin/src/themes/indigo-pink.scss (995 bytes)
+UPDATE projects/proeftuin/src/themes/pink-bluegrey.scss (996 bytes)
+UPDATE projects/proeftuin/src/themes/purple-green.scss (994 bytes)
+UPDATE projects/proeftuin/src/themes/yellow-amber.scss (1052 bytes)
+  Migration completed (13 files modified).
+```
+
 ## Updating
 
 Install latest tools, run `ng update`, run `ncu`, run `npm install`.
