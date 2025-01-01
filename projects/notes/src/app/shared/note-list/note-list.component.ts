@@ -9,9 +9,10 @@ import { tags as initialTags } from '../../tags';
 const empty = '';
 
 @Component({
-  selector: 'app-note-list',
-  templateUrl: './note-list.component.html',
-  styleUrls: ['./note-list.component.scss']
+    selector: 'app-note-list',
+    templateUrl: './note-list.component.html',
+    styleUrls: ['./note-list.component.scss'],
+    standalone: false
 })
 export class NoteListComponent {
   @Input()

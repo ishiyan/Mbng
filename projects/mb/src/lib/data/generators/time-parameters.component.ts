@@ -7,9 +7,10 @@ import { TimeParameters } from './time-parameters';
 import { Enums } from '../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-time-parameters',
-  templateUrl: './time-parameters.component.html',
-  styleUrls: ['./time-parameters.component.scss']
+    selector: 'mb-data-generators-time-parameters',
+    templateUrl: './time-parameters.component.html',
+    styleUrls: ['./time-parameters.component.scss'],
+    standalone: false
 })
 export class TimeParametersComponent {
   @Input() timeParameters!: TimeParameters;

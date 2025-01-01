@@ -23,9 +23,10 @@ interface DataGroup {
 }
 
 @Component({
-  selector: 'app-sample-sparkline-2',
-  templateUrl: './sample-sparkline-2.component.html',
-  styleUrls: ['./sample-sparkline-2.component.scss']
+    selector: 'app-sample-sparkline-2',
+    templateUrl: './sample-sparkline-2.component.html',
+    styleUrls: ['./sample-sparkline-2.component.scss'],
+    standalone: false
 })
 export class SampleSparkline2Component {
 

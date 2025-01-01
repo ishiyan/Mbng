@@ -15,12 +15,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/notes",
+            "outputPath": {
+              "base": "dist/notes"
+            },
             "index": "projects/notes/src/index.html",
-            "main": "projects/notes/src/main.ts",
-            "polyfills": "projects/notes/src/polyfills.ts",
+            "polyfills": [
+              "projects/notes/src/polyfills.ts"
+            ],
             "tsConfig": "projects/notes/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -35,7 +38,8 @@
             "styles": [
               "projects/notes/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/notes/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -60,9 +64,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -129,12 +131,15 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/proeftuin",
+            "outputPath": {
+              "base": "dist/proeftuin"
+            },
             "index": "projects/proeftuin/src/index.html",
-            "main": "projects/proeftuin/src/main.ts",
-            "polyfills": "projects/proeftuin/src/polyfills.ts",
+            "polyfills": [
+              "projects/proeftuin/src/polyfills.ts"
+            ],
             "tsConfig": "projects/proeftuin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -154,7 +159,8 @@
                 "node_modules/"
               ]
             },
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/proeftuin/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -179,9 +185,7 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true

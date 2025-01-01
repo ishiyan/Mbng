@@ -10,9 +10,10 @@ const firstIsAverageDefault = true;
 const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'length' in object;
 
 @Component({
-  selector: 'mb-kaufman-adaptive-moving-average-params',
-  templateUrl: './kaufman-adaptive-moving-average-params.component.html',
-  styleUrls: ['./kaufman-adaptive-moving-average-params.component.scss']
+    selector: 'mb-kaufman-adaptive-moving-average-params',
+    templateUrl: './kaufman-adaptive-moving-average-params.component.html',
+    styleUrls: ['./kaufman-adaptive-moving-average-params.component.scss'],
+    standalone: false
 })
 export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

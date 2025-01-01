@@ -37,9 +37,10 @@ const createAlphaDema = (showStyle: boolean, sf: number, comp?: BarComponent): D
 };
 
 @Component({
-  selector: 'app-dema-list',
-  templateUrl: './dema-list.component.html',
-  styleUrls: ['./dema-list.component.scss']
+    selector: 'app-dema-list',
+    templateUrl: './dema-list.component.html',
+    styleUrls: ['./dema-list.component.scss'],
+    standalone: false
 })
 export class DemaListComponent implements AfterViewInit {
 

@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-simple-moving-average-params-dialog',
-  templateUrl: './simple-moving-average-params-dialog.component.html',
-  styleUrls: ['./simple-moving-average-params-dialog.component.scss']
+    selector: 'mb-simple-moving-average-params-dialog',
+    templateUrl: './simple-moving-average-params-dialog.component.html',
+    styleUrls: ['./simple-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class SimpleMovingAverageParamsDialogComponent {
 

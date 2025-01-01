@@ -4,7 +4,8 @@ import { KatexOptions } from 'katex';
 import { KatexService } from './katex.service';
 
 @Directive({
-  selector: '[mbKatex]',
+    selector: '[mbKatex]',
+    standalone: false
 })
 export class KatexDirective implements OnChanges {
   @Input() mbKatex!: string;

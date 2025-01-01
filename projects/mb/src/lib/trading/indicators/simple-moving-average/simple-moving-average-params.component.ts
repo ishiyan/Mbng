@@ -6,9 +6,10 @@ import { QuoteComponent } from '../../../data/entities/quote-component.enum';
 import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-simple-moving-average-params',
-  templateUrl: './simple-moving-average-params.component.html',
-  styleUrls: ['./simple-moving-average-params.component.scss']
+    selector: 'mb-simple-moving-average-params',
+    templateUrl: './simple-moving-average-params.component.html',
+    styleUrls: ['./simple-moving-average-params.component.scss'],
+    standalone: false
 })
 export class SimpleMovingAverageParamsComponent implements OnInit {
 

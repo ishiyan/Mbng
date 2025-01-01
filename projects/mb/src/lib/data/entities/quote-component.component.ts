@@ -11,9 +11,10 @@ interface Comp {
 }
 
 @Component({
-  selector: 'mb-quote-component',
-  templateUrl: './quote-component.component.html',
-  styleUrls: ['./quote-component.component.scss']
+    selector: 'mb-quote-component',
+    templateUrl: './quote-component.component.html',
+    styleUrls: ['./quote-component.component.scss'],
+    standalone: false
 })
 export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [

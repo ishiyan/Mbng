@@ -87,10 +87,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-tema',
-  templateUrl: './tema.component.html',
-  styleUrls: ['./tema.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-tema',
+    templateUrl: './tema.component.html',
+    styleUrls: ['./tema.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TemaComponent implements AfterViewInit {
 

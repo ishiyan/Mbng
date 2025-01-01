@@ -67,10 +67,11 @@ const textAfterSvg = `
 `;
 
 @Component({
-  selector: 'mb-frequency-response-chart',
-  templateUrl: './frequency-response-chart.component.html',
-  styleUrls: ['./frequency-response-chart.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+    selector: 'mb-frequency-response-chart',
+    templateUrl: './frequency-response-chart.component.html',
+    styleUrls: ['./frequency-response-chart.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    standalone: false
 })
 export class FrequencyResponseChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);

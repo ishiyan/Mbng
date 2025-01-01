@@ -8,9 +8,10 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
 import * as hilbert from '../hilbert';
 
 @Component({
-  selector: 'app-d3-sample-hilbert-stocks',
-  templateUrl: './hilbert-stocks.component.html',
-  styleUrls: ['./hilbert-stocks.component.scss']
+    selector: 'app-d3-sample-hilbert-stocks',
+    templateUrl: './hilbert-stocks.component.html',
+    styleUrls: ['./hilbert-stocks.component.scss'],
+    standalone: false
 })
 export class HilbertStocksComponent implements OnInit {
 

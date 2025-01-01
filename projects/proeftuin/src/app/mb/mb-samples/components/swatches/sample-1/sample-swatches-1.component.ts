@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-sample-swatches-1',
-  templateUrl: './sample-swatches-1.component.html',
-  styleUrls: ['./sample-swatches-1.component.scss']
+    selector: 'app-sample-swatches-1',
+    templateUrl: './sample-swatches-1.component.html',
+    styleUrls: ['./sample-swatches-1.component.scss'],
+    standalone: false
 })
 export class SampleSwatches1Component {
 

@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { QuoteParameters } from './quote-parameters';
 
 @Component({
-  selector: 'mb-data-generators-quote-parameters',
-  templateUrl: './quote-parameters.component.html',
-  styleUrls: ['./quote-parameters.component.scss']
+    selector: 'mb-data-generators-quote-parameters',
+    templateUrl: './quote-parameters.component.html',
+    styleUrls: ['./quote-parameters.component.scss'],
+    standalone: false
 })
 export class QuoteParametersComponent {
   @Input() quoteParameters!: QuoteParameters;

@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { StandardDeviationParams } from './standard-deviation-params.interface';
 
 @Component({
-  selector: 'mb-standard-deviation-params-dialog',
-  templateUrl: './standard-deviation-params-dialog.component.html',
-  styleUrls: ['./standard-deviation-params-dialog.component.scss']
+    selector: 'mb-standard-deviation-params-dialog',
+    templateUrl: './standard-deviation-params-dialog.component.html',
+    styleUrls: ['./standard-deviation-params-dialog.component.scss'],
+    standalone: false
 })
 export class StandardDeviationParamsDialogComponent {
 

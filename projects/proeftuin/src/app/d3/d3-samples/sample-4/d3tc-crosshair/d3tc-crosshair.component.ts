@@ -8,9 +8,10 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-crosshair',
-  templateUrl: './d3tc-crosshair.component.html',
-  styleUrls: ['./d3tc-crosshair.component.scss']
+    selector: 'app-d3-sample-d3tc-crosshair',
+    templateUrl: './d3tc-crosshair.component.html',
+    styleUrls: ['./d3tc-crosshair.component.scss'],
+    standalone: false
 })
 export class D3tcCrosshairComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

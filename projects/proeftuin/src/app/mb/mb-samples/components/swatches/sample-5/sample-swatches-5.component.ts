@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { parametricProceduralPalette } from 'projects/mb/src/lib/colors/parametric-procedural-palettes';
 
 @Component({
-  selector: 'app-sample-swatches-5',
-  templateUrl: './sample-swatches-5.component.html',
-  styleUrls: ['./sample-swatches-5.component.scss']
+    selector: 'app-sample-swatches-5',
+    templateUrl: './sample-swatches-5.component.html',
+    styleUrls: ['./sample-swatches-5.component.scss'],
+    standalone: false
 })
 export class SampleSwatches5Component {
 

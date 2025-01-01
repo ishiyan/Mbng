@@ -7,9 +7,10 @@ import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-candlesticks',
-  templateUrl: './d3tc-candlesticks.component.html',
-  styleUrls: ['./d3tc-candlesticks.component.scss']
+    selector: 'app-d3-sample-d3tc-candlesticks',
+    templateUrl: './d3tc-candlesticks.component.html',
+    styleUrls: ['./d3tc-candlesticks.component.scss'],
+    standalone: false
 })
 export class D3tcCandlesticksComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

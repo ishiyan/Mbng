@@ -12,16 +12,17 @@ import { ListService } from './list.service';
 import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service';
 
 @Component({
-  selector: 'mb-sample-table12',
-  templateUrl: './table12.component.html',
-  styleUrls: ['./table12.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'mb-sample-table12',
+    templateUrl: './table12.component.html',
+    styleUrls: ['./table12.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class Table12Component implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

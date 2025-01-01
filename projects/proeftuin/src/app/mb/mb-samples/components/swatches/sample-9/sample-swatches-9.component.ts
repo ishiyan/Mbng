@@ -8,9 +8,10 @@ const colorChanged = (log: string, color: string): string => {
 };
 
 @Component({
-  selector: 'app-sample-swatches-9',
-  templateUrl: './sample-swatches-9.component.html',
-  styleUrls: ['./sample-swatches-9.component.scss']
+    selector: 'app-sample-swatches-9',
+    templateUrl: './sample-swatches-9.component.html',
+    styleUrls: ['./sample-swatches-9.component.scss'],
+    standalone: false
 })
 export class SampleSwatches9Component {
   protected palettes3: string[][] = materialPalettesA();

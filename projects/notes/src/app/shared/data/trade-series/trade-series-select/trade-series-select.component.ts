@@ -6,9 +6,10 @@ import { TradeSeries } from '../trade-series.interface';
 import { TradeSeriesService } from '../trade-series.service';
 
 @Component({
-  selector: 'app-trade-series-select',
-  templateUrl: '../../abstractions/series-select.html',
-  styleUrls: ['../../abstractions/series-select.scss']
+    selector: 'app-trade-series-select',
+    templateUrl: '../../abstractions/series-select.html',
+    styleUrls: ['../../abstractions/series-select.scss'],
+    standalone: false
 })
 export class TradeSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

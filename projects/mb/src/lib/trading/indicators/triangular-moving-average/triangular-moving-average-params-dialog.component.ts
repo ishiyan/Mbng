@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TriangularMovingAverageParams } from './triangular-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-triangular-moving-average-params-dialog',
-  templateUrl: './triangular-moving-average-params-dialog.component.html',
-  styleUrls: ['./triangular-moving-average-params-dialog.component.scss']
+    selector: 'mb-triangular-moving-average-params-dialog',
+    templateUrl: './triangular-moving-average-params-dialog.component.html',
+    styleUrls: ['./triangular-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class TriangularMovingAverageParamsDialogComponent {
 

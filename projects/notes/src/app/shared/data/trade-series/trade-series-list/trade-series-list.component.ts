@@ -4,9 +4,10 @@ import { TradeSeriesService } from '../trade-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
 
 @Component({
-  selector: 'app-trade-series-list',
-  templateUrl: './trade-series-list.component.html',
-  styleUrls: ['./trade-series-list.component.scss']
+    selector: 'app-trade-series-list',
+    templateUrl: './trade-series-list.component.html',
+    styleUrls: ['./trade-series-list.component.scss'],
+    standalone: false
 })
 export class TradeSeriesListComponent implements OnInit {
   protected seriesArray!: RemovableSeries[];

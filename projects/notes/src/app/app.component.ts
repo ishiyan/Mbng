@@ -5,9 +5,10 @@ const darkClassName = 'darkMode';
 const lightClassName = '';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   @HostBinding('class') className = lightClassName;

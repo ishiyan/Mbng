@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-sample-ohlcv-chart-selector-2',
-  templateUrl: './sample-ohlcv-chart-selector-2.component.html',
-  styleUrls: ['./sample-ohlcv-chart-selector-2.component.scss']
+    selector: 'app-sample-ohlcv-chart-selector-2',
+    templateUrl: './sample-ohlcv-chart-selector-2.component.html',
+    styleUrls: ['./sample-ohlcv-chart-selector-2.component.scss'],
+    standalone: false
 })
 export class SampleOhlcvChartSelector2Component {
 

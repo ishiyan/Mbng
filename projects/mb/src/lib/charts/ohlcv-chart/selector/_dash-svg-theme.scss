@@ -1,9 +1,10 @@
+@use '@angular/material' as mat;
 @mixin dash-svg-theme($theme) {
   $foreground: map-get($theme, foreground);
 
   mb-dash-svg {
     line {
-      stroke: mat.get-color-from-palette($foreground, text);
+      stroke: mat.m2-get-color-from-palette($foreground, text);
     }
   }
 }

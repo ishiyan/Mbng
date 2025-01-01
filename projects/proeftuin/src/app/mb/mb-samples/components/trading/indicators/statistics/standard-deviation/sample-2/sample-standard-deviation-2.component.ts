@@ -6,9 +6,10 @@ import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.en
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 
 @Component({
-  selector: 'app-sample-standard-deviation-2',
-  templateUrl: './sample-standard-deviation-2.component.html',
-  styleUrls: ['./sample-standard-deviation-2.component.scss']
+    selector: 'app-sample-standard-deviation-2',
+    templateUrl: './sample-standard-deviation-2.component.html',
+    styleUrls: ['./sample-standard-deviation-2.component.scss'],
+    standalone: false
 })
 export class SampleStandardDeviation2Component {
   protected selected1: StandardDeviationParams = {

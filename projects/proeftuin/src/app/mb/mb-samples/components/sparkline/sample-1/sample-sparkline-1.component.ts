@@ -7,9 +7,10 @@ import { testDataBbBw } from '../../../test-data/indicators/test-data-bb-bw';
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
 
 @Component({
-  selector: 'app-sample-sparkline-1',
-  templateUrl: './sample-sparkline-1.component.html',
-  styleUrls: ['./sample-sparkline-1.component.scss']
+    selector: 'app-sample-sparkline-1',
+    templateUrl: './sample-sparkline-1.component.html',
+    styleUrls: ['./sample-sparkline-1.component.scss'],
+    standalone: false
 })
 export class SampleSparkline1Component {
 

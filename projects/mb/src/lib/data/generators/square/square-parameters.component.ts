@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { SquareParameters } from './square-parameters';
 
 @Component({
-  selector: 'mb-data-generators-square-parameters',
-  templateUrl: './square-parameters.component.html',
-  styleUrls: ['./square-parameters.component.scss']
+    selector: 'mb-data-generators-square-parameters',
+    templateUrl: './square-parameters.component.html',
+    styleUrls: ['./square-parameters.component.scss'],
+    standalone: false
 })
 export class SquareParametersComponent {
   @Input() squareParameters!: SquareParameters;

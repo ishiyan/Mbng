@@ -10,9 +10,10 @@ const firstIsAverageDefault = true;
 const guardLength = (object: any): object is DoubleExponentialMovingAverageLengthParams => 'length' in object;
 
 @Component({
-  selector: 'mb-double-exponential-moving-average-params',
-  templateUrl: './double-exponential-moving-average-params.component.html',
-  styleUrls: ['./double-exponential-moving-average-params.component.scss']
+    selector: 'mb-double-exponential-moving-average-params',
+    templateUrl: './double-exponential-moving-average-params.component.html',
+    styleUrls: ['./double-exponential-moving-average-params.component.scss'],
+    standalone: false
 })
 export class DoubleExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

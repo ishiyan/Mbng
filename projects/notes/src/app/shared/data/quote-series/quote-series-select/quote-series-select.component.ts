@@ -6,9 +6,10 @@ import { QuoteSeries } from '../quote-series.interface';
 import { QuoteSeriesService } from '../quote-series.service';
 
 @Component({
-  selector: 'app-quote-series-select',
-  templateUrl: '../../abstractions/series-select.html',
-  styleUrls: ['../../abstractions/series-select.scss']
+    selector: 'app-quote-series-select',
+    templateUrl: '../../abstractions/series-select.html',
+    styleUrls: ['../../abstractions/series-select.scss'],
+    standalone: false
 })
 export class QuoteSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

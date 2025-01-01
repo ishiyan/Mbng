@@ -74,10 +74,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-wma',
-  templateUrl: './wma.component.html',
-  styleUrls: ['./wma.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-wma',
+    templateUrl: './wma.component.html',
+    styleUrls: ['./wma.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class WmaComponent implements AfterViewInit {
 

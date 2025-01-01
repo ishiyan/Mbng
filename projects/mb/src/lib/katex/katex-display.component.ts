@@ -15,11 +15,12 @@ const defaultOptions: KatexOptions = {
 
 /** Component to render a TeX input in display mode with optional equation tag. */
 @Component({
-  selector: 'mb-kd',
-  templateUrl: './katex-display.component.html',
-  styleUrls: ['./katex-display.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'collision-id': 'KatexDisplayComponent'}
+    selector: 'mb-kd',
+    templateUrl: './katex-display.component.html',
+    styleUrls: ['./katex-display.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { 'collision-id': 'KatexDisplayComponent' },
+    standalone: false
 })
 export class KatexDisplayComponent implements AfterContentInit, OnInit {
   protected options: KatexOptions = defaultOptions;

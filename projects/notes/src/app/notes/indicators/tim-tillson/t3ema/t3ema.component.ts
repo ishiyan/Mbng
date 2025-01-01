@@ -77,10 +77,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-t3ema',
-  templateUrl: './t3ema.component.html',
-  styleUrls: ['./t3ema.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-t3ema',
+    templateUrl: './t3ema.component.html',
+    styleUrls: ['./t3ema.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class T3emaComponent implements AfterViewInit {
 

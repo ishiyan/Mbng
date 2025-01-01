@@ -10,9 +10,10 @@ import { SeriesLoad } from '../../abstractions/series-load';
 import { BarSeriesService } from '../bar-series.service';
 
 @Component({
-  selector: 'app-bar-series-load',
-  templateUrl: '../../abstractions/series-load.html',
-  styleUrls: ['../../abstractions/series-load.scss']
+    selector: 'app-bar-series-load',
+    templateUrl: '../../abstractions/series-load.html',
+    styleUrls: ['../../abstractions/series-load.scss'],
+    standalone: false
 })
 export class BarSeriesLoadComponent extends SeriesLoad {
 

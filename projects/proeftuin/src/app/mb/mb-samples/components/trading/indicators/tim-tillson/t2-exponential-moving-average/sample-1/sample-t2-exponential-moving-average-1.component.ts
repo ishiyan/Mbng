@@ -6,10 +6,11 @@ import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.en
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 
 @Component({
-  selector: 'app-sample-t2-exponential-moving-average-1',
-  templateUrl: './sample-t2-exponential-moving-average-1.component.html',
-  styleUrls: ['./sample-t2-exponential-moving-average-1.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-sample-t2-exponential-moving-average-1',
+    templateUrl: './sample-t2-exponential-moving-average-1.component.html',
+    styleUrls: ['./sample-t2-exponential-moving-average-1.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SampleT2ExponentialMovingAverage1Component {
   protected selected1: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {

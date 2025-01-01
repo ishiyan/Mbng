@@ -37,9 +37,10 @@ const createAlphaT2ema = (showStyle: boolean, sf: number, vf: number, comp?: Bar
 };
 
 @Component({
-  selector: 'app-t2ema-list',
-  templateUrl: './t2ema-list.component.html',
-  styleUrls: ['./t2ema-list.component.scss']
+    selector: 'app-t2ema-list',
+    templateUrl: './t2ema-list.component.html',
+    styleUrls: ['./t2ema-list.component.scss'],
+    standalone: false
 })
 export class T2emaListComponent implements AfterViewInit {
 

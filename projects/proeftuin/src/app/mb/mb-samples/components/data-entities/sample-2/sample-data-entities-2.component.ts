@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { QuoteComponent } from 'mb';
 
 @Component({
-  selector: 'app-sample-data-entities-2',
-  templateUrl: './sample-data-entities-2.component.html',
-  styleUrls: ['./sample-data-entities-2.component.scss']
+    selector: 'app-sample-data-entities-2',
+    templateUrl: './sample-data-entities-2.component.html',
+    styleUrls: ['./sample-data-entities-2.component.scss'],
+    standalone: false
 })
 export class SampleDataEntities2Component {
 

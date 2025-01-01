@@ -6,9 +6,10 @@ import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 import { StandardDeviationParams } from './standard-deviation-params.interface';
 
 @Component({
-  selector: 'mb-standard-deviation-params',
-  templateUrl: './standard-deviation-params.component.html',
-  styleUrls: ['./standard-deviation-params.component.scss']
+    selector: 'mb-standard-deviation-params',
+    templateUrl: './standard-deviation-params.component.html',
+    styleUrls: ['./standard-deviation-params.component.scss'],
+    standalone: false
 })
 export class StandardDeviationParamsComponent implements OnInit {
 

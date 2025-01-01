@@ -7,9 +7,10 @@ import { NotesSample } from './notes-sample';
 import { treeNodes } from './notes-samples';
 
 @Component({
-  selector: 'app-notes-collection',
-  templateUrl: './notes.component.html',
-  styleUrls: ['./notes.component.scss']
+    selector: 'app-notes-collection',
+    templateUrl: './notes.component.html',
+    styleUrls: ['./notes.component.scss'],
+    standalone: false
 })
 export class NotesComponent {
   public sample: NotesSample = treeNodes[0];

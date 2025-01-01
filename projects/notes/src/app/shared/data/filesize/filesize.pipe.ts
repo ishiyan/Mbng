@@ -5,7 +5,8 @@ const mbBytes = kbBytes * 1024;
 const gbBytes = mbBytes * 1024;
 
 @Pipe({
-  name: 'filesize'
+    name: 'filesize',
+    standalone: false
 })
 export class FilesizePipe implements PipeTransform {
 

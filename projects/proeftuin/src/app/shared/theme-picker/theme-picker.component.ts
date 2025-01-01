@@ -8,11 +8,12 @@ import { ThemeManagerService } from './theme-manager.service';
 import { ThemeStorageService } from './theme-storage.service';
 
 @Component({
-  selector: 'app-theme-picker',
-  templateUrl: 'theme-picker.component.html',
-  styleUrls: ['theme-picker.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-theme-picker',
+    templateUrl: 'theme-picker.component.html',
+    styleUrls: ['theme-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ThemePickerComponent implements OnInit, OnDestroy {
   private queryParamSubscription = Subscription.EMPTY;

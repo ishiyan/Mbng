@@ -6,9 +6,10 @@ import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.en
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
 
 @Component({
-  selector: 'app-sample-simple-moving-average-1',
-  templateUrl: './sample-simple-moving-average-1.component.html',
-  styleUrls: ['./sample-simple-moving-average-1.component.scss']
+    selector: 'app-sample-simple-moving-average-1',
+    templateUrl: './sample-simple-moving-average-1.component.html',
+    styleUrls: ['./sample-simple-moving-average-1.component.scss'],
+    standalone: false
 })
 export class SampleSimpleMovingAverage1Component {
   protected selected1: SimpleMovingAverageParams = {

@@ -14,11 +14,12 @@ const defaultWidth = 160;
 const defaultHeight = 24;
 
 @Component({
-  selector: 'mb-sparkline',
-  templateUrl: './sparkline.component.html',
-  styleUrls: ['./sparkline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'mb-sparkline',
+    templateUrl: './sparkline.component.html',
+    styleUrls: ['./sparkline.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SparklineComponent implements OnChanges, AfterViewInit {
   /** A width of the sparkline. */

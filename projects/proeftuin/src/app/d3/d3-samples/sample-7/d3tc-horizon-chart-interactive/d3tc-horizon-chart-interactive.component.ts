@@ -10,9 +10,10 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-horizon-chart-interactive',
-  templateUrl: './d3tc-horizon-chart-interactive.component.html',
-  styleUrls: ['./d3tc-horizon-chart-interactive.component.scss']
+    selector: 'app-d3-sample-d3tc-horizon-chart-interactive',
+    templateUrl: './d3tc-horizon-chart-interactive.component.html',
+    styleUrls: ['./d3tc-horizon-chart-interactive.component.scss'],
+    standalone: false
 })
 export class D3tcHorizonChartInteractiveComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

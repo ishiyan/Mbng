@@ -7,9 +7,10 @@ import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service
 import { HistoricalData } from 'projects/mb/src/lib/data/historical-data';
 
 @Component({
-  selector: 'mb-sample-synthetic-data',
-  templateUrl: './synthetic-data.component.html',
-  styleUrls: ['./synthetic-data.component.scss']
+    selector: 'mb-sample-synthetic-data',
+    templateUrl: './synthetic-data.component.html',
+    styleUrls: ['./synthetic-data.component.scss'],
+    standalone: false
 })
 export class SyntheticDataComponent {
   readonly temporalEntityKinds = Object.keys(TemporalEntityKind);

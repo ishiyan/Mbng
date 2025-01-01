@@ -8,9 +8,10 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-volume',
-  templateUrl: './d3tc-volume.component.html',
-  styleUrls: ['./d3tc-volume.component.scss']
+    selector: 'app-d3-sample-d3tc-volume',
+    templateUrl: './d3tc-volume.component.html',
+    styleUrls: ['./d3tc-volume.component.scss'],
+    standalone: false
 })
 export class D3tcVolumeComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

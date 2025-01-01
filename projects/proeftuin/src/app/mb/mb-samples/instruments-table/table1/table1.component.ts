@@ -8,16 +8,17 @@ import { Instrument } from 'projects/mb/src/lib/trading/instruments/instrument';
 // import { euronextListShort } from 'projects/mb/src/lib/euronext-list-short';
 
 @Component({
-  selector: 'mb-sample-table1',
-  templateUrl: './table1.component.html',
-  styleUrls: ['./table1.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+    selector: 'mb-sample-table1',
+    templateUrl: './table1.component.html',
+    styleUrls: ['./table1.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    standalone: false
 })
 export class Table1Component implements OnInit {
   @ViewChild('container') container!: ElementRef;

@@ -5,9 +5,10 @@ import { T2ExponentialMovingAverageLengthParams } from './t2-exponential-moving-
 import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponential-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-t2-exponential-moving-average-params-dialog',
-  templateUrl: './t2-exponential-moving-average-params-dialog.component.html',
-  styleUrls: ['./t2-exponential-moving-average-params-dialog.component.scss']
+    selector: 'mb-t2-exponential-moving-average-params-dialog',
+    templateUrl: './t2-exponential-moving-average-params-dialog.component.html',
+    styleUrls: ['./t2-exponential-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class T2ExponentialMovingAverageParamsDialogComponent {
 

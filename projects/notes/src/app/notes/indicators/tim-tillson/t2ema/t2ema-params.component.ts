@@ -5,10 +5,11 @@ import { LineStyle } from 'mb';
 import { T2ema } from './t2ema.interface';
 
 @Component({
-  selector: 'app-t2ema-params',
-  templateUrl: './t2ema-params.component.html',
-  styleUrls: ['./t2ema-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-t2ema-params',
+    templateUrl: './t2ema-params.component.html',
+    styleUrls: ['./t2ema-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class T2emaParamsComponent {
 

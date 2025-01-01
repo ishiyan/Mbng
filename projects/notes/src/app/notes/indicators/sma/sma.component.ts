@@ -74,10 +74,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-sma',
-  templateUrl: './sma.component.html',
-  styleUrls: ['./sma.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-sma',
+    templateUrl: './sma.component.html',
+    styleUrls: ['./sma.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SmaComponent implements AfterViewInit {
 

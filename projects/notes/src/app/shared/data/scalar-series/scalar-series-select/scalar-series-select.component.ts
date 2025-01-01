@@ -6,9 +6,10 @@ import { ScalarSeries } from '../scalar-series.interface';
 import { ScalarSeriesService } from '../scalar-series.service';
 
 @Component({
-  selector: 'app-scalar-series-select',
-  templateUrl: '../../abstractions/series-select.html',
-  styleUrls: ['../../abstractions/series-select.scss']
+    selector: 'app-scalar-series-select',
+    templateUrl: '../../abstractions/series-select.html',
+    styleUrls: ['../../abstractions/series-select.scss'],
+    standalone: false
 })
 export class ScalarSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

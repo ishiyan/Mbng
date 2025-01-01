@@ -12,9 +12,10 @@ const initialStyle = (): LineStyle => {
 };
 
 @Component({
-  selector: 'app-sample-ohlcv-chart-selector-6',
-  templateUrl: './sample-ohlcv-chart-selector-6.component.html',
-  styleUrls: ['./sample-ohlcv-chart-selector-6.component.scss']
+    selector: 'app-sample-ohlcv-chart-selector-6',
+    templateUrl: './sample-ohlcv-chart-selector-6.component.html',
+    styleUrls: ['./sample-ohlcv-chart-selector-6.component.scss'],
+    standalone: false
 })
 export class SampleOhlcvChartSelector6Component {
   protected selected1 = new LineStyle();

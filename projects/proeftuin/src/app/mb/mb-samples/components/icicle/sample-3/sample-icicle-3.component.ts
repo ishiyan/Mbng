@@ -60,9 +60,10 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'app-sample-icicle-3',
-  templateUrl: './sample-icicle-3.component.html',
-  styleUrls: ['./sample-icicle-3.component.scss']
+    selector: 'app-sample-icicle-3',
+    templateUrl: './sample-icicle-3.component.html',
+    styleUrls: ['./sample-icicle-3.component.scss'],
+    standalone: false
 })
 export class SampleIcicle3Component {
 

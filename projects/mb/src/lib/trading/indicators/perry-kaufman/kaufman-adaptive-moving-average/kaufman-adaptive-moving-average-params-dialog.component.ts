@@ -5,9 +5,10 @@ import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-mov
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-kaufman-adaptive-moving-average-params-dialog',
-  templateUrl: './kaufman-adaptive-moving-average-params-dialog.component.html',
-  styleUrls: ['./kaufman-adaptive-moving-average-params-dialog.component.scss']
+    selector: 'mb-kaufman-adaptive-moving-average-params-dialog',
+    templateUrl: './kaufman-adaptive-moving-average-params-dialog.component.html',
+    styleUrls: ['./kaufman-adaptive-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class KaufmanAdaptiveMovingAverageParamsDialogComponent {
 

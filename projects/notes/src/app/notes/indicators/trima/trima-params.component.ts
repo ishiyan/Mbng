@@ -6,10 +6,11 @@ import { TriangularMovingAverageParams } from 'mb';
 import { Trima } from './trima.interface';
 
 @Component({
-  selector: 'app-trima-params',
-  templateUrl: './trima-params.component.html',
-  styleUrls: ['./trima-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-trima-params',
+    templateUrl: './trima-params.component.html',
+    styleUrls: ['./trima-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TrimaParamsComponent {
 

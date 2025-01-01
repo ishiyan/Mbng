@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KatexOptions } from 'katex';
 
 @Component({
-  selector: 'mb-katex',
-  templateUrl: './katex.component.html',
-  styleUrls: ['./katex.component.scss'],
-  host: {'collision-id': 'KatexComponent'}
+    selector: 'mb-katex',
+    templateUrl: './katex.component.html',
+    styleUrls: ['./katex.component.scss'],
+    host: { 'collision-id': 'KatexComponent' },
+    standalone: false
 })
 export class KatexComponent {
   @Input() expression!: string;

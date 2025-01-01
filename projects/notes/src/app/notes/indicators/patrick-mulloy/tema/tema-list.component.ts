@@ -37,9 +37,10 @@ const createAlphaTema = (showStyle: boolean, sf: number, comp?: BarComponent): T
 };
 
 @Component({
-  selector: 'app-tema-list',
-  templateUrl: './tema-list.component.html',
-  styleUrls: ['./tema-list.component.scss']
+    selector: 'app-tema-list',
+    templateUrl: './tema-list.component.html',
+    styleUrls: ['./tema-list.component.scss'],
+    standalone: false
 })
 export class TemaListComponent implements AfterViewInit {
 

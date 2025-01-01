@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'mb-color',
-  templateUrl: './color.component.html',
-  styleUrls: ['./color.component.scss']
+    selector: 'mb-color',
+    templateUrl: './color.component.html',
+    styleUrls: ['./color.component.scss'],
+    standalone: false
 })
 export class ColorComponent implements OnInit {
   private value = '#000';

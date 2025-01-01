@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VarianceParams } from './variance-params.interface';
 
 @Component({
-  selector: 'mb-variance-params-dialog',
-  templateUrl: './variance-params-dialog.component.html',
-  styleUrls: ['./variance-params-dialog.component.scss']
+    selector: 'mb-variance-params-dialog',
+    templateUrl: './variance-params-dialog.component.html',
+    styleUrls: ['./variance-params-dialog.component.scss'],
+    standalone: false
 })
 export class VarianceParamsDialogComponent {
 

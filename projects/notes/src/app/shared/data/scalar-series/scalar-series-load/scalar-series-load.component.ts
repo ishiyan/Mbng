@@ -10,9 +10,10 @@ import { SeriesLoad } from '../../abstractions/series-load';
 import { ScalarSeriesService } from '../scalar-series.service';
 
 @Component({
-  selector: 'app-scalar-series-load',
-  templateUrl: '../../abstractions/series-load.html',
-  styleUrls: ['../../abstractions/series-load.scss']
+    selector: 'app-scalar-series-load',
+    templateUrl: '../../abstractions/series-load.html',
+    styleUrls: ['../../abstractions/series-load.scss'],
+    standalone: false
 })
 export class ScalarSeriesLoadComponent extends SeriesLoad {
 

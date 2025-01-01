@@ -5,9 +5,10 @@ import { ExponentialMovingAverageLengthParams } from './exponential-moving-avera
 import { ExponentialMovingAverageSmoothingFactorParams } from './exponential-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-exponential-moving-average-params-dialog',
-  templateUrl: './exponential-moving-average-params-dialog.component.html',
-  styleUrls: ['./exponential-moving-average-params-dialog.component.scss']
+    selector: 'mb-exponential-moving-average-params-dialog',
+    templateUrl: './exponential-moving-average-params-dialog.component.html',
+    styleUrls: ['./exponential-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class ExponentialMovingAverageParamsDialogComponent {
 

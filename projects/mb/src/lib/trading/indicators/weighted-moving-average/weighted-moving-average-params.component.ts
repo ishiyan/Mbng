@@ -6,9 +6,10 @@ import { QuoteComponent } from '../../../data/entities/quote-component.enum';
 import { WeightedMovingAverageParams } from './weighted-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-weighted-moving-average-params',
-  templateUrl: './weighted-moving-average-params.component.html',
-  styleUrls: ['./weighted-moving-average-params.component.scss']
+    selector: 'mb-weighted-moving-average-params',
+    templateUrl: './weighted-moving-average-params.component.html',
+    styleUrls: ['./weighted-moving-average-params.component.scss'],
+    standalone: false
 })
 export class WeightedMovingAverageParamsComponent implements OnInit {
 

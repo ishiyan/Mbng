@@ -6,9 +6,10 @@ import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 import { VarianceParams } from './variance-params.interface';
 
 @Component({
-  selector: 'mb-variance-params',
-  templateUrl: './variance-params.component.html',
-  styleUrls: ['./variance-params.component.scss']
+    selector: 'mb-variance-params',
+    templateUrl: './variance-params.component.html',
+    styleUrls: ['./variance-params.component.scss'],
+    standalone: false
 })
 export class VarianceParamsComponent implements OnInit {
 

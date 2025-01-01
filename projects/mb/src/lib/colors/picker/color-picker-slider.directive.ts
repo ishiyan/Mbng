@@ -1,7 +1,8 @@
 import { Directive, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[mbCpSlider]'
+    selector: '[mbCpSlider]',
+    standalone: false
 })
 export class ColorPickerSliderDirective {
   private listenerMove: any;

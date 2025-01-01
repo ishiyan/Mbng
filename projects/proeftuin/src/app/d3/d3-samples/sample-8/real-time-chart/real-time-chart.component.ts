@@ -5,10 +5,11 @@ import * as d3 from 'd3';
 import * as rtc from './realTimeChart.js';
 
 @Component({
-  selector: 'app-d3-sample-real-time-chart',
-  templateUrl: './real-time-chart.component.html',
-  styleUrls: ['./real-time-chart.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-d3-sample-real-time-chart',
+    templateUrl: './real-time-chart.component.html',
+    styleUrls: ['./real-time-chart.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class RealTimeChartComponent implements OnInit, OnDestroy {
   @ViewChild('container', { static: true }) container!: ElementRef;

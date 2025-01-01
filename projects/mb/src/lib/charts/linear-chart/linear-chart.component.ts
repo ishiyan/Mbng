@@ -45,10 +45,11 @@ const textAfterSvg = `
 `;
 
 @Component({
-  selector: 'mb-linear-chart',
-  templateUrl: './linear-chart.component.html',
-  styleUrls: ['./linear-chart.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+    selector: 'mb-linear-chart',
+    templateUrl: './linear-chart.component.html',
+    styleUrls: ['./linear-chart.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    standalone: false
 })
 export class LinearChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);

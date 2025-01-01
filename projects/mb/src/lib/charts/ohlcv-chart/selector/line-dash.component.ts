@@ -7,9 +7,10 @@ interface Elem {
 }
 
 @Component({
-  selector: 'mb-line-dash',
-  templateUrl: './line-dash.component.html',
-  styleUrls: ['./line-dash.component.scss']
+    selector: 'mb-line-dash',
+    templateUrl: './line-dash.component.html',
+    styleUrls: ['./line-dash.component.scss'],
+    standalone: false
 })
 export class LineDashComponent implements OnInit {
   protected elems: Elem[] = [

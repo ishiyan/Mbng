@@ -5,9 +5,10 @@ import { GeometricBrownianMotionParameters } from './geometric-brownian-motion-p
 import { Enums } from '../../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-geometric-brownian-motion-parameters',
-  templateUrl: './geometric-brownian-motion-parameters.component.html',
-  styleUrls: ['./geometric-brownian-motion-parameters.component.scss']
+    selector: 'mb-data-generators-geometric-brownian-motion-parameters',
+    templateUrl: './geometric-brownian-motion-parameters.component.html',
+    styleUrls: ['./geometric-brownian-motion-parameters.component.scss'],
+    standalone: false
 })
 export class GeometricBrownianMotionParametersComponent {
   @Input() geometricBrownianMotionParameters!: GeometricBrownianMotionParameters;

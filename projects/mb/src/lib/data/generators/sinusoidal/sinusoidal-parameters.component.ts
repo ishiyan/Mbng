@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { SinusoidalParameters } from './sinusoidal-parameters';
 
 @Component({
-  selector: 'mb-data-generators-sinusoidal-parameters',
-  templateUrl: './sinusoidal-parameters.component.html',
-  styleUrls: ['./sinusoidal-parameters.component.scss']
+    selector: 'mb-data-generators-sinusoidal-parameters',
+    templateUrl: './sinusoidal-parameters.component.html',
+    styleUrls: ['./sinusoidal-parameters.component.scss'],
+    standalone: false
 })
 export class SinusoidalParametersComponent {
   @Input() sinusoidalParameters!: SinusoidalParameters;

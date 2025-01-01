@@ -5,9 +5,10 @@ import * as d3 from 'd3';
 import * as hilbert from './hilbert2d';
 
 @Component({
-  selector: 'app-d3-sample-hilbert-paths',
-  templateUrl: './hilbert-paths.component.html',
-  styleUrls: ['./hilbert-paths.component.scss']
+    selector: 'app-d3-sample-hilbert-paths',
+    templateUrl: './hilbert-paths.component.html',
+    styleUrls: ['./hilbert-paths.component.scss'],
+    standalone: false
 })
 export class HilbertPathsComponent implements OnInit {
   private svg: any;

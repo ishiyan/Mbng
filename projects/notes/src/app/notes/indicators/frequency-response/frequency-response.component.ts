@@ -8,9 +8,10 @@ import { IdentityFilter } from './identity-filter';
 const sl = 4096;
 
 @Component({
-  selector: 'app-ind-frequency-response',
-  templateUrl: './frequency-response.component.html',
-  styleUrls: ['./frequency-response.component.scss']
+    selector: 'app-ind-frequency-response',
+    templateUrl: './frequency-response.component.html',
+    styleUrls: ['./frequency-response.component.scss'],
+    standalone: false
 })
 export class FrequencyResponseComponent {
   protected frNote = frequencyResponseOfAnIndicatorNote;

@@ -8,10 +8,12 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-support-resistance',
-  templateUrl: './d3tc-support-resistance.component.html',
-  styleUrls: ['./d3tc-support-resistance.component.scss'],
-  encapsulation: ViewEncapsulation.None // does not see css without this
+    selector: 'app-d3-sample-d3tc-support-resistance',
+    templateUrl: './d3tc-support-resistance.component.html',
+    styleUrls: ['./d3tc-support-resistance.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+    ,
+    standalone: false
 })
 export class D3tcSupportResistanceComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

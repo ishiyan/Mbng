@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-d3-sample-1',
-  templateUrl: './sample-1.component.html',
-  styleUrls: ['./sample-1.component.scss']
+    selector: 'app-d3-sample-1',
+    templateUrl: './sample-1.component.html',
+    styleUrls: ['./sample-1.component.scss'],
+    standalone: false
 })
 export class Sample1Component implements OnInit {
   public chartData!: Array<any>;

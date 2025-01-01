@@ -5,10 +5,11 @@ import { LineStyle } from 'mb';
 import { Tema } from './tema.interface';
 
 @Component({
-  selector: 'app-tema-params',
-  templateUrl: './tema-params.component.html',
-  styleUrls: ['./tema-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-tema-params',
+    templateUrl: './tema-params.component.html',
+    styleUrls: ['./tema-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TemaParamsComponent {
 

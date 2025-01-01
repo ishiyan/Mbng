@@ -9,10 +9,12 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 import { dataOhlcvIntraday } from '../../data/data-ohlcv-intraday';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-finance-time',
-  templateUrl: './d3tc-finance-time.component.html',
-  styleUrls: ['./d3tc-finance-time.component.scss'],
-  encapsulation: ViewEncapsulation.None // does not see css without this
+    selector: 'app-d3-sample-d3tc-finance-time',
+    templateUrl: './d3tc-finance-time.component.html',
+    styleUrls: ['./d3tc-finance-time.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+    ,
+    standalone: false
 })
 export class D3tcFinanceTimeComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

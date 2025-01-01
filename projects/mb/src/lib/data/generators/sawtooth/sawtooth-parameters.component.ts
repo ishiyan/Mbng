@@ -4,9 +4,10 @@ import { SawtoothShape } from './sawtooth-shape.enum';
 import { Enums } from '../../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-sawtooth-parameters',
-  templateUrl: './sawtooth-parameters.component.html',
-  styleUrls: ['./sawtooth-parameters.component.scss']
+    selector: 'mb-data-generators-sawtooth-parameters',
+    templateUrl: './sawtooth-parameters.component.html',
+    styleUrls: ['./sawtooth-parameters.component.scss'],
+    standalone: false
 })
 export class SawtoothParametersComponent {
   @Input() sawtoothParameters!: SawtoothParameters;

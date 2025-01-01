@@ -25,9 +25,10 @@ const createWma = (showStyle: boolean, len: number, comp?: BarComponent): Wma =>
 };
 
 @Component({
-  selector: 'app-wma-list',
-  templateUrl: './wma-list.component.html',
-  styleUrls: ['./wma-list.component.scss']
+    selector: 'app-wma-list',
+    templateUrl: './wma-list.component.html',
+    styleUrls: ['./wma-list.component.scss'],
+    standalone: false
 })
 export class WmaListComponent implements AfterViewInit {
 

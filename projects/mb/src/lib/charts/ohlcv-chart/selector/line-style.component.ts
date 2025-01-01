@@ -3,9 +3,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LineStyle } from './line-style';
 
 @Component({
-  selector: 'mb-line-style',
-  templateUrl: './line-style.component.html',
-  styleUrls: ['./line-style.component.scss']
+    selector: 'mb-line-style',
+    templateUrl: './line-style.component.html',
+    styleUrls: ['./line-style.component.scss'],
+    standalone: false
 })
 export class LineStyleComponent implements OnInit {
 

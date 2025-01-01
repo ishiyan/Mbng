@@ -37,9 +37,10 @@ const createAlphaT3ema = (showStyle: boolean, sf: number, vf: number, comp?: Bar
 };
 
 @Component({
-  selector: 'app-t3ema-list',
-  templateUrl: './t3ema-list.component.html',
-  styleUrls: ['./t3ema-list.component.scss']
+    selector: 'app-t3ema-list',
+    templateUrl: './t3ema-list.component.html',
+    styleUrls: ['./t3ema-list.component.scss'],
+    standalone: false
 })
 export class T3emaListComponent implements AfterViewInit {
 

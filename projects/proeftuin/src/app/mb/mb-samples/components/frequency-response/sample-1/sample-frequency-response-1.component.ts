@@ -5,9 +5,10 @@ import { FrequencyResponse, SimpleMovingAverage } from 'projects/mb/src/public-a
 const sl = 2048;
 
 @Component({
-  selector: 'mb-sample-frequency-response-1',
-  templateUrl: './sample-frequency-response-1.component.html',
-  styleUrls: ['./sample-frequency-response-1.component.scss']
+    selector: 'mb-sample-frequency-response-1',
+    templateUrl: './sample-frequency-response-1.component.html',
+    styleUrls: ['./sample-frequency-response-1.component.scss'],
+    standalone: false
 })
 export class SampleFrequencyResponse1Component {
 

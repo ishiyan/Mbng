@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'mb-sample-instrument-table',
-  templateUrl: './instruments-table.component.html',
-  styleUrls: ['./instruments-table.component.scss']
+    selector: 'mb-sample-instrument-table',
+    templateUrl: './instruments-table.component.html',
+    styleUrls: ['./instruments-table.component.scss'],
+    standalone: false
 })
 export class InstrumentsTableComponent { }

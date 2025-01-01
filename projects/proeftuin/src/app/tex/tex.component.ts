@@ -5,9 +5,10 @@ import { Category } from './categories/category';
 import { categories } from './categories/categories';
 
 @Component({
-  selector: 'app-tex-sample-collection',
-  templateUrl: './tex.component.html',
-  styleUrls: ['./tex.component.scss']
+    selector: 'app-tex-sample-collection',
+    templateUrl: './tex.component.html',
+    styleUrls: ['./tex.component.scss'],
+    standalone: false
 })
 export class TexComponent {
   public readonly categories: Category[] = categories;

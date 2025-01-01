@@ -111,9 +111,10 @@ const widthAlpha = 196;
 const gap = 10;
 
 @Component({
-  selector: 'mb-color-picker',
-  templateUrl: './color-picker.component.html',
-  styleUrls: [ './color-picker.component.scss' ]
+    selector: 'mb-color-picker',
+    templateUrl: './color-picker.component.html',
+    styleUrls: ['./color-picker.component.scss'],
+    standalone: false
 })
 export class ColorPickerComponent implements OnInit, OnDestroy {
   private hexText = '#ffffff';

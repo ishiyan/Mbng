@@ -5,9 +5,10 @@ import { TemporalEntityKind } from '../../data//entities/temporal-entity-kind.en
 import { HistoricalData } from '../../data/historical-data';
 
 @Component({
-  selector: 'mb-data-historical-data-download',
-  templateUrl: './historical-data-download.component.html',
-  styleUrls: ['./historical-data-download.component.scss']
+    selector: 'mb-data-historical-data-download',
+    templateUrl: './historical-data-download.component.html',
+    styleUrls: ['./historical-data-download.component.scss'],
+    standalone: false
 })
 export class HistoricalDataDownloadComponent {
   @Input()

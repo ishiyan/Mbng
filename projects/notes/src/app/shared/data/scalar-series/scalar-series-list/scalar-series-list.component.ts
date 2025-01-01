@@ -4,9 +4,10 @@ import { ScalarSeriesService } from '../scalar-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
 
 @Component({
-  selector: 'app-scalar-series-list',
-  templateUrl: './scalar-series-list.component.html',
-  styleUrls: ['./scalar-series-list.component.scss']
+    selector: 'app-scalar-series-list',
+    templateUrl: './scalar-series-list.component.html',
+    styleUrls: ['./scalar-series-list.component.scss'],
+    standalone: false
 })
 export class ScalarSeriesListComponent implements OnInit {
   protected seriesArray!: RemovableSeries[];

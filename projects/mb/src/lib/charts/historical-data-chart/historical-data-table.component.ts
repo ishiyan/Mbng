@@ -10,9 +10,10 @@ import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
 
 @Component({
-  selector: 'mb-data-historical-data-table',
-  templateUrl: './historical-data-table.component.html',
-  styleUrls: ['./historical-data-table.component.scss']
+    selector: 'mb-data-historical-data-table',
+    templateUrl: './historical-data-table.component.html',
+    styleUrls: ['./historical-data-table.component.scss'],
+    standalone: false
 })
 export class HistoricalDataTableComponent implements OnInit {
   @Input() enableDownload = true;

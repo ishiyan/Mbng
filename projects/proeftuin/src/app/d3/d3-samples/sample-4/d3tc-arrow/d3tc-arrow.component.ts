@@ -5,10 +5,12 @@ import * as d3 from 'd3';
 import * as d3tc from '../../../../shared/d3tc';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-arrow',
-  templateUrl: './d3tc-arrow.component.html',
-  styleUrls: ['./d3tc-arrow.component.scss'],
-  encapsulation: ViewEncapsulation.None // does not see css without this
+    selector: 'app-d3-sample-d3tc-arrow',
+    templateUrl: './d3tc-arrow.component.html',
+    styleUrls: ['./d3tc-arrow.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+    ,
+    standalone: false
 })
 export class D3tcArrowComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

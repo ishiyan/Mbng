@@ -3,9 +3,10 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { LineStyle } from './line-style';
 
 @Component({
-  selector: 'mb-line-svg',
-  templateUrl: './line-svg.component.html',
-  styleUrls: ['./line-svg.component.scss']
+    selector: 'mb-line-svg',
+    templateUrl: './line-svg.component.html',
+    styleUrls: ['./line-svg.component.scss'],
+    standalone: false
 })
 export class LineSvgComponent implements OnInit {
   private val = new LineStyle();

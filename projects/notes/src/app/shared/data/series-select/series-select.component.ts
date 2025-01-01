@@ -10,9 +10,10 @@ import { QuoteSeriesService } from '../quote-series/quote-series.service';
 import { Series } from '../series.interface';
 
 @Component({
-  selector: 'app-series-select',
-  templateUrl: './series-select.component.html',
-  styleUrls: ['./series-select.component.scss']
+    selector: 'app-series-select',
+    templateUrl: './series-select.component.html',
+    styleUrls: ['./series-select.component.scss'],
+    standalone: false
 })
 export class SeriesSelectComponent implements OnInit {
   protected barSeriesArray!: Series[];

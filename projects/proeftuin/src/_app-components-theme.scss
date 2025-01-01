@@ -1,12 +1,13 @@
-@import "app/shared/toolbar/toolbar-theme";
-@import "app/shared/footer/footer-theme";
-@import "../../mb/src/lib/svg-viewer/svg-viewer-theme";
-@import "../../mb/src/lib/charts/historical-data-chart/historical-data-chart-theme";
-@import "../../mb/src/lib/charts/linear-chart/linear-chart-theme";
-@import "../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart-theme";
-@import "../../mb/src/lib/charts/ohlcv-chart/selector/dash-svg-theme";
-@import "../../mb/src/lib/charts/ohlcv-chart/selector/width-svg-theme";
-@import "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme";
+@use '@angular/material' as mat;
+@use "app/shared/toolbar/toolbar-theme" as *;
+@use "app/shared/footer/footer-theme" as *;
+@use "../../mb/src/lib/svg-viewer/svg-viewer-theme" as *;
+@use "../../mb/src/lib/charts/historical-data-chart/historical-data-chart-theme" as *;
+@use "../../mb/src/lib/charts/linear-chart/linear-chart-theme" as *;
+@use "../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart-theme" as *;
+@use "../../mb/src/lib/charts/ohlcv-chart/selector/dash-svg-theme" as *;
+@use "../../mb/src/lib/charts/ohlcv-chart/selector/width-svg-theme" as *;
+@use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as *;
 
 @mixin app-components-theme($theme) {
   $primary: map-get($theme, primary);
@@ -14,7 +15,7 @@
   $warn: map-get($theme, warn);
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
-  $next-theme: mat.define-palette(mat.$red-palette);
+  $next-theme: mat.m2-define-palette(mat.$m2-red-palette);
 
   @include toolbar-theme($theme);
   @include footer-theme($theme);

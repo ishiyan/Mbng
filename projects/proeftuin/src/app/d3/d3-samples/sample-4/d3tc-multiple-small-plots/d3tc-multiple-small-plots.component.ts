@@ -8,9 +8,10 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-multiple-small-plots',
-  templateUrl: './d3tc-multiple-small-plots.component.html',
-  styleUrls: ['./d3tc-multiple-small-plots.component.scss']
+    selector: 'app-d3-sample-d3tc-multiple-small-plots',
+    templateUrl: './d3tc-multiple-small-plots.component.html',
+    styleUrls: ['./d3tc-multiple-small-plots.component.scss'],
+    standalone: false
 })
 export class D3tcMultipleSmallPlotsComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -7,9 +7,10 @@ import { MbSample } from './mb-samples/mb-sample';
 import { treeNodes } from './mb-samples/mb-samples';
 
 @Component({
-  selector: 'mb-sample-collection',
-  templateUrl: './mb.component.html',
-  styleUrls: ['./mb.component.scss']
+    selector: 'mb-sample-collection',
+    templateUrl: './mb.component.html',
+    styleUrls: ['./mb.component.scss'],
+    standalone: false
 })
 export class MbComponent {
   public sample: MbSample = treeNodes[0];

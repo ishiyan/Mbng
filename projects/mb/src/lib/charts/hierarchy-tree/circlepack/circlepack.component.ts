@@ -27,11 +27,12 @@ const defaultFlat = false;
 const defaultRootCircle = false;
 
 @Component({
-  selector: 'mb-circlepack',
-  templateUrl: './circlepack.component.html',
-  styleUrls: ['./circlepack.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'mb-circlepack',
+    templateUrl: './circlepack.component.html',
+    styleUrls: ['./circlepack.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class CirclepackComponent implements OnChanges {
   /**

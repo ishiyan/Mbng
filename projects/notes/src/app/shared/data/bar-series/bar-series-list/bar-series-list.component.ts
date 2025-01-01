@@ -4,9 +4,10 @@ import { BarSeriesService } from '../bar-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
 
 @Component({
-  selector: 'app-bar-series-list',
-  templateUrl: './bar-series-list.component.html',
-  styleUrls: ['./bar-series-list.component.scss']
+    selector: 'app-bar-series-list',
+    templateUrl: './bar-series-list.component.html',
+    styleUrls: ['./bar-series-list.component.scss'],
+    standalone: false
 })
 export class BarSeriesListComponent implements OnInit {
   protected seriesArray!: RemovableSeries[];

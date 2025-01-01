@@ -7,10 +7,11 @@ import { Series } from '../series.interface';
 import { primaryColor } from '../../theme-colors';
 
 @Component({
-  selector: 'app-series-card',
-  templateUrl: './series-card.component.html',
-  styleUrls: ['./series-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-series-card',
+    templateUrl: './series-card.component.html',
+    styleUrls: ['./series-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SeriesCardComponent {
   /** Specifies the scalar series. */

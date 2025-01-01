@@ -70,9 +70,10 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'app-sample-voronoi-2',
-  templateUrl: './sample-voronoi-2.component.html',
-  styleUrls: ['./sample-voronoi-2.component.scss']
+    selector: 'app-sample-voronoi-2',
+    templateUrl: './sample-voronoi-2.component.html',
+    styleUrls: ['./sample-voronoi-2.component.scss'],
+    standalone: false
 })
 export class SampleVoronoi2Component {
 

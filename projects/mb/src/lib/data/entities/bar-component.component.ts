@@ -11,9 +11,10 @@ interface Comp {
 }
 
 @Component({
-  selector: 'mb-bar-component',
-  templateUrl: './bar-component.component.html',
-  styleUrls: ['./bar-component.component.scss']
+    selector: 'mb-bar-component',
+    templateUrl: './bar-component.component.html',
+    styleUrls: ['./bar-component.component.scss'],
+    standalone: false
 })
 export class BarComponentComponent implements OnInit {
   protected comps: Comp[] = [

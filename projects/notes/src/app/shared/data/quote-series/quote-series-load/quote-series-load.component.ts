@@ -9,9 +9,10 @@ import { SeriesLoad } from '../../abstractions/series-load';
 import { QuoteSeriesService } from '../quote-series.service';
 
 @Component({
-  selector: 'app-quote-series-load',
-  templateUrl: '../../abstractions/series-load.html',
-  styleUrls: ['../../abstractions/series-load.scss']
+    selector: 'app-quote-series-load',
+    templateUrl: '../../abstractions/series-load.html',
+    styleUrls: ['../../abstractions/series-load.scss'],
+    standalone: false
 })
 export class QuoteSeriesLoadComponent extends SeriesLoad {
 

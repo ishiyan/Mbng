@@ -5,9 +5,10 @@ import { TripleExponentialMovingAverageLengthParams } from './triple-exponential
 import { TripleExponentialMovingAverageSmoothingFactorParams } from './triple-exponential-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-triple-exponential-moving-average-params-dialog',
-  templateUrl: './triple-exponential-moving-average-params-dialog.component.html',
-  styleUrls: ['./triple-exponential-moving-average-params-dialog.component.scss']
+    selector: 'mb-triple-exponential-moving-average-params-dialog',
+    templateUrl: './triple-exponential-moving-average-params-dialog.component.html',
+    styleUrls: ['./triple-exponential-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class TripleExponentialMovingAverageParamsDialogComponent {
 

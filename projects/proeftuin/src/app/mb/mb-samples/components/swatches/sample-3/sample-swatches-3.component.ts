@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { linearInterpolatedPalette } from 'projects/mb/src/lib/colors/linear-interpolated-palette';
 
 @Component({
-  selector: 'app-sample-swatches-3',
-  templateUrl: './sample-swatches-3.component.html',
-  styleUrls: ['./sample-swatches-3.component.scss']
+    selector: 'app-sample-swatches-3',
+    templateUrl: './sample-swatches-3.component.html',
+    styleUrls: ['./sample-swatches-3.component.scss'],
+    standalone: false
 })
 export class SampleSwatches3Component {
 

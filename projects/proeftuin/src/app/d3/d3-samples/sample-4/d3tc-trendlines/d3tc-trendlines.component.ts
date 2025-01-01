@@ -8,10 +8,12 @@ import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-trendlines',
-  templateUrl: './d3tc-trendlines.component.html',
-  styleUrls: ['./d3tc-trendlines.component.scss'],
-  encapsulation: ViewEncapsulation.None // does not see css without this
+    selector: 'app-d3-sample-d3tc-trendlines',
+    templateUrl: './d3tc-trendlines.component.html',
+    styleUrls: ['./d3tc-trendlines.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+    ,
+    standalone: false
 })
 export class D3tcTrendlinesComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

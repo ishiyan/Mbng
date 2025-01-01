@@ -3,9 +3,10 @@ import { Component, Input, ChangeDetectorRef, AfterViewChecked } from '@angular/
 import { Sample } from '../samples/sample';
 
 @Component({
-  selector: 'app-tex-sample-card',
-  templateUrl: './tex-card.component.html',
-  styleUrls: ['./tex-card.component.scss']
+    selector: 'app-tex-sample-card',
+    templateUrl: './tex-card.component.html',
+    styleUrls: ['./tex-card.component.scss'],
+    standalone: false
 })
 export class TexCardComponent implements AfterViewChecked {
   @Input()

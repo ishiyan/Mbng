@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @mixin ohlcv-chart-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -9,40 +10,40 @@
   mb-ohlcv-chart {
     .mat-button-toggle {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, hint-text);
+        stroke: mat.m2-get-color-from-palette($foreground, hint-text);
       }
     }
     .mat-button-toggle-appearance-standard {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, secondary-text);
+        stroke: mat.m2-get-color-from-palette($foreground, secondary-text);
       }
     }
     .mat-button-toggle-checked {
       .svg-icon {
-        stroke: mat.get-color-from-palette($accent, text);
+        stroke: mat.m2-get-color-from-palette($accent, text);
       }
       &.mat-button-toggle-appearance-standard {
         .svg-icon {
-          stroke: mat.get-color-from-palette($accent, text);
+          stroke: mat.m2-get-color-from-palette($accent, text);
         }
       }
     }
     .mat-button-toggle-disabled {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, disabled-button);
+        stroke: mat.m2-get-color-from-palette($foreground, disabled-button);
       }
     }
     // Make icon accented when slide toggle is checked
     mat-slide-toggle:not(.mat-mdc-slide-toggle-disabled) .mat-icon {
-      color: mat.get-color-from-palette($accent, text);
+      color: mat.m2-get-color-from-palette($accent, text);
     }
     mat-slide-toggle:not(.mat-mdc-slide-toggle-checked):not(.mat-mdc-slide-toggle-disabled) .mat-icon {
-      color: mat.get-color-from-palette($foreground, secondary-text);
+      color: mat.m2-get-color-from-palette($foreground, secondary-text);
     }
 
     // red: #c60; green: #6c0;
     // red: #FF0000; green: #00AA00;
-    $line-color: mat.get-color-from-palette($foreground, secondary-text);
+    $line-color: mat.m2-get-color-from-palette($foreground, secondary-text);
     $up-color: #6c0;
     $down-color: #c60;
 
@@ -96,12 +97,12 @@
     }
 
     path.volume {
-      // fill: if($is-dark-theme, mat.get-color-from-palette($foreground, darker), mat.get-color-from-palette($foreground, darker));
-      fill: mat.get-color-from-palette($foreground, divider, 0.1);
+      // fill: if($is-dark-theme, mat.m2-get-color-from-palette($foreground, darker), mat.m2-get-color-from-palette($foreground, darker));
+      fill: mat.m2-get-color-from-palette($foreground, divider, 0.1);
     }
 
     path.area {
-      fill: mat.get-color-from-palette($background, unselected-chip, 0.5);
+      fill: mat.m2-get-color-from-palette($background, unselected-chip, 0.5);
     }
 
     path.line {
@@ -110,20 +111,20 @@
     }
 
     rect.selection {
-      fill: mat.get-color-from-palette($foreground, text, 0.3);
+      fill: mat.m2-get-color-from-palette($foreground, text, 0.3);
       stroke: none;
     }
 
     .extent {
-      stroke: mat.get-color-from-palette($background);
+      stroke: mat.m2-get-color-from-palette($background);
     }
 
     .crosshair path.wire {
-      stroke: mat.get-color-from-palette($foreground, divider);
+      stroke: mat.m2-get-color-from-palette($foreground, divider);
     }
 
     .crosshair .axisannotation path {
-      fill: mat.get-color-from-palette($background, unselected-chip);
+      fill: mat.m2-get-color-from-palette($background, unselected-chip);
     }
   }
 }

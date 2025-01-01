@@ -7,10 +7,11 @@ const OPTION_HEIGHT_PIXELS = 24;
 const MIN_SWATCHES = 1;
 
 @Component({
-  selector: 'mb-swatches-select',
-  templateUrl: './swatches-select.component.html',
-  styleUrls: ['./swatches-select.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'mb-swatches-select',
+    templateUrl: './swatches-select.component.html',
+    styleUrls: ['./swatches-select.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SwatchesSelectComponent {
   /** Specifies a selection index. */

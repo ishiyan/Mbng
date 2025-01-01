@@ -8,9 +8,10 @@ import { Series } from '../../../shared/data/series.interface';
 import { visualisingFinancialDataWithLinearChartNote } from '../../../notes';
 
 @Component({
-  selector: 'app-data-linear-charting',
-  templateUrl: './linear-charting.component.html',
-  styleUrls: ['./linear-charting.component.scss']
+    selector: 'app-data-linear-charting',
+    templateUrl: './linear-charting.component.html',
+    styleUrls: ['./linear-charting.component.scss'],
+    standalone: false
 })
 export class LinearChartingComponent {
   protected lcNote = visualisingFinancialDataWithLinearChartNote;

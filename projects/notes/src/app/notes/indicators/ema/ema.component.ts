@@ -77,10 +77,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-ema',
-  templateUrl: './ema.component.html',
-  styleUrls: ['./ema.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-ema',
+    templateUrl: './ema.component.html',
+    styleUrls: ['./ema.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EmaComponent implements AfterViewInit {
 

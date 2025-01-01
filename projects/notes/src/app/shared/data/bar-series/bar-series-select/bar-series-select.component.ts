@@ -6,9 +6,10 @@ import { BarSeries } from '../bar-series.interface';
 import { BarSeriesService } from '../bar-series.service';
 
 @Component({
-  selector: 'app-bar-series-select',
-  templateUrl: '../../abstractions/series-select.html',
-  styleUrls: ['../../abstractions/series-select.scss']
+    selector: 'app-bar-series-select',
+    templateUrl: '../../abstractions/series-select.html',
+    styleUrls: ['../../abstractions/series-select.scss'],
+    standalone: false
 })
 export class BarSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

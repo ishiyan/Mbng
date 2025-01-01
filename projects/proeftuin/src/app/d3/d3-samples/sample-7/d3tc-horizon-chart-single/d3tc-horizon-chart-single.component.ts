@@ -7,9 +7,10 @@ import * as d3tc from '../../../../shared/d3tc';
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 
 @Component({
-  selector: 'app-d3-sample-d3tc-horizon-chart-single',
-  templateUrl: './d3tc-horizon-chart-single.component.html',
-  styleUrls: ['./d3tc-horizon-chart-single.component.scss']
+    selector: 'app-d3-sample-d3tc-horizon-chart-single',
+    templateUrl: './d3tc-horizon-chart-single.component.html',
+    styleUrls: ['./d3tc-horizon-chart-single.component.scss'],
+    standalone: false
 })
 export class D3tcHorizonChartSingleComponent implements OnInit {
   private theWidth = 700;

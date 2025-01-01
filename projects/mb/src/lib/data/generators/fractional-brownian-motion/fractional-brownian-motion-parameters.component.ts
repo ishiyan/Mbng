@@ -6,9 +6,10 @@ import { FractionalBrownianMotionAlgorithm } from './fractional-brownian-motion-
 import { Enums } from '../../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-fractional-brownian-motion-parameters',
-  templateUrl: './fractional-brownian-motion-parameters.component.html',
-  styleUrls: ['./fractional-brownian-motion-parameters.component.scss']
+    selector: 'mb-data-generators-fractional-brownian-motion-parameters',
+    templateUrl: './fractional-brownian-motion-parameters.component.html',
+    styleUrls: ['./fractional-brownian-motion-parameters.component.scss'],
+    standalone: false
 })
 export class FractionalBrownianMotionParametersComponent {
   @Input() fractionalBrownianMotionParameters!: FractionalBrownianMotionParameters;

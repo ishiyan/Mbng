@@ -46,10 +46,11 @@ const textAfterSvg = `
 `;
 
 @Component({
-  selector: 'mb-historical-data-chart',
-  templateUrl: './historical-data-chart.component.html',
-  styleUrls: ['./historical-data-chart.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+    selector: 'mb-historical-data-chart',
+    templateUrl: './historical-data-chart.component.html',
+    styleUrls: ['./historical-data-chart.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
+    standalone: false
 })
 export class HistoricalDataChartComponent {
   @ViewChild('container', { static: true }) container!: ElementRef;

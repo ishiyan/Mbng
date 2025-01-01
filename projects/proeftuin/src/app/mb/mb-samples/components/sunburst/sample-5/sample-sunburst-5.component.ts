@@ -43,9 +43,10 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'app-sample-sunburst-5',
-  templateUrl: './sample-sunburst-5.component.html',
-  styleUrls: ['./sample-sunburst-5.component.scss']
+    selector: 'app-sample-sunburst-5',
+    templateUrl: './sample-sunburst-5.component.html',
+    styleUrls: ['./sample-sunburst-5.component.scss'],
+    standalone: false
 })
 export class SampleSunburst5Component {
 

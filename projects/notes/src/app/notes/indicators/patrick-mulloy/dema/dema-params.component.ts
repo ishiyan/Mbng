@@ -5,10 +5,11 @@ import { LineStyle } from 'mb';
 import { Dema } from './dema.interface';
 
 @Component({
-  selector: 'app-dema-params',
-  templateUrl: './dema-params.component.html',
-  styleUrls: ['./dema-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-dema-params',
+    templateUrl: './dema-params.component.html',
+    styleUrls: ['./dema-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DemaParamsComponent {
 

@@ -25,9 +25,10 @@ const createSma = (showStyle: boolean, len: number, comp?: BarComponent): Sma =>
 };
 
 @Component({
-  selector: 'app-sma-list',
-  templateUrl: './sma-list.component.html',
-  styleUrls: ['./sma-list.component.scss']
+    selector: 'app-sma-list',
+    templateUrl: './sma-list.component.html',
+    styleUrls: ['./sma-list.component.scss'],
+    standalone: false
 })
 export class SmaListComponent implements AfterViewInit {
 

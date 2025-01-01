@@ -6,9 +6,10 @@ import { QuoteComponent } from '../../../data/entities/quote-component.enum';
 import { TriangularMovingAverageParams } from './triangular-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-triangular-moving-average-params',
-  templateUrl: './triangular-moving-average-params.component.html',
-  styleUrls: ['./triangular-moving-average-params.component.scss']
+    selector: 'mb-triangular-moving-average-params',
+    templateUrl: './triangular-moving-average-params.component.html',
+    styleUrls: ['./triangular-moving-average-params.component.scss'],
+    standalone: false
 })
 export class TriangularMovingAverageParamsComponent implements OnInit {
 

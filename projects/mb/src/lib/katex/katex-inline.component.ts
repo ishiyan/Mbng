@@ -13,11 +13,12 @@ const defaultOptions: KatexOptions = {
 
 /** Component to render a TeX input in inline mode. */
 @Component({
-  selector: 'mb-ki',
-  templateUrl: './katex-inline.component.html',
-  styleUrls: ['./katex-inline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'collision-id': 'KatexInlineComponent'}
+    selector: 'mb-ki',
+    templateUrl: './katex-inline.component.html',
+    styleUrls: ['./katex-inline.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    host: { 'collision-id': 'KatexInlineComponent' },
+    standalone: false
 })
 export class KatexInlineComponent implements AfterContentInit {
   protected options: KatexOptions = defaultOptions;

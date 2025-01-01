@@ -73,9 +73,10 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'app-sample-treemap-4',
-  templateUrl: './sample-treemap-4.component.html',
-  styleUrls: ['./sample-treemap-4.component.scss']
+    selector: 'app-sample-treemap-4',
+    templateUrl: './sample-treemap-4.component.html',
+    styleUrls: ['./sample-treemap-4.component.scss'],
+    standalone: false
 })
 export class SampleTreemap4Component {
 

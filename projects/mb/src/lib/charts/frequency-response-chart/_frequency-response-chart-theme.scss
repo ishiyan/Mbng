@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @mixin frequency-response-chart-theme($theme) {
   $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
@@ -9,51 +10,51 @@
   mb-frequency-response-chart {
     .mat-button-toggle {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, hint-text);
+        stroke: mat.m2-get-color-from-palette($foreground, hint-text);
       }
     }
     .mat-button-toggle-appearance-standard {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, secondary-text);
+        stroke: mat.m2-get-color-from-palette($foreground, secondary-text);
       }
     }
     .mat-button-toggle-checked {
       .svg-icon {
-        stroke: mat.get-color-from-palette($accent, text);
+        stroke: mat.m2-get-color-from-palette($accent, text);
       }
       &.mat-button-toggle-appearance-standard {
         .svg-icon {
-          stroke: mat.get-color-from-palette($accent, text);
+          stroke: mat.m2-get-color-from-palette($accent, text);
         }
       }
     }
     .mat-button-toggle-disabled {
       .svg-icon {
-        stroke: mat.get-color-from-palette($foreground, disabled-button);
+        stroke: mat.m2-get-color-from-palette($foreground, disabled-button);
       }
     }
 
     text {
-      fill: mat.get-color-from-palette($foreground, secondary-text);
+      fill: mat.m2-get-color-from-palette($foreground, secondary-text);
     }
 
     .filter-response .coords {
-      fill: mat.get-color-from-palette($foreground, text);
+      fill: mat.m2-get-color-from-palette($foreground, text);
     }
   
     .filter-response .axis path {
       fill: none;
-      stroke: mat.get-color-from-palette($foreground, secondary-text);
+      stroke: mat.m2-get-color-from-palette($foreground, secondary-text);
     }
     
     .filter-response .axis line {
       fill: none;
-      stroke: mat.get-color-from-palette($foreground, divider);
+      stroke: mat.m2-get-color-from-palette($foreground, divider);
     }
   
     path.line {
       fill: none;
-      stroke: mat.get-color-from-palette($foreground, text);
+      stroke: mat.m2-get-color-from-palette($foreground, text);
     }
   }
 }

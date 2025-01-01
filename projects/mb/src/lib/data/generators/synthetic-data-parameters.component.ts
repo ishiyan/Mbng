@@ -5,9 +5,10 @@ import { TemporalEntityKind } from '../entities/temporal-entity-kind.enum';
 import { SyntheticDataParameters } from './synthetic-data-parameters';
 
 @Component({
-  selector: 'mb-data-generators-synthetic-data-parameters',
-  templateUrl: './synthetic-data-parameters.component.html',
-  styleUrls: ['./synthetic-data-parameters.component.scss']
+    selector: 'mb-data-generators-synthetic-data-parameters',
+    templateUrl: './synthetic-data-parameters.component.html',
+    styleUrls: ['./synthetic-data-parameters.component.scss'],
+    standalone: false
 })
 export class SyntheticDataParametersComponent {
   @Input() syntheticDataParameters!: SyntheticDataParameters;

@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use "../app-components-theme" as *;
 // TODO(+v15): As of v15 mat.legacy-core no longer includes default typography styles.
 //  The following line adds:
 //    1. Default typography styles for all components
@@ -8,9 +9,8 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-typography-config());`
 @include mat.all-component-typographies();
-@include mat.core();
-
-@import "../app-components-theme";
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define the dark theme.
 $primary: mat.m2-define-palette(mat.$m2-purple-palette);

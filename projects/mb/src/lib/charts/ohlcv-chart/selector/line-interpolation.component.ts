@@ -8,9 +8,10 @@ interface Elem {
 }
 
 @Component({
-  selector: 'mb-line-interpolation',
-  templateUrl: './line-interpolation.component.html',
-  styleUrls: ['./line-interpolation.component.scss']
+    selector: 'mb-line-interpolation',
+    templateUrl: './line-interpolation.component.html',
+    styleUrls: ['./line-interpolation.component.scss'],
+    standalone: false
 })
 export class LineInterpolationComponent implements OnInit {
   protected elems: Elem[] = [

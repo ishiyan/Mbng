@@ -4,9 +4,10 @@ import { colorsCoAll5Palettes } from 'projects/mb/src/lib/colors/colors-co-all-5
 import { colorsCoAll5PalettesSelection } from 'projects/mb/src/lib/colors/colors-co-all-5-palettes-selection';
 
 @Component({
-  selector: 'app-sample-swatches-7',
-  templateUrl: './sample-swatches-7.component.html',
-  styleUrls: ['./sample-swatches-7.component.scss']
+    selector: 'app-sample-swatches-7',
+    templateUrl: './sample-swatches-7.component.html',
+    styleUrls: ['./sample-swatches-7.component.scss'],
+    standalone: false
 })
 export class SampleSwatches7Component {
 

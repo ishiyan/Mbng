@@ -5,10 +5,11 @@ import { LineStyle } from 'mb';
 import { Ema } from './ema.interface';
 
 @Component({
-  selector: 'app-ema-params',
-  templateUrl: './ema-params.component.html',
-  styleUrls: ['./ema-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ema-params',
+    templateUrl: './ema-params.component.html',
+    styleUrls: ['./ema-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EmaParamsComponent {
 

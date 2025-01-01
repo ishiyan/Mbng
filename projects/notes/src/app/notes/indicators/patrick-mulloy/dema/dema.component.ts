@@ -87,10 +87,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-dema',
-  templateUrl: './dema.component.html',
-  styleUrls: ['./dema.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-dema',
+    templateUrl: './dema.component.html',
+    styleUrls: ['./dema.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DemaComponent implements AfterViewInit {
 

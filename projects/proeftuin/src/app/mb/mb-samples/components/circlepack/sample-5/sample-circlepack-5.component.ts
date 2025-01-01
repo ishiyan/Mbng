@@ -58,9 +58,10 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-  selector: 'app-sample-circlepack-5',
-  templateUrl: './sample-circlepack-5.component.html',
-  styleUrls: ['./sample-circlepack-5.component.scss']
+    selector: 'app-sample-circlepack-5',
+    templateUrl: './sample-circlepack-5.component.html',
+    styleUrls: ['./sample-circlepack-5.component.scss'],
+    standalone: false
 })
 export class SampleCirclepack5Component {
 

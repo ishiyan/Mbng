@@ -2,9 +2,10 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { MathJaxDirective } from './math-jax.directive';
 
 @Component({
-  selector: 'mb-mathjax',
-  templateUrl: './math-jax.component.html',
-  styleUrls: ['./math-jax.component.scss']
+    selector: 'mb-mathjax',
+    templateUrl: './math-jax.component.html',
+    styleUrls: ['./math-jax.component.scss'],
+    standalone: false
 })
 export class MathJaxComponent implements OnChanges {
   @Input() expression!: string;

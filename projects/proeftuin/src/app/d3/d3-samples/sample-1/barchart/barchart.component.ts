@@ -2,9 +2,10 @@ import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@ang
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-d3-sample-barchart',
-  templateUrl: './barchart.component.html',
-  styleUrls: ['./barchart.component.scss']
+    selector: 'app-d3-sample-barchart',
+    templateUrl: './barchart.component.html',
+    styleUrls: ['./barchart.component.scss'],
+    standalone: false
 })
 export class BarchartComponent implements OnInit, OnChanges {
   @ViewChild('chart', { static: true }) private chartContainer!: ElementRef;

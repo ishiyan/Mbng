@@ -5,10 +5,11 @@ import { LineStyle } from 'mb';
 import { T3ema } from './t3ema.interface';
 
 @Component({
-  selector: 'app-t3ema-params',
-  templateUrl: './t3ema-params.component.html',
-  styleUrls: ['./t3ema-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-t3ema-params',
+    templateUrl: './t3ema-params.component.html',
+    styleUrls: ['./t3ema-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class T3emaParamsComponent {
 

@@ -4,9 +4,10 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { KatexSettingsService } from 'mb';
 
 @Component({
-  selector: 'app-katex-settings',
-  templateUrl: './katex-settings.component.html',
-  styleUrls: ['./katex-settings.component.scss']
+    selector: 'app-katex-settings',
+    templateUrl: './katex-settings.component.html',
+    styleUrls: ['./katex-settings.component.scss'],
+    standalone: false
 })
 export class KatexSettingsComponent {
 

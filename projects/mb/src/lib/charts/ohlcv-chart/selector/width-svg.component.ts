@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'mb-width-svg',
-  templateUrl: './width-svg.component.html',
-  styleUrls: ['./width-svg.component.scss']
+    selector: 'mb-width-svg',
+    templateUrl: './width-svg.component.html',
+    styleUrls: ['./width-svg.component.scss'],
+    standalone: false
 })
 export class WidthSvgComponent implements OnInit {
   private val = 1;

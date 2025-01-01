@@ -7,9 +7,10 @@ interface Elem {
 }
 
 @Component({
-  selector: 'mb-line-width',
-  templateUrl: './line-width.component.html',
-  styleUrls: ['./line-width.component.scss']
+    selector: 'mb-line-width',
+    templateUrl: './line-width.component.html',
+    styleUrls: ['./line-width.component.scss'],
+    standalone: false
 })
 export class LineWidthComponent implements OnInit {
   protected elems: Elem[] = [

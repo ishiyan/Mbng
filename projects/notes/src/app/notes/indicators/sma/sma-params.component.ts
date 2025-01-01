@@ -6,10 +6,11 @@ import { LineStyle } from 'mb';
 import { Sma } from './sma.interface';
 
 @Component({
-  selector: 'app-sma-params',
-  templateUrl: './sma-params.component.html',
-  styleUrls: ['./sma-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-sma-params',
+    templateUrl: './sma-params.component.html',
+    styleUrls: ['./sma-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SmaParamsComponent {
 

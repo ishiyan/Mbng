@@ -112,9 +112,10 @@ const tripletsCount = triplets.length;
 const tripletsMaterialCount = tripletsMaterial.length;
 
 @Component({
-  selector: 'app-sample-swatches-10',
-  templateUrl: './sample-swatches-10.component.html',
-  styleUrls: ['./sample-swatches-10.component.scss']
+    selector: 'app-sample-swatches-10',
+    templateUrl: './sample-swatches-10.component.html',
+    styleUrls: ['./sample-swatches-10.component.scss'],
+    standalone: false
 })
 export class SampleSwatches10Component {
   private numberOfSwatches = 5;

@@ -9,10 +9,12 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 
 
 @Component({
-  selector: 'app-d3-sample-d3tc-ohlc',
-  templateUrl: './d3tc-ohlc.component.html',
-  styleUrls: ['./d3tc-ohlc.component.scss'],
-  encapsulation: ViewEncapsulation.None // does not see css without this
+    selector: 'app-d3-sample-d3tc-ohlc',
+    templateUrl: './d3tc-ohlc.component.html',
+    styleUrls: ['./d3tc-ohlc.component.scss'],
+    encapsulation: ViewEncapsulation.None // does not see css without this
+    ,
+    standalone: false
 })
 export class D3tcOhlcComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

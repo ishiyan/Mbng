@@ -68,9 +68,10 @@ const textAfterSvg = `
 const smoothBrushing = false;
 
 @Component({
-  selector: 'mb-ohlcv-chart',
-  templateUrl: './ohlcv-chart.component.html',
-  styleUrls: ['./ohlcv-chart.component.scss']
+    selector: 'mb-ohlcv-chart',
+    templateUrl: './ohlcv-chart.component.html',
+    styleUrls: ['./ohlcv-chart.component.scss'],
+    standalone: false
 })
 export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   private random = Math.random().toString(36).substring(2);

@@ -4,10 +4,11 @@ import * as d3 from 'd3';
 // https://observablehq.com/@d3/brush-handles
 
 @Component({
-  selector: 'app-d3-sample-brush-handles',
-  templateUrl: './brush-handles.component.html',
-  styleUrls: ['./brush-handles.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-d3-sample-brush-handles',
+    templateUrl: './brush-handles.component.html',
+    styleUrls: ['./brush-handles.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class BrushHandlesComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

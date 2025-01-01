@@ -4,9 +4,10 @@ import * as d3 from 'd3';
 // https://observablehq.com/@d3/click-to-recenter-brush
 
 @Component({
-  selector: 'app-d3-sample-click-to-recenter-brush',
-  templateUrl: './click-to-recenter-brush.component.html',
-  styleUrls: ['./click-to-recenter-brush.component.scss']
+    selector: 'app-d3-sample-click-to-recenter-brush',
+    templateUrl: './click-to-recenter-brush.component.html',
+    styleUrls: ['./click-to-recenter-brush.component.scss'],
+    standalone: false
 })
 export class ClickToRecenterBrushComponent implements OnInit {
   @ViewChild('container3', { static: true }) container!: ElementRef;

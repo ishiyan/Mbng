@@ -10,9 +10,10 @@ const firstIsAverageDefault = true;
 const guardLength = (object: any): object is ExponentialMovingAverageLengthParams => 'length' in object;
 
 @Component({
-  selector: 'mb-exponential-moving-average-params',
-  templateUrl: './exponential-moving-average-params.component.html',
-  styleUrls: ['./exponential-moving-average-params.component.scss']
+    selector: 'mb-exponential-moving-average-params',
+    templateUrl: './exponential-moving-average-params.component.html',
+    styleUrls: ['./exponential-moving-average-params.component.scss'],
+    standalone: false
 })
 export class ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

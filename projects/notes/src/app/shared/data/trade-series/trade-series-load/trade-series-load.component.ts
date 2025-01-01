@@ -9,9 +9,10 @@ import { SeriesLoad } from '../../abstractions/series-load';
 import { TradeSeriesService } from '../trade-series.service';
 
 @Component({
-  selector: 'app-trade-series-load',
-  templateUrl: '../../abstractions/series-load.html',
-  styleUrls: ['../../abstractions/series-load.scss']
+    selector: 'app-trade-series-load',
+    templateUrl: '../../abstractions/series-load.html',
+    styleUrls: ['../../abstractions/series-load.scss'],
+    standalone: false
 })
 export class TradeSeriesLoadComponent extends SeriesLoad {
 

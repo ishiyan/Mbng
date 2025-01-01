@@ -6,10 +6,11 @@ import { WeightedMovingAverageParams } from 'mb';
 import { Wma } from './wma.interface';
 
 @Component({
-  selector: 'app-wma-params',
-  templateUrl: './wma-params.component.html',
-  styleUrls: ['./wma-params.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-wma-params',
+    templateUrl: './wma-params.component.html',
+    styleUrls: ['./wma-params.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class WmaParamsComponent {
 

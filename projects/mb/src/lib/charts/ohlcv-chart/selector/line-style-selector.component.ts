@@ -5,9 +5,10 @@ import { LineStyle } from './line-style';
 import { LineStyleDialogComponent } from './line-style-dialog.component';
 
 @Component({
-  selector: 'mb-line-style-selector',
-  templateUrl: './line-style-selector.component.html',
-  styleUrls: ['./line-style-selector.component.scss']
+    selector: 'mb-line-style-selector',
+    templateUrl: './line-style-selector.component.html',
+    styleUrls: ['./line-style-selector.component.scss'],
+    standalone: false
 })
 export class LineStyleSelectorComponent implements OnInit {
   private dialogRef?: MatDialogRef<LineStyleDialogComponent>;

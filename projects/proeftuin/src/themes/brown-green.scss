@@ -1,13 +1,14 @@
 @use '../../../../node_modules/@angular/material' as mat;
-@include mat.core();
+@use "../app-components-theme" as *;
 
-@import "../app-components-theme";
+@include mat.elevation-classes();
+@include mat.app-background();
 
 // Define the dark theme.
-$primary: mat.define-palette(mat.$brown-palette);
-$accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
-$warn: mat.define-palette(mat.$red-palette);
+$primary: mat.m2-define-palette(mat.$m2-brown-palette);
+$accent: mat.m2-define-palette(mat.$m2-green-palette, A200, A100, A400);
+$warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$theme: mat.define-dark-theme($primary, $accent, $warn);
+$theme: mat.m2-define-dark-theme($primary, $accent, $warn);
 @include mat.all-component-themes($theme);
 @include app-components-theme($theme);

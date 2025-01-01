@@ -8,11 +8,12 @@ const DEFAULT_WIDTH = 64;
 const DEFAULT_HEIGHT = 24;
 
 @Component({
-  selector: 'mb-swatches',
-  templateUrl: './swatches.component.html',
-  styleUrls: ['./swatches.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'mb-swatches',
+    templateUrl: './swatches.component.html',
+    styleUrls: ['./swatches.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class SwatchesComponent implements OnChanges, AfterViewInit {
   private currentColors: string[] = [];

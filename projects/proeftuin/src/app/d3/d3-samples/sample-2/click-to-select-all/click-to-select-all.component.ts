@@ -2,9 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-d3-sample-click-to-select-all',
-  templateUrl: './click-to-select-all.component.html',
-  styleUrls: ['./click-to-select-all.component.scss']
+    selector: 'app-d3-sample-click-to-select-all',
+    templateUrl: './click-to-select-all.component.html',
+    styleUrls: ['./click-to-select-all.component.scss'],
+    standalone: false
 })
 export class ClickToSelectAllComponent implements OnInit {
   @ViewChild('container5', { static: true }) container!: ElementRef;

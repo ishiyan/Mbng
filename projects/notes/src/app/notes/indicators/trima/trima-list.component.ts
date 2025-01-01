@@ -25,9 +25,10 @@ const createTrima = (showStyle: boolean, len: number, comp?: BarComponent): Trim
 };
 
 @Component({
-  selector: 'app-trima-list',
-  templateUrl: './trima-list.component.html',
-  styleUrls: ['./trima-list.component.scss']
+    selector: 'app-trima-list',
+    templateUrl: './trima-list.component.html',
+    styleUrls: ['./trima-list.component.scss'],
+    standalone: false
 })
 export class TrimaListComponent implements AfterViewInit {
 

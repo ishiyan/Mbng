@@ -25,11 +25,12 @@ const VALUE_AXIS_WIDTH = 50;
 const TIME_AXIS_HEIGHT = 18;
 
 @Component({
-  selector: 'mb-multiline',
-  templateUrl: './multiline.component.html',
-  styleUrls: ['./multiline.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+    selector: 'mb-multiline',
+    templateUrl: './multiline.component.html',
+    styleUrls: ['./multiline.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class MultilineComponent implements OnChanges, AfterViewInit {
   private currentConfiguration: LineConfiguration[] = [];

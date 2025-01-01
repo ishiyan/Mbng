@@ -4,9 +4,10 @@ import { ChirpSweep } from './chirp-sweep.enum';
 import { Enums } from '../../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-chirp-parameters',
-  templateUrl: './chirp-parameters.component.html',
-  styleUrls: ['./chirp-parameters.component.scss']
+    selector: 'mb-data-generators-chirp-parameters',
+    templateUrl: './chirp-parameters.component.html',
+    styleUrls: ['./chirp-parameters.component.scss'],
+    standalone: false
 })
 export class ChirpParametersComponent {
   @Input() chirpParameters!: ChirpParameters;

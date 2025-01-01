@@ -4,9 +4,10 @@ import { WaveformParameters } from './waveform-parameters';
 import { Enums } from '../../utils/enums';
 
 @Component({
-  selector: 'mb-data-generators-waveform-parameters',
-  templateUrl: './waveform-parameters.component.html',
-  styleUrls: ['./waveform-parameters.component.scss']
+    selector: 'mb-data-generators-waveform-parameters',
+    templateUrl: './waveform-parameters.component.html',
+    styleUrls: ['./waveform-parameters.component.scss'],
+    standalone: false
 })
 export class WaveformParametersComponent {
   @Input() waveformParameters!: WaveformParameters;

@@ -10,9 +10,10 @@ import { testDataBbLo } from '../../../test-data/indicators/test-data-bb-lo';
 import { testDataBbUp } from '../../../test-data/indicators/test-data-bb-up';
 
 @Component({
-  selector: 'app-sample-multiline-1',
-  templateUrl: './sample-multiline-1.component.html',
-  styleUrls: ['./sample-multiline-1.component.scss']
+    selector: 'app-sample-multiline-1',
+    templateUrl: './sample-multiline-1.component.html',
+    styleUrls: ['./sample-multiline-1.component.scss'],
+    standalone: false
 })
 export class SampleMultiline1Component {
 

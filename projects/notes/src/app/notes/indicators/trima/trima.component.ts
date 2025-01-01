@@ -74,10 +74,11 @@ const getConfigTemplate = (): Configuration => ({
   });
 
 @Component({
-  selector: 'app-ind-trima',
-  templateUrl: './trima.component.html',
-  styleUrls: ['./trima.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-ind-trima',
+    templateUrl: './trima.component.html',
+    styleUrls: ['./trima.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TrimaComponent implements AfterViewInit {
 

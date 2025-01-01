@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { WeightedMovingAverageParams } from './weighted-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-weighted-moving-average-params-dialog',
-  templateUrl: './weighted-moving-average-params-dialog.component.html',
-  styleUrls: ['./weighted-moving-average-params-dialog.component.scss']
+    selector: 'mb-weighted-moving-average-params-dialog',
+    templateUrl: './weighted-moving-average-params-dialog.component.html',
+    styleUrls: ['./weighted-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class WeightedMovingAverageParamsDialogComponent {
 

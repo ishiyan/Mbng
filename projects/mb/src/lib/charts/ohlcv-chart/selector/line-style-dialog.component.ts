@@ -4,9 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LineStyle } from './line-style';
 
 @Component({
-  selector: 'mb-line-style-dialog',
-  templateUrl: './line-style-dialog.component.html',
-  styleUrls: ['./line-style-dialog.component.scss']
+    selector: 'mb-line-style-dialog',
+    templateUrl: './line-style-dialog.component.html',
+    styleUrls: ['./line-style-dialog.component.scss'],
+    standalone: false
 })
 export class LineStyleDialogComponent {
   protected line!: LineStyle;

@@ -37,9 +37,10 @@ const createAlphaEma = (showStyle: boolean, sf: number, comp?: BarComponent): Em
 };
 
 @Component({
-  selector: 'app-ema-list',
-  templateUrl: './ema-list.component.html',
-  styleUrls: ['./ema-list.component.scss']
+    selector: 'app-ema-list',
+    templateUrl: './ema-list.component.html',
+    styleUrls: ['./ema-list.component.scss'],
+    standalone: false
 })
 export class EmaListComponent implements AfterViewInit {
 

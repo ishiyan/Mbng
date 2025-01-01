@@ -5,9 +5,10 @@ import { DoubleExponentialMovingAverageLengthParams } from './double-exponential
 import { DoubleExponentialMovingAverageSmoothingFactorParams } from './double-exponential-moving-average-params.interface';
 
 @Component({
-  selector: 'mb-double-exponential-moving-average-params-dialog',
-  templateUrl: './double-exponential-moving-average-params-dialog.component.html',
-  styleUrls: ['./double-exponential-moving-average-params-dialog.component.scss']
+    selector: 'mb-double-exponential-moving-average-params-dialog',
+    templateUrl: './double-exponential-moving-average-params-dialog.component.html',
+    styleUrls: ['./double-exponential-moving-average-params-dialog.component.scss'],
+    standalone: false
 })
 export class DoubleExponentialMovingAverageParamsDialogComponent {
 

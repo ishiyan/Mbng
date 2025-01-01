@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { predefinedLinePalettes } from 'projects/mb/src/lib/colors/predefined-line-palettes';
 
 @Component({
-  selector: 'app-sample-swatches-11',
-  templateUrl: './sample-swatches-11.component.html',
-  styleUrls: ['./sample-swatches-11.component.scss']
+    selector: 'app-sample-swatches-11',
+    templateUrl: './sample-swatches-11.component.html',
+    styleUrls: ['./sample-swatches-11.component.scss'],
+    standalone: false
 })
 export class SampleSwatches11Component {
 

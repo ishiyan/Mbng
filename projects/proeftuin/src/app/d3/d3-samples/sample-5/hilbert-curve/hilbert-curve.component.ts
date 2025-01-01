@@ -8,9 +8,10 @@ import * as d3 from 'd3';
 import * as hilbert from '../hilbert';
 
 @Component({
-  selector: 'app-d3-sample-hilbert-curve',
-  templateUrl: './hilbert-curve.component.html',
-  styleUrls: ['./hilbert-curve.component.scss']
+    selector: 'app-d3-sample-hilbert-curve',
+    templateUrl: './hilbert-curve.component.html',
+    styleUrls: ['./hilbert-curve.component.scss'],
+    standalone: false
 })
 export class HilbertCurveComponent implements OnInit {
   public colors = false;

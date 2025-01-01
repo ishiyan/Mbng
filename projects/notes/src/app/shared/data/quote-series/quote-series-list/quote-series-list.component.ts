@@ -4,9 +4,10 @@ import { QuoteSeriesService } from '../quote-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
 
 @Component({
-  selector: 'app-quote-series-list',
-  templateUrl: './quote-series-list.component.html',
-  styleUrls: ['./quote-series-list.component.scss']
+    selector: 'app-quote-series-list',
+    templateUrl: './quote-series-list.component.html',
+    styleUrls: ['./quote-series-list.component.scss'],
+    standalone: false
 })
 export class QuoteSeriesListComponent implements OnInit {
   protected seriesArray!: RemovableSeries[];
