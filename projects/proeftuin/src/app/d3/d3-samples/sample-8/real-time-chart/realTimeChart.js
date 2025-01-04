@@ -2,7 +2,8 @@
 // with a little help of
 // https://stackoverflow.com/questions/46120022/d3-v4-realtime-chart-with-brushing
 'use strict';
-var d3 = require('d3');
+// var d3 = require('d3');
+import * as d3 from 'd3';
 
 export function realTimeChart() {
   var version = "0.1.0",

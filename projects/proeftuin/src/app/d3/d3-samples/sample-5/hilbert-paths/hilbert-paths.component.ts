@@ -1,8 +1,37 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as hilbert from './hilbert2d';
+
+function distance2xy(d: number): { x: number; y: number } {
+  let s = 1;
+  let iter = 0;
+  let curPos = { x: 0, y: 0 };
+
+  // d = Math.floor(d);
+  while (d > 0) {
+    const ry = 1 & (d >> 1);
+    const rx = 1 & (ry ^ d);
+
+    // Rotate if needed
+    if (rx === 0) {
+      if (ry === 1) {
+        curPos = { x: s - 1 - curPos.x, y: s - 1 - curPos.y };
+      }
+      curPos = { x: curPos.y, y: curPos.x };
+    }
+
+    curPos = { x: curPos.x + s * rx, y: curPos.y + s * ry };
+
+    s <<= 1; // s *= 2;
+    d >>= 2; // d = Math.floor(d / 4);
+    iter = (iter + 1) % 2;
+  }
+
+  if (iter == 0) {
+    curPos = { x: curPos.y, y: curPos.x };
+  }
+
+  return curPos;
+}
 
 @Component({
     selector: 'app-d3-sample-hilbert-paths',
@@ -44,20 +73,20 @@ export class HilbertPathsComponent implements OnInit {
       .attr('fill', 'transparent').attr('stroke', (d: any, i: any) => color(i)).attr('stroke-width', '8').attr('stroke-linecap', 'square')
       .attr('d', (d: any) => 'M' + d3.range(d[0], d[1])
         .map(e => {
-          const xy = hilbert.d2xy(e);
+          const xy = distance2xy(e);
           return [scale * xy.x, scale * xy.y];
         }).join('L'));
     const xs = 'x';
     const ys = 'y';
     this.svg.append('path').attr('fill', 'transparent').attr('stroke', '#fff').attr('stroke-width', '1')
-      .attr('d', 'M' + d3.range(max * max).map(hilbert.d2xy).map((d: any) => [scale * d[xs], scale * d[ys]]).join('L'));
+      .attr('d', 'M' + d3.range(max * max).map(distance2xy).map((d: any) => [scale * d[xs], scale * d[ys]]).join('L'));
     const t = this.svg.append('text').attr('y', 10).attr('x', 512).attr('font-size', 12).style('font-family', 'monospace');
 
     const numberOfBalls = 7; // [2, 7]
     const c = d3.range(numberOfBalls).map(i => this.svg.append('circle').attr('r', 3).attr('fill', 'white'));
     const speed = 100; // [10, 500]
     d3.interval(e => {
-      const xy = hilbert.d2xy((e / speed) % max2);
+      const xy = distance2xy((e / speed) % max2);
       c[Math.floor(Math.random() * c.length)].transition().duration(speed).attr('cx', scale * xy.x).attr('cy', scale * xy.y);
       t.text(JSON.stringify(xy));
     }, speed);

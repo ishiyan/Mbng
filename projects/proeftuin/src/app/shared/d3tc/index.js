@@ -1,6 +1,7 @@
 'use strict';
 
-var _d3 = require('d3');
+// var _d3 = require('d3');
+import * as _d3 from 'd3';
 
 module.exports = (function (d3) {
     return {
