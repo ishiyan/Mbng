@@ -8,6 +8,23 @@
 | `proeftuin` | A testing ground for the `mb` library |
 | `notes`     | An interactive assorted notes for various topics |
 
+## indicators
+
+Looks good: ma, ems, wma, trima, dema
+
+Wrong: Comparing triple exponential moving average with SMA
+
+No text: Visualising financial data with linear chart
+
+```text
+g x x jmark-urik/JurikMovingAverage
+x x x perry-kaufman/KaufmanAdaptiveMovingAverage
+x n l tim-tillson/T2ExponentialMovingAverage        (note text describes WMA, incorrect charts)
+x n l tim-tillson/T3ExponentialMovingAverage        (note text describes WMA, incorrect charts)
+x N l patrick-mullow/DoubleExponentialMovingAverage (note looks good)
+x n l patrick-mullow/TripleExponentialMovingAverage (note text describes WMA)
+```
+
 ## temp v18
 
 [migration](https://angular.dev/update-guide?v=17.0-18.0&l=3)
