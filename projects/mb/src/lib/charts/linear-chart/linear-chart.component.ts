@@ -268,7 +268,7 @@ export class LinearChartComponent implements AfterViewInit {
       nav.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + heightNav + ')');
     }
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    // zeslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function draw(scalarView: number, tradeView: number, quoteView: number,
       renderVolume: boolean, temporalEntityKind: TemporalEntityKind | undefined) {
       const priceSelection = focus.select('g.price');
@@ -342,7 +342,7 @@ export class LinearChartComponent implements AfterViewInit {
     const rv = this.renderVolume;
     const tek = this.temporalEntityKind;
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    // zeslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushed(event: any) {
       const zoomable = x.zoomable();
       const zoomableNav = xNav.zoomable();

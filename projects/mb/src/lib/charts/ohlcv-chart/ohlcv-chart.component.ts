@@ -986,7 +986,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
 
     const navPane = OhlcvChartComponent.createNavPane(cfg, lh, lv, svg);
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    // zeslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function draw(): void {
       timePane.draw();
       pricePane.draw(timePane);
@@ -995,7 +995,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
 
     const setCurrentSelection = (x: any) => { this.currentSelection = x; };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    // zeslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushed(event: any): void {
       const zoomable = timePane.timeScale.zoomable();
       const zoomableNav = navPane.timeScale.zoomable();
@@ -1012,7 +1012,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
       }
     }
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+    // zeslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function brushing(event: any): void {
       if (event.selection) {
         const sel = event.selection;
