@@ -8,8 +8,8 @@ describe('D3tcOhlcComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcOhlcComponent ]
-    })
+    imports: [D3tcOhlcComponent]
+})
     .compileComponents();
   }));
 

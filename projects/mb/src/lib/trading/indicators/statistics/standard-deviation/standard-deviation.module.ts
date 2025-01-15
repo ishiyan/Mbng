@@ -15,26 +15,24 @@ import { StandardDeviationParamsComponent } from './standard-deviation-params.co
 import { StandardDeviationParamsDialogComponent } from './standard-deviation-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule,
-    VarianceModule
-  ],
-  exports: [
-    StandardDeviationParamsComponent,
-    StandardDeviationParamsDialogComponent
-  ],
-  declarations: [
-    StandardDeviationParamsComponent,
-    StandardDeviationParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        VarianceModule,
+        StandardDeviationParamsComponent,
+        StandardDeviationParamsDialogComponent
+    ],
+    exports: [
+        StandardDeviationParamsComponent,
+        StandardDeviationParamsDialogComponent
+    ]
 })
 export class StandardDeviationModule {}

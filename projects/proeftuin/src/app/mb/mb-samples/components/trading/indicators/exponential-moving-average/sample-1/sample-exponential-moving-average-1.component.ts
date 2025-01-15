@@ -4,13 +4,16 @@ import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothing
   from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { ExponentialMovingAverageModule } from '../../../../../../../../../../mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-exponential-moving-average-1',
     templateUrl: './sample-exponential-moving-average-1.component.html',
     styleUrls: ['./sample-exponential-moving-average-1.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ExponentialMovingAverageModule, JsonPipe]
 })
 export class SampleExponentialMovingAverage1Component {
   protected selected1: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {

@@ -5,5 +5,5 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { SvgViewerComponent } from './svg-viewer.component';
 
 @NgModule({ exports: [SvgViewerComponent],
-    declarations: [SvgViewerComponent], imports: [CommonModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+    imports: [CommonModule, SvgViewerComponent], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class SvgViewerModule { }

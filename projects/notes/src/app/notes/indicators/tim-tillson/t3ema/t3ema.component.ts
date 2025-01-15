@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Bar, generateStep } from 'mb';
+import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -13,6 +13,15 @@ import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interfa
 import { exponentialMovingAverageNote, t3ExponentialMovingAverageNote } from '../../../../notes';
 import { T3emaLengthInput } from './t3ema-input.interface';
 import { T3ema } from './t3ema.interface';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
+import { NgIf } from '@angular/common';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { T3emaListComponent } from './t3ema-list.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 const isUnlocked = false;
 const sl = 4096;
@@ -81,7 +90,7 @@ const getConfigTemplate = (): Configuration => ({
     templateUrl: './t3ema.component.html',
     styleUrls: ['./t3ema.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatSlideToggle, FormsModule, MatIcon, BarSeriesSelectComponent, OhlcvChartModule, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, SwatchesSelectComponent, T3emaListComponent, KatexModule, FrequencyResponseChartModule, MatFormField, MatLabel, MatInput]
 })
 export class T3emaComponent implements AfterViewInit {
 

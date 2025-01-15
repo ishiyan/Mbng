@@ -14,25 +14,23 @@ import { TripleExponentialMovingAverageParamsComponent } from './triple-exponent
 import { TripleExponentialMovingAverageParamsDialogComponent } from './triple-exponential-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    TripleExponentialMovingAverageParamsComponent,
-    TripleExponentialMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    TripleExponentialMovingAverageParamsComponent,
-    TripleExponentialMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        TripleExponentialMovingAverageParamsComponent,
+        TripleExponentialMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        TripleExponentialMovingAverageParamsComponent,
+        TripleExponentialMovingAverageParamsDialogComponent
+    ]
 })
 export class TripleExponentialMovingAverageModule {}

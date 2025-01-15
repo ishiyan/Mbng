@@ -1,17 +1,22 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { SparklineConfiguration } from 'mb';
+import { SparklineConfiguration, SparklineComponent, MultilineComponent } from 'mb';
 import { LineConfiguration } from 'mb';
 
 import { Series } from '../series.interface';
 import { primaryColor } from '../../theme-colors';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription } from '@angular/material/expansion';
+import { NgIf, DatePipe } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
     selector: 'app-series-card',
     templateUrl: './series-card.component.html',
     styleUrls: ['./series-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, SparklineComponent, MatExpansionPanelDescription, NgIf, MatIconButton, MatIcon, MatDivider, MultilineComponent, DatePipe]
 })
 export class SeriesCardComponent {
   /** Specifies the scalar series. */

@@ -10,8 +10,7 @@ import * as hilbert from '../hilbert';
 @Component({
     selector: 'app-d3-sample-hilbert-stocks',
     templateUrl: './hilbert-stocks.component.html',
-    styleUrls: ['./hilbert-stocks.component.scss'],
-    standalone: false
+    styleUrls: ['./hilbert-stocks.component.scss']
 })
 export class HilbertStocksComponent implements OnInit {
 

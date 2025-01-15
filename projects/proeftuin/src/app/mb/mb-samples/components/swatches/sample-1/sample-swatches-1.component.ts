@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
+
+import { NgFor } from '@angular/common';
+import { MatSelectionList, MatListOption, MatList, MatListItem } from '@angular/material/list';
+import { FormsModule } from '@angular/forms';
+import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
     selector: 'app-sample-swatches-1',
     templateUrl: './sample-swatches-1.component.html',
     styleUrls: ['./sample-swatches-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatCardActions, NgFor, MatSelectionList, FormsModule, MatListOption, MatList, MatListItem]
 })
 export class SampleSwatches1Component {
 

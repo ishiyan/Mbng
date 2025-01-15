@@ -1,12 +1,22 @@
 import { Component } from '@angular/core';
 
 import { parametricProceduralPalette } from 'projects/mb/src/lib/colors/parametric-procedural-palettes';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { KatexModule } from '../../../../../../../../mb/src/lib/katex/katex.module';
+
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { NgFor } from '@angular/common';
+import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
 
 @Component({
     selector: 'app-sample-swatches-5',
     templateUrl: './sample-swatches-5.component.html',
     styleUrls: ['./sample-swatches-5.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, KatexModule, SwatchesComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatSlider, MatSliderThumb, NgFor]
 })
 export class SampleSwatches5Component {
 

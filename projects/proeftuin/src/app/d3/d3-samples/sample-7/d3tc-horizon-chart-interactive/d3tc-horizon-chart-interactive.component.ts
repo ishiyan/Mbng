@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
-import { MatRadioChange } from '@angular/material/radio';
-import { MatSelectChange } from '@angular/material/select';
+import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import * as d3 from 'd3';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -8,12 +8,17 @@ import * as d3tc from '../../../../shared/d3tc';
 
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
+import { MatFormField } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-d3-sample-d3tc-horizon-chart-interactive',
     templateUrl: './d3tc-horizon-chart-interactive.component.html',
     styleUrls: ['./d3tc-horizon-chart-interactive.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatSelect, FormsModule, MatOption, NgFor, MatInput, MatRadioGroup, MatRadioButton]
 })
 export class D3tcHorizonChartInteractiveComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

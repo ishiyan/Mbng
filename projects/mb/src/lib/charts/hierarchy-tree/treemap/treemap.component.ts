@@ -31,8 +31,7 @@ const deltaY = 16;
     templateUrl: './treemap.component.html',
     styleUrls: ['./treemap.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class TreemapComponent implements OnChanges {
   /**

@@ -14,25 +14,23 @@ import { ExponentialMovingAverageParamsComponent } from './exponential-moving-av
 import { ExponentialMovingAverageParamsDialogComponent } from './exponential-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    ExponentialMovingAverageParamsComponent,
-    ExponentialMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    ExponentialMovingAverageParamsComponent,
-    ExponentialMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        ExponentialMovingAverageParamsComponent,
+        ExponentialMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        ExponentialMovingAverageParamsComponent,
+        ExponentialMovingAverageParamsDialogComponent
+    ]
 })
 export class ExponentialMovingAverageModule {}

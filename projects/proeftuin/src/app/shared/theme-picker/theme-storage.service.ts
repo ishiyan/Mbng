@@ -1,7 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Theme } from './theme';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ThemeStorageService {
   static storageKey = 'theme-storage-current-name';
 

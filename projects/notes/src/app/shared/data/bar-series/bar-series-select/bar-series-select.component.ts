@@ -4,12 +4,17 @@ import { SeriesSelect } from '../../abstractions/series-select';
 import { Series } from '../../series.interface';
 import { BarSeries } from '../bar-series.interface';
 import { BarSeriesService } from '../bar-series.service';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { SparklineComponent } from 'mb';
+import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'app-bar-series-select',
     templateUrl: '../../abstractions/series-select.html',
     styleUrls: ['../../abstractions/series-select.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption]
 })
 export class BarSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

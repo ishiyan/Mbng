@@ -3,8 +3,7 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 @Component({
     selector: 'mb-dash-svg',
     templateUrl: './dash-svg.component.html',
-    styleUrls: ['./dash-svg.component.scss'],
-    standalone: false
+    styleUrls: ['./dash-svg.component.scss']
 })
 export class DashSvgComponent implements OnInit {
   private val = '';

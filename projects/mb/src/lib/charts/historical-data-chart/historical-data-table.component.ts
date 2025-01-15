@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
 import { HistoricalData } from '../../data/historical-data';
@@ -8,12 +8,18 @@ import { Ohlcv } from '../../data/entities/ohlcv';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { NgIf, NgClass, NgFor, DecimalPipe, DatePipe } from '@angular/common';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { HistoricalDataDownloadComponent } from './historical-data-download.component';
 
 @Component({
     selector: 'mb-data-historical-data-table',
     templateUrl: './historical-data-table.component.html',
     styleUrls: ['./historical-data-table.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, NgIf, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgClass, MatPaginator, MatFormField, MatLabel, MatSelect, NgFor, MatOption, HistoricalDataDownloadComponent, DecimalPipe, DatePipe]
 })
 export class HistoricalDataTableComponent implements OnInit {
   @Input() enableDownload = true;

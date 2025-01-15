@@ -8,8 +8,7 @@ import * as rtc from './realTimeChart.js';
     selector: 'app-d3-sample-real-time-chart',
     templateUrl: './real-time-chart.component.html',
     styleUrls: ['./real-time-chart.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class RealTimeChartComponent implements OnInit, OnDestroy {
   @ViewChild('container', { static: true }) container!: ElementRef;

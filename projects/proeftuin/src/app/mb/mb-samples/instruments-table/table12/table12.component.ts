@@ -1,8 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 import { InstrumentType } from 'projects/mb/src/lib/trading/instruments/types/instrument-type.enum';
 import { ExchangeMic } from 'projects/mb/src/lib/trading/markets/exchange-mic.enum';
@@ -10,6 +10,8 @@ import { CurrencyCode } from 'projects/mb/src/lib/trading/currencies/currency-co
 import { Instrument } from 'projects/mb/src/lib/trading/instruments/instrument';
 import { ListService } from './list.service';
 import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'mb-sample-table12',
@@ -22,7 +24,7 @@ import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
     ],
-    standalone: false
+    imports: [MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator]
 })
 export class Table12Component implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

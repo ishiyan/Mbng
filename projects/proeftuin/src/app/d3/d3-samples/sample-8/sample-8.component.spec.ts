@@ -8,8 +8,8 @@ describe('Sample8Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ Sample8Component ]
-    })
+    imports: [Sample8Component]
+})
     .compileComponents();
   }));
 

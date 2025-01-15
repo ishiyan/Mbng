@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { MaterialModule } from '../material/material.module';
+
 import { SnackBarService } from './snack-bar.service';
 
 @NgModule({
-  imports: [
-    MaterialModule
-  ],
+  imports: [],
   exports: [],
   declarations: [],
   providers: [SnackBarService]

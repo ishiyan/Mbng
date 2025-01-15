@@ -14,25 +14,23 @@ import { KaufmanAdaptiveMovingAverageParamsComponent } from './kaufman-adaptive-
 import { KaufmanAdaptiveMovingAverageParamsDialogComponent } from './kaufman-adaptive-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    KaufmanAdaptiveMovingAverageParamsComponent,
-    KaufmanAdaptiveMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    KaufmanAdaptiveMovingAverageParamsComponent,
-    KaufmanAdaptiveMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        KaufmanAdaptiveMovingAverageParamsComponent,
+        KaufmanAdaptiveMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        KaufmanAdaptiveMovingAverageParamsComponent,
+        KaufmanAdaptiveMovingAverageParamsDialogComponent
+    ]
 })
 export class KaufmanAdaptiveMovingAverageModule {}

@@ -5,6 +5,10 @@ import { LineStyle } from 'mb';
 
 import { SmaInput } from './sma-input.interface';
 import { Sma } from './sma.interface';
+import { NgFor } from '@angular/common';
+import { SmaParamsComponent } from './sma-params.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -28,7 +32,7 @@ const createSma = (showStyle: boolean, len: number, comp?: BarComponent): Sma =>
     selector: 'app-sma-list',
     templateUrl: './sma-list.component.html',
     styleUrls: ['./sma-list.component.scss'],
-    standalone: false
+    imports: [NgFor, SmaParamsComponent, MatMiniFabButton, MatIcon]
 })
 export class SmaListComponent implements AfterViewInit {
 

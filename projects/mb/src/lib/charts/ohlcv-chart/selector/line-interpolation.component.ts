@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
 
 interface Elem {
   value: string;
@@ -11,7 +14,7 @@ interface Elem {
     selector: 'mb-line-interpolation',
     templateUrl: './line-interpolation.component.html',
     styleUrls: ['./line-interpolation.component.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, NgFor, MatOption]
 })
 export class LineInterpolationComponent implements OnInit {
   protected elems: Elem[] = [

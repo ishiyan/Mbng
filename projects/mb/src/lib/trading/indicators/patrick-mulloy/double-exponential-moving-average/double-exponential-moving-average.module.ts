@@ -14,25 +14,23 @@ import { DoubleExponentialMovingAverageParamsComponent } from './double-exponent
 import { DoubleExponentialMovingAverageParamsDialogComponent } from './double-exponential-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    DoubleExponentialMovingAverageParamsComponent,
-    DoubleExponentialMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    DoubleExponentialMovingAverageParamsComponent,
-    DoubleExponentialMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        DoubleExponentialMovingAverageParamsComponent,
+        DoubleExponentialMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        DoubleExponentialMovingAverageParamsComponent,
+        DoubleExponentialMovingAverageParamsDialogComponent
+    ]
 })
 export class DoubleExponentialMovingAverageModule {}

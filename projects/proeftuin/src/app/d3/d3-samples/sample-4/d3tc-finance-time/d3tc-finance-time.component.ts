@@ -13,8 +13,6 @@ import { dataOhlcvIntraday } from '../../data/data-ohlcv-intraday';
     templateUrl: './d3tc-finance-time.component.html',
     styleUrls: ['./d3tc-finance-time.component.scss'],
     encapsulation: ViewEncapsulation.None // does not see css without this
-    ,
-    standalone: false
 })
 export class D3tcFinanceTimeComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

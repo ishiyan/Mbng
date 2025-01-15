@@ -8,12 +8,15 @@ import { testDataBbPercentB } from '../../../test-data/indicators/test-data-bb-p
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
 import { testDataBbLo } from '../../../test-data/indicators/test-data-bb-lo';
 import { testDataBbUp } from '../../../test-data/indicators/test-data-bb-up';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from '@angular/material/card';
+
+import { MultilineComponent } from '../../../../../../../../mb/src/lib/charts/multiline/multiline.component';
 
 @Component({
     selector: 'app-sample-multiline-1',
     templateUrl: './sample-multiline-1.component.html',
     styleUrls: ['./sample-multiline-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle, MultilineComponent]
 })
 export class SampleMultiline1Component {
 

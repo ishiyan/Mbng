@@ -5,12 +5,18 @@ import { SyntheticDataParameters } from 'projects/mb/src/lib/data/generators/syn
 import { SyntheticDataService } from 'projects/mb/src/lib/data/generators/synthetic-data.service';
 import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service';
 import { HistoricalData } from 'projects/mb/src/lib/data/historical-data';
+import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { GeneratorsModule } from '../../../../../../mb/src/lib/data/generators/generators.module';
+import { MatButton } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { HistoricalDataChartModule } from '../../../../../../mb/src/lib/charts/historical-data-chart/historical-data-chart.module';
 
 @Component({
     selector: 'mb-sample-synthetic-data',
     templateUrl: './synthetic-data.component.html',
     styleUrls: ['./synthetic-data.component.scss'],
-    standalone: false
+    imports: [MatStepper, MatStep, MatStepLabel, MatButtonToggleGroup, MatButtonToggle, GeneratorsModule, MatButton, NgIf, HistoricalDataChartModule]
 })
 export class SyntheticDataComponent {
   readonly temporalEntityKinds = Object.keys(TemporalEntityKind);

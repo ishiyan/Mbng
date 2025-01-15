@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { TriangularMovingAverageModule } from 'projects/mb/src/lib/trading/indicators/triangular-moving-average/triangular-moving-average.module';
 
 import { SampleTriangularMovingAverage1Component } from './sample-1/sample-triangular-moving-average-1.component';
@@ -12,17 +12,14 @@ import { SampleTriangularMovingAverage2Component } from './sample-2/sample-trian
 import { SampleTriangularMovingAverageRoutingModule } from './sample-triangular-moving-average-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     TriangularMovingAverageModule,
-    SampleTriangularMovingAverageRoutingModule
-  ],
-  declarations: [
+    SampleTriangularMovingAverageRoutingModule,
     SampleTriangularMovingAverage1Component,
     SampleTriangularMovingAverage2Component
-  ]
+]
 })
 export class SampleTriangularMovingAverageModule { }

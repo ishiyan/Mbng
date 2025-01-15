@@ -33,7 +33,17 @@ import { LineStyleComponent } from './line-style.component';
         MatIconModule,
         MatDialogModule,
         MatCardModule,
-        ColorPickerModule
+        ColorPickerModule,
+        WidthSvgComponent,
+        DashSvgComponent,
+        LineSvgComponent,
+        LineWidthComponent,
+        LineDashComponent,
+        LineInterpolationComponent,
+        ColorComponent,
+        LineStyleSelectorComponent,
+        LineStyleDialogComponent,
+        LineStyleComponent
     ],
     exports: [
         WidthSvgComponent,
@@ -47,19 +57,6 @@ import { LineStyleComponent } from './line-style.component';
         LineStyleDialogComponent,
         LineStyleComponent
     ],
-    declarations: [
-        WidthSvgComponent,
-        DashSvgComponent,
-        LineSvgComponent,
-        LineWidthComponent,
-        LineDashComponent,
-        LineInterpolationComponent,
-        ColorComponent,
-        LineStyleSelectorComponent,
-        LineStyleDialogComponent,
-        LineStyleComponent
-    ],
-    providers: [
-    ]
+    providers: []
 })
 export class OhlcvChartSelectorModule { }

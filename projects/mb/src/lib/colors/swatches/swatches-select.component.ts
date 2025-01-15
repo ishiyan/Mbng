@@ -1,5 +1,9 @@
 import { Component, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgStyle, NgFor } from '@angular/common';
+import { SwatchesComponent } from './swatches.component';
+import { MatOption } from '@angular/material/core';
 
 const SELECT_PADDING_PIXELS = 48;
 const TRIGGER_HEIGHT_PIXELS = 24;
@@ -11,7 +15,7 @@ const MIN_SWATCHES = 1;
     templateUrl: './swatches-select.component.html',
     styleUrls: ['./swatches-select.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    imports: [MatFormField, NgStyle, MatLabel, MatSelect, MatSelectTrigger, SwatchesComponent, NgFor, MatOption]
 })
 export class SwatchesSelectComponent {
   /** Specifies a selection index. */

@@ -12,6 +12,15 @@ import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFo
 
 // import { flare } from '../../../test-data/hierarchies/flare';
 import { jdk } from '../../../test-data/hierarchies/jdk';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+
+import { IcicleComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
 
 interface NumberOrStringItem {
   value: number | string;
@@ -47,7 +56,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-icicle-5',
     templateUrl: './sample-icicle-5.component.html',
     styleUrls: ['./sample-icicle-5.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, NgFor, MatOption, MatSlideToggle, IcicleComponent, MatCardActions]
 })
 export class SampleIcicle5Component {
 

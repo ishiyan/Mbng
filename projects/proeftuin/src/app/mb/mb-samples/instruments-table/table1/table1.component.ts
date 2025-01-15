@@ -5,6 +5,7 @@ import { InstrumentType } from 'projects/mb/src/lib/trading/instruments/types/in
 import { ExchangeMic } from 'projects/mb/src/lib/trading/markets/exchange-mic.enum';
 import { CurrencyCode } from 'projects/mb/src/lib/trading/currencies/currency-code.enum';
 import { Instrument } from 'projects/mb/src/lib/trading/instruments/instrument';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 // import { euronextListShort } from 'projects/mb/src/lib/euronext-list-short';
 
 @Component({
@@ -18,7 +19,7 @@ import { Instrument } from 'projects/mb/src/lib/trading/instruments/instrument';
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
     ],
-    standalone: false
+    imports: [MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class Table1Component implements OnInit {
   @ViewChild('container') container!: ElementRef;

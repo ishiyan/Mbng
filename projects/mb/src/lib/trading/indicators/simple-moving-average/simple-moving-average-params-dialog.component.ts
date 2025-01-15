@@ -1,13 +1,17 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { SimpleMovingAverageParamsComponent } from './simple-moving-average-params.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'mb-simple-moving-average-params-dialog',
     templateUrl: './simple-moving-average-params-dialog.component.html',
     styleUrls: ['./simple-moving-average-params-dialog.component.scss'],
-    standalone: false
+    imports: [CdkScrollable, MatDialogContent, SimpleMovingAverageParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
 })
 export class SimpleMovingAverageParamsDialogComponent {
 

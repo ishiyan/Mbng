@@ -4,13 +4,16 @@ import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoot
   from 'projects/mb/src/lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { T3ExponentialMovingAverageModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-t3-exponential-moving-average-2',
     templateUrl: './sample-t3-exponential-moving-average-2.component.html',
     styleUrls: ['./sample-t3-exponential-moving-average-2.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, T3ExponentialMovingAverageModule, JsonPipe]
 })
 export class SampleT3ExponentialMovingAverage2Component {
   protected selected1: T3ExponentialMovingAverageLengthParams | T3ExponentialMovingAverageSmoothingFactorParams = {

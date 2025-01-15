@@ -13,24 +13,22 @@ import { SimpleMovingAverageParamsComponent } from './simple-moving-average-para
 import { SimpleMovingAverageParamsDialogComponent } from './simple-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    EntitiesModule
-  ],
-  exports: [
-    SimpleMovingAverageParamsComponent,
-    SimpleMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    SimpleMovingAverageParamsComponent,
-    SimpleMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        EntitiesModule,
+        SimpleMovingAverageParamsComponent,
+        SimpleMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        SimpleMovingAverageParamsComponent,
+        SimpleMovingAverageParamsDialogComponent
+    ]
 })
 export class SimpleMovingAverageModule {}

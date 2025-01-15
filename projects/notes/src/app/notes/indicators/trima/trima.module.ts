@@ -13,19 +13,19 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { TriangularMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
+
 import { TrimaComponent } from './trima.component';
 import { TrimaParamsComponent } from './trima-params.component';
 import { TrimaListComponent } from './trima-list.component';
 import { TrimaRoutingModule } from './trima-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +39,12 @@ import { TrimaRoutingModule } from './trima-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     TriangularMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    TrimaRoutingModule
-  ],
-  declarations: [TrimaComponent, TrimaParamsComponent, TrimaListComponent]
+    TrimaRoutingModule,
+    TrimaComponent, TrimaParamsComponent, TrimaListComponent
+]
 })
 export class TrimaModule { }

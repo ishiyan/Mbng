@@ -8,8 +8,8 @@ describe('D3tcHorizonChartBandsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcHorizonChartBandsComponent ]
-    })
+    imports: [D3tcHorizonChartBandsComponent]
+})
     .compileComponents();
   }));
 

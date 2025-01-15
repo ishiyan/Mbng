@@ -8,8 +8,8 @@ describe('D3tcZoomingComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcZoomingComponent ]
-    })
+    imports: [D3tcZoomingComponent]
+})
     .compileComponents();
   }));
 

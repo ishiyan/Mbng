@@ -5,12 +5,13 @@ import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
 // import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-bar-daily';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-d3-sample-d3tc-candlesticks',
     templateUrl: './d3tc-candlesticks.component.html',
     styleUrls: ['./d3tc-candlesticks.component.scss'],
-    standalone: false
+    imports: [MatButton]
 })
 export class D3tcCandlesticksComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
 
-import { FooterModule } from '../shared/footer/footer.module';
+
+
 import { D3RoutingModule } from './d3-routing.module';
 import { Sample1Component } from './d3-samples/sample-1/sample-1.component';
 import { Sample2Component } from './d3-samples/sample-2/sample-2.component';
@@ -49,11 +49,9 @@ import { Sample8Component } from './d3-samples/sample-8/sample-8.component';
 import { RealTimeChartComponent } from './d3-samples/sample-8/real-time-chart/real-time-chart.component';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule, FormsModule, FlexLayoutModule,
-    D3RoutingModule, MaterialModule, FooterModule
-  ],
-  declarations: [
+    D3RoutingModule,
     D3Component, Sample1Component, Sample2Component, BarchartComponent, BrushHandlesComponent, BrushHandles2Component,
     ClickToRecenterBrushComponent, ClickToRecenterBrush2Component, ClickToSelectAllComponent, Sample3Component,
     BrushAndZoomAreaChartComponent,
@@ -64,6 +62,6 @@ import { RealTimeChartComponent } from './d3-samples/sample-8/real-time-chart/re
     HilbertStocksComponent, Sample6Component,
     Sample7Component, D3tcHorizonChartInteractiveComponent, D3tcHorizonChartBandsComponent, D3tcHorizonChartSingleComponent,
     Sample8Component, RealTimeChartComponent
-  ]
+]
 })
 export class D3Module { }

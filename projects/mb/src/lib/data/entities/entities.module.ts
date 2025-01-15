@@ -15,13 +15,11 @@ import { QuoteComponentComponent } from './quote-component.component';
         FormsModule,
         MatFormFieldModule,
         MatSelectModule,
-        KatexModule
-    ],
-    exports: [
+        KatexModule,
         BarComponentComponent,
         QuoteComponentComponent
     ],
-    declarations: [
+    exports: [
         BarComponentComponent,
         QuoteComponentComponent
     ]

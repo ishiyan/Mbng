@@ -4,8 +4,7 @@ import * as d3 from 'd3';
 @Component({
     selector: 'app-d3-sample-brush-handles-2',
     templateUrl: './brush-handles-2.component.html',
-    styleUrls: ['./brush-handles-2.component.scss'],
-    standalone: false
+    styleUrls: ['./brush-handles-2.component.scss']
 })
 export class BrushHandles2Component implements OnInit {
   @ViewChild('container2', { static: true }) container!: ElementRef;

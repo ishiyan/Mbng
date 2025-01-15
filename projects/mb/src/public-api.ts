@@ -2,7 +2,7 @@
  * Public API Surface of mb
  */
 
-export * from './lib/material/material.module';
+
 
 export * from './lib/katex/katex.directive';
 export * from './lib/katex/katex.service';
@@ -44,7 +44,7 @@ export { ColorPickerDirective } from './lib/colors/picker/color-picker.directive
 export { ColorPickerSliderDirective } from './lib/colors/picker/color-picker-slider.directive';
 export { ColorPickerService } from './lib/colors/picker/color-picker.service';
 export { ColorPickerModule } from './lib/colors/picker/color-picker.module';
-export * from './lib/colors/colors.module';
+
 
 export * from './lib/data/historical-data'; // deprecated
 export * from './lib/data/data-series.interface';
@@ -240,7 +240,7 @@ export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-av
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params-dialog.component';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average.module';
 
-export * from './lib/trading/trading.module';
+
 
 // export * from './lib/charts/d3ts/index.js';
 export * from './lib/charts/line-configuration.interface';
@@ -272,22 +272,22 @@ export * from './lib/charts/historical-data-chart/historical-data-download.compo
 export * from './lib/charts/historical-data-chart/historical-data-chart.module';
 export * from './lib/charts/sparkline/sparkline-configuration.interface';
 export * from './lib/charts/sparkline/sparkline.component';
-export * from './lib/charts/sparkline/sparkline.module';
+
 export * from './lib/charts/stackline/stackline.component';
-export * from './lib/charts/stackline/stackline.module';
+
 export * from './lib/charts/multiline/multiline.component';
-export * from './lib/charts/multiline/multiline.module';
+
 export * from './lib/charts/hierarchy-tree/hierarchy-tree';
 export * from './lib/charts/hierarchy-tree/treemap/treemap.component';
-export * from './lib/charts/hierarchy-tree/treemap/treemap.module';
+
 export * from './lib/charts/hierarchy-tree/sunburst/sunburst.component';
-export * from './lib/charts/hierarchy-tree/sunburst/sunburst.module';
+
 export * from './lib/charts/hierarchy-tree/icicle/icicle.component';
-export * from './lib/charts/hierarchy-tree/icicle/icicle.module';
+
 export * from './lib/charts/hierarchy-tree/circlepack/circlepack.component';
-export * from './lib/charts/hierarchy-tree/circlepack/circlepack.module';
+
 export * from './lib/charts/hierarchy-tree/voronoi/voronoi.component';
-export * from './lib/charts/hierarchy-tree/voronoi/voronoi.module';
+
 export * from './lib/charts/hierarchy-tree/functions/fill-function';
 export * from './lib/charts/hierarchy-tree/functions/fill-opacity-function';
 export * from './lib/charts/hierarchy-tree/functions/font-size-function';

@@ -18,24 +18,22 @@ import { Table12Component } from './table12/table12.component';
 import { ListService } from './table12/list.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule,
-    CdkTableModule,
-    SnackBarModule,
-  ],
-  declarations: [
-    InstrumentsTableComponent,
-    Table1Component,
-    Table12Component
-  ],
-  providers: [ListService]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        CdkTableModule,
+        SnackBarModule,
+        InstrumentsTableComponent,
+        Table1Component,
+        Table12Component,
+    ],
+    providers: [ListService]
 })
 export class InstrumentsTableModule { }

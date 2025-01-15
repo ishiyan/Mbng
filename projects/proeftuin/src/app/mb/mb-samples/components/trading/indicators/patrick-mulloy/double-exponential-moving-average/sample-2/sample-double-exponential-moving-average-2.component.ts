@@ -4,13 +4,16 @@ import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAver
   from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { DoubleExponentialMovingAverageModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-double-exponential-moving-average-2',
     templateUrl: './sample-double-exponential-moving-average-2.component.html',
     styleUrls: ['./sample-double-exponential-moving-average-2.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, DoubleExponentialMovingAverageModule, JsonPipe]
 })
 export class SampleDoubleExponentialMovingAverage2Component {
   protected selected1: DoubleExponentialMovingAverageLengthParams | DoubleExponentialMovingAverageSmoothingFactorParams = {

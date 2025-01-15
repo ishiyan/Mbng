@@ -10,8 +10,7 @@ import { d3Sp500 } from '../../data/d3-sp500';
     selector: 'app-d3-sample-brush-and-zoom-area-chart',
     templateUrl: './brush-and-zoom-area-chart.component.html',
     styleUrls: ['./brush-and-zoom-area-chart.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class BrushAndZoomAreaChartComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -8,8 +8,8 @@ describe('ClickToSelectAllComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClickToSelectAllComponent ]
-    })
+    imports: [ClickToSelectAllComponent]
+})
     .compileComponents();
   }));
 

@@ -4,13 +4,16 @@ import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAver
   from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { TripleExponentialMovingAverageModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-triple-exponential-moving-average-2',
     templateUrl: './sample-triple-exponential-moving-average-2.component.html',
     styleUrls: ['./sample-triple-exponential-moving-average-2.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, TripleExponentialMovingAverageModule, JsonPipe]
 })
 export class SampleTripleExponentialMovingAverage2Component {
   protected selected1: TripleExponentialMovingAverageLengthParams | TripleExponentialMovingAverageSmoothingFactorParams = {

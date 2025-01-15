@@ -4,12 +4,19 @@ import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
 import { StandardDeviationParams } from './standard-deviation-params.interface';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { NgIf } from '@angular/common';
+import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
+import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
 
 @Component({
     selector: 'mb-standard-deviation-params',
     templateUrl: './standard-deviation-params.component.html',
     styleUrls: ['./standard-deviation-params.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, NgIf, BarComponentComponent, QuoteComponentComponent]
 })
 export class StandardDeviationParamsComponent implements OnInit {
 

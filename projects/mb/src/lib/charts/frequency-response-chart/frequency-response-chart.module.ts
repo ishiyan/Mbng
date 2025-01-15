@@ -20,10 +20,10 @@ import { FrequencyResponseChartComponent } from './frequency-response-chart.comp
         MatExpansionModule,
         MatIconModule,
         MatSlideToggleModule,
-        SvgViewerModule
+        SvgViewerModule,
+        FrequencyResponseChartComponent
     ],
     exports: [FrequencyResponseChartComponent],
-    declarations: [FrequencyResponseChartComponent],
     providers: []
 })
 export class FrequencyResponseChartModule { }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { OhlcvChartSelectorModule } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/ohlcv-chart-selector.module';
 
 import { SampleOhlcvChartSelector1Component } from './sample-1/sample-ohlcv-chart-selector-1.component';
@@ -16,21 +16,18 @@ import { SampleOhlcvChartSelector6Component } from './sample-6/sample-ohlcv-char
 import { SampleOhlcvChartSelectorRoutingModule } from './sample-ohlcv-chart-selector-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     OhlcvChartSelectorModule,
-    SampleOhlcvChartSelectorRoutingModule
-  ],
-  declarations: [
+    SampleOhlcvChartSelectorRoutingModule,
     SampleOhlcvChartSelector1Component,
     SampleOhlcvChartSelector2Component,
     SampleOhlcvChartSelector3Component,
     SampleOhlcvChartSelector4Component,
     SampleOhlcvChartSelector5Component,
     SampleOhlcvChartSelector6Component
-  ]
+]
 })
 export class SampleOhlcvChartSelectorModule { }

@@ -1,14 +1,18 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { T2ExponentialMovingAverageLengthParams } from './t2-exponential-moving-average-params.interface';
 import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponential-moving-average-params.interface';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { T2ExponentialMovingAverageParamsComponent } from './t2-exponential-moving-average-params.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'mb-t2-exponential-moving-average-params-dialog',
     templateUrl: './t2-exponential-moving-average-params-dialog.component.html',
     styleUrls: ['./t2-exponential-moving-average-params-dialog.component.scss'],
-    standalone: false
+    imports: [CdkScrollable, MatDialogContent, T2ExponentialMovingAverageParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
 })
 export class T2ExponentialMovingAverageParamsDialogComponent {
 

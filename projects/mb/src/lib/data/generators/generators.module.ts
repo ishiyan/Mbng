@@ -4,10 +4,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-import { MaterialModule } from '../../material/material.module';
+
 import { KatexModule } from '../../katex/katex.module';
 import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
-import { TradingModule } from '../../trading/trading.module';
+
 
 import { SyntheticDataParametersComponent } from './synthetic-data-parameters.component';
 import { SyntheticDataService } from './synthetic-data.service';
@@ -27,30 +27,26 @@ import { FractionalBrownianMotionParametersComponent } from './fractional-browni
 
 @NgModule({
     imports: [
-        CommonModule,
-        FlexLayoutModule,
-        FormsModule,
-        MatButtonToggleModule,
-        MaterialModule,
-        KatexModule,
-        SvgViewerModule,
-        TradingModule
-    ],
+    CommonModule,
+    FlexLayoutModule,
+    FormsModule,
+    MatButtonToggleModule,
+    KatexModule,
+    SvgViewerModule,
+    TimeParametersComponent,
+    WaveformParametersComponent,
+    OhlcvParametersComponent,
+    QuoteParametersComponent,
+    TradeParametersComponent,
+    FractionalBrownianMotionParametersComponent,
+    GeometricBrownianMotionParametersComponent,
+    ChirpParametersComponent,
+    SawtoothParametersComponent,
+    SquareParametersComponent,
+    SinusoidalParametersComponent,
+    SyntheticDataParametersComponent
+],
     exports: [
-        TimeParametersComponent,
-        WaveformParametersComponent,
-        OhlcvParametersComponent,
-        QuoteParametersComponent,
-        TradeParametersComponent,
-        FractionalBrownianMotionParametersComponent,
-        GeometricBrownianMotionParametersComponent,
-        ChirpParametersComponent,
-        SawtoothParametersComponent,
-        SquareParametersComponent,
-        SinusoidalParametersComponent,
-        SyntheticDataParametersComponent
-    ],
-    declarations: [
         TimeParametersComponent,
         WaveformParametersComponent,
         OhlcvParametersComponent,

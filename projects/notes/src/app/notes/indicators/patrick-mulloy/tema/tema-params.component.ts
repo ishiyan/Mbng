@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams, TripleExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 import { Tema } from './tema.interface';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-tema-params',
     templateUrl: './tema-params.component.html',
     styleUrls: ['./tema-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatIconButton, MatIcon, TripleExponentialMovingAverageModule, NgIf, OhlcvChartSelectorModule]
 })
 export class TemaParamsComponent {
 

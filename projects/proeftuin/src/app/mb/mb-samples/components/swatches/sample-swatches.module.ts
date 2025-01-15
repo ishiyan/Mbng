@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
-import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
+
 import { ColorPickerModule } from 'projects/mb/src/lib/colors/picker/color-picker.module';
 
 import { SampleSwatches1Component } from './sample-1/sample-swatches-1.component';
@@ -23,17 +23,13 @@ import { SampleSwatches11Component } from './sample-11/sample-swatches-11.compon
 import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     KatexModule,
-    ColorsModule,
     ColorPickerModule,
-    SampleSwatchesRoutingModule
-  ],
-  declarations: [
+    SampleSwatchesRoutingModule,
     SampleSwatches1Component,
     SampleSwatches2Component,
     SampleSwatches3Component,
@@ -45,6 +41,6 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     SampleSwatches9Component,
     SampleSwatches10Component,
     SampleSwatches11Component
-  ]
+]
 })
 export class SampleSwatchesModule { }

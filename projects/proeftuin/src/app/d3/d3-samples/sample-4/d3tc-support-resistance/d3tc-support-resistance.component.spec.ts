@@ -8,8 +8,8 @@ describe('D3tcSupportResistanceComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcSupportResistanceComponent ]
-    })
+    imports: [D3tcSupportResistanceComponent]
+})
     .compileComponents();
   }));
 

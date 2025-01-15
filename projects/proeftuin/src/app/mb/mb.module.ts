@@ -27,34 +27,32 @@ import { SampleDataEntitiesModule } from './mb-samples/components/data-entities/
 import { SampleOhlcvChartSelectorModule } from './mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatTreeModule,
-    MbRoutingModule,
-    SyntheticDataModule,
-    OhlcvChartStudyModule,
-    InstrumentsTableModule,
-    SampleFrequencyResponseModule,
-    SampleSparklineModule,
-    SampleMultilineModule,
-    SampleStacklineModule,
-    SampleCirclepackModule,
-    SampleSunburstModule,
-    SampleIcicleModule,
-    SampleTreemapModule,
-    SampleCirclepackModule,
-    SampleVoronoiModule,
-    SampleSwatchesModule,
-    SampleDataEntitiesModule,
-    SampleOhlcvChartSelectorModule
-  ],
-  declarations: [
-    MbComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatTreeModule,
+        MbRoutingModule,
+        SyntheticDataModule,
+        OhlcvChartStudyModule,
+        InstrumentsTableModule,
+        SampleFrequencyResponseModule,
+        SampleSparklineModule,
+        SampleMultilineModule,
+        SampleStacklineModule,
+        SampleCirclepackModule,
+        SampleSunburstModule,
+        SampleIcicleModule,
+        SampleTreemapModule,
+        SampleCirclepackModule,
+        SampleVoronoiModule,
+        SampleSwatchesModule,
+        SampleDataEntitiesModule,
+        SampleOhlcvChartSelectorModule,
+        MbComponent
+    ]
 })
 export class MbModule { }

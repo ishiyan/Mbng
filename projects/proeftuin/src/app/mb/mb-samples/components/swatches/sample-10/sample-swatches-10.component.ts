@@ -1,5 +1,14 @@
 import { Component } from '@angular/core';
 import { tripleInterpolatedPalette } from 'projects/mb/src/lib/colors/triple-interpolated-palette';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { NgFor } from '@angular/common';
+import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
 // https://medialab.github.io/iwanthue/
 const triplets: string[][] = [
@@ -115,7 +124,7 @@ const tripletsMaterialCount = tripletsMaterial.length;
     selector: 'app-sample-swatches-10',
     templateUrl: './sample-swatches-10.component.html',
     styleUrls: ['./sample-swatches-10.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgFor]
 })
 export class SampleSwatches10Component {
   private numberOfSwatches = 5;

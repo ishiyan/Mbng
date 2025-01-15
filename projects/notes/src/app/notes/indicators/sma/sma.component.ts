@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Bar, generateStep } from 'mb';
+import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -12,6 +12,15 @@ import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface'
 import { simpleMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { SmaInput } from './sma-input.interface';
 import { Sma } from './sma.interface';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
+import { NgIf } from '@angular/common';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { SmaListComponent } from './sma-list.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 const isUnlocked = false;
 const sl = 4096;
@@ -78,7 +87,7 @@ const getConfigTemplate = (): Configuration => ({
     templateUrl: './sma.component.html',
     styleUrls: ['./sma.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatSlideToggle, FormsModule, MatIcon, BarSeriesSelectComponent, OhlcvChartModule, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, SwatchesSelectComponent, SmaListComponent, KatexModule, FrequencyResponseChartModule, MatFormField, MatLabel, MatInput]
 })
 export class SmaComponent implements AfterViewInit {
 

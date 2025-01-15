@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { ExponentialMovingAverageModule }
   from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average.module';
 
@@ -13,17 +13,14 @@ import { SampleExponentialMovingAverage2Component } from './sample-2/sample-expo
 import { SampleExponentialMovingAverageRoutingModule } from './sample-exponential-moving-average-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     ExponentialMovingAverageModule,
-    SampleExponentialMovingAverageRoutingModule
-  ],
-  declarations: [
+    SampleExponentialMovingAverageRoutingModule,
     SampleExponentialMovingAverage1Component,
     SampleExponentialMovingAverage2Component
-  ]
+]
 })
 export class SampleExponentialMovingAverageModule { }

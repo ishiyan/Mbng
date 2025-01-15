@@ -4,12 +4,15 @@ import { VarianceParams }
   from 'projects/mb/src/lib/trading/indicators/statistics/variance/variance-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { VarianceModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/statistics/variance/variance.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-variance-1',
     templateUrl: './sample-variance-1.component.html',
     styleUrls: ['./sample-variance-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, VarianceModule, JsonPipe]
 })
 export class SampleVariance1Component {
   protected selected1: VarianceParams = {

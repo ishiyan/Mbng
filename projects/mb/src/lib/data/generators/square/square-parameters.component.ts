@@ -1,11 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { SquareParameters } from './square-parameters';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { KatexComponent } from '../../../katex/katex.component';
+import { MatFormField, MatHint } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'mb-data-generators-square-parameters',
     templateUrl: './square-parameters.component.html',
     styleUrls: ['./square-parameters.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint]
 })
 export class SquareParametersComponent {
   @Input() squareParameters!: SquareParameters;

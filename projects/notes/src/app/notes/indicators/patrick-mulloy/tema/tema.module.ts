@@ -13,19 +13,18 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { TripleExponentialMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
 import { TemaComponent } from './tema.component';
 import { TemaParamsComponent } from './tema-params.component';
 import { TemaListComponent } from './tema-list.component';
 import { TemaRoutingModule } from './tema-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +38,12 @@ import { TemaRoutingModule } from './tema-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     TripleExponentialMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    TemaRoutingModule
-  ],
-  declarations: [TemaComponent, TemaParamsComponent, TemaListComponent]
+    TemaRoutingModule,
+    TemaComponent, TemaParamsComponent, TemaListComponent
+]
 })
 export class TemaModule { }

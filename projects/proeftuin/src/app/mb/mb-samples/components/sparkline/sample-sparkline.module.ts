@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 
 import { SampleSparkline1Component } from './sample-1/sample-sparkline-1.component';
@@ -13,18 +13,15 @@ import { SampleSparkline3Component } from './sample-3/sample-sparkline-3.compone
 import { SampleSparklineRoutingModule } from './sample-sparkline-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     ChartsModule,
-    SampleSparklineRoutingModule
-  ],
-  declarations: [
+    SampleSparklineRoutingModule,
     SampleSparkline1Component,
     SampleSparkline2Component,
     SampleSparkline3Component
-  ]
+]
 })
 export class SampleSparklineModule { }

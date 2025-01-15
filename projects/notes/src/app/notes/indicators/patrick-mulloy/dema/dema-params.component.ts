@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams, DoubleExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 import { Dema } from './dema.interface';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-dema-params',
     templateUrl: './dema-params.component.html',
     styleUrls: ['./dema-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatIconButton, MatIcon, DoubleExponentialMovingAverageModule, NgIf, OhlcvChartSelectorModule]
 })
 export class DemaParamsComponent {
 

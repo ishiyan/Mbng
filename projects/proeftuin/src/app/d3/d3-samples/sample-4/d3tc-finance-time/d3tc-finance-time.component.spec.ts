@@ -8,8 +8,8 @@ describe('D3tcFinanceTimeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcFinanceTimeComponent ]
-    })
+    imports: [D3tcFinanceTimeComponent]
+})
     .compileComponents();
   }));
 

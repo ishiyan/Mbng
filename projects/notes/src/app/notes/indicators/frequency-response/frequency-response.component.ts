@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
-import { FrequencyResponse, SimpleMovingAverage } from 'mb';
+import { FrequencyResponse, SimpleMovingAverage, KatexModule, FrequencyResponseChartModule } from 'mb';
 
 import { frequencyResponseOfAnIndicatorNote, simpleMovingAverageNote } from '../../../notes';
 import { IdentityFilter } from './identity-filter';
+import { FlexModule } from '@angular/flex-layout/flex';
 
 const sl = 4096;
 
@@ -11,7 +12,7 @@ const sl = 4096;
     selector: 'app-ind-frequency-response',
     templateUrl: './frequency-response.component.html',
     styleUrls: ['./frequency-response.component.scss'],
-    standalone: false
+    imports: [KatexModule, FrequencyResponseChartModule, FlexModule]
 })
 export class FrequencyResponseComponent {
   protected frNote = frequencyResponseOfAnIndicatorNote;

@@ -2,6 +2,7 @@ import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, OnIni
 import { KatexOptions } from 'katex';
 
 import { KatexSettingsService } from './katex-settings.service';
+import { KatexDirective } from './katex.directive';
 
 /** KaTeX settings taken from  https://katex.org/docs/options.html. */
 const defaultOptions: KatexOptions = {
@@ -20,7 +21,7 @@ const defaultOptions: KatexOptions = {
     styleUrls: ['./katex-display.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: { 'collision-id': 'KatexDisplayComponent' },
-    standalone: false
+    imports: [KatexDirective]
 })
 export class KatexDisplayComponent implements AfterContentInit, OnInit {
   protected options: KatexOptions = defaultOptions;

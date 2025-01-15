@@ -13,19 +13,19 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { DoubleExponentialMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
+
 import { DemaComponent } from './dema.component';
 import { DemaParamsComponent } from './dema-params.component';
 import { DemaListComponent } from './dema-list.component';
 import { DemaRoutingModule } from './dema-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +39,12 @@ import { DemaRoutingModule } from './dema-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     DoubleExponentialMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    DemaRoutingModule
-  ],
-  declarations: [DemaComponent, DemaParamsComponent, DemaListComponent]
+    DemaRoutingModule,
+    DemaComponent, DemaParamsComponent, DemaListComponent
+]
 })
 export class DemaModule { }

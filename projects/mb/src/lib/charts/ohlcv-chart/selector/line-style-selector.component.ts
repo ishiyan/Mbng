@@ -3,12 +3,16 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { LineStyle } from './line-style';
 import { LineStyleDialogComponent } from './line-style-dialog.component';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
+import { LineSvgComponent } from './line-svg.component';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'mb-line-style-selector',
     templateUrl: './line-style-selector.component.html',
     styleUrls: ['./line-style-selector.component.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, LineSvgComponent, MatInput]
 })
 export class LineStyleSelectorComponent implements OnInit {
   private dialogRef?: MatDialogRef<LineStyleDialogComponent>;

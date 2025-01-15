@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { BarchartComponent } from './barchart/barchart.component';
 
 @Component({
     selector: 'app-d3-sample-1',
     templateUrl: './sample-1.component.html',
     styleUrls: ['./sample-1.component.scss'],
-    standalone: false
+    imports: [NgIf, BarchartComponent]
 })
 export class Sample1Component implements OnInit {
   public chartData!: Array<any>;

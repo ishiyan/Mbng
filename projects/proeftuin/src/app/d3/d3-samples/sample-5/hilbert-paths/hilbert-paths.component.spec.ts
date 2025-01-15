@@ -8,8 +8,8 @@ describe('HilbertPathsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HilbertPathsComponent ]
-    })
+    imports: [HilbertPathsComponent]
+})
     .compileComponents();
   }));
 

@@ -27,8 +27,7 @@ const defaultLabelFill = 'white';
     templateUrl: './sunburst.component.html',
     styleUrls: ['./sunburst.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class SunburstComponent implements OnChanges {
   /**

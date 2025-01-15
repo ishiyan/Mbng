@@ -29,8 +29,7 @@ const deltaY = 16;
     templateUrl: './icicle.component.html',
     styleUrls: ['./icicle.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class IcicleComponent implements OnChanges {
   /**

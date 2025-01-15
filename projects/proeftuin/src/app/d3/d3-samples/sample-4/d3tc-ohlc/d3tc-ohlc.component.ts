@@ -6,6 +6,7 @@ import * as d3tc from '../../../../shared/d3tc';
 
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { MatButton } from '@angular/material/button';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
     styleUrls: ['./d3tc-ohlc.component.scss'],
     encapsulation: ViewEncapsulation.None // does not see css without this
     ,
-    standalone: false
+    imports: [MatButton]
 })
 export class D3tcOhlcComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -8,8 +8,8 @@ describe('BrushAndZoomAreaChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BrushAndZoomAreaChartComponent ]
-    })
+    imports: [BrushAndZoomAreaChartComponent]
+})
     .compileComponents();
   }));
 

@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, Input, ViewEncapsulation, HostListener } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry, MatIcon } from '@angular/material/icon';
 import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
@@ -11,6 +11,12 @@ import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { NgIf } from '@angular/common';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 const ohlcvViewCandlesticks = 0;
 const ohlcvViewBars = 1;
@@ -50,7 +56,7 @@ const textAfterSvg = `
     templateUrl: './historical-data-chart.component.html',
     styleUrls: ['./historical-data-chart.component.scss'],
     encapsulation: ViewEncapsulation.Emulated,
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgIf, MatButtonToggleGroup, MatButtonToggle, MatIcon, MatSlideToggle, FormsModule, MatButton]
 })
 export class HistoricalDataChartComponent {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -1,6 +1,6 @@
 import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry, MatIcon } from '@angular/material/icon';
 import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
@@ -10,6 +10,12 @@ import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
+import { NgIf } from '@angular/common';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatMiniFabButton } from '@angular/material/button';
 
 const barViewCandlesticks = 0;
 const barViewBars = 1;
@@ -49,7 +55,7 @@ const textAfterSvg = `
     templateUrl: './linear-chart.component.html',
     styleUrls: ['./linear-chart.component.scss'],
     encapsulation: ViewEncapsulation.Emulated,
-    standalone: false
+    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatButtonToggleGroup, MatButtonToggle, MatIcon, MatSlideToggle, FormsModule, MatMiniFabButton]
 })
 export class LinearChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);

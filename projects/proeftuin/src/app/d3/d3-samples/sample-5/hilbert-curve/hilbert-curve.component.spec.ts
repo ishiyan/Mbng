@@ -8,8 +8,8 @@ describe('HilbertCurveComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HilbertCurveComponent ]
-    })
+    imports: [HilbertCurveComponent]
+})
     .compileComponents();
   }));
 

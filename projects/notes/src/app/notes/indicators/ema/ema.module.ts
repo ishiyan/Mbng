@@ -13,19 +13,19 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { ExponentialMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
+
 import { EmaComponent } from './ema.component';
 import { EmaParamsComponent } from './ema-params.component';
 import { EmaListComponent } from './ema-list.component';
 import { EmaRoutingModule } from './ema-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +39,12 @@ import { EmaRoutingModule } from './ema-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     ExponentialMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    EmaRoutingModule
-  ],
-  declarations: [EmaComponent, EmaParamsComponent, EmaListComponent]
+    EmaRoutingModule,
+    EmaComponent, EmaParamsComponent, EmaListComponent
+]
 })
 export class EmaModule { }

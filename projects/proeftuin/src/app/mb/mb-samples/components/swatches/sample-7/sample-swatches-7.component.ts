@@ -2,12 +2,21 @@ import { Component } from '@angular/core';
 
 import { colorsCoAll5Palettes } from 'projects/mb/src/lib/colors/colors-co-all-5-palettes';
 import { colorsCoAll5PalettesSelection } from 'projects/mb/src/lib/colors/colors-co-all-5-palettes-selection';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { NgFor } from '@angular/common';
+import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
     selector: 'app-sample-swatches-7',
     templateUrl: './sample-swatches-7.component.html',
     styleUrls: ['./sample-swatches-7.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgFor]
 })
 export class SampleSwatches7Component {
 

@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { WidthSvgComponent } from './width-svg.component';
+import { MatOption } from '@angular/material/core';
 
 interface Elem {
   value: number;
@@ -10,7 +14,7 @@ interface Elem {
     selector: 'mb-line-width',
     templateUrl: './line-width.component.html',
     styleUrls: ['./line-width.component.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, WidthSvgComponent, NgFor, MatOption]
 })
 export class LineWidthComponent implements OnInit {
   protected elems: Elem[] = [

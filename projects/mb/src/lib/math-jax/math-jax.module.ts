@@ -7,11 +7,11 @@ import { MathJaxComponent } from './math-jax.component';
 
 /** Module to load and configure the *MathJax* library. */
 @NgModule({
-  declarations: [MathJaxDirective, MathJaxComponent],
-  imports: [
-    CommonModule
-  ],
-  exports: [MathJaxDirective, MathJaxComponent]
+    imports: [
+        CommonModule,
+        MathJaxDirective, MathJaxComponent
+    ],
+    exports: [MathJaxDirective, MathJaxComponent]
 })
 export class MathJaxModule {
   constructor(moduleConfig?: ModuleConfiguration) {

@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 
 import { FrequencyResponse, SimpleMovingAverage } from 'projects/mb/src/public-api';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from '@angular/material/card';
+import { FrequencyResponseChartModule } from '../../../../../../../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart.module';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { FlexModule } from '@angular/flex-layout/flex';
 
 const sl = 2048;
 
@@ -8,7 +12,7 @@ const sl = 2048;
     selector: 'mb-sample-frequency-response-1',
     templateUrl: './sample-frequency-response-1.component.html',
     styleUrls: ['./sample-frequency-response-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, FrequencyResponseChartModule, MatCardSubtitle, MatGridList, MatGridTile, FlexModule]
 })
 export class SampleFrequencyResponse1Component {
 

@@ -8,8 +8,8 @@ describe('OhlcvChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OhlcvChartComponent ]
-    })
+    imports: [OhlcvChartComponent]
+})
     .compileComponents();
   }));
 

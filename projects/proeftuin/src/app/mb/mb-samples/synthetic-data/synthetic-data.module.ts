@@ -14,20 +14,18 @@ import { GeneratorsModule } from 'projects/mb/src/lib/data/generators/generators
 import { SyntheticDataComponent } from './synthetic-data.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    FlexLayoutModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatStepperModule,
-    SnackBarModule,
-    SvgViewerModule,
-    HistoricalDataChartModule,
-    GeneratorsModule
-  ],
-  declarations: [
-    SyntheticDataComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatButtonToggleModule,
+        MatStepperModule,
+        SnackBarModule,
+        SvgViewerModule,
+        HistoricalDataChartModule,
+        GeneratorsModule,
+        SyntheticDataComponent
+    ]
 })
 export class SyntheticDataModule { }

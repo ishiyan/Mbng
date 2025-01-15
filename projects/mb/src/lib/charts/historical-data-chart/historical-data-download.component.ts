@@ -1,14 +1,19 @@
 import { Component, Input } from '@angular/core';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe, NgFor } from '@angular/common';
 
 import { TemporalEntityKind } from '../../data//entities/temporal-entity-kind.enum';
 import { HistoricalData } from '../../data/historical-data';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'mb-data-historical-data-download',
     templateUrl: './historical-data-download.component.html',
     styleUrls: ['./historical-data-download.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatFormField, MatLabel, MatSelect, NgFor, MatOption, MatButton]
 })
 export class HistoricalDataDownloadComponent {
   @Input()

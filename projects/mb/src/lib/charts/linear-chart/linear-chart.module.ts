@@ -20,10 +20,10 @@ import { LinearChartComponent } from './linear-chart.component';
         MatExpansionModule,
         MatIconModule,
         MatSlideToggleModule,
-        SvgViewerModule
+        SvgViewerModule,
+        LinearChartComponent
     ],
     exports: [LinearChartComponent],
-    declarations: [LinearChartComponent],
     providers: []
 })
 export class LinearChartModule { }

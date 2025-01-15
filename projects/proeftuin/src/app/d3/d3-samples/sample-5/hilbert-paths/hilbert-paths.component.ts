@@ -36,8 +36,7 @@ function distance2xy(d: number): { x: number; y: number } {
 @Component({
     selector: 'app-d3-sample-hilbert-paths',
     templateUrl: './hilbert-paths.component.html',
-    styleUrls: ['./hilbert-paths.component.scss'],
-    standalone: false
+    styleUrls: ['./hilbert-paths.component.scss']
 })
 export class HilbertPathsComponent implements OnInit {
   private svg: any;

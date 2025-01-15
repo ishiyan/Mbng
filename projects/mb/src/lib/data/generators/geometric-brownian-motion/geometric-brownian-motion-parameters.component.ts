@@ -3,12 +3,20 @@ import { UniformRandomGeneratorKind } from '../uniform-random-generator-kind.enu
 import { NormalRandomGeneratorKind } from '../normal-random-generator-kind.enum';
 import { GeometricBrownianMotionParameters } from './geometric-brownian-motion-parameters';
 import { Enums } from '../../../utils/enums';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { KatexComponent } from '../../../katex/katex.component';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'mb-data-generators-geometric-brownian-motion-parameters',
     templateUrl: './geometric-brownian-motion-parameters.component.html',
     styleUrls: ['./geometric-brownian-motion-parameters.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, NgFor, MatOption]
 })
 export class GeometricBrownianMotionParametersComponent {
   @Input() geometricBrownianMotionParameters!: GeometricBrownianMotionParameters;

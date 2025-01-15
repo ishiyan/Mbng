@@ -8,8 +8,8 @@ describe('D3tcTrendlinesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcTrendlinesComponent ]
-    })
+    imports: [D3tcTrendlinesComponent]
+})
     .compileComponents();
   }));
 

@@ -31,8 +31,7 @@ const defaultRootCircle = false;
     templateUrl: './circlepack.component.html',
     styleUrls: ['./circlepack.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class CirclepackComponent implements OnChanges {
   /**

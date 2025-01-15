@@ -1,15 +1,22 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { MatRadioChange } from '@angular/material/radio';
+import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import * as d3 from 'd3';
 
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { MatFormField } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
+import { NgFor } from '@angular/common';
+import { MatInput } from '@angular/material/input';
+import { D3tcHorizonChartSingleComponent } from '../d3tc-horizon-chart-single/d3tc-horizon-chart-single.component';
 
 @Component({
     selector: 'app-d3-sample-d3tc-horizon-chart-bands',
     templateUrl: './d3tc-horizon-chart-bands.component.html',
     styleUrls: ['./d3tc-horizon-chart-bands.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatSelect, FormsModule, MatOption, NgFor, MatInput, MatRadioGroup, MatRadioButton, D3tcHorizonChartSingleComponent]
 })
 export class D3tcHorizonChartBandsComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

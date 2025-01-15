@@ -7,6 +7,14 @@ import {
   denormalizeCMYK, rgbaToCmyk, cmykToRgb, normalizeCMYK, denormalizeRGBA, outputFormat, rgbaToHex
 } from './formats';
 import { ColorPickerService } from './color-picker.service';
+import { MatExpansionPanel } from '@angular/material/expansion';
+import { ColorPickerSliderDirective } from './color-picker-slider.directive';
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
 
 type TwoDimEvent = {
   s: number;
@@ -114,7 +122,7 @@ const gap = 10;
     selector: 'mb-color-picker',
     templateUrl: './color-picker.component.html',
     styleUrls: ['./color-picker.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, ColorPickerSliderDirective, NgIf, MatIconButton, MatIcon, MatFormField, MatLabel, FormsModule, MatInput, NgFor]
 })
 export class ColorPickerComponent implements OnInit, OnDestroy {
   private hexText = '#ffffff';

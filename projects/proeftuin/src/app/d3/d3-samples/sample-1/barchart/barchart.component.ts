@@ -4,8 +4,7 @@ import * as d3 from 'd3';
 @Component({
     selector: 'app-d3-sample-barchart',
     templateUrl: './barchart.component.html',
-    styleUrls: ['./barchart.component.scss'],
-    standalone: false
+    styleUrls: ['./barchart.component.scss']
 })
 export class BarchartComponent implements OnInit, OnChanges {
   @ViewChild('chart', { static: true }) private chartContainer!: ElementRef;

@@ -8,8 +8,8 @@ describe('BarchartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BarchartComponent ]
-    })
+    imports: [BarchartComponent]
+})
     .compileComponents();
   }));
 

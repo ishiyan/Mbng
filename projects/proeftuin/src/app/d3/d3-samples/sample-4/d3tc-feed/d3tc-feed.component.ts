@@ -9,8 +9,7 @@ import { dataOhlcvDaily } from '../../data/data-bar-daily';
 @Component({
     selector: 'app-d3-sample-d3tc-feed',
     templateUrl: './d3tc-feed.component.html',
-    styleUrls: ['./d3tc-feed.component.scss'],
-    standalone: false
+    styleUrls: ['./d3tc-feed.component.scss']
 })
 export class D3tcFeedComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

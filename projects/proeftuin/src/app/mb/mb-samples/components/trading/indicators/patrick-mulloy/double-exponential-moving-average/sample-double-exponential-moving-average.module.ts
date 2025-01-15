@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { DoubleExponentialMovingAverageModule }
   from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
 
@@ -16,17 +16,14 @@ import { SampleDoubleExponentialMovingAverageRoutingModule }
   from './sample-double-exponential-moving-average-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     DoubleExponentialMovingAverageModule,
-    SampleDoubleExponentialMovingAverageRoutingModule
-  ],
-  declarations: [
+    SampleDoubleExponentialMovingAverageRoutingModule,
     SampleDoubleExponentialMovingAverage1Component,
     SampleDoubleExponentialMovingAverage2Component
-  ]
+]
 })
 export class SampleDoubleExponentialMovingAverageModule { }

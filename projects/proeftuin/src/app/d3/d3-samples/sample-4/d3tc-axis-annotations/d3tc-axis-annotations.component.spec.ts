@@ -8,8 +8,8 @@ describe('D3tcAxisAnnotationsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcAxisAnnotationsComponent ]
-    })
+    imports: [D3tcAxisAnnotationsComponent]
+})
     .compileComponents();
   }));
 

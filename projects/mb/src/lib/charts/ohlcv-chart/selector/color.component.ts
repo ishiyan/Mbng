@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatLabel } from '@angular/material/form-field';
+import { ColorPickerDirective } from '../../../colors/picker/color-picker.directive';
 
 @Component({
     selector: 'mb-color',
     templateUrl: './color.component.html',
     styleUrls: ['./color.component.scss'],
-    standalone: false
+    imports: [NgIf, MatLabel, ColorPickerDirective]
 })
 export class ColorComponent implements OnInit {
   private value = '#000';

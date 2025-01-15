@@ -1,12 +1,16 @@
 import { Component, Input, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 
 import { Sample } from '../samples/sample';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { NgIf } from '@angular/common';
+import { MathJaxModule } from '../../../../../mb/src/lib/math-jax/math-jax.module';
+import { KatexModule } from '../../../../../mb/src/lib/katex/katex.module';
 
 @Component({
     selector: 'app-tex-sample-card',
     templateUrl: './tex-card.component.html',
     styleUrls: ['./tex-card.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, NgIf, MathJaxModule, KatexModule]
 })
 export class TexCardComponent implements AfterViewChecked {
   @Input()

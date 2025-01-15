@@ -8,8 +8,8 @@ describe('D3tcCloseComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcCloseComponent ]
-    })
+    imports: [D3tcCloseComponent]
+})
     .compileComponents();
   }));
 

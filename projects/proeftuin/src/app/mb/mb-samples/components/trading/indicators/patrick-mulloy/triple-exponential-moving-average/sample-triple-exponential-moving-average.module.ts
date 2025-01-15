@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { TripleExponentialMovingAverageModule }
   from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
 
@@ -16,17 +16,14 @@ import { SampleTripleExponentialMovingAverageRoutingModule }
   from './sample-triple-exponential-moving-average-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     TripleExponentialMovingAverageModule,
-    SampleTripleExponentialMovingAverageRoutingModule
-  ],
-  declarations: [
+    SampleTripleExponentialMovingAverageRoutingModule,
     SampleTripleExponentialMovingAverage1Component,
     SampleTripleExponentialMovingAverage2Component
-  ]
+]
 })
 export class SampleTripleExponentialMovingAverageModule { }

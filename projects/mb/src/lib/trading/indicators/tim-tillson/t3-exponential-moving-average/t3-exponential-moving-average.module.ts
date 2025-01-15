@@ -14,25 +14,23 @@ import { T3ExponentialMovingAverageParamsComponent } from './t3-exponential-movi
 import { T3ExponentialMovingAverageParamsDialogComponent } from './t3-exponential-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    T3ExponentialMovingAverageParamsComponent,
-    T3ExponentialMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    T3ExponentialMovingAverageParamsComponent,
-    T3ExponentialMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        T3ExponentialMovingAverageParamsComponent,
+        T3ExponentialMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        T3ExponentialMovingAverageParamsComponent,
+        T3ExponentialMovingAverageParamsDialogComponent
+    ]
 })
 export class T3ExponentialMovingAverageModule {}

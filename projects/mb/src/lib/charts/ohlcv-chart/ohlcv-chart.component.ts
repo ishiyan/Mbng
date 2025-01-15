@@ -1,6 +1,6 @@
 import { Component, Input, HostListener, OnChanges, AfterViewInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconRegistry, MatIcon } from '@angular/material/icon';
 import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
@@ -11,6 +11,12 @@ import { Heatmap } from '../entities/heatmap'; */
 import * as Template from './template/template';
 import * as Chart from './chart/chart';
 import { Downloader } from '../downloader';
+import { NgIf } from '@angular/common';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatMiniFabButton } from '@angular/material/button';
 
 /** *Ohlcv* view type: *candlesticks*. */
 const ohlcvViewCandlesticks = 0;
@@ -71,7 +77,7 @@ const smoothBrushing = false;
     selector: 'mb-ohlcv-chart',
     templateUrl: './ohlcv-chart.component.html',
     styleUrls: ['./ohlcv-chart.component.scss'],
-    standalone: false
+    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, MatButtonToggleGroup, MatButtonToggle, MatSlideToggle, FormsModule, MatMiniFabButton]
 })
 export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   private random = Math.random().toString(36).substring(2);

@@ -1,10 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { MatChipSelectionChange } from '@angular/material/chips';
+import { MatChipSelectionChange, MatChipListbox, MatChipOption } from '@angular/material/chips';
 
 import { Note } from '../note.interface';
 import { notes as initialNotes } from '../../notes';
 import { Tag } from '../tag.interface';
 import { tags as initialTags } from '../../tags';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgIf, NgFor } from '@angular/common';
+import { NoteCardComponent } from '../note-card/note-card.component';
 
 const empty = '';
 
@@ -12,7 +19,7 @@ const empty = '';
     selector: 'app-note-list',
     templateUrl: './note-list.component.html',
     styleUrls: ['./note-list.component.scss'],
-    standalone: false
+    imports: [MatToolbar, MatIconButton, MatIcon, MatFormField, MatPrefix, MatInput, NgIf, MatSuffix, MatChipListbox, NgFor, MatChipOption, NoteCardComponent]
 })
 export class NoteListComponent {
   @Input()

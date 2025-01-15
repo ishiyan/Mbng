@@ -13,24 +13,22 @@ import { TriangularMovingAverageParamsComponent } from './triangular-moving-aver
 import { TriangularMovingAverageParamsDialogComponent } from './triangular-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    EntitiesModule
-  ],
-  exports: [
-    TriangularMovingAverageParamsComponent,
-    TriangularMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    TriangularMovingAverageParamsComponent,
-    TriangularMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        EntitiesModule,
+        TriangularMovingAverageParamsComponent,
+        TriangularMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        TriangularMovingAverageParamsComponent,
+        TriangularMovingAverageParamsDialogComponent
+    ]
 })
 export class TriangularMovingAverageModule {}

@@ -8,8 +8,8 @@ describe('D3tcTradeArrowsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcTradeArrowsComponent ]
-    })
+    imports: [D3tcTradeArrowsComponent]
+})
     .compileComponents();
   }));
 

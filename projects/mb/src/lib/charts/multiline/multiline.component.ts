@@ -29,8 +29,7 @@ const TIME_AXIS_HEIGHT = 18;
     templateUrl: './multiline.component.html',
     styleUrls: ['./multiline.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class MultilineComponent implements OnChanges, AfterViewInit {
   private currentConfiguration: LineConfiguration[] = [];

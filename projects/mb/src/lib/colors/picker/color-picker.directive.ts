@@ -5,8 +5,7 @@ import { ColorPickerComponent } from './color-picker.component';
 
 @Directive({
     selector: '[mbColorPicker]',
-    exportAs: 'mbColorPicker',
-    standalone: false
+    exportAs: 'mbColorPicker'
 })
 export class ColorPickerDirective implements OnChanges, OnDestroy {
   private dialog: ColorPickerComponent | null = null;

@@ -8,8 +8,8 @@ describe('D3tcVolumeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcVolumeComponent ]
-    })
+    imports: [D3tcVolumeComponent]
+})
     .compileComponents();
   }));
 

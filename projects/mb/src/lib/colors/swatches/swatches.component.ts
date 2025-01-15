@@ -12,8 +12,7 @@ const DEFAULT_HEIGHT = 24;
     templateUrl: './swatches.component.html',
     styleUrls: ['./swatches.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class SwatchesComponent implements OnChanges, AfterViewInit {
   private currentColors: string[] = [];

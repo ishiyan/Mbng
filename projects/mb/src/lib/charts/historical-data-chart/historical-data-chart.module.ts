@@ -30,19 +30,16 @@ import { HistoricalDataDownloadComponent } from './historical-data-download.comp
         MatSelectModule,
         MatSlideToggleModule,
         MatTableModule,
-        SvgViewerModule
+        SvgViewerModule,
+        HistoricalDataChartComponent,
+        HistoricalDataTableComponent,
+        HistoricalDataDownloadComponent
     ],
     exports: [
         HistoricalDataChartComponent,
         HistoricalDataTableComponent,
         HistoricalDataDownloadComponent
     ],
-    declarations: [
-        HistoricalDataChartComponent,
-        HistoricalDataTableComponent,
-        HistoricalDataDownloadComponent
-    ],
-    providers: [
-    ]
+    providers: []
 })
 export class HistoricalDataChartModule { }

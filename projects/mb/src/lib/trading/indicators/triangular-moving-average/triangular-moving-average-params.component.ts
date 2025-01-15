@@ -4,12 +4,18 @@ import { BarComponent } from '../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../data/entities/quote-component.enum';
 
 import { TriangularMovingAverageParams } from './triangular-moving-average-params.interface';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { BarComponentComponent } from '../../../data/entities/bar-component.component';
+import { QuoteComponentComponent } from '../../../data/entities/quote-component.component';
 
 @Component({
     selector: 'mb-triangular-moving-average-params',
     templateUrl: './triangular-moving-average-params.component.html',
     styleUrls: ['./triangular-moving-average-params.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatLabel, FormsModule, MatInput, NgIf, BarComponentComponent, QuoteComponentComponent]
 })
 export class TriangularMovingAverageParamsComponent implements OnInit {
 

@@ -6,6 +6,10 @@ import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoot
 
 import { T3emaLengthInput, T3emaSmoothingFactorInput } from './t3ema-input.interface';
 import { T3ema } from './t3ema.interface';
+import { NgFor } from '@angular/common';
+import { T3emaParamsComponent } from './t3ema-params.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is T3ExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -40,7 +44,7 @@ const createAlphaT3ema = (showStyle: boolean, sf: number, vf: number, comp?: Bar
     selector: 'app-t3ema-list',
     templateUrl: './t3ema-list.component.html',
     styleUrls: ['./t3ema-list.component.scss'],
-    standalone: false
+    imports: [NgFor, T3emaParamsComponent, MatMiniFabButton, MatIcon]
 })
 export class T3emaListComponent implements AfterViewInit {
 

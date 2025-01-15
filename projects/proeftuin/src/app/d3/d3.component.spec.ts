@@ -8,8 +8,8 @@ describe('D3Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3Component ]
-    })
+    imports: [D3Component]
+})
     .compileComponents();
   }));
 

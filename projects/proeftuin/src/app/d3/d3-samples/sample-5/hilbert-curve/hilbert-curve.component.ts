@@ -1,17 +1,19 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import * as d3 from 'd3';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as hilbert from '../hilbert';
+import { MatFormField } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'app-d3-sample-hilbert-curve',
     templateUrl: './hilbert-curve.component.html',
     styleUrls: ['./hilbert-curve.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatSelect, MatOption, MatSlideToggle]
 })
 export class HilbertCurveComponent implements OnInit {
   public colors = false;

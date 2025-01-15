@@ -14,25 +14,23 @@ import { VarianceParamsComponent } from './variance-params.component';
 import { VarianceParamsDialogComponent } from './variance-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    EntitiesModule
-  ],
-  exports: [
-    VarianceParamsComponent,
-    VarianceParamsDialogComponent
-  ],
-  declarations: [
-    VarianceParamsComponent,
-    VarianceParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        MatSlideToggleModule,
+        EntitiesModule,
+        VarianceParamsComponent,
+        VarianceParamsDialogComponent
+    ],
+    exports: [
+        VarianceParamsComponent,
+        VarianceParamsDialogComponent
+    ]
 })
 export class VarianceModule {}

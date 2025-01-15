@@ -14,6 +14,15 @@ import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFo
 
 // import { flare } from '../../../test-data/hierarchies/flare';
 import { jdk } from '../../../test-data/hierarchies/jdk';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+
+import { CirclepackComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 const sumFuncValue: HierarchyTreeSumFunction = (d: HierarchyTreeNode) => d.value ? d.value : 0;
 
@@ -61,7 +70,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-circlepack-5',
     templateUrl: './sample-circlepack-5.component.html',
     styleUrls: ['./sample-circlepack-5.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, CirclepackComponent, MatCardActions]
 })
 export class SampleCirclepack5Component {
 

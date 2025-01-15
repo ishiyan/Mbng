@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 
 import { SampleSunburst1Component } from './sample-1/sample-sunburst-1.component';
@@ -15,20 +15,17 @@ import { SampleSunburst5Component } from './sample-5/sample-sunburst-5.component
 import { SampleSunburstRoutingModule } from './sample-sunburst-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     ChartsModule,
-    SampleSunburstRoutingModule
-  ],
-  declarations: [
+    SampleSunburstRoutingModule,
     SampleSunburst1Component,
     SampleSunburst2Component,
     SampleSunburst3Component,
     SampleSunburst4Component,
     SampleSunburst5Component
-  ]
+]
 })
 export class SampleSunburstModule { }

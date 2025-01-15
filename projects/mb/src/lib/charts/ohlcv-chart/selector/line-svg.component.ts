@@ -5,8 +5,7 @@ import { LineStyle } from './line-style';
 @Component({
     selector: 'mb-line-svg',
     templateUrl: './line-svg.component.html',
-    styleUrls: ['./line-svg.component.scss'],
-    standalone: false
+    styleUrls: ['./line-svg.component.scss']
 })
 export class LineSvgComponent implements OnInit {
   private val = new LineStyle();

@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { KatexSettingsService } from 'mb';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-katex-settings',
     templateUrl: './katex-settings.component.html',
     styleUrls: ['./katex-settings.component.scss'],
-    standalone: false
+    imports: [MatSlideToggle, MatIcon]
 })
 export class KatexSettingsComponent {
 

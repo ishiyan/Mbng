@@ -3,12 +3,30 @@ import { Component, Input } from '@angular/core';
 import { SyntheticDataKind } from './synthetic-data-kind.enum';
 import { TemporalEntityKind } from '../entities/temporal-entity-kind.enum';
 import { SyntheticDataParameters } from './synthetic-data-parameters';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { NgFor, NgClass } from '@angular/common';
+import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
+import { MatFormField, MatHint } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { ChirpParametersComponent } from './chirp/chirp-parameters.component';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { FractionalBrownianMotionParametersComponent } from './fractional-brownian-motion/fractional-brownian-motion-parameters.component';
+import { GeometricBrownianMotionParametersComponent } from './geometric-brownian-motion/geometric-brownian-motion-parameters.component';
+import { SawtoothParametersComponent } from './sawtooth/sawtooth-parameters.component';
+import { SquareParametersComponent } from './square/square-parameters.component';
+import { SinusoidalParametersComponent } from './sinusoidal/sinusoidal-parameters.component';
+import { WaveformParametersComponent } from './waveform-parameters.component';
+import { TimeParametersComponent } from './time-parameters.component';
+import { OhlcvParametersComponent } from './ohlcv-parameters.component';
+import { QuoteParametersComponent } from './quote-parameters.component';
+import { TradeParametersComponent } from './trade-parameters.component';
 
 @Component({
     selector: 'mb-data-generators-synthetic-data-parameters',
     templateUrl: './synthetic-data-parameters.component.html',
     styleUrls: ['./synthetic-data-parameters.component.scss'],
-    standalone: false
+    imports: [MatButtonToggleGroup, NgFor, MatButtonToggle, MatAccordion, MatExpansionPanel, MatFormField, FormsModule, MatInput, MatHint, ChirpParametersComponent, NgClass, ExtendedModule, FractionalBrownianMotionParametersComponent, GeometricBrownianMotionParametersComponent, SawtoothParametersComponent, SquareParametersComponent, SinusoidalParametersComponent, WaveformParametersComponent, TimeParametersComponent, OhlcvParametersComponent, QuoteParametersComponent, TradeParametersComponent]
 })
 export class SyntheticDataParametersComponent {
   @Input() syntheticDataParameters!: SyntheticDataParameters;

@@ -9,9 +9,8 @@ import { KatexInlineComponent } from './katex-inline.component';
 import { KatexSettingsService } from './katex-settings.service';
 
 @NgModule({
-  imports: [CommonModule],
-  providers: [KatexService, KatexSettingsService],
-  declarations: [KatexDirective, KatexComponent, KatexDisplayComponent, KatexInlineComponent],
-  exports: [KatexComponent, KatexDisplayComponent, KatexInlineComponent],
+    imports: [CommonModule, KatexDirective, KatexComponent, KatexDisplayComponent, KatexInlineComponent],
+    providers: [KatexService, KatexSettingsService],
+    exports: [KatexComponent, KatexDisplayComponent, KatexInlineComponent],
 })
 export class KatexModule { }

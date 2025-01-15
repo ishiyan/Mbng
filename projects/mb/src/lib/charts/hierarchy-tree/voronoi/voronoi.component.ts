@@ -61,8 +61,7 @@ const shapeToRotation = (choice: string) => {
     templateUrl: './voronoi.component.html',
     styleUrls: ['./voronoi.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class VoronoiComponent implements OnChanges {
   /**

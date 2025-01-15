@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { SimpleMovingAverageParams } from 'mb';
+import { SimpleMovingAverageParams, SimpleMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 
 import { Sma } from './sma.interface';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-sma-params',
     templateUrl: './sma-params.component.html',
     styleUrls: ['./sma-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatIconButton, MatIcon, SimpleMovingAverageModule, NgIf, OhlcvChartSelectorModule]
 })
 export class SmaParamsComponent {
 

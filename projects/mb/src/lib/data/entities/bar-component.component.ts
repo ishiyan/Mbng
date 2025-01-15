@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 
 import { BarComponent } from './bar-component.enum';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { KatexDisplayComponent } from '../../katex/katex-display.component';
 
 interface Comp {
   enumeration: BarComponent;
@@ -14,7 +18,7 @@ interface Comp {
     selector: 'mb-bar-component',
     templateUrl: './bar-component.component.html',
     styleUrls: ['./bar-component.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatLabel, MatSelect, MatSelectTrigger, NgFor, MatOption, KatexDisplayComponent]
 })
 export class BarComponentComponent implements OnInit {
   protected comps: Comp[] = [

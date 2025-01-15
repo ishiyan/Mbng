@@ -6,6 +6,12 @@ import { map, filter } from 'rxjs/operators';
 import { Theme } from './theme';
 import { ThemeManagerService } from './theme-manager.service';
 import { ThemeStorageService } from './theme-storage.service';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-theme-picker',
@@ -13,7 +19,7 @@ import { ThemeStorageService } from './theme-storage.service';
     styleUrls: ['theme-picker.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    standalone: false
+    imports: [MatIconButton, MatTooltip, MatMenuTrigger, MatIcon, MatMenu, MatGridList, NgFor, MatGridTile, MatMenuItem, NgIf]
 })
 export class ThemePickerComponent implements OnInit, OnDestroy {
   private queryParamSubscription = Subscription.EMPTY;

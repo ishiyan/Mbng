@@ -10,6 +10,13 @@ import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
 import { testDataOhlcv } from '../../../test-data/indicators/test-data-ohlcv';
 import { testDataBbBw } from '../../../test-data/indicators/test-data-bb-bw';
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatSelectionList, MatListOption, MatListItemLine, MatList, MatListItem } from '@angular/material/list';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+
+import { SparklineComponent } from '../../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 
 interface DataItem {
   data: Ohlcv[] | Quote[] | Trade[] | Scalar[];
@@ -20,7 +27,7 @@ interface DataItem {
     selector: 'app-sample-sparkline-3',
     templateUrl: './sample-sparkline-3.component.html',
     styleUrls: ['./sample-sparkline-3.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatSelectionList, FormsModule, NgFor, MatListOption, SparklineComponent, MatCardActions, MatListItemLine, MatList, MatListItem]
 })
 export class SampleSparkline3Component {
 

@@ -5,6 +5,13 @@ import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
 import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-moving-average-params.interface';
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
+import { NgIf } from '@angular/common';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
+import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
 
 const firstIsAverageDefault = true;
 const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'length' in object;
@@ -13,7 +20,7 @@ const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthP
     selector: 'mb-kaufman-adaptive-moving-average-params',
     templateUrl: './kaufman-adaptive-moving-average-params.component.html',
     styleUrls: ['./kaufman-adaptive-moving-average-params.component.scss'],
-    standalone: false
+    imports: [NgIf, MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, BarComponentComponent, QuoteComponentComponent]
 })
 export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

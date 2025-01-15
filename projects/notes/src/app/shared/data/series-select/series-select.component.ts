@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { SparklineConfiguration } from 'mb';
+import { SparklineConfiguration, SparklineComponent } from 'mb';
 
 import { primaryColor } from '../../theme-colors';
 import { BarSeriesService } from '../bar-series/bar-series.service';
@@ -8,12 +8,16 @@ import { ScalarSeriesService } from '../scalar-series/scalar-series.service';
 import { TradeSeriesService } from '../trade-series/trade-series.service';
 import { QuoteSeriesService } from '../quote-series/quote-series.service';
 import { Series } from '../series.interface';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOptgroup, MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'app-series-select',
     templateUrl: './series-select.component.html',
     styleUrls: ['./series-select.component.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOptgroup, NgFor, MatOption]
 })
 export class SeriesSelectComponent implements OnInit {
   protected barSeriesArray!: Series[];

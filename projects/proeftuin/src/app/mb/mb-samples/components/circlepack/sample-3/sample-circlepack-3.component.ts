@@ -13,6 +13,15 @@ import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from
 import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize14, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 
 import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../../test-data/hierarchies/aex-index';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+
+import { CirclepackComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 interface Dataset {
   value: AexIndexHierarchyTreeNode;
@@ -75,7 +84,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-circlepack-3',
     templateUrl: './sample-circlepack-3.component.html',
     styleUrls: ['./sample-circlepack-3.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, CirclepackComponent, MatCardActions]
 })
 export class SampleCirclepack3Component {
 

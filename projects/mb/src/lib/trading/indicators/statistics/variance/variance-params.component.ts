@@ -4,12 +4,19 @@ import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
 import { VarianceParams } from './variance-params.interface';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { NgIf } from '@angular/common';
+import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
+import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
 
 @Component({
     selector: 'mb-variance-params',
     templateUrl: './variance-params.component.html',
     styleUrls: ['./variance-params.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, NgIf, BarComponentComponent, QuoteComponentComponent]
 })
 export class VarianceParamsComponent implements OnInit {
 

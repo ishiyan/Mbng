@@ -7,12 +7,18 @@ import { coolFill, coolFillFirstLevel } from 'projects/mb/src/lib/charts/hierarc
 
 import { icbTaxonomy } from 'projects/mb/src/lib/trading/instruments/industry-classification/icb-taxonomy';
 import { gicsTaxonomy } from 'projects/mb/src/lib/trading/instruments/industry-classification/gics-taxonomy';
+import { MatCard, MatCardContent } from '@angular/material/card';
+
+
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { IcicleComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
+import { CirclepackComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 @Component({
     selector: 'app-hierarchies-industry-classifications',
     templateUrl: './industry-classifications.component.html',
     styleUrls: ['./industry-classifications.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, IcicleComponent, CirclepackComponent, MatGridList, MatGridTile]
 })
 export class IndustryClassificationsComponent {
 

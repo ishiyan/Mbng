@@ -8,8 +8,8 @@ describe('TexComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TexComponent ]
-    })
+    imports: [TexComponent]
+})
     .compileComponents();
   }));
 

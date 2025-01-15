@@ -8,8 +8,8 @@ describe('RealTimeChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RealTimeChartComponent ]
-    })
+    imports: [RealTimeChartComponent]
+})
     .compileComponents();
   }));
 

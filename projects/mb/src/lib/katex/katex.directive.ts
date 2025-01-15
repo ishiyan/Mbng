@@ -3,10 +3,7 @@ import { KatexOptions } from 'katex';
 
 import { KatexService } from './katex.service';
 
-@Directive({
-    selector: '[mbKatex]',
-    standalone: false
-})
+@Directive({ selector: '[mbKatex]' })
 export class KatexDirective implements OnChanges {
   @Input() mbKatex!: string;
   @Input() options!: KatexOptions;

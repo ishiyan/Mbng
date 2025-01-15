@@ -8,8 +8,8 @@ describe('ClickToRecenterBrush2Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClickToRecenterBrush2Component ]
-    })
+    imports: [ClickToRecenterBrush2Component]
+})
     .compileComponents();
   }));
 

@@ -6,6 +6,10 @@ import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAver
 
 import { TemaLengthInput, TemaSmoothingFactorInput } from './tema-input.interface';
 import { Tema } from './tema.interface';
+import { NgFor } from '@angular/common';
+import { TemaParamsComponent } from './tema-params.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is TripleExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -40,7 +44,7 @@ const createAlphaTema = (showStyle: boolean, sf: number, comp?: BarComponent): T
     selector: 'app-tema-list',
     templateUrl: './tema-list.component.html',
     styleUrls: ['./tema-list.component.scss'],
-    standalone: false
+    imports: [NgFor, TemaParamsComponent, MatMiniFabButton, MatIcon]
 })
 export class TemaListComponent implements AfterViewInit {
 

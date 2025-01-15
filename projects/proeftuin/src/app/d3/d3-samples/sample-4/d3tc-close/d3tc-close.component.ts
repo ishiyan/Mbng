@@ -6,12 +6,13 @@ import * as d3tc from '../../../../shared/d3tc';
 
 import { D3Ohlcv } from '../../data/d3-ohlcv';
 import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-d3-sample-d3tc-close',
     templateUrl: './d3tc-close.component.html',
     styleUrls: ['./d3tc-close.component.scss'],
-    standalone: false
+    imports: [MatButton]
 })
 export class D3tcCloseComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

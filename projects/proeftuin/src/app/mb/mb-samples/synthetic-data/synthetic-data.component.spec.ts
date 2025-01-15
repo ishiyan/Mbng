@@ -8,8 +8,8 @@ describe('Table2Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SyntheticDataComponent ]
-    })
+    imports: [SyntheticDataComponent]
+})
     .compileComponents();
   }));
 

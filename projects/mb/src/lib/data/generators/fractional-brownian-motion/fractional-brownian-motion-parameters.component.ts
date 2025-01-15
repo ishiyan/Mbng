@@ -4,12 +4,20 @@ import { NormalRandomGeneratorKind } from '../normal-random-generator-kind.enum'
 import { FractionalBrownianMotionParameters } from './fractional-brownian-motion-parameters';
 import { FractionalBrownianMotionAlgorithm } from './fractional-brownian-motion-algorithm.enum';
 import { Enums } from '../../../utils/enums';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { KatexComponent } from '../../../katex/katex.component';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'mb-data-generators-fractional-brownian-motion-parameters',
     templateUrl: './fractional-brownian-motion-parameters.component.html',
     styleUrls: ['./fractional-brownian-motion-parameters.component.scss'],
-    standalone: false
+    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, NgFor, MatOption]
 })
 export class FractionalBrownianMotionParametersComponent {
   @Input() fractionalBrownianMotionParameters!: FractionalBrownianMotionParameters;

@@ -8,8 +8,8 @@ describe('D3tcBrushComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcBrushComponent ]
-    })
+    imports: [D3tcBrushComponent]
+})
     .compileComponents();
   }));
 

@@ -5,7 +5,7 @@ import { MathJaxDirective } from './math-jax.directive';
     selector: 'mb-mathjax',
     templateUrl: './math-jax.component.html',
     styleUrls: ['./math-jax.component.scss'],
-    standalone: false
+    imports: [MathJaxDirective]
 })
 export class MathJaxComponent implements OnChanges {
   @Input() expression!: string;

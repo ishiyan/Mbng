@@ -5,6 +5,10 @@ import { LineStyle } from 'mb';
 
 import { WmaInput } from './wma-input.interface';
 import { Wma } from './wma.interface';
+import { NgFor } from '@angular/common';
+import { WmaParamsComponent } from './wma-params.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -28,7 +32,7 @@ const createWma = (showStyle: boolean, len: number, comp?: BarComponent): Wma =>
     selector: 'app-wma-list',
     templateUrl: './wma-list.component.html',
     styleUrls: ['./wma-list.component.scss'],
-    standalone: false
+    imports: [NgFor, WmaParamsComponent, MatMiniFabButton, MatIcon]
 })
 export class WmaListComponent implements AfterViewInit {
 

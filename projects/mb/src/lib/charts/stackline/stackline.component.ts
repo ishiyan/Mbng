@@ -30,8 +30,7 @@ const TIME_AXIS_HEIGHT = 18;
     templateUrl: './stackline.component.html',
     styleUrls: ['./stackline.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class StacklineComponent implements OnChanges, AfterViewInit {
   /** A width of the multiline. */

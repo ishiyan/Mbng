@@ -1,10 +1,7 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 /** Typeset the content or expressions using MathJax library. */
-@Directive({
-    selector: '[mbMathJax]',
-    standalone: false
-})
+@Directive({ selector: '[mbMathJax]' })
 export class MathJaxDirective implements OnChanges {
   /** An input MathJax expression. */
   @Input()

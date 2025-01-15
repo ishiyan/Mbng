@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 
 import { QuoteComponent } from './quote-component.enum';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { KatexDisplayComponent } from '../../katex/katex-display.component';
 
 interface Comp {
   enumeration: QuoteComponent;
@@ -14,7 +18,7 @@ interface Comp {
     selector: 'mb-quote-component',
     templateUrl: './quote-component.component.html',
     styleUrls: ['./quote-component.component.scss'],
-    standalone: false
+    imports: [MatFormField, MatLabel, MatSelect, MatSelectTrigger, NgFor, MatOption, KatexDisplayComponent]
 })
 export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [

@@ -12,8 +12,6 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
     templateUrl: './d3tc-brush.component.html',
     styleUrls: ['./d3tc-brush.component.scss'],
     encapsulation: ViewEncapsulation.None // does not see css without this
-    ,
-    standalone: false
 })
 export class D3tcBrushComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

@@ -4,12 +4,15 @@ import { StandardDeviationParams }
   from 'projects/mb/src/lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { StandardDeviationModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/statistics/standard-deviation/standard-deviation.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-standard-deviation-1',
     templateUrl: './sample-standard-deviation-1.component.html',
     styleUrls: ['./sample-standard-deviation-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, StandardDeviationModule, JsonPipe]
 })
 export class SampleStandardDeviation1Component {
   protected selected1: StandardDeviationParams = {

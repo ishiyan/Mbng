@@ -10,14 +10,14 @@ import { FrequencyResponseComponent } from './frequency-response.component';
 import { FrequencyResponseRoutingModule } from './frequency-response-routing.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    KatexModule,
-    SvgViewerModule,
-    FrequencyResponseChartModule,
-    FrequencyResponseRoutingModule
-  ],
-  declarations: [FrequencyResponseComponent]
+    imports: [
+        CommonModule,
+        FlexLayoutModule,
+        KatexModule,
+        SvgViewerModule,
+        FrequencyResponseChartModule,
+        FrequencyResponseRoutingModule,
+        FrequencyResponseComponent
+    ]
 })
 export class FrequencyResponseModule { }

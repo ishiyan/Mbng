@@ -8,8 +8,8 @@ describe('D3tcMultipleSmallPlotsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcMultipleSmallPlotsComponent ]
-    })
+    imports: [D3tcMultipleSmallPlotsComponent]
+})
     .compileComponents();
   }));
 

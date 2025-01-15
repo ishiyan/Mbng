@@ -8,8 +8,8 @@ describe('SvgViewerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SvgViewerComponent ]
-    })
+    imports: [SvgViewerComponent]
+})
     .compileComponents();
   }));
 

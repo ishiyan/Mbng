@@ -13,19 +13,19 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { SimpleMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
+
 import { SmaComponent } from './sma.component';
 import { SmaParamsComponent } from './sma-params.component';
 import { SmaListComponent } from './sma-list.component';
 import { SmaRoutingModule } from './sma-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +39,12 @@ import { SmaRoutingModule } from './sma-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     SimpleMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    SmaRoutingModule
-  ],
-  declarations: [SmaComponent, SmaParamsComponent, SmaListComponent]
+    SmaRoutingModule,
+    SmaComponent, SmaParamsComponent, SmaListComponent
+]
 })
 export class SmaModule { }

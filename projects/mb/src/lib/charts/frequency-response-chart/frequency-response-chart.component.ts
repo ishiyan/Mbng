@@ -5,6 +5,11 @@ import { Downloader } from '../downloader';
 import { FrequencyResponseResult }
   from '../../trading/indicators/indicator/frequency-response/frequency-response.interface';
 import { computeDimensions } from '../compute-dimensions';
+import { NgIf } from '@angular/common';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatMiniFabButton } from '@angular/material/button';
 
 const fmt2 = d3.format('.2f');
 const fmt3 = d3.format('.3f');
@@ -71,7 +76,7 @@ const textAfterSvg = `
     templateUrl: './frequency-response-chart.component.html',
     styleUrls: ['./frequency-response-chart.component.scss'],
     encapsulation: ViewEncapsulation.Emulated,
-    standalone: false
+    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, MatButtonToggleGroup, MatButtonToggle, MatMiniFabButton]
 })
 export class FrequencyResponseChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);

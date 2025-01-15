@@ -1,12 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { LineStyle } from './line-style';
+import { LineWidthComponent } from './line-width.component';
+import { LineDashComponent } from './line-dash.component';
+import { LineInterpolationComponent } from './line-interpolation.component';
+import { ColorComponent } from './color.component';
 
 @Component({
     selector: 'mb-line-style',
     templateUrl: './line-style.component.html',
     styleUrls: ['./line-style.component.scss'],
-    standalone: false
+    imports: [LineWidthComponent, LineDashComponent, LineInterpolationComponent, ColorComponent]
 })
 export class LineStyleComponent implements OnInit {
 

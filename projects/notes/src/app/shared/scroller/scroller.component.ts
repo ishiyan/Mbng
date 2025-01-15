@@ -1,9 +1,12 @@
 import { Component, HostListener } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-scroller',
   templateUrl: './scroller.component.html',
-  styleUrls: ['./scroller.component.scss']
+  styleUrls: ['./scroller.component.scss'],
+  imports: [MatButtonModule, MatIconModule]
 })
 export class ScrollerComponent {
 

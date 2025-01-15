@@ -6,12 +6,19 @@ import { TradeSeries } from '../../../shared/data/trade-series/trade-series.inte
 import { QuoteSeries } from '../../../shared/data/quote-series/quote-series.interface';
 import { Series } from '../../../shared/data/series.interface';
 import { visualisingFinancialDataWithLinearChartNote } from '../../../notes';
+import { MatButton } from '@angular/material/button';
+import { SeriesSelectComponent } from '../../../shared/data/series-select/series-select.component';
+import { LinearChartModule } from 'mb';
+import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
+import { ScalarSeriesSelectComponent } from '../../../shared/data/scalar-series/scalar-series-select/scalar-series-select.component';
+import { TradeSeriesSelectComponent } from '../../../shared/data/trade-series/trade-series-select/trade-series-select.component';
+import { QuoteSeriesSelectComponent } from '../../../shared/data/quote-series/quote-series-select/quote-series-select.component';
 
 @Component({
     selector: 'app-data-linear-charting',
     templateUrl: './linear-charting.component.html',
     styleUrls: ['./linear-charting.component.scss'],
-    standalone: false
+    imports: [MatButton, SeriesSelectComponent, LinearChartModule, BarSeriesSelectComponent, ScalarSeriesSelectComponent, TradeSeriesSelectComponent, QuoteSeriesSelectComponent]
 })
 export class LinearChartingComponent {
   protected lcNote = visualisingFinancialDataWithLinearChartNote;

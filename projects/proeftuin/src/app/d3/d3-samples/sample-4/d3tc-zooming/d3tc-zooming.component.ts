@@ -10,8 +10,7 @@ import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
 @Component({
     selector: 'app-d3-sample-d3tc-zooming',
     templateUrl: './d3tc-zooming.component.html',
-    styleUrls: ['./d3tc-zooming.component.scss'],
-    standalone: false
+    styleUrls: ['./d3tc-zooming.component.scss']
 })
 export class D3tcZoomingComponent implements OnInit {
   @ViewChild('container', { static: true }) container!: ElementRef;

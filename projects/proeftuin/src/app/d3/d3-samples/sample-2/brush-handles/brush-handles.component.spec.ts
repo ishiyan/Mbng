@@ -8,8 +8,8 @@ describe('BrushHandlesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BrushHandlesComponent ]
-    })
+    imports: [BrushHandlesComponent]
+})
     .compileComponents();
   }));
 

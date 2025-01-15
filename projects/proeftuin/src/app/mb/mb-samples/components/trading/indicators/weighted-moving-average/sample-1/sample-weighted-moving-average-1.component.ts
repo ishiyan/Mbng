@@ -4,12 +4,15 @@ import { WeightedMovingAverageParams }
   from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { WeightedMovingAverageModule } from '../../../../../../../../../../mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
+import { JsonPipe } from '@angular/common';
 
 @Component({
     selector: 'app-sample-weighted-moving-average-1',
     templateUrl: './sample-weighted-moving-average-1.component.html',
     styleUrls: ['./sample-weighted-moving-average-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, WeightedMovingAverageModule, JsonPipe]
 })
 export class SampleWeightedMovingAverage1Component {
   protected selected1: WeightedMovingAverageParams = {

@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { DashSvgComponent } from './dash-svg.component';
+import { MatOption } from '@angular/material/core';
 
 interface Elem {
   value: string;
@@ -10,7 +14,7 @@ interface Elem {
     selector: 'mb-line-dash',
     templateUrl: './line-dash.component.html',
     styleUrls: ['./line-dash.component.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, DashSvgComponent, NgFor, MatOption]
 })
 export class LineDashComponent implements OnInit {
   protected elems: Elem[] = [

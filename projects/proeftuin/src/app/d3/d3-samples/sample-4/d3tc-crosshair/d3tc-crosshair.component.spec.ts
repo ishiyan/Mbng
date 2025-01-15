@@ -8,8 +8,8 @@ describe('D3tcCrosshairComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcCrosshairComponent ]
-    })
+    imports: [D3tcCrosshairComponent]
+})
     .compileComponents();
   }));
 

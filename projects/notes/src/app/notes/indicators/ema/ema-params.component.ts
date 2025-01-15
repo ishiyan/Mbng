@@ -1,15 +1,18 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams, ExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 import { Ema } from './ema.interface';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-ema-params',
     templateUrl: './ema-params.component.html',
     styleUrls: ['./ema-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    imports: [MatIconButton, MatIcon, ExponentialMovingAverageModule, NgIf, OhlcvChartSelectorModule]
 })
 export class EmaParamsComponent {
 

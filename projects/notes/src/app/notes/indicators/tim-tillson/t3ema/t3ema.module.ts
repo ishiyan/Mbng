@@ -13,19 +13,19 @@ import { KatexModule } from 'mb';
 import { SvgViewerModule } from 'mb';
 import { LinearChartModule } from 'mb';
 import { OhlcvChartModule } from 'mb';
-import { ColorsModule } from 'mb';
+import { SwatchesSelectComponent } from 'mb';
 import { T3ExponentialMovingAverageModule } from 'mb';
 import { OhlcvChartSelectorModule } from 'mb';
 import { FrequencyResponseChartModule } from 'mb';
 
-import { BarSeriesSelectModule } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.module';
+
 import { T3emaComponent } from './t3ema.component';
 import { T3emaParamsComponent } from './t3ema-params.component';
 import { T3emaListComponent } from './t3ema-list.component';
 import { T3emaRoutingModule } from './t3ema-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -39,13 +39,12 @@ import { T3emaRoutingModule } from './t3ema-routing.module';
     SvgViewerModule,
     LinearChartModule,
     OhlcvChartModule,
-    ColorsModule,
+    SwatchesSelectComponent,
     T3ExponentialMovingAverageModule,
     OhlcvChartSelectorModule,
-    BarSeriesSelectModule,
     FrequencyResponseChartModule,
-    T3emaRoutingModule
-  ],
-  declarations: [T3emaComponent, T3emaParamsComponent, T3emaListComponent]
+    T3emaRoutingModule,
+    T3emaComponent, T3emaParamsComponent, T3emaListComponent
+]
 })
 export class T3emaModule { }

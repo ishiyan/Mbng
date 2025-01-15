@@ -7,6 +7,22 @@ import { HierarchyTreeSumFunction, sumNodeValues, sumNumberOfNodes } from 'proje
 import { coolValueFill, coolValueFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+
+
+
+
+import { MatSelect } from '@angular/material/select';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+
+import { IcicleComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
+import { TreemapComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/treemap/treemap.component';
+import { SunburstComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/sunburst/sunburst.component';
+import { CirclepackComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
+import { VoronoiComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
 
 const flatternData = (data: HierarchyTreeNode, name: string = ''): HierarchyTreeNode => {
   const flat: HierarchyTreeNode = { name: name, children: [] };
@@ -32,7 +48,7 @@ const sumFuncAexWeightPerc: HierarchyTreeSumFunction = (d: any) => d.constituent
     selector: 'app-hierarchies-demo',
     templateUrl: './demo.component.html',
     styleUrls: ['./demo.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, IcicleComponent, TreemapComponent, SunburstComponent, CirclepackComponent, MatSelect, NgFor, MatOption, VoronoiComponent]
 })
 export class DemoComponent {
 

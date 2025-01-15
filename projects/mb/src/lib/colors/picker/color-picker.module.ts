@@ -13,17 +13,17 @@ import { ColorPickerDirective } from './color-picker.directive';
 import { ColorPickerSliderDirective } from './color-picker-slider.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule
-  ],
-  exports: [ ColorPickerDirective ],
-  providers: [ ColorPickerService ],
-  declarations: [ ColorPickerComponent, ColorPickerDirective, ColorPickerSliderDirective ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        ColorPickerComponent, ColorPickerDirective, ColorPickerSliderDirective
+    ],
+    exports: [ColorPickerDirective],
+    providers: [ColorPickerService]
 })
 export class ColorPickerModule {}

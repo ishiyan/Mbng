@@ -20,15 +20,12 @@ import { OhlcvChartComponent } from './ohlcv-chart.component';
         MatExpansionModule,
         MatIconModule,
         MatSlideToggleModule,
-        SvgViewerModule
+        SvgViewerModule,
+        OhlcvChartComponent
     ],
     exports: [
         OhlcvChartComponent
     ],
-    declarations: [
-        OhlcvChartComponent
-    ],
-    providers: [
-    ]
+    providers: []
 })
 export class OhlcvChartModule { }

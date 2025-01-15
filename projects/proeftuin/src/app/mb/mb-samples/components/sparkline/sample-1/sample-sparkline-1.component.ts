@@ -5,12 +5,15 @@ import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/spa
 import { testDataOhlcv } from '../../../test-data/indicators/test-data-ohlcv';
 import { testDataBbBw } from '../../../test-data/indicators/test-data-bb-bw';
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from '@angular/material/card';
+
+import { SparklineComponent } from '../../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 
 @Component({
     selector: 'app-sample-sparkline-1',
     templateUrl: './sample-sparkline-1.component.html',
     styleUrls: ['./sample-sparkline-1.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, SparklineComponent, MatCardSubtitle]
 })
 export class SampleSparkline1Component {
 

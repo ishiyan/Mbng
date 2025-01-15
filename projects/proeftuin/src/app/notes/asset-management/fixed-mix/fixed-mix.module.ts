@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { MaterialModule } from 'projects/mb/src/lib/material/material.module';
+
 import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
-import { ColorsModule } from 'projects/mb/src/lib/colors/colors.module';
+
 
 import { BucketsComponent } from './buckets/buckets.component';
 import { BucketsInteractiveComponent } from './buckets-interactive/buckets-interactive.component';
@@ -16,21 +16,17 @@ import { SingleInteractiveComponent } from './single-interactive/single-interact
 import { FixedMixRoutingModule } from './fixed-mix-routing.module';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
     KatexModule,
     ChartsModule,
-    ColorsModule,
-    FixedMixRoutingModule
-  ],
-  declarations: [
+    FixedMixRoutingModule,
     BucketsComponent,
     BucketsInteractiveComponent,
     SingleComponent,
     SingleInteractiveComponent
-  ]
+]
 })
 export class FixedMixModule { }

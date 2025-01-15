@@ -4,8 +4,7 @@ import * as d3 from 'd3';
 @Component({
     selector: 'app-d3-sample-click-to-recenter-brush-2',
     templateUrl: './click-to-recenter-brush-2.component.html',
-    styleUrls: ['./click-to-recenter-brush-2.component.scss'],
-    standalone: false
+    styleUrls: ['./click-to-recenter-brush-2.component.scss']
 })
 export class ClickToRecenterBrush2Component implements OnInit {
   @ViewChild('container4', { static: true }) container!: ElementRef;

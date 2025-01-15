@@ -13,24 +13,22 @@ import { WeightedMovingAverageParamsComponent } from './weighted-moving-average-
 import { WeightedMovingAverageParamsDialogComponent } from './weighted-moving-average-params-dialog.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDialogModule,
-    EntitiesModule
-  ],
-  exports: [
-    WeightedMovingAverageParamsComponent,
-    WeightedMovingAverageParamsDialogComponent
-  ],
-  declarations: [
-    WeightedMovingAverageParamsComponent,
-    WeightedMovingAverageParamsDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatExpansionModule,
+        MatDialogModule,
+        EntitiesModule,
+        WeightedMovingAverageParamsComponent,
+        WeightedMovingAverageParamsDialogComponent
+    ],
+    exports: [
+        WeightedMovingAverageParamsComponent,
+        WeightedMovingAverageParamsDialogComponent
+    ]
 })
 export class WeightedMovingAverageModule {}

@@ -8,8 +8,8 @@ describe('D3tcCandlesticksComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcCandlesticksComponent ]
-    })
+    imports: [D3tcCandlesticksComponent]
+})
     .compileComponents();
   }));
 

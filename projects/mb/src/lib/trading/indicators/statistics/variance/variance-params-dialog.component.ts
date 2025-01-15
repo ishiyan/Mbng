@@ -1,13 +1,17 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { VarianceParams } from './variance-params.interface';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { VarianceParamsComponent } from './variance-params.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'mb-variance-params-dialog',
     templateUrl: './variance-params-dialog.component.html',
     styleUrls: ['./variance-params-dialog.component.scss'],
-    standalone: false
+    imports: [CdkScrollable, MatDialogContent, VarianceParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
 })
 export class VarianceParamsDialogComponent {
 

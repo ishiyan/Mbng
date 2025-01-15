@@ -11,6 +11,15 @@ import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from
 import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize14, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 
 import { CountryHierarchyTreeNode, countries } from '../../../test-data/hierarchies/countries';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+
+import { IcicleComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
 
 interface NumberOrStringItem {
   value: number | string;
@@ -58,7 +67,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-icicle-2',
     templateUrl: './sample-icicle-2.component.html',
     styleUrls: ['./sample-icicle-2.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, NgFor, MatOption, MatSlideToggle, IcicleComponent, MatCardActions]
 })
 export class SampleIcicle2Component {
 

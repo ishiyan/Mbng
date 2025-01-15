@@ -1,14 +1,18 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 
 import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-moving-average-params.interface';
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { KaufmanAdaptiveMovingAverageParamsComponent } from './kaufman-adaptive-moving-average-params.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'mb-kaufman-adaptive-moving-average-params-dialog',
     templateUrl: './kaufman-adaptive-moving-average-params-dialog.component.html',
     styleUrls: ['./kaufman-adaptive-moving-average-params-dialog.component.scss'],
-    standalone: false
+    imports: [CdkScrollable, MatDialogContent, KaufmanAdaptiveMovingAverageParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
 })
 export class KaufmanAdaptiveMovingAverageParamsDialogComponent {
 

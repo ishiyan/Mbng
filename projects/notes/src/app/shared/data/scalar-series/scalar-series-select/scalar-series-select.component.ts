@@ -4,12 +4,17 @@ import { SeriesSelect } from '../../abstractions/series-select';
 import { Series } from '../../series.interface';
 import { ScalarSeries } from '../scalar-series.interface';
 import { ScalarSeriesService } from '../scalar-series.service';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { SparklineComponent } from 'mb';
+import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'app-scalar-series-select',
     templateUrl: '../../abstractions/series-select.html',
     styleUrls: ['../../abstractions/series-select.scss'],
-    standalone: false
+    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption]
 })
 export class ScalarSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Specifies the sparkline fill color. */

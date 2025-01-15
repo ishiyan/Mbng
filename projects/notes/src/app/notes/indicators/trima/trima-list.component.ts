@@ -5,6 +5,10 @@ import { LineStyle } from 'mb';
 
 import { TrimaInput } from './trima-input.interface';
 import { Trima } from './trima.interface';
+import { NgFor } from '@angular/common';
+import { TrimaParamsComponent } from './trima-params.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -28,7 +32,7 @@ const createTrima = (showStyle: boolean, len: number, comp?: BarComponent): Trim
     selector: 'app-trima-list',
     templateUrl: './trima-list.component.html',
     styleUrls: ['./trima-list.component.scss'],
-    standalone: false
+    imports: [NgFor, TrimaParamsComponent, MatMiniFabButton, MatIcon]
 })
 export class TrimaListComponent implements AfterViewInit {
 

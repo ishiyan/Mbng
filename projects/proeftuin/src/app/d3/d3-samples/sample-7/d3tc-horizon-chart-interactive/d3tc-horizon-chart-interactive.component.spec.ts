@@ -8,8 +8,8 @@ describe('D3tcHorizonChartDemoComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ D3tcHorizonChartInteractiveComponent ]
-    })
+    imports: [D3tcHorizonChartInteractiveComponent]
+})
     .compileComponents();
   }));
 

@@ -25,12 +25,29 @@ import { russell2000MiniFuture } from '../../test-data/russell-2000-mini-future'
 import { djEuroStoxxTotalMarketTr } from '../../test-data/dj-euro-stoxx-total-market-tr';
 import { stoxxGlobal1800ExApacNr } from '../../test-data/stoxx-global-1800-ex-asia-pacific-nr';
 import { stoxx1800Nr } from '../../test-data/stoxx-1800-nr';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+
+
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { KatexModule } from '../../../../../../../mb/src/lib/katex/katex.module';
+import { SparklineComponent } from '../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
+import { StacklineComponent } from '../../../../../../../mb/src/lib/charts/stackline/stackline.component';
+import { MultilineComponent } from '../../../../../../../mb/src/lib/charts/multiline/multiline.component';
+import { SwatchesSelectComponent } from '../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
     selector: 'app-fixed-single',
     templateUrl: './single.component.html',
     styleUrls: ['./single.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexModule]
 })
 export class SingleComponent {
 

@@ -8,8 +8,8 @@ describe('HilbertStocksComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HilbertStocksComponent ]
-    })
+    imports: [HilbertStocksComponent]
+})
     .compileComponents();
   }));
 

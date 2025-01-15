@@ -16,6 +16,15 @@ import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFo
 
 // import { flare } from '../../../test-data/hierarchies/flare';
 import { jdk } from '../../../test-data/hierarchies/jdk';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
+import { MatOption } from '@angular/material/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+
+import { TreemapComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/treemap/treemap.component';
 
 const sumFuncValue: HierarchyTreeSumFunction = (d: HierarchyTreeNode) => d.value ? d.value : 0;
 
@@ -68,7 +77,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-treemap-5',
     templateUrl: './sample-treemap-5.component.html',
     styleUrls: ['./sample-treemap-5.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, NgFor, MatOption, MatSlideToggle, TreemapComponent, MatCardActions]
 })
 export class SampleTreemap5Component {
 
