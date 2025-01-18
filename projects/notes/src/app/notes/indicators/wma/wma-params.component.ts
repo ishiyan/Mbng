@@ -1,19 +1,25 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { LineStyle, WeightedMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { WeightedMovingAverageParams } from 'mb';
 
 import { Wma } from './wma.interface';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-wma-params',
     templateUrl: './wma-params.component.html',
     styleUrls: ['./wma-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatIconButton, MatIcon, WeightedMovingAverageModule, NgIf, OhlcvChartSelectorModule]
+    imports: [
+      NgIf,
+      MatIconButton,
+      MatIcon,
+      WeightedMovingAverageModule,
+      OhlcvChartSelectorModule,
+    ]
 })
 export class WmaParamsComponent {
 

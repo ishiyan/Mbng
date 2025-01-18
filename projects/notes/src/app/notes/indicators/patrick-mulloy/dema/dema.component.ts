@@ -1,4 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
 import { Scalar } from 'mb';
@@ -8,21 +13,16 @@ import { DoubleExponentialMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
 import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
+import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { simpleMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
 import { doubleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { DemaLengthInput } from './dema-input.interface';
 import { Dema } from './dema.interface';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { NgIf } from '@angular/common';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { DemaListComponent } from './dema-list.component';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
 const isUnlocked = false;
 const sl = 4096;
@@ -100,7 +100,24 @@ const getConfigTemplate = (): Configuration => ({
     templateUrl: './dema.component.html',
     styleUrls: ['./dema.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatSlideToggle, FormsModule, MatIcon, BarSeriesSelectComponent, OhlcvChartModule, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, SwatchesSelectComponent, DemaListComponent, KatexModule, FrequencyResponseChartModule, MatFormField, MatLabel, MatInput]
+    imports: [
+      NgIf,
+      FormsModule,
+      MatSlideToggle,
+      MatIcon,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      BarSeriesSelectComponent,
+      OhlcvChartModule,
+      SwatchesSelectComponent,
+      DemaListComponent,
+      KatexModule,
+      FrequencyResponseChartModule,
+    ]
 })
 export class DemaComponent implements AfterViewInit {
 

@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -6,10 +9,7 @@ import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAver
 
 import { DemaLengthInput, DemaSmoothingFactorInput } from './dema-input.interface';
 import { Dema } from './dema.interface';
-import { NgFor } from '@angular/common';
 import { DemaParamsComponent } from './dema-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is DoubleExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -44,7 +44,13 @@ const createAlphaDema = (showStyle: boolean, sf: number, comp?: BarComponent): D
     selector: 'app-dema-list',
     templateUrl: './dema-list.component.html',
     styleUrls: ['./dema-list.component.scss'],
-    imports: [NgFor, DemaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      DemaParamsComponent,
+    ]
 })
 export class DemaListComponent implements AfterViewInit {
 

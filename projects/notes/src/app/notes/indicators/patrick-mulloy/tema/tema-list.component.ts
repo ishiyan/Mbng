@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -6,10 +9,7 @@ import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAver
 
 import { TemaLengthInput, TemaSmoothingFactorInput } from './tema-input.interface';
 import { Tema } from './tema.interface';
-import { NgFor } from '@angular/common';
 import { TemaParamsComponent } from './tema-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is TripleExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -44,7 +44,13 @@ const createAlphaTema = (showStyle: boolean, sf: number, comp?: BarComponent): T
     selector: 'app-tema-list',
     templateUrl: './tema-list.component.html',
     styleUrls: ['./tema-list.component.scss'],
-    imports: [NgFor, TemaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      TemaParamsComponent,
+    ]
 })
 export class TemaListComponent implements AfterViewInit {
 

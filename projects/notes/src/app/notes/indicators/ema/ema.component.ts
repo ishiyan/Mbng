@@ -1,4 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
 import { Scalar } from 'mb';
@@ -10,18 +17,11 @@ import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothing
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
+import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { simpleMovingAverageNote, exponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
 import { EmaLengthInput } from './ema-input.interface';
 import { Ema } from './ema.interface';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { NgIf } from '@angular/common';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { EmaListComponent } from './ema-list.component';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
 const isUnlocked = false;
 const sl = 4096;
@@ -90,7 +90,24 @@ const getConfigTemplate = (): Configuration => ({
     templateUrl: './ema.component.html',
     styleUrls: ['./ema.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatSlideToggle, FormsModule, MatIcon, BarSeriesSelectComponent, OhlcvChartModule, NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, SwatchesSelectComponent, EmaListComponent, KatexModule, FrequencyResponseChartModule, MatFormField, MatLabel, MatInput]
+    imports: [
+      NgIf,
+      FormsModule,
+      MatSlideToggle,
+      MatIcon,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      BarSeriesSelectComponent,
+      OhlcvChartModule,
+      SwatchesSelectComponent,
+      EmaListComponent,
+      KatexModule,
+      FrequencyResponseChartModule,
+    ]
 })
 export class EmaComponent implements AfterViewInit {
 

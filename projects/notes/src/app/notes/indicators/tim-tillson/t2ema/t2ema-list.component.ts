@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -6,10 +9,7 @@ import { T2ExponentialMovingAverageLengthParams, T2ExponentialMovingAverageSmoot
 
 import { T2emaLengthInput, T2emaSmoothingFactorInput } from './t2ema-input.interface';
 import { T2ema } from './t2ema.interface';
-import { NgFor } from '@angular/common';
 import { T2emaParamsComponent } from './t2ema-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is T2ExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -44,7 +44,13 @@ const createAlphaT2ema = (showStyle: boolean, sf: number, vf: number, comp?: Bar
     selector: 'app-t2ema-list',
     templateUrl: './t2ema-list.component.html',
     styleUrls: ['./t2ema-list.component.scss'],
-    imports: [NgFor, T2emaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      T2emaParamsComponent,
+    ]
 })
 export class T2emaListComponent implements AfterViewInit {
 

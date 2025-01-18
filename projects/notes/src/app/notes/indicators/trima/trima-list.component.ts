@@ -1,14 +1,14 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { TrimaInput } from './trima-input.interface';
 import { Trima } from './trima.interface';
-import { NgFor } from '@angular/common';
 import { TrimaParamsComponent } from './trima-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -32,7 +32,13 @@ const createTrima = (showStyle: boolean, len: number, comp?: BarComponent): Trim
     selector: 'app-trima-list',
     templateUrl: './trima-list.component.html',
     styleUrls: ['./trima-list.component.scss'],
-    imports: [NgFor, TrimaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      TrimaParamsComponent,
+    ]
 })
 export class TrimaListComponent implements AfterViewInit {
 

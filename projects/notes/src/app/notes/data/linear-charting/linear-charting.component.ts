@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+
+import { LinearChartModule } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
 import { ScalarSeries } from '../../../shared/data/scalar-series/scalar-series.interface';
@@ -6,9 +9,7 @@ import { TradeSeries } from '../../../shared/data/trade-series/trade-series.inte
 import { QuoteSeries } from '../../../shared/data/quote-series/quote-series.interface';
 import { Series } from '../../../shared/data/series.interface';
 import { visualisingFinancialDataWithLinearChartNote } from '../../../notes';
-import { MatButton } from '@angular/material/button';
 import { SeriesSelectComponent } from '../../../shared/data/series-select/series-select.component';
-import { LinearChartModule } from 'mb';
 import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { ScalarSeriesSelectComponent } from '../../../shared/data/scalar-series/scalar-series-select/scalar-series-select.component';
 import { TradeSeriesSelectComponent } from '../../../shared/data/trade-series/trade-series-select/trade-series-select.component';
@@ -18,7 +19,16 @@ import { QuoteSeriesSelectComponent } from '../../../shared/data/quote-series/qu
     selector: 'app-data-linear-charting',
     templateUrl: './linear-charting.component.html',
     styleUrls: ['./linear-charting.component.scss'],
-    imports: [MatButton, SeriesSelectComponent, LinearChartModule, BarSeriesSelectComponent, ScalarSeriesSelectComponent, TradeSeriesSelectComponent, QuoteSeriesSelectComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatButton,
+      LinearChartModule,
+      SeriesSelectComponent,
+      BarSeriesSelectComponent,
+      ScalarSeriesSelectComponent,
+      TradeSeriesSelectComponent,
+      QuoteSeriesSelectComponent,
+    ]
 })
 export class LinearChartingComponent {
   protected lcNote = visualisingFinancialDataWithLinearChartNote;

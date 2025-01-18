@@ -1,18 +1,25 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoothingFactorParams, T3ExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
+
 import { T3ema } from './t3ema.interface';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-t3ema-params',
     templateUrl: './t3ema-params.component.html',
     styleUrls: ['./t3ema-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatIconButton, MatIcon, T3ExponentialMovingAverageModule, NgIf, OhlcvChartSelectorModule]
+    imports: [
+      NgIf,
+      MatIconButton,
+      MatIcon,
+      T3ExponentialMovingAverageModule,
+      OhlcvChartSelectorModule,
+    ]
 })
 export class T3emaParamsComponent {
 

@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -6,10 +9,7 @@ import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothing
 
 import { EmaLengthInput, EmaSmoothingFactorInput } from './ema-input.interface';
 import { Ema } from './ema.interface';
-import { NgFor } from '@angular/common';
 import { EmaParamsComponent } from './ema-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const guardLength = (object: any): object is ExponentialMovingAverageLengthParams => 'length' in object;
 
@@ -44,7 +44,13 @@ const createAlphaEma = (showStyle: boolean, sf: number, comp?: BarComponent): Em
     selector: 'app-ema-list',
     templateUrl: './ema-list.component.html',
     styleUrls: ['./ema-list.component.scss'],
-    imports: [NgFor, EmaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      EmaParamsComponent,
+    ]
 })
 export class EmaListComponent implements AfterViewInit {
 

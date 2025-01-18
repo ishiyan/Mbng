@@ -1,14 +1,14 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { WmaInput } from './wma-input.interface';
 import { Wma } from './wma.interface';
-import { NgFor } from '@angular/common';
 import { WmaParamsComponent } from './wma-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -32,7 +32,13 @@ const createWma = (showStyle: boolean, len: number, comp?: BarComponent): Wma =>
     selector: 'app-wma-list',
     templateUrl: './wma-list.component.html',
     styleUrls: ['./wma-list.component.scss'],
-    imports: [NgFor, WmaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      WmaParamsComponent,
+    ]
 })
 export class WmaListComponent implements AfterViewInit {
 

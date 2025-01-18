@@ -1,19 +1,25 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { LineStyle, TriangularMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
 import { TriangularMovingAverageParams } from 'mb';
 
 import { Trima } from './trima.interface';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-trima-params',
     templateUrl: './trima-params.component.html',
     styleUrls: ['./trima-params.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatIconButton, MatIcon, TriangularMovingAverageModule, NgIf, OhlcvChartSelectorModule]
+    imports: [
+      NgIf,
+      MatIconButton,
+      MatIcon,
+      TriangularMovingAverageModule,
+      OhlcvChartSelectorModule,
+    ]
 })
 export class TrimaParamsComponent {
 

@@ -1,14 +1,14 @@
-import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { NgFor } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { SmaInput } from './sma-input.interface';
 import { Sma } from './sma.interface';
-import { NgFor } from '@angular/common';
 import { SmaParamsComponent } from './sma-params.component';
-import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 
 const createStyle = (): LineStyle => {
   const style = new LineStyle();
@@ -32,7 +32,13 @@ const createSma = (showStyle: boolean, len: number, comp?: BarComponent): Sma =>
     selector: 'app-sma-list',
     templateUrl: './sma-list.component.html',
     styleUrls: ['./sma-list.component.scss'],
-    imports: [NgFor, SmaParamsComponent, MatMiniFabButton, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      NgFor,
+      MatMiniFabButton,
+      MatIcon,
+      SmaParamsComponent,
+    ]
 })
 export class SmaListComponent implements AfterViewInit {
 
