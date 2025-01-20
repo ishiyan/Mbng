@@ -16,7 +16,7 @@ import { TexCardComponent } from './tex-card/tex-card.component';
 @NgModule({
     imports: [
     CommonModule, FormsModule, FlexLayoutModule,
-    TexRoutingModule, MathJaxModule.forChild(), KatexModule,
+    TexRoutingModule, MathJaxModule.forRoot(), KatexModule,
     TexComponent, TexListComponent, TexCardComponent
 ]
 })
