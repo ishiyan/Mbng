@@ -149,6 +149,11 @@
                 "glob": "**/*",
                 "input": "./projects/mb/assets",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/mathjax/es5",
+                "output": "/assets/mathjax/es5/"
               }
             ],
             "styles": [

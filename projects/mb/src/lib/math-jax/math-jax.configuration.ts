@@ -1,5 +1,5 @@
-/** Module configuration class. */
-export class ModuleConfiguration {
+/** MathJax configuration class. */
+export class MathJaxConfiguration {
   /** The version of the *MathJax* library. */
   version!: string;
 

@@ -12,12 +12,13 @@ export * from './lib/katex/katex-inline.component';
 export * from './lib/katex/katex-settings.service';
 export * from './lib/katex/katex.module';
 
-/*
+export * from './lib/math-jax/math-jax.configuration';
+export * from './lib/math-jax/math-jax.provide';
 export * from './lib/math-jax/math-jax.directive';
 export * from './lib/math-jax/math-jax.component';
-export * from './lib/math-jax/math-jax.module';
-export * from './lib/math-jax/module-configuration';
-*/
+//----
+//export * from './lib/math-jax/math-jax.module';
+//export * from './lib/math-jax/module-configuration';
 
 export * from './lib/svg-viewer/svg-viewer.component';
 export * from './lib/svg-viewer/svg-viewer.module';

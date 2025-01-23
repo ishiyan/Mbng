@@ -1,7 +1,11 @@
 import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 
+const MathJax = (window as any).MathJax || {};
+
 /** Typeset the content or expressions using MathJax library. */
-@Directive({ selector: '[mbMathJax]' })
+@Directive({
+  selector: '[mbMathJax]',
+})
 export class MathJaxDirective implements OnChanges {
   /** An input MathJax expression. */
   @Input()
@@ -58,6 +62,7 @@ export class MathJaxDirective implements OnChanges {
   }
 
   typeset(s: string) {
+    console.log('typeset:', s);
     if (MathJaxDirective.isMathJax(s)) {
       const fixed = MathJaxDirective.fixMathJaxBugs(s);
       MathJaxDirective.typeset(() => {

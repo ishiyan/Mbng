@@ -1,6 +1,9 @@
 @use '@angular/material' as mat;
+@use '@angular/cdk';
+
 @use "app/shared/toolbar/toolbar-theme" as *;
 @use "app/shared/footer/footer-theme" as *;
+
 @use "../../mb/src/lib/svg-viewer/svg-viewer-theme" as *;
 @use "../../mb/src/lib/charts/historical-data-chart/historical-data-chart-theme" as *;
 @use "../../mb/src/lib/charts/linear-chart/linear-chart-theme" as *;
@@ -17,6 +20,7 @@
   $foreground: map-get($theme, foreground);
   $next-theme: mat.m2-define-palette(mat.$m2-red-palette);
 
+  @include cdk.text-field-autosize;
   @include toolbar-theme($theme);
   @include footer-theme($theme);
   @include svg-viewer-theme($theme);

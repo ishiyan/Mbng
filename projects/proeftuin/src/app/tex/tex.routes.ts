@@ -1,10 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { TexComponent } from './tex.component';
 import { TexListComponent } from './tex-list/tex-list.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '', component: TexComponent, children: [
       { path: '', component: TexListComponent },
@@ -18,9 +17,3 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: '' }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class TexRoutingModule { }
