@@ -1,22 +1,30 @@
 <mat-card appearance="outlined" class="tex-card mat-elevation-z4">
   <mat-card-header>
-    <mat-card-title>{{sample.name}}</mat-card-title>
+    <mat-card-title>{{sample().name}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field class="tex-card-full-width">
-      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="100" #source #autosize="cdkTextareaAutosize" class="tex-card-textarea" (input)="updateMathJax(source.value)">{{sample.code}}</textarea>
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="100" #source #autosize="cdkTextareaAutosize" class="tex-card-textarea" (input)="updateMathJax(source.value)">{{sample().code}}</textarea>
     </mat-form-field>
-    <div *ngIf="showMathJax">
-      MathJax display: <mb-mathjax [expression]="'$$'+source.value+'$$'"></mb-mathjax>
-    </div>
-    <div *ngIf="showKatex">
-      KaTeX display: <mb-katex [expression]="source.value" [options]="katexDisplayOptions"></mb-katex>
-    </div>
-    <div *ngIf="showMathJax">
-      MathJax inline: <mb-mathjax #matJaxInl [expression]="'$'+source.value+'$'"></mb-mathjax>
-    </div>
-    <div *ngIf="showKatex">
-      KaTeX inline: <mb-katex [expression]="source.value" [options]="katexInlineOptions"></mb-katex>
-    </div>
+    @if (showMathJax()) {
+      <div>
+        MathJax display: <mb-mathjax [expression]="'$$'+source.value+'$$'"></mb-mathjax>
+      </div>
+    }
+    @if (showKatex()) {
+      <div>
+        KaTeX display: <mb-katex [expression]="source.value" [options]="katexDisplayOptions"></mb-katex>
+      </div>
+    }
+    @if (showMathJax()) {
+      <div>
+        MathJax inline: <mb-mathjax #matJaxInl [expression]="'$'+source.value+'$'"></mb-mathjax>
+      </div>
+    }
+    @if (showKatex()) {
+      <div>
+        KaTeX inline: <mb-katex [expression]="source.value" [options]="katexInlineOptions"></mb-katex>
+      </div>
+    }
   </mat-card-content>
 </mat-card>

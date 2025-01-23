@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, OnChanges, SimpleChanges, input, inject } from '@angular/core';
 
 const MathJax = (window as any).MathJax || {};
 
@@ -8,8 +8,7 @@ const MathJax = (window as any).MathJax || {};
 })
 export class MathJaxDirective implements OnChanges {
   /** An input MathJax expression. */
-  @Input()
-  public mbMathJax!: string;
+  public readonly mbMathJax = input.required<string>();
 
   /** The associated native element. */
   readonly element: HTMLElement;
@@ -47,7 +46,8 @@ export class MathJaxDirective implements OnChanges {
     }
   }
 
-  constructor(el: ElementRef) {
+  constructor() {
+    const el = inject(ElementRef);
     this.element = el.nativeElement;
   }
 
@@ -62,13 +62,14 @@ export class MathJaxDirective implements OnChanges {
   }
 
   typeset(s: string) {
-    // console.log('typeset:', s);
     if (MathJaxDirective.isMathJax(s)) {
       const fixed = MathJaxDirective.fixMathJaxBugs(s);
+      // console.log('typeset (isMathJax=true):', fixed);
       MathJaxDirective.typeset(() => {
         this.element.innerHTML = `<span class='jax-process'>${fixed}</span>`;
       });
     } else {
+      // console.log('typeset (isMathJax=false):', s);
       this.element.innerHTML = s;
     }
   }

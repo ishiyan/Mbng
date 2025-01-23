@@ -7,11 +7,13 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #texSidenav class="mat-elevation-z16" mode="push" fixedInViewport="false" opened="false">
     <mat-nav-list>
-      <mat-list-item *ngFor="let c of categories" [routerLink]="'/tex/' + c.route"
-        routerLinkActive="sidenav-item-selected" (click)="category = c; texSidenav.close();"
-        [class.sidenav-item-selected]="category === c">
-        {{c.name}}
-      </mat-list-item>
+      @for (c of categories; track c) {
+        <mat-list-item [routerLink]="'/tex/' + c.route"
+          routerLinkActive="sidenav-item-selected" (click)="category = c; texSidenav.close();"
+          [class.sidenav-item-selected]="category === c">
+          {{c.name}}
+        </mat-list-item>
+      }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

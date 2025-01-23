@@ -1,20 +1,17 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 
 import { Sample } from '../samples/sample';
 import { TexCardComponent } from '../tex-card/tex-card.component';
 
 @Component({
-    selector: 'app-tex-sample-list',
-    templateUrl: './tex-list.component.html',
-    styleUrls: ['./tex-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NgFor, TexCardComponent]
+  selector: 'app-tex-sample-list',
+  templateUrl: './tex-list.component.html',
+  styleUrls: ['./tex-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TexCardComponent]
 })
 export class TexListComponent {
-  @Input() samples!: Sample[];
-  @Input()
-  showMathJax = true;
-  @Input()
-  showKatex = true;
+  readonly samples = input.required<Sample[]>();
+  readonly showMathJax = input(true);
+  readonly showKatex = input(true);
 }

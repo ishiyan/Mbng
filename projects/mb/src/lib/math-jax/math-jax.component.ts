@@ -1,21 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnChanges, OnInit, SimpleChanges, viewChild, input } from '@angular/core';
 
 import { MathJaxDirective } from './math-jax.directive';
 import { MathJaxConfiguration } from './math-jax.configuration';
 
 @Component({
-    selector: 'mb-mathjax',
-    templateUrl: './math-jax.component.html',
-    styleUrls: ['./math-jax.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MathJaxDirective]
+  selector: 'mb-mathjax',
+  templateUrl: './math-jax.component.html',
+  styleUrls: ['./math-jax.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MathJaxDirective]
 })
 export class MathJaxComponent implements OnChanges, OnInit {
   private config = inject(MathJaxConfiguration);
-
-  @Input() expression!: string;
-
-  @ViewChild(MathJaxDirective) mathJaxDirective!: MathJaxDirective;
+  readonly expression = input.required<string>();
+  readonly mathJaxDirective = viewChild.required(MathJaxDirective);
 
   ngOnInit(): void {
     // console.log('MathJaxConfiguration:', this.config);
@@ -27,9 +25,11 @@ export class MathJaxComponent implements OnChanges, OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log('OnChanges:', this.mathJaxDirective, this.expression);
-    if (this.mathJaxDirective) {
-      this.mathJaxDirective.typeset(this.expression);
+    const mathJaxDirective = this.mathJaxDirective();
+    const expr = this.expression();
+    // console.log('OnChanges:', mathJaxDirective, expr);
+    if (mathJaxDirective) {
+      mathJaxDirective.typeset(expr);
     }
   }
 

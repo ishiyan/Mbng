@@ -1,1 +1,1 @@
-<app-tex-sample-card *ngFor="let sample of samples; let i = index" [sample]="sample" [showMathJax]="showMathJax" [showKatex]="showKatex"></app-tex-sample-card>
+@for (sample of samples(); track sample; let i = $index) {<app-tex-sample-card [sample]="sample" [showMathJax]="showMathJax()" [showKatex]="showKatex()"></app-tex-sample-card>}

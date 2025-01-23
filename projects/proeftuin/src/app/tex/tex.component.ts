@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { NgFor } from '@angular/common';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
@@ -14,26 +13,25 @@ import { categories } from './categories/categories';
 import { TexListComponent } from './tex-list/tex-list.component';
 
 @Component({
-    selector: 'app-tex-sample-collection',
-    templateUrl: './tex.component.html',
-    styleUrls: ['./tex.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatToolbar,
-      MatButton,
-      MatIcon,
-      MatSidenavContainer,
-      MatSidenav,
-      MatNavList,
-      NgFor,
-      MatListItem,
-      RouterLinkActive,
-      RouterLink,
-      MatSidenavContent,
-      MatSlideToggle,
-      FormsModule,
-      TexListComponent,
-    ]
+  selector: 'app-tex-sample-collection',
+  templateUrl: './tex.component.html',
+  styleUrls: ['./tex.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatToolbar,
+    MatButton,
+    MatIcon,
+    MatSidenavContainer,
+    MatSidenav,
+    MatNavList,
+    MatListItem,
+    RouterLinkActive,
+    RouterLink,
+    MatSidenavContent,
+    MatSlideToggle,
+    FormsModule,
+    TexListComponent
+  ]
 })
 export class TexComponent {
   public readonly categories: Category[] = categories;
@@ -41,7 +39,8 @@ export class TexComponent {
   public renderMathJax = true;
   public renderKatex = true;
 
-  constructor(router: Router) {
+  constructor() {
+    const router = inject(Router);
     const routeUrl = router.routerState.snapshot.url;
     for (const cat of categories) {
       const url = '/tex/' + cat.route;
@@ -51,5 +50,4 @@ export class TexComponent {
       }
     }
   }
-
 }

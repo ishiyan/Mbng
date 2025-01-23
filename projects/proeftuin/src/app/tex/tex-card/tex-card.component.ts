@@ -1,5 +1,4 @@
-import { Component, Input, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, ViewChild, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, inject, viewChild, input } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatInput } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
@@ -11,38 +10,34 @@ import { MathJaxComponent } from 'projects/mb/src/lib/math-jax/math-jax.componen
 import { Sample } from '../samples/sample';
 
 @Component({
-    selector: 'app-tex-sample-card',
-    templateUrl: './tex-card.component.html',
-    styleUrls: ['./tex-card.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      MatInput,
-      MatFormField,
-      TextFieldModule,
-      MathJaxComponent,
-      KatexModule]
+  selector: 'app-tex-sample-card',
+  templateUrl: './tex-card.component.html',
+  styleUrls: ['./tex-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatInput,
+    MatFormField,
+    TextFieldModule,
+    MathJaxComponent,
+    KatexModule
+  ]
 })
 export class TexCardComponent implements AfterViewChecked {
-  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
-  @Input()
-  sample!: Sample;
-  @Input()
-  showMathJax = true;
-  @Input()
-  showKatex = true;
+  private changeDetectionRef = inject(ChangeDetectorRef);
+  readonly autosize = viewChild.required<CdkTextareaAutosize>('autosize');
+  readonly sample = input.required<Sample>();
+  readonly showMathJax = input(true);
+  readonly showKatex = input(true);
 
   katexDisplayOptions: any = {displayMode: true, throwOnError: false, strict: true};
   katexInlineOptions: any = {throwOnError: false, strict: true};
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {}
-
   ngAfterViewChecked() {
-    this.autosize.resizeToFitContent(true);
+    this.autosize().resizeToFitContent(true);
     this.changeDetectionRef.detectChanges();
   }
 
