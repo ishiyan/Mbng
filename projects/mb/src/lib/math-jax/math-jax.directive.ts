@@ -62,7 +62,7 @@ export class MathJaxDirective implements OnChanges {
   }
 
   typeset(s: string) {
-    console.log('typeset:', s);
+    // console.log('typeset:', s);
     if (MathJaxDirective.isMathJax(s)) {
       const fixed = MathJaxDirective.fixMathJaxBugs(s);
       MathJaxDirective.typeset(() => {
