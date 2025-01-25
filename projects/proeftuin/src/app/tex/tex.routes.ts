@@ -1,18 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { TexComponent } from './tex.component';
-import { TexListComponent } from './tex-list/tex-list.component';
-
 export const routes: Routes = [
   {
-    path: '', component: TexComponent, children: [
-      { path: '', component: TexListComponent },
-      { path: 'examples', component: TexListComponent },
-      { path: 'basic', component: TexListComponent },
-      { path: 'multiline', component: TexListComponent },
-      { path: 'symbols', component: TexListComponent },
-      { path: 'science', component: TexListComponent },
-      { path: 'synthetic', component: TexListComponent }
+    path: '', loadComponent: () => import('./tex.component').then(m => m.TexComponent), children: [
+      { path: '', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'examples', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'basic', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'multiline', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'symbols', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'science', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) },
+      { path: 'synthetic', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) }
     ]
   },
   { path: '**', redirectTo: '' }

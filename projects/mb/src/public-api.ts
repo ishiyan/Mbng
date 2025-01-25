@@ -2,8 +2,6 @@
  * Public API Surface of mb
  */
 
-
-
 export * from './lib/katex/katex.directive';
 export * from './lib/katex/katex.service';
 export * from './lib/katex/katex.component';
@@ -16,15 +14,11 @@ export * from './lib/math-jax/math-jax.configuration';
 export * from './lib/math-jax/math-jax.provide';
 export * from './lib/math-jax/math-jax.directive';
 export * from './lib/math-jax/math-jax.component';
-//----
-//export * from './lib/math-jax/math-jax.module';
-//export * from './lib/math-jax/module-configuration';
 
 export * from './lib/svg-viewer/svg-viewer.component';
 export * from './lib/svg-viewer/svg-viewer.module';
 
 export * from './lib/snack-bar/snack-bar.service';
-export * from './lib/snack-bar/snack-bar.module';
 
 export * from './lib/colors/linear-interpolated-palette';
 export * from './lib/colors/triple-interpolated-palette';

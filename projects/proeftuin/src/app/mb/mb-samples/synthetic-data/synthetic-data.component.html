@@ -21,10 +21,16 @@
   <mat-step>
     <ng-template matStepLabel><span class="multiline-label">Ge&#8203;ne&#8203;ra&#8203;te</span></ng-template>
     <button mat-raised-button color="accent" (click)="generateData()" class="button">Generate data</button>
-    <div class="name" *ngIf="historicalData">{{historicalDataName}}</div>
-    <mb-historical-data-chart [svgheight]=400 [historicalData]="historicalData" *ngIf="historicalData">
-    </mb-historical-data-chart>
-    <mb-data-historical-data-table [historicalData]="historicalData" [enableDownload]="true"
-      *ngIf="historicalData"></mb-data-historical-data-table>
+    @if (historicalData) {
+      <div class="name">{{historicalDataName}}</div>
+    }
+    @if (historicalData) {
+      <mb-historical-data-chart [svgheight]=400 [historicalData]="historicalData">
+      </mb-historical-data-chart>
+    }
+    @if (historicalData) {
+      <mb-data-historical-data-table [historicalData]="historicalData" [enableDownload]="true"
+      ></mb-data-historical-data-table>
+    }
   </mat-step>
 </mat-horizontal-stepper>

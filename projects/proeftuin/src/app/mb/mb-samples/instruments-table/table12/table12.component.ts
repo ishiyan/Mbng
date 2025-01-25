@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, viewChild, inject } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
@@ -27,8 +27,11 @@ import { MatInput } from '@angular/material/input';
     imports: [MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator]
 })
 export class Table12Component implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  private listService = inject(ListService);
+  private snackBarService = inject(SnackBarService);
+
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
 
   public InstrumentType = InstrumentType;
   public ExchangeMic = ExchangeMic;
@@ -37,7 +40,7 @@ export class Table12Component implements OnInit {
   displayedColumns: string[] = ['type', 'symbol', 'name', 'isin', 'mic'];
   dataSource: MatTableDataSource<Instrument>;
 
-  constructor(private listService: ListService, private snackBarService: SnackBarService) {
+  constructor() {
     this.dataSource = new MatTableDataSource<Instrument>();
     // @ts-ignore
     this.dataSource.filterPredicate = (data: Instrument, filter: string) =>
@@ -94,8 +97,8 @@ export class Table12Component implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
     this.listService.getInstrumentList('euronext')
       .subscribe({
         next: list => {

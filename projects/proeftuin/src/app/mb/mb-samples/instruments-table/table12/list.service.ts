@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -14,9 +14,11 @@ const httpOptions = {
   })
 };
 
-@Injectable()
+@Injectable(
+  { providedIn: 'root' }
+)
 export class ListService {
-  constructor(private httpClient: HttpClient) { }
+  private httpClient = inject(HttpClient);
 
   public getInstrumentList = (name: string): Observable<Instrument[]> =>
     this.httpClient.get<Instrument[]>(apiUrl + name, httpOptions)

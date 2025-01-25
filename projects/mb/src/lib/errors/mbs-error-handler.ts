@@ -1,12 +1,13 @@
-import { Injectable, Injector, ErrorHandler, NgZone } from '@angular/core';
+import { Injectable, Injector, ErrorHandler, NgZone, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-@Injectable()
+@Injectable(
+  { providedIn: 'root' }
+)
 export class MbsErrorHandler implements ErrorHandler {
-
+  private injector = inject(Injector);
+  private zone = inject(NgZone);
   private snackBar!: MatSnackBar;
-
-  constructor(private injector: Injector, private zone: NgZone) { }
 
   handleError(error: any): void {
     if (!this.snackBar) {
@@ -16,7 +17,7 @@ export class MbsErrorHandler implements ErrorHandler {
     if (error as string) {
       this.openSnackBar(error as string);
     } else {
-      this.openSnackBar('foobar');
+      this.openSnackBar('error cannot be represented as a string');
     }
   }
 

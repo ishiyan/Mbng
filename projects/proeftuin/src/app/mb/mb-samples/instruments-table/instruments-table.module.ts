@@ -10,7 +10,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CdkTableModule } from '@angular/cdk/table';
 
-import { SnackBarModule } from 'projects/mb/src/lib/snack-bar/snack-bar.module';
+//import { SnackBarModule } from 'projects/mb/src/lib/snack-bar/snack-bar.module';
 
 import { InstrumentsTableComponent } from './instruments-table.component';
 import { Table1Component } from './table1/table1.component';
@@ -29,7 +29,7 @@ import { ListService } from './table12/list.service';
         MatSortModule,
         MatTableModule,
         CdkTableModule,
-        SnackBarModule,
+        //SnackBarModule,
         InstrumentsTableComponent,
         Table1Component,
         Table12Component,

@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 
@@ -8,13 +8,16 @@ export class SnackBarMessage {
   config: MatSnackBarConfig | undefined | null = null;
 }
 
-@Injectable()
+@Injectable(
+  { providedIn: 'root' }
+)
 export class SnackBarService {
+  private snackBar = inject(MatSnackBar);
+  private zone = inject(NgZone);
+
   private snackBarRef!: MatSnackBarRef<SimpleSnackBar>;
   private msgQueue: any[] = [];
   private isInstanceVisible = false;
-
-  constructor(private snackBar: MatSnackBar, private zone: NgZone) { }
 
   private showNext(): void {
     if (this.msgQueue.length === 0) {
