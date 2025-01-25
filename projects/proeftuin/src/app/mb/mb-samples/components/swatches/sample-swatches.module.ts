@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 
 import { ColorPickerModule } from 'projects/mb/src/lib/colors/picker/color-picker.module';
 
@@ -27,7 +26,6 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    KatexModule,
     ColorPickerModule,
     SampleSwatchesRoutingModule,
     SampleSwatches1Component,

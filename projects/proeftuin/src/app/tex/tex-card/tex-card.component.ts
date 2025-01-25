@@ -4,7 +4,7 @@ import { MatInput } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
+import { KatexComponent } from 'projects/mb/src/lib/katex/katex.component';
 import { MathJaxComponent } from 'projects/mb/src/lib/math-jax/math-jax.component';
 
 import { Sample } from '../samples/sample';
@@ -23,7 +23,7 @@ import { Sample } from '../samples/sample';
     MatFormField,
     TextFieldModule,
     MathJaxComponent,
-    KatexModule
+    KatexComponent
   ]
 })
 export class TexCardComponent implements AfterViewChecked {

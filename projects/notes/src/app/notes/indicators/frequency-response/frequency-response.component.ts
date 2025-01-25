@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout/flex';
 
-import { FrequencyResponse, SimpleMovingAverage, KatexModule, FrequencyResponseChartModule } from 'mb';
+import { FrequencyResponse, SimpleMovingAverage, FrequencyResponseChartModule } from 'mb';
+import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 
 import { frequencyResponseOfAnIndicatorNote, simpleMovingAverageNote } from '../../../notes';
 import { IdentityFilter } from './identity-filter';
@@ -15,7 +16,8 @@ const sl = 4096;
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       FlexModule,
-      KatexModule,
+      KatexInlineComponent,
+      KatexDisplayComponent,
       FrequencyResponseChartModule,
     ]
 })

@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, inject } from '@angular/core';
 import { KatexOptions } from 'katex';
 
 import { KatexSettingsService } from './katex-settings.service';
@@ -24,12 +24,12 @@ const defaultOptions: KatexOptions = {
     imports: [KatexDirective]
 })
 export class KatexDisplayComponent implements AfterContentInit, OnInit {
+  private element = inject(ElementRef);
+  private settings = inject(KatexSettingsService);
+
   protected options: KatexOptions = defaultOptions;
   protected expression = '';
   protected hidden = false;
-
-  constructor(private element: ElementRef, private settings: KatexSettingsService) {
-  }
 
   ngOnInit(): void {
     this.settings.sourceObservable().subscribe({next: s => {

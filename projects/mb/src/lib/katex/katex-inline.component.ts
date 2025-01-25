@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, ElementRef, inject } from '@angular/core';
 import { KatexOptions } from 'katex';
 
 import { KatexSettingsService } from './katex-settings.service';
@@ -22,11 +22,12 @@ const defaultOptions: KatexOptions = {
     imports: [KatexDirective]
 })
 export class KatexInlineComponent implements AfterContentInit {
+  private element = inject(ElementRef);
+  private settings = inject(KatexSettingsService);
+
   protected options: KatexOptions = defaultOptions;
   protected expression = '';
   protected hidden = false;
-
-  constructor(private element: ElementRef, private settings: KatexSettingsService) { }
 
   ngAfterContentInit(): void {
     this.expression = this.element.nativeElement.innerText;

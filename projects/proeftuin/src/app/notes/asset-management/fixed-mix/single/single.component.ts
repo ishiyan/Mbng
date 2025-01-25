@@ -37,7 +37,7 @@ import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
-import { KatexModule } from '../../../../../../../mb/src/lib/katex/katex.module';
+import { KatexComponent } from 'projects/mb/src/lib/katex/katex.component';
 import { SparklineComponent } from '../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 import { StacklineComponent } from '../../../../../../../mb/src/lib/charts/stackline/stackline.component';
 import { MultilineComponent } from '../../../../../../../mb/src/lib/charts/multiline/multiline.component';
@@ -47,7 +47,7 @@ import { SwatchesSelectComponent } from '../../../../../../../mb/src/lib/colors/
     selector: 'app-fixed-single',
     templateUrl: './single.component.html',
     styleUrls: ['./single.component.scss'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexModule]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexComponent]
 })
 export class SingleComponent {
 

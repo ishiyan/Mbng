@@ -1,23 +1,24 @@
-import { Directive, ElementRef, EventEmitter, Input, Output, OnChanges, } from '@angular/core';
+import { Directive, ElementRef, OnChanges, input, output, inject } from '@angular/core';
 import { KatexOptions } from 'katex';
 
 import { KatexService } from './katex.service';
 
 @Directive({ selector: '[mbKatex]' })
 export class KatexDirective implements OnChanges {
-  @Input() mbKatex!: string;
-  @Input() options!: KatexOptions;
-  @Input() renderString = false;
-  @Output() hasError = new EventEmitter<any>();
+  private element = inject(ElementRef);
+  private katexService = inject(KatexService);
 
-  constructor(private element: ElementRef, private katexService: KatexService) { }
+  readonly mbKatex = input.required<string>();
+  readonly options = input.required<KatexOptions>();
+  readonly renderString = input(false);
+  readonly hasError = output<any>();
 
   ngOnChanges() {
     try {
-      if (this.renderString) {
-        this.element.nativeElement.innerHtml =  this.katexService.renderToString(this.mbKatex, this.options);
+      if (this.renderString()) {
+        this.element.nativeElement.innerHtml =  this.katexService.renderToString(this.mbKatex(), this.options());
       } else {
-        this.katexService.render(this.mbKatex, this.element, this.options);
+        this.katexService.render(this.mbKatex(), this.element, this.options());
       }
     } catch (e) {
       this.hasError.emit(e);

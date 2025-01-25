@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
+// import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 
 import { BarComponentComponent } from './bar-component.component';
 import { QuoteComponentComponent } from './quote-component.component';
@@ -15,7 +15,7 @@ import { QuoteComponentComponent } from './quote-component.component';
         FormsModule,
         MatFormFieldModule,
         MatSelectModule,
-        KatexModule,
+        // KatexModule,
         BarComponentComponent,
         QuoteComponentComponent
     ],

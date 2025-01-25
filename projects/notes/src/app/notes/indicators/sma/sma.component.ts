@@ -7,7 +7,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
-import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
+import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, FrequencyResponseChartModule } from 'mb';
+import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -101,7 +102,8 @@ const getConfigTemplate = (): Configuration => ({
       OhlcvChartModule,
       SwatchesSelectComponent,
       SmaListComponent,
-      KatexModule,
+      KatexInlineComponent,
+      KatexDisplayComponent,
       BarSeriesSelectComponent,
       FrequencyResponseChartModule,
     ]

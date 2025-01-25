@@ -5,18 +5,18 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent }
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { KatexModule } from '../../../../../../../../mb/src/lib/katex/katex.module';
 
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { NgFor } from '@angular/common';
+import { KatexComponent } from 'projects/mb/src/lib/katex/katex.component';
 import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
 
 @Component({
     selector: 'app-sample-swatches-5',
     templateUrl: './sample-swatches-5.component.html',
     styleUrls: ['./sample-swatches-5.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, KatexModule, SwatchesComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatSlider, MatSliderThumb, NgFor]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, KatexComponent, SwatchesComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatSlider, MatSliderThumb, NgFor]
 })
 export class SampleSwatches5Component {
 

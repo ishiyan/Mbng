@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 
 
@@ -20,7 +19,6 @@ import { FixedMixRoutingModule } from './fixed-mix-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    KatexModule,
     ChartsModule,
     FixedMixRoutingModule,
     BucketsComponent,

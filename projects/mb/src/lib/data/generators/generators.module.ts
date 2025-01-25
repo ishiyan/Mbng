@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
-import { KatexModule } from '../../katex/katex.module';
+// import { KatexModule } from '../../katex/katex.module';
 // import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
 
 
@@ -31,7 +31,7 @@ import { FractionalBrownianMotionParametersComponent } from './fractional-browni
     FlexLayoutModule,
     FormsModule,
     MatButtonToggleModule,
-    KatexModule,
+    // KatexModule,
     // SvgViewerModule,
     TimeParametersComponent,
     WaveformParametersComponent,

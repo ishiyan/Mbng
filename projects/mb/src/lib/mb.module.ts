@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 
-import { KatexModule } from './katex/katex.module';
+// import { KatexModule } from './katex/katex.module';
 // import { MathJaxModule } from './math-jax/math-jax.module';
 // import { SvgViewerModule } from './svg-viewer/svg-viewer.module';
 // import { SnackBarModule } from './snack-bar/snack-bar.module';
@@ -14,7 +14,7 @@ import { ChartsModule } from './charts/charts.module';
   declarations: [
   ],
   imports: [
-    KatexModule,
+    // KatexModule,
     // MathJaxModule,
     // SvgViewerModule,
     // SnackBarModule,
@@ -22,7 +22,7 @@ import { ChartsModule } from './charts/charts.module';
     ChartsModule
 ],
   exports: [
-    KatexModule,
+    // KatexModule,
     // MathJaxModule,
     // SvgViewerModule,
     // SnackBarModule,

@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { KatexModule } from 'projects/mb/src/lib/katex/katex.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 
 import { DemoComponent } from './demo/demo.component';
@@ -17,7 +16,6 @@ import { HierarchiesRoutingModule } from './hierarchies-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    KatexModule,
     ChartsModule,
     HierarchiesRoutingModule,
     DemoComponent, IndustryClassificationsComponent

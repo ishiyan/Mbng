@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { KatexOptions } from 'katex';
+
 import { KatexDirective } from './katex.directive';
 
 @Component({
@@ -7,12 +8,13 @@ import { KatexDirective } from './katex.directive';
     templateUrl: './katex.component.html',
     styleUrls: ['./katex.component.scss'],
     host: { 'collision-id': 'KatexComponent' },
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [KatexDirective]
 })
 export class KatexComponent {
-  @Input() expression!: string;
-  @Input() options: KatexOptions = {};
-  @Output() hasError = new EventEmitter<any>();
+  readonly expression = input.required<string>();
+  readonly options = input<KatexOptions>({});
+  readonly hasError = output<any>();
 
   public outputError(error: any): void {
     this.hasError.emit(error);

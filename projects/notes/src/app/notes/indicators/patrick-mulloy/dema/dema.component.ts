@@ -5,7 +5,8 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
-import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, KatexModule, FrequencyResponseChartModule } from 'mb';
+import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, FrequencyResponseChartModule } from 'mb';
+import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -115,7 +116,8 @@ const getConfigTemplate = (): Configuration => ({
       OhlcvChartModule,
       SwatchesSelectComponent,
       DemaListComponent,
-      KatexModule,
+      KatexInlineComponent,
+      KatexDisplayComponent,
       FrequencyResponseChartModule,
     ]
 })
