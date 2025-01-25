@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 
-import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
+// import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
 
 import { HistoricalDataChartComponent } from './historical-data-chart.component';
 import { HistoricalDataTableComponent } from './historical-data-table.component';
@@ -30,7 +30,7 @@ import { HistoricalDataDownloadComponent } from './historical-data-download.comp
         MatSelectModule,
         MatSlideToggleModule,
         MatTableModule,
-        SvgViewerModule,
+        // SvgViewerModule,
         HistoricalDataChartComponent,
         HistoricalDataTableComponent,
         HistoricalDataDownloadComponent

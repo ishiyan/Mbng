@@ -1,25 +1,27 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'mb-svg-viewer',
     templateUrl: './svg-viewer.component.html',
-    styleUrls: ['./svg-viewer.component.scss']
+    styleUrls: ['./svg-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush    
 })
 export class SvgViewerComponent implements OnInit {
-  @Input() src!: string;
-  @Input() scaleToContainer = false;
+  private elementRef = inject(ElementRef);
+  private httpClient = inject(HttpClient);
 
-  constructor(private elementRef: ElementRef, private httpClient: HttpClient) { }
+  readonly src = input.required<string>();
+  readonly scaleToContainer = input(false);
 
   ngOnInit() {
-    this.fetchAndInlineSvgContent(this.src);
+    this.fetchAndInlineSvgContent(this.src());
   }
 
   private inlineSvgContent(template: string) {
     this.elementRef.nativeElement.innerHTML = template;
 
-    if (this.scaleToContainer) {
+    if (this.scaleToContainer()) {
       const svg = this.elementRef.nativeElement.querySelector('svg');
       svg.setAttribute('width', '100%');
       svg.setAttribute('height', '100%');

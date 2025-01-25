@@ -7,7 +7,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
+// import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
 
 import { OhlcvChartComponent } from './ohlcv-chart.component';
 
@@ -20,7 +20,7 @@ import { OhlcvChartComponent } from './ohlcv-chart.component';
         MatExpansionModule,
         MatIconModule,
         MatSlideToggleModule,
-        SvgViewerModule,
+        // SvgViewerModule,
         OhlcvChartComponent
     ],
     exports: [

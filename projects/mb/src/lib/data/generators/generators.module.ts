@@ -6,7 +6,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 import { KatexModule } from '../../katex/katex.module';
-import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
+// import { SvgViewerModule } from '../../svg-viewer/svg-viewer.module';
 
 
 import { SyntheticDataParametersComponent } from './synthetic-data-parameters.component';
@@ -32,7 +32,7 @@ import { FractionalBrownianMotionParametersComponent } from './fractional-browni
     FormsModule,
     MatButtonToggleModule,
     KatexModule,
-    SvgViewerModule,
+    // SvgViewerModule,
     TimeParametersComponent,
     WaveformParametersComponent,
     OhlcvParametersComponent,

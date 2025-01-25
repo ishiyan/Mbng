@@ -16,7 +16,7 @@ export * from './lib/math-jax/math-jax.directive';
 export * from './lib/math-jax/math-jax.component';
 
 export * from './lib/svg-viewer/svg-viewer.component';
-export * from './lib/svg-viewer/svg-viewer.module';
+//export * from './lib/svg-viewer/svg-viewer.module';
 
 export * from './lib/snack-bar/snack-bar.service';
 
