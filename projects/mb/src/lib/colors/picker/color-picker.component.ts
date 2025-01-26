@@ -1,20 +1,18 @@
-import {
-  Component, OnInit, OnDestroy, ViewChild, HostListener, ElementRef, ChangeDetectorRef, NgZone
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ChangeDetectorRef, NgZone, viewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import {
   ColorFormats, Cmyk, Hsla, Hsva, Rgba, stringToHsva, hsvaToRgba, rgbaToHsva, hsva2hsla, hsla2hsva,
   denormalizeCMYK, rgbaToCmyk, cmykToRgb, normalizeCMYK, denormalizeRGBA, outputFormat, rgbaToHex
 } from './formats';
-import { ColorPickerService } from './color-picker.service';
 import { MatExpansionPanel } from '@angular/material/expansion';
-import { ColorPickerSliderDirective } from './color-picker-slider.directive';
-import { NgIf, NgFor } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
 import { MatInput } from '@angular/material/input';
+
+import { ColorPickerSliderDirective } from './color-picker-slider.directive';
+import { ColorPickerService } from './color-picker.service';
 
 type TwoDimEvent = {
   s: number;
@@ -122,9 +120,23 @@ const gap = 10;
     selector: 'mb-color-picker',
     templateUrl: './color-picker.component.html',
     styleUrls: ['./color-picker.component.scss'],
-    imports: [MatExpansionPanel, ColorPickerSliderDirective, NgIf, MatIconButton, MatIcon, MatFormField, MatLabel, FormsModule, MatInput, NgFor]
+    imports: [
+      FormsModule,
+      MatExpansionPanel,
+      MatIconButton,
+      MatIcon,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      ColorPickerSliderDirective
+    ]
 })
 export class ColorPickerComponent implements OnInit, OnDestroy {
+  private ngZone = inject(NgZone);
+  private elRef = inject(ElementRef);
+  private cdRef = inject(ChangeDetectorRef);
+  private service = inject(ColorPickerService);
+
   private hexText = '#ffffff';
   private hexAlpha = 1;
   private rgba = new Rgba(255, 255, 255, 1);
@@ -340,7 +352,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
   }
 
   show!: boolean;
-  @ViewChild('dialogPopup', { static: true }) dialogElement!: ElementRef;
+  readonly dialogElement = viewChild.required<ElementRef>('dialogPopup');
 
   @HostListener('document:keyup.esc', ['$event']) handleEsc(event: any): void {
     if (this.show) {
@@ -353,13 +365,6 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
       this.onAcceptColor(event);
     }
   }
-
-  constructor(
-    private ngZone: NgZone,
-    private elRef: ElementRef,
-    private cdRef: ChangeDetectorRef,
-    private service: ColorPickerService
-    ) {}
 
   ngOnInit(): void {
     this.slider = new SliderPosition(widthHue, widthSaturation, heightSaturation, widthAlpha);
@@ -590,7 +595,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
       let transformNode: any = null;
       let node = this.directiveElementRef.nativeElement.parentNode;
 
-      const dialogHeight = this.dialogElement.nativeElement.offsetHeight;
+      const dialogHeight = this.dialogElement().nativeElement.offsetHeight;
 
       while (node !== null && node.tagName !== 'HTML') {
         const style = window.getComputedStyle(node);
@@ -635,7 +640,7 @@ export class ColorPickerComponent implements OnInit, OnDestroy {
         this.position = 'fixed';
       }
 
-      const dialogBounds = this.dialogElement.nativeElement.getBoundingClientRect();
+      const dialogBounds = this.dialogElement().nativeElement.getBoundingClientRect();
       const triggerBounds = this.cpTriggerElement.nativeElement.getBoundingClientRect();
       const usePosition = calculateAutoPositioning(dialogBounds, triggerBounds);
 

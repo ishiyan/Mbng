@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 
 import { materialPalettesA } from 'mb';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
-import { ColorPickerModule } from '../../../../../../../../mb/src/lib/colors/picker/color-picker.module';
 import { NgIf } from '@angular/common';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 
-import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
+import { ColorPickerDirective } from 'projects/mb/src/lib/colors/picker/color-picker.directive';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 const colorChanged = (log: string, color: string): string => {
   log += ' ' + color + ',' ;
@@ -20,7 +20,7 @@ const colorChanged = (log: string, color: string): string => {
     selector: 'app-sample-swatches-9',
     templateUrl: './sample-swatches-9.component.html',
     styleUrls: ['./sample-swatches-9.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, ColorPickerModule, NgIf, MatMiniFabButton, MatIcon, MatSlideToggle, FormsModule, SwatchesSelectComponent]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, ColorPickerDirective, NgIf, MatMiniFabButton, MatIcon, MatSlideToggle, FormsModule, SwatchesSelectComponent]
 })
 export class SampleSwatches9Component {
   protected palettes3: string[][] = materialPalettesA();

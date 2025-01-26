@@ -1,5 +1,4 @@
-import { Directive, OnChanges, OnDestroy, Input, Output, EventEmitter,
-  HostListener, ComponentRef, ElementRef, ViewContainerRef } from '@angular/core';
+import { Directive, OnChanges, OnDestroy, HostListener, ComponentRef, ElementRef, ViewContainerRef, input, output, inject } from '@angular/core';
 
 import { ColorPickerComponent } from './color-picker.component';
 
@@ -8,16 +7,19 @@ import { ColorPickerComponent } from './color-picker.component';
     exportAs: 'mbColorPicker'
 })
 export class ColorPickerDirective implements OnChanges, OnDestroy {
+  private vcRef = inject(ViewContainerRef);
+  private elRef = inject(ElementRef);
+
   private dialog: ColorPickerComponent | null = null;
   private cmpRef: ComponentRef<ColorPickerComponent> | null = null;
   private dialogCreated = false;
 
-  @Input() colorPicker!: string;
-  @Input() colorPresets: string[] = [];
-  @Input() colorAlpha = true;
+  readonly colorPicker = input.required<string>();
+  readonly colorPresets = input<string[]>([]);
+  readonly colorAlpha = input(true);
 
-  @Output() colorSelected = new EventEmitter<string>(true);
-  @Output() colorChanged = new EventEmitter<string>(false);
+  readonly colorSelected = output<string>();
+  readonly colorChanged = output<string>();
 
   @HostListener('click') handleClick(): void {
     this.inputFocus();
@@ -26,8 +28,6 @@ export class ColorPickerDirective implements OnChanges, OnDestroy {
   @HostListener('focus') handleFocus(): void {
     this.inputFocus();
   }
-
-  constructor(private vcRef: ViewContainerRef, private elRef: ElementRef) {}
 
   ngOnDestroy(): void {
     if (this.cmpRef != null) {
@@ -46,13 +46,13 @@ export class ColorPickerDirective implements OnChanges, OnDestroy {
 
     if (changes.colorPresets) {
       if (this.dialog) {
-        this.dialog.setPresetColors(this.colorPresets);
+        this.dialog.setPresetColors(this.colorPresets());
       }
     }
 
     if (changes.colorAlpha) {
       if (this.dialog) {
-        this.dialog.setAlpha(this.colorAlpha);
+        this.dialog.setAlpha(this.colorAlpha());
       }
     }
   }
@@ -63,14 +63,14 @@ export class ColorPickerDirective implements OnChanges, OnDestroy {
 
       this.dialogCreated = true;
       this.cmpRef = vcRef.createComponent(ColorPickerComponent);
-      this.cmpRef.instance.setupDialog(this, this.elRef, this.colorPicker, this.colorAlpha, this.colorPresets, this.elRef);
+      this.cmpRef.instance.setupDialog(this, this.elRef, this.colorPicker(), this.colorAlpha(), this.colorPresets(), this.elRef);
       this.dialog = this.cmpRef.instance;
 
       if (this.vcRef !== vcRef) {
         this.cmpRef.changeDetectorRef.detectChanges();
       }
     } else if (this.dialog) {
-      this.dialog.openDialog(this.colorPicker);
+      this.dialog.openDialog(this.colorPicker());
     }
   }
 
@@ -81,12 +81,12 @@ export class ColorPickerDirective implements OnChanges, OnDestroy {
   }
 
   public colorChange(value: string): void {
-    this.colorPicker = value;
+    //TODO this.colorPicker = value;
     this.colorChanged.emit(value);
   }
 
   public colorSelect(value: string): void {
-    this.colorPicker = value;
+    //TODO this.colorPicker = value
     this.colorSelected.emit(value);
   }
 

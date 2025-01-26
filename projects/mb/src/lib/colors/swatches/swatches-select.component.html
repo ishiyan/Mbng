@@ -1,11 +1,13 @@
 <mat-form-field [ngStyle]="computeWidthStyle()">
-  <mat-label>{{label}}</mat-label>
+  <mat-label>{{label()}}</mat-label>
   <mat-select [(value)]="selectedPalette" (selectionChange)="selectionChanged($event);">
     <mat-select-trigger>
-      <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette"></mb-swatches>
+      <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette.palette"></mb-swatches>
     </mat-select-trigger>
-    <mat-option *ngFor="let p of palettes" [value]="p">
-      <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p"></mb-swatches>
-    </mat-option>
+    @for (p of palettes; track p.id) {
+      <mat-option [value]="p">
+        <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p.palette"></mb-swatches>
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

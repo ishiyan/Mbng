@@ -1,17 +1,19 @@
-import { Directive, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+import { Directive, HostListener, ElementRef, input, output, inject } from '@angular/core';
 
 @Directive({ selector: '[mbCpSlider]' })
 export class ColorPickerSliderDirective {
+  private elRef = inject(ElementRef);
+
   private listenerMove: any;
   private listenerStop: any;
 
-  @Input() rgX!: number;
-  @Input() rgY!: number;
-  @Input() slider!: string;
-  @Output() dragEnd = new EventEmitter();
-  @Output() dragStart = new EventEmitter();
+  readonly rgX = input<number>();
+  readonly rgY = input<number>();
+  readonly slider = input<string>();
+  readonly dragEnd = output();
+  readonly dragStart = output();
 
-  @Output() newValue = new EventEmitter<any>();
+  readonly newValue = output<any>();
 
   @HostListener('mousedown', ['$event']) mouseDown(event: any): void {
     this.start(event);
@@ -21,7 +23,7 @@ export class ColorPickerSliderDirective {
     this.start(event);
   }
 
-  constructor(private elRef: ElementRef) {
+  constructor() {
     this.listenerMove = (event: any) => this.move(event);
     this.listenerStop = () => this.stop();
   }
@@ -72,12 +74,14 @@ export class ColorPickerSliderDirective {
     const x = Math.max(0, Math.min(this.getX(event), width));
     const y = Math.max(0, Math.min(this.getY(event), height));
 
-    if (this.rgX !== undefined && this.rgY !== undefined) {
-      this.newValue.emit({ s: x / width, v: (1 - y / height), rgX: this.rgX, rgY: this.rgY });
-    } else if (this.rgX === undefined && this.rgY !== undefined) {
-      this.newValue.emit({ v: y / height, rgY: this.rgY });
-    } else if (this.rgX !== undefined && this.rgY === undefined) {
-      this.newValue.emit({ v: x / width, rgX: this.rgX });
+    const rgX = this.rgX();
+    const rgY = this.rgY();
+    if (rgX !== undefined && rgY !== undefined) {
+      this.newValue.emit({ s: x / width, v: (1 - y / height), rgX: rgX, rgY: rgY });
+    } else if (rgX === undefined && rgY !== undefined) {
+      this.newValue.emit({ v: y / height, rgY: rgY });
+    } else if (rgX !== undefined && rgY === undefined) {
+      this.newValue.emit({ v: x / width, rgX: rgX });
     }
   }
 }

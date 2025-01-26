@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
-
-import { ColorPickerModule } from 'projects/mb/src/lib/colors/picker/color-picker.module';
-
 import { SampleSwatches1Component } from './sample-1/sample-swatches-1.component';
 import { SampleSwatches2Component } from './sample-2/sample-swatches-2.component';
 import { SampleSwatches3Component } from './sample-3/sample-swatches-3.component';
@@ -26,7 +22,6 @@ import { SampleSwatchesRoutingModule } from './sample-swatches-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    ColorPickerModule,
     SampleSwatchesRoutingModule,
     SampleSwatches1Component,
     SampleSwatches2Component,

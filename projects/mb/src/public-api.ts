@@ -36,8 +36,6 @@ export { ColorPickerComponent } from './lib/colors/picker/color-picker.component
 export { ColorPickerDirective } from './lib/colors/picker/color-picker.directive';
 export { ColorPickerSliderDirective } from './lib/colors/picker/color-picker-slider.directive';
 export { ColorPickerService } from './lib/colors/picker/color-picker.service';
-export { ColorPickerModule } from './lib/colors/picker/color-picker.module';
-
 
 export * from './lib/data/historical-data'; // deprecated
 export * from './lib/data/data-series.interface';

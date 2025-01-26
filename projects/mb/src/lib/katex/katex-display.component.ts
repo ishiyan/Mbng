@@ -20,7 +20,6 @@ const defaultOptions: KatexOptions = {
     templateUrl: './katex-display.component.html',
     styleUrls: ['./katex-display.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { 'collision-id': 'KatexDisplayComponent' },
     imports: [KatexDirective]
 })
 export class KatexDisplayComponent implements AfterContentInit, OnInit {

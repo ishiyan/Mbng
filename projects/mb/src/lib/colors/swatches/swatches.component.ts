@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, computed } from '@angular/core';
 import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
@@ -15,23 +15,24 @@ const DEFAULT_HEIGHT = 24;
     encapsulation: ViewEncapsulation.None
 })
 export class SwatchesComponent implements OnChanges, AfterViewInit {
-  private currentColors: string[] = [];
-
+  private elementRef = inject(ElementRef);
+  
   /** A width of the swatches. */
-  @Input() width: number | string = DEFAULT_WIDTH;
+  readonly width = input<number | string>(DEFAULT_WIDTH);
 
   /** A height of the swatches. */
-  @Input() height: number | string = DEFAULT_HEIGHT;
+  readonly height = input<number | string>(DEFAULT_HEIGHT);
 
   /** Specifies an array of colors. */
-  @Input() set colors(clrs: string[]) {
-    if (clrs && clrs != null && clrs.length > 0) {
-      // Assume colors are specified correctly.
-      this.currentColors = clrs;
-    }
-  }
+  readonly colors = input.required<string[]>(); 
 
-  constructor(private elementRef: ElementRef) { }
+  private currentColors = computed(() => {
+    const updatedColors = this.colors();
+    if (updatedColors?.length) {
+      return updatedColors;
+    }
+    return [];
+  });
 
   ngAfterViewInit() {
     setTimeout(() => this.render(), 0);
@@ -47,13 +48,13 @@ export class SwatchesComponent implements OnChanges, AfterViewInit {
     const sel = d3.select(this.elementRef.nativeElement);
     sel.select('svg').remove();
 
-    const clrs = this.currentColors;
+    const clrs = this.currentColors();
     const clrsLen = clrs.length;
     if (clrsLen < 1) {
       return;
     }
 
-    const computed = computeDimensions(this.elementRef, this.width, this.height, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    const computed = computeDimensions(this.elementRef, this.width(), this.height(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
     const w = computed[0];
     const h = computed[1];
     const swatchWidth = w / clrsLen;

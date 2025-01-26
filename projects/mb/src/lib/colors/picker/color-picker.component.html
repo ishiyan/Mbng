@@ -15,10 +15,12 @@
         <div #hueSlider class="hue" mbCpSlider [rgX]="1" [style.display]="'block'" (newValue)="onHueChange($event)">
           <div class="cursor" [style.left.px]="slider?.h" [style.top.px]="-3"></div>
         </div>
-        <div *ngIf="showAlpha" #alphaSlider class="alpha" mbCpSlider [rgX]="1" [style.display]="'block'"
-          [style.background-color]="alphaSliderColor" (newValue)="onAlphaChange($event)">
-          <div class="cursor" [style.left.px]="slider?.a" [style.top.px]="-3"></div>
-        </div>
+        @if (showAlpha) {
+          <div #alphaSlider class="alpha" mbCpSlider [rgX]="1" [style.display]="'block'"
+            [style.background-color]="alphaSliderColor" (newValue)="onAlphaChange($event)">
+            <div class="cursor" [style.left.px]="slider?.a" [style.top.px]="-3"></div>
+          </div>
+        }
       </div>
     </div>
 
@@ -43,10 +45,12 @@
         <mat-label>K</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="cmykBlack" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
-        <mat-label>A</mat-label>
-        <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="cmykAlpha" />
-      </mat-form-field>
+      @if (showAlpha) {
+        <mat-form-field class="w86" appearance="fill" floatLabel="always">
+          <mat-label>A</mat-label>
+          <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="cmykAlpha" />
+        </mat-form-field>
+      }
     </span>
 
     <span class="rm4" [style.display]="isHsla ? 'inline' : 'none'">
@@ -62,10 +66,12 @@
         <mat-label>L</mat-label>
         <input type="number" matInput pattern="[0-9]*" min="0" max="100" step="1" [(ngModel)]="hslaLightness" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
-        <mat-label>A</mat-label>
-        <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hslaAlpha" />
-      </mat-form-field>
+      @if (showAlpha) {
+        <mat-form-field class="w86" appearance="fill" floatLabel="always">
+          <mat-label>A</mat-label>
+          <input type="number" matInput pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hslaAlpha" />
+        </mat-form-field>
+      }
     </span>
 
     <span class="rm4" [style.display]="isRgba ? 'inline' : 'none'">
@@ -81,10 +87,12 @@
         <mat-label>B</mat-label>
         <input matInput type="number" pattern="[0-9]*" min="0" max="255" step="1" [(ngModel)]="rgbaBlue" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
-        <mat-label>A</mat-label>
-        <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="rgbaAlpha" />
-      </mat-form-field>
+      @if (showAlpha) {
+        <mat-form-field class="w86" appearance="fill" floatLabel="always">
+          <mat-label>A</mat-label>
+          <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="rgbaAlpha" />
+        </mat-form-field>
+      }
     </span>
 
     <span class="rm4" [style.display]="isHex ? 'inline' : 'none'">
@@ -92,15 +100,21 @@
         <mat-label>HEX</mat-label>
         <input matInput type="text" pattern="^#([a-f0-9]{3}|[a-f0-9]{6})$" [(ngModel)]="hexT" minlength="4" maxlength="7" />
       </mat-form-field>
-      <mat-form-field *ngIf="showAlpha" class="w86" appearance="fill" floatLabel="always">
-        <mat-label>A</mat-label>
-        <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hexA" />
-      </mat-form-field>
+      @if (showAlpha) {
+        <mat-form-field class="w86" appearance="fill" floatLabel="always">
+          <mat-label>A</mat-label>
+          <input matInput type="number" pattern="[0-9]+([\.,][0-9]{1,2})?" min="0" max="1" step="0.01" [(ngModel)]="hexA" />
+        </mat-form-field>
+      }
     </span>
 
-    <div *ngIf="cpPresetColors?.length" class="preset-area">
-      <div *ngFor="let color of cpPresetColors" class="preset-color" [style.backgroundColor]="color"
-        (click)="setColorFromString(color)"></div>
-    </div>
+    @if (cpPresetColors?.length) {
+      <div class="preset-area">
+        @for (color of cpPresetColors; track color) {
+          <div class="preset-color" [style.backgroundColor]="color"
+          (click)="setColorFromString(color)"></div>
+        }
+      </div>
+    }
   </mat-expansion-panel>
 </div>

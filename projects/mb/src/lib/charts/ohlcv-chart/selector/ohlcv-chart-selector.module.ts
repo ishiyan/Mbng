@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 
-import { ColorPickerModule } from '../../../colors/picker/color-picker.module';
+import { ColorPickerDirective } from '../../../colors/picker/color-picker.directive';
 
 import { WidthSvgComponent } from './width-svg.component';
 import { DashSvgComponent } from './dash-svg.component';
@@ -33,7 +33,7 @@ import { LineStyleComponent } from './line-style.component';
         MatIconModule,
         MatDialogModule,
         MatCardModule,
-        ColorPickerModule,
+        ColorPickerDirective,
         WidthSvgComponent,
         DashSvgComponent,
         LineSvgComponent,

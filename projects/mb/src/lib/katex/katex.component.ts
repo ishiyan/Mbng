@@ -7,7 +7,6 @@ import { KatexDirective } from './katex.directive';
     selector: 'mb-katex',
     templateUrl: './katex.component.html',
     styleUrls: ['./katex.component.scss'],
-    host: { 'collision-id': 'KatexComponent' },
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [KatexDirective]
 })

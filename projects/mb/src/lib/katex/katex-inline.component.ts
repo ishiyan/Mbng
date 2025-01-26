@@ -18,7 +18,6 @@ const defaultOptions: KatexOptions = {
     templateUrl: './katex-inline.component.html',
     styleUrls: ['./katex-inline.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { 'collision-id': 'KatexInlineComponent' },
     imports: [KatexDirective]
 })
 export class KatexInlineComponent implements AfterContentInit {

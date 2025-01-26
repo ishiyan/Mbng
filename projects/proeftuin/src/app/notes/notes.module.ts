@@ -8,7 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 // import { SvgViewerModule } from 'projects/mb/src/lib/svg-viewer/svg-viewer.module';
 import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
 
-// import { NotesRoutingModule } from './notes-routing.module';
+import { NotesRoutingModule } from './notes-routing.module';
 import { NotesComponent } from './notes.component';
 import { AssetManagementModule } from './asset-management/asset-management.module';
 
@@ -20,7 +20,7 @@ import { AssetManagementModule } from './asset-management/asset-management.modul
     //  SnackBarModule,
     // SvgViewerModule,
     ChartsModule,
-    // NotesRoutingModule,
+    NotesRoutingModule,
     AssetManagementModule,
     NotesComponent
 ],
