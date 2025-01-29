@@ -7,7 +7,7 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
-import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, FrequencyResponseChartModule } from 'mb';
+import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
 import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
@@ -108,7 +108,7 @@ const getConfigTemplate = (): Configuration => ({
       T3emaListComponent,
       KatexInlineComponent,
       KatexDisplayComponent,
-      FrequencyResponseChartModule,
+      FrequencyResponseChartComponent
     ]
 })
 export class T3emaComponent implements AfterViewInit {

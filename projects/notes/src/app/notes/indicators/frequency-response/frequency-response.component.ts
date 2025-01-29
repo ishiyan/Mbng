@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout/flex';
 
-import { FrequencyResponse, SimpleMovingAverage, FrequencyResponseChartModule } from 'mb';
+import { FrequencyResponse, SimpleMovingAverage, FrequencyResponseChartComponent } from 'mb';
 import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 
 import { frequencyResponseOfAnIndicatorNote, simpleMovingAverageNote } from '../../../notes';
@@ -18,7 +18,7 @@ const sl = 4096;
       FlexModule,
       KatexInlineComponent,
       KatexDisplayComponent,
-      FrequencyResponseChartModule,
+      FrequencyResponseChartComponent
     ]
 })
 export class FrequencyResponseComponent {

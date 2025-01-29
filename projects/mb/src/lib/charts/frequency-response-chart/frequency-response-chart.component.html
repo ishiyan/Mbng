@@ -1,29 +1,30 @@
 <!-- xxx
 <div id="{{widthContainerId}}" class="container"></div>
 -->
-<mat-expansion-panel expanded="false" class="panel" *ngIf="settingsPanelVisible">
-  <mat-expansion-panel-header>
-    <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group"
-    [value]="yModeValue" (change)="yModeValue = group1.value">
-    <mat-button-toggle [value]="yModePowerDecibels">Pwr dB</mat-button-toggle>
-    <mat-button-toggle [value]="yModePowerPercents">Pwr %</mat-button-toggle>
-    <mat-button-toggle [value]="yModeAmplitudeDecibels">Amp dB</mat-button-toggle>
-    <mat-button-toggle [value]="yModeAmplitudePercents">Amp %</mat-button-toggle>
-    <mat-button-toggle [value]="yModePhaseDegrees">Phase °</mat-button-toggle>
-    <mat-button-toggle [value]="yModePhaseDegreesUnwrapped">Phase ° unwrapped</mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-button-toggle-group #group2="matButtonToggleGroup" class="button-toggle-group"
-    [value]="xModeValue" (change)="xModeValue = group2.value">
-    <mat-button-toggle [value]="xModeFrequencies">Frequency</mat-button-toggle>
-    <mat-button-toggle [value]="xModePeriods">Period</mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <button mat-mini-fab color="accent" (click)="saveToSvg()" class="download" *ngIf="saveSvgVisible">
-    <mat-icon>download</mat-icon>
-  </button>
-</mat-expansion-panel>
+@if (settingsPanelVisible()) {
+  <mat-expansion-panel expanded="false" class="panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group"
+      [value]="yModeValue" (change)="yModeValue = group1.value">
+      <mat-button-toggle [value]="yModePowerDecibels">Pwr dB</mat-button-toggle>
+      <mat-button-toggle [value]="yModePowerPercents">Pwr %</mat-button-toggle>
+      <mat-button-toggle [value]="yModeAmplitudeDecibels">Amp dB</mat-button-toggle>
+      <mat-button-toggle [value]="yModeAmplitudePercents">Amp %</mat-button-toggle>
+      <mat-button-toggle [value]="yModePhaseDegrees">Phase °</mat-button-toggle>
+      <mat-button-toggle [value]="yModePhaseDegreesUnwrapped">Phase ° unwrapped</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-button-toggle-group #group2="matButtonToggleGroup" class="button-toggle-group"
+      [value]="xModeValue" (change)="xModeValue = group2.value">
+      <mat-button-toggle [value]="xModeFrequencies">Frequency</mat-button-toggle>
+      <mat-button-toggle [value]="xModePeriods">Period</mat-button-toggle>
+    </mat-button-toggle-group>
+    @if (saveSvgVisible()) {
+      <button mat-mini-fab color="accent" (click)="saveToSvg()" class="download">
+        <mat-icon>download</mat-icon>
+      </button>
+    }
+  </mat-expansion-panel>
+}
 <div id="{{svgContainerId}}"></div>

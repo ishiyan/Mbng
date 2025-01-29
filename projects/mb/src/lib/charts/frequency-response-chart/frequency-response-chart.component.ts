@@ -1,15 +1,14 @@
-import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Input, HostListener, AfterViewInit, ElementRef, input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import * as d3 from 'd3';
 
 import { Downloader } from '../downloader';
+import { computeDimensions } from '../compute-dimensions';
 import { FrequencyResponseResult }
   from '../../trading/indicators/indicator/frequency-response/frequency-response.interface';
-import { computeDimensions } from '../compute-dimensions';
-import { NgIf } from '@angular/common';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { MatIcon } from '@angular/material/icon';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatMiniFabButton } from '@angular/material/button';
 
 const fmt2 = d3.format('.2f');
 const fmt3 = d3.format('.3f');
@@ -75,23 +74,35 @@ const textAfterSvg = `
     selector: 'mb-frequency-response-chart',
     templateUrl: './frequency-response-chart.component.html',
     styleUrls: ['./frequency-response-chart.component.scss'],
-    encapsulation: ViewEncapsulation.Emulated,
-    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, MatButtonToggleGroup, MatButtonToggle, MatMiniFabButton]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+      MatIcon,
+      MatButtonToggleGroup,
+      MatButtonToggle,
+      MatMiniFabButton
+    ]
 })
 export class FrequencyResponseChartComponent implements AfterViewInit {
+  private elementRef = inject(ElementRef);
+
   private random = Math.random().toString(36).substring(2);
   private clipId = 'frchart-clip-' +  this.random;
   private pointerEventsId = 'frchart-pointer-events-' + this.random;
   protected svgContainerId = 'frchart-svg-' + this.random;
 
   /** If chart settings panel is visible. */
-  @Input() settingsPanelVisible = false;
+  readonly settingsPanelVisible = input(false);
 
   /** If *Save SVG* button is visible. */
-  @Input() saveSvgVisible = true;
+  readonly saveSvgVisible = input(true);
 
   private widthValue: number | string = defaultWidth;
   /** A width of the chart in pixels or as percentage. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set width(value: number | string) {
     this.widthValue = value;
     this.render();
@@ -99,12 +110,16 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
 
   private heightValue: number | string = defaultHeight;
   /** A height of the chart in pixels or as percentage. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set height(value: number | string) {
     this.heightValue = value;
     this.render();
   }
 
   /** The array of frequency responses to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set data(dat: FrequencyResponseResult[]) {
     let empty = true;
 
@@ -170,6 +185,8 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private yComponents = [new Array<yComponentType>(yModeMax), new Array<yComponentType>(yModeMax)];
 
   /** The x mode. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set xmode(value: 'frequency' | 'period') {
     switch (value) {
       case 'frequency':
@@ -198,6 +215,8 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   }
 
   /** The y mode. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set ymode(value: 'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg' | 'phaseDegUnwrapped') {
     switch (value) {
       case 'powerDb':
@@ -251,6 +270,8 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
 
   private subFigureLetter = '';
   /** The sub-figure letter of this chart. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set subfig(value: string) {
     this.subFigureLetter = value;
   }
@@ -258,10 +279,14 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private forcedFrequencyMin?: number;
   private forcedFrequencyMax?: number;
   /** The minimum x frequency to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set minFrequency(value: number | undefined) {
     this.forcedFrequencyMin = value;
   }
   /** The maximum x frequency to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set maxFrequency(value: number | undefined) {
     this.forcedFrequencyMax = value;
   }
@@ -269,10 +294,14 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private forcedPeriodMin?: number;
   private forcedPeriodMax?: number;
   /** The minimum x period to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set minPeriod(value: number | undefined) {
     this.forcedPeriodMin = value;
   }
   /** The maximum x period to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set maxPeriod(value: number | undefined) {
     this.forcedPeriodMax = value;
   }
@@ -280,10 +309,14 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private forcedDbMin?: number;
   private forcedDbMax?: number;
   /** The minimum y decibels to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set minDb(value: number | undefined) {
     this.forcedDbMin = value;
   }
   /** The maximum y decibels to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set maxDb(value: number | undefined) {
     this.forcedDbMax = value;
   }
@@ -291,10 +324,14 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private forcedPctMin?: number;
   private forcedPctMax?: number;
   /** The minimum y percentages to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set minPct(value: number | undefined) {
     this.forcedPctMin = value;
   }
   /** The maximum y percentages to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set maxPct(value: number | undefined) {
     this.forcedPctMax = value;
   }
@@ -302,15 +339,19 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private forcedDegMin?: number;
   private forcedDegMax?: number;
   /** The minimum y phase degrees to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set minDeg(value: number | undefined) {
     this.forcedDegMin = value;
   }
   /** The maximum y phase degrees to use. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set maxDeg(value: number | undefined) {
     this.forcedDegMax = value;
   }
 
-  constructor(private elementRef: ElementRef) { }
+  constructor() { }
 
   private afterViewInit = false;
   ngAfterViewInit() {
