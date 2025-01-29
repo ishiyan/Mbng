@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { T2ExponentialMovingAverageLengthParams, T2ExponentialMovingAverageSmoothingFactorParams, T2ExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
+import { T2ExponentialMovingAverageLengthParams, T2ExponentialMovingAverageSmoothingFactorParams, T2ExponentialMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 
 import { T2ema } from './t2ema.interface';
@@ -17,7 +17,7 @@ import { T2ema } from './t2ema.interface';
       NgIf,
       MatIconButton,
       MatIcon,
-      T2ExponentialMovingAverageModule,
+      T2ExponentialMovingAverageParamsComponent,
       OhlcvChartSelectorModule,
     ]
 })

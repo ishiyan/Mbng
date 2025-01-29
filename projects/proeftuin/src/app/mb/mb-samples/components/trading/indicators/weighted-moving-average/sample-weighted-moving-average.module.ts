@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { WeightedMovingAverageModule } from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
+//import { WeightedMovingAverageModule } from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
 
 import { SampleWeightedMovingAverage1Component } from './sample-1/sample-weighted-moving-average-1.component';
 import { SampleWeightedMovingAverage2Component } from './sample-2/sample-weighted-moving-average-2.component';
@@ -16,7 +16,7 @@ import { SampleWeightedMovingAverageRoutingModule } from './sample-weighted-movi
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    WeightedMovingAverageModule,
+    //WeightedMovingAverageModule,
     SampleWeightedMovingAverageRoutingModule,
     SampleWeightedMovingAverage1Component,
     SampleWeightedMovingAverage2Component

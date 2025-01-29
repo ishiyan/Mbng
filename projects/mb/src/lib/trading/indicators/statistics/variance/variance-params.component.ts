@@ -1,22 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, OnInit, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
-
-import { VarianceParams } from './variance-params.interface';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { NgIf } from '@angular/common';
 import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
 import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
+import { VarianceParams } from './variance-params.interface';
 
 @Component({
     selector: 'mb-variance-params',
     templateUrl: './variance-params.component.html',
     styleUrls: ['./variance-params.component.scss'],
-    imports: [MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, NgIf, BarComponentComponent, QuoteComponentComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      MatSlideToggle,
+      BarComponentComponent,
+      QuoteComponentComponent
+    ]
 })
 export class VarianceParamsComponent implements OnInit {
 
@@ -49,13 +56,18 @@ export class VarianceParamsComponent implements OnInit {
   protected quoteComponentVisible = this.params.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<VarianceParams> = new EventEmitter<VarianceParams>();
+  readonly selectionChange = output<VarianceParams>();
 
   /** Specifies an initial value. */
-  @Input() set initial(value: VarianceParams) {
-    this.params = value;
-    this.barComponentVisible = value.barComponent !== undefined;
-    this.quoteComponentVisible = value.quoteComponent !== undefined;
+  initial = input.required<VarianceParams>();
+
+  constructor() {
+    effect(() => {
+      const value = this.initial();
+      this.params = value;
+      this.barComponentVisible = value.barComponent !== undefined;
+      this.quoteComponentVisible = value.quoteComponent !== undefined;
+    });  
   }
 
   ngOnInit() {

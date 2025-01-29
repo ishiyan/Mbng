@@ -1,21 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, input, output, effect, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 
 import { BarComponent } from '../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../data/entities/quote-component.enum';
-
-import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { NgIf } from '@angular/common';
 import { BarComponentComponent } from '../../../data/entities/bar-component.component';
 import { QuoteComponentComponent } from '../../../data/entities/quote-component.component';
+import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
 
 @Component({
     selector: 'mb-simple-moving-average-params',
     templateUrl: './simple-moving-average-params.component.html',
     styleUrls: ['./simple-moving-average-params.component.scss'],
-    imports: [MatFormField, MatLabel, FormsModule, MatInput, NgIf, BarComponentComponent, QuoteComponentComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      BarComponentComponent,
+      QuoteComponentComponent
+    ]
 })
 export class SimpleMovingAverageParamsComponent implements OnInit {
 
@@ -39,13 +45,18 @@ export class SimpleMovingAverageParamsComponent implements OnInit {
   protected quoteComponentVisible = this.params.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<SimpleMovingAverageParams> = new EventEmitter<SimpleMovingAverageParams>();
+  readonly selectionChange = output<SimpleMovingAverageParams>();
 
   /** Specifies an initial value. */
-  @Input() set initial(value: SimpleMovingAverageParams) {
-    this.params = value;
-    this.barComponentVisible = value.barComponent !== undefined;
-    this.quoteComponentVisible = value.quoteComponent !== undefined;
+  initial = input.required<SimpleMovingAverageParams>();
+
+  constructor() {
+    effect(() => {
+      const value = this.initial();
+      this.params = value;
+      this.barComponentVisible = value.barComponent !== undefined;
+      this.quoteComponentVisible = value.quoteComponent !== undefined;
+    });  
   }
 
   ngOnInit() {

@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { T3ExponentialMovingAverageModule }
-  from 'projects/mb/src/lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
+//import { T3ExponentialMovingAverageModule }
+//  from 'projects/mb/src/lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
 
 import { SampleT3ExponentialMovingAverage1Component }
   from './sample-1/sample-t3-exponential-moving-average-1.component';
@@ -20,7 +20,7 @@ import { SampleT3ExponentialMovingAverageRoutingModule }
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    T3ExponentialMovingAverageModule,
+    //T3ExponentialMovingAverageModule,
     SampleT3ExponentialMovingAverageRoutingModule,
     SampleT3ExponentialMovingAverage1Component,
     SampleT3ExponentialMovingAverage2Component

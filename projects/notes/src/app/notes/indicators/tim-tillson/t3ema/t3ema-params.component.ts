@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoothingFactorParams, T3ExponentialMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
+import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoothingFactorParams, T3ExponentialMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 
 import { T3ema } from './t3ema.interface';
@@ -17,7 +17,7 @@ import { T3ema } from './t3ema.interface';
       NgIf,
       MatIconButton,
       MatIcon,
-      T3ExponentialMovingAverageModule,
+      T3ExponentialMovingAverageParamsComponent,
       OhlcvChartSelectorModule,
     ]
 })

@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { LineStyle, TriangularMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
+import { LineStyle, TriangularMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
 import { TriangularMovingAverageParams } from 'mb';
 
 import { Trima } from './trima.interface';
@@ -17,7 +17,7 @@ import { Trima } from './trima.interface';
       NgIf,
       MatIconButton,
       MatIcon,
-      TriangularMovingAverageModule,
+      TriangularMovingAverageParamsComponent,
       OhlcvChartSelectorModule,
     ]
 })

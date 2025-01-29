@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { TripleExponentialMovingAverageModule }
-  from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
+//import { TripleExponentialMovingAverageModule }
+//  from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
 
 import { SampleTripleExponentialMovingAverage1Component }
   from './sample-1/sample-triple-exponential-moving-average-1.component';
@@ -20,7 +20,7 @@ import { SampleTripleExponentialMovingAverageRoutingModule }
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    TripleExponentialMovingAverageModule,
+    //TripleExponentialMovingAverageModule,
     SampleTripleExponentialMovingAverageRoutingModule,
     SampleTripleExponentialMovingAverage1Component,
     SampleTripleExponentialMovingAverage2Component

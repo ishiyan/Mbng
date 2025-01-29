@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, output } from '@angular/core';
 
 import { BarComponent } from '../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../data/entities/quote-component.enum';
@@ -32,9 +32,11 @@ export class SimpleMovingAverageParamsComponent implements OnInit {
   protected quoteComponentVisible = this.params.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<SimpleMovingAverageParams> = new EventEmitter<SimpleMovingAverageParams>();
+  readonly selectionChange = output<SimpleMovingAverageParams>();
 
   /** Specifies an initial value. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set initial(value: SimpleMovingAverageParams) {
     this.params = value;
     this.barComponentVisible = value.barComponent !== undefined;

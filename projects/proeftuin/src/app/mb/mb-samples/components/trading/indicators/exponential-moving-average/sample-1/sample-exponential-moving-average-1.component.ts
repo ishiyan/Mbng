@@ -1,19 +1,27 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
-import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams }
-  from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { ExponentialMovingAverageModule } from '../../../../../../../../../../mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average.module';
-import { JsonPipe } from '@angular/common';
+import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams }
+  from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.interface';
+import { ExponentialMovingAverageParamsComponent }
+  from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.component';
 
 @Component({
     selector: 'app-sample-exponential-moving-average-1',
     templateUrl: './sample-exponential-moving-average-1.component.html',
     styleUrls: ['./sample-exponential-moving-average-1.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, ExponentialMovingAverageModule, JsonPipe]
+    imports: [
+      JsonPipe,
+      MatCard,
+      MatCardHeader,
+      MatCardTitle,
+      MatCardContent,
+      ExponentialMovingAverageParamsComponent
+    ]
 })
 export class SampleExponentialMovingAverage1Component {
   protected selected1: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {
@@ -30,6 +38,9 @@ export class SampleExponentialMovingAverage1Component {
   };
   protected selectedL5: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {
     length: 7, firstIsAverage: true, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
+  };
+  protected initial1: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {
+    length: 6, firstIsAverage: true, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
   };
   protected initialL2: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {
     length: 12, firstIsAverage: true, barComponent: BarComponent.Typical

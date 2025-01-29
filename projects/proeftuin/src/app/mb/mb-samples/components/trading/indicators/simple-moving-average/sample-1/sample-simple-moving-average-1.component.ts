@@ -1,18 +1,27 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
-import { SimpleMovingAverageParams }
-  from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { SimpleMovingAverageModule } from '../../../../../../../../../../mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average.module';
-import { JsonPipe } from '@angular/common';
+import { SimpleMovingAverageParams }
+  from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
+import { SimpleMovingAverageParamsComponent }
+  from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.component';
 
 @Component({
     selector: 'app-sample-simple-moving-average-1',
     templateUrl: './sample-simple-moving-average-1.component.html',
     styleUrls: ['./sample-simple-moving-average-1.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, SimpleMovingAverageModule, JsonPipe]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      JsonPipe,
+      MatCard,
+      MatCardHeader,
+      MatCardTitle,
+      MatCardContent,
+      SimpleMovingAverageParamsComponent
+    ]
 })
 export class SampleSimpleMovingAverage1Component {
   protected selected1: SimpleMovingAverageParams = {
@@ -29,6 +38,9 @@ export class SampleSimpleMovingAverage1Component {
   };
   protected selected5: SimpleMovingAverageParams = {
     length: 7, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
+  };
+  protected initial1: SimpleMovingAverageParams = {
+    length: 6, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
   };
   protected initial2: SimpleMovingAverageParams = {
     length: 12, barComponent: BarComponent.Typical

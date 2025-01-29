@@ -169,67 +169,56 @@ export * from './lib/trading/indicators/simple-moving-average/simple-moving-aver
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params.interface';
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params.component';
 export * from './lib/trading/indicators/simple-moving-average/simple-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/simple-moving-average/simple-moving-average.module';
 
 export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average';
 export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
 export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.component';
 export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
 
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average';
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.interface';
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.component';
 export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/triangular-moving-average/triangular-moving-average.module';
 
 export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average';
 export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.component';
 export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/exponential-moving-average/exponential-moving-average.module';
 
 export * from './lib/trading/indicators/statistics/variance/variance';
 export * from './lib/trading/indicators/statistics/variance/variance-params.interface';
 export * from './lib/trading/indicators/statistics/variance/variance-params.component';
 export * from './lib/trading/indicators/statistics/variance/variance-params-dialog.component';
-export * from './lib/trading/indicators/statistics/variance/variance.module';
 
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation';
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.interface';
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.component';
 export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation-params-dialog.component';
-export * from './lib/trading/indicators/statistics/standard-deviation/standard-deviation.module';
 
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average';
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params.component';
 export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/tim-tillson/t3-exponential-moving-average/t3-exponential-moving-average.module';
 
 export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average';
 export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.component';
 export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average.module';
 
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.component';
 export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
 
 export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average';
 export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.interface';
 export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params.component';
 export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/patrick-mulloy/triple-exponential-moving-average/triple-exponential-moving-average.module';
 
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.interface';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.component';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params-dialog.component';
-export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average.module';
 
 
 

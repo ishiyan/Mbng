@@ -1,29 +1,34 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-
-import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
+import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { SimpleMovingAverageParamsComponent } from './simple-moving-average-params.component';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+
+import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
+import { SimpleMovingAverageParamsComponent } from './simple-moving-average-params.component';
 
 @Component({
     selector: 'mb-simple-moving-average-params-dialog',
     templateUrl: './simple-moving-average-params-dialog.component.html',
     styleUrls: ['./simple-moving-average-params-dialog.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, SimpleMovingAverageParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      CdkScrollable,
+      MatDialogContent,
+      MatDialogClose,
+      MatDialogActions,
+      MatButton,
+      MatIcon,
+      SimpleMovingAverageParamsComponent
+    ]
 })
 export class SimpleMovingAverageParamsDialogComponent {
+  protected data = inject<SimpleMovingAverageParams>(MAT_DIALOG_DATA);
 
-  protected params!: SimpleMovingAverageParams;
+  protected params: SimpleMovingAverageParams = this.data;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<SimpleMovingAverageParams> = new EventEmitter<SimpleMovingAverageParams>();
-
-  constructor(private dialogRef: MatDialogRef<SimpleMovingAverageParamsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) protected data: SimpleMovingAverageParams) {
-    this.params = data;
-  }
+  readonly selectionChange = output<SimpleMovingAverageParams>();
 
   protected changed(param: SimpleMovingAverageParams) {
     this.params = param;

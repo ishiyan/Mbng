@@ -1,22 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, OnInit, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
-
-import { StandardDeviationParams } from './standard-deviation-params.interface';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { NgIf } from '@angular/common';
 import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
 import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
+import { StandardDeviationParams } from './standard-deviation-params.interface';
 
 @Component({
     selector: 'mb-standard-deviation-params',
     templateUrl: './standard-deviation-params.component.html',
     styleUrls: ['./standard-deviation-params.component.scss'],
-    imports: [MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, NgIf, BarComponentComponent, QuoteComponentComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      MatSlideToggle,
+      BarComponentComponent,
+      QuoteComponentComponent
+    ]
 })
 export class StandardDeviationParamsComponent implements OnInit {
 
@@ -49,13 +56,18 @@ export class StandardDeviationParamsComponent implements OnInit {
   protected quoteComponentVisible = this.params.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<StandardDeviationParams> = new EventEmitter<StandardDeviationParams>();
+  readonly selectionChange = output<StandardDeviationParams>();
 
   /** Specifies an initial value. */
-  @Input() set initial(value: StandardDeviationParams) {
-    this.params = value;
-    this.barComponentVisible = value.barComponent !== undefined;
-    this.quoteComponentVisible = value.quoteComponent !== undefined;
+  initial = input.required<StandardDeviationParams>();
+
+  constructor() {
+    effect(() => {
+      const value = this.initial();
+      this.params = value;
+      this.barComponentVisible = value.barComponent !== undefined;
+      this.quoteComponentVisible = value.quoteComponent !== undefined;
+    });  
   }
 
   ngOnInit() {

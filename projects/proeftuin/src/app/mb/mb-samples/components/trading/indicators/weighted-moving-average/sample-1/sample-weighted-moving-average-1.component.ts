@@ -1,18 +1,27 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
-import { WeightedMovingAverageParams }
-  from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { WeightedMovingAverageModule } from '../../../../../../../../../../mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average.module';
-import { JsonPipe } from '@angular/common';
+import { WeightedMovingAverageParams }
+  from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.interface';
+import { WeightedMovingAverageParamsComponent }
+  from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.component';
 
 @Component({
     selector: 'app-sample-weighted-moving-average-1',
     templateUrl: './sample-weighted-moving-average-1.component.html',
     styleUrls: ['./sample-weighted-moving-average-1.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, WeightedMovingAverageModule, JsonPipe]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      JsonPipe,
+      MatCard,
+      MatCardHeader,
+      MatCardTitle,
+      MatCardContent,
+      WeightedMovingAverageParamsComponent
+    ]
 })
 export class SampleWeightedMovingAverage1Component {
   protected selected1: WeightedMovingAverageParams = {
@@ -29,6 +38,9 @@ export class SampleWeightedMovingAverage1Component {
   };
   protected selected5: WeightedMovingAverageParams = {
     length: 7, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
+  };
+  protected initial1: WeightedMovingAverageParams = {
+    length: 6, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
   };
   protected initial2: WeightedMovingAverageParams = {
     length: 12, barComponent: BarComponent.Typical

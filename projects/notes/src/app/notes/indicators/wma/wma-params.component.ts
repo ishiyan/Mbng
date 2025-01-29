@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { LineStyle, WeightedMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
+import { LineStyle, WeightedMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
 import { WeightedMovingAverageParams } from 'mb';
 
 import { Wma } from './wma.interface';
@@ -17,7 +17,7 @@ import { Wma } from './wma.interface';
       NgIf,
       MatIconButton,
       MatIcon,
-      WeightedMovingAverageModule,
+      WeightedMovingAverageParamsComponent,
       OhlcvChartSelectorModule,
     ]
 })

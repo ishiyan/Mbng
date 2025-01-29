@@ -1,29 +1,34 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-
-import { WeightedMovingAverageParams } from './weighted-moving-average-params.interface';
+import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { WeightedMovingAverageParamsComponent } from './weighted-moving-average-params.component';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+
+import { WeightedMovingAverageParams } from './weighted-moving-average-params.interface';
+import { WeightedMovingAverageParamsComponent } from './weighted-moving-average-params.component';
 
 @Component({
     selector: 'mb-weighted-moving-average-params-dialog',
     templateUrl: './weighted-moving-average-params-dialog.component.html',
     styleUrls: ['./weighted-moving-average-params-dialog.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, WeightedMovingAverageParamsComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      CdkScrollable,
+      MatDialogContent,
+      MatDialogActions,
+      MatDialogClose,
+      MatButton,
+      MatIcon,
+      WeightedMovingAverageParamsComponent
+    ]
 })
 export class WeightedMovingAverageParamsDialogComponent {
+  protected data = inject<WeightedMovingAverageParams>(MAT_DIALOG_DATA);
 
-  protected params!: WeightedMovingAverageParams;
+  protected params: WeightedMovingAverageParams = this.data;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<WeightedMovingAverageParams> = new EventEmitter<WeightedMovingAverageParams>();
-
-  constructor(private dialogRef: MatDialogRef<WeightedMovingAverageParamsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) protected data: WeightedMovingAverageParams) {
-    this.params = data;
-  }
+  readonly selectionChange = output<WeightedMovingAverageParams>();
 
   protected changed(param: WeightedMovingAverageParams) {
     this.params = param;

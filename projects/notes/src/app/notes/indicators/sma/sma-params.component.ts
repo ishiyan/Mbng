@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { SimpleMovingAverageParams, SimpleMovingAverageModule, OhlcvChartSelectorModule } from 'mb';
+import { SimpleMovingAverageParams, SimpleMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
 import { LineStyle } from 'mb';
 
 import { Sma } from './sma.interface';
@@ -18,7 +18,7 @@ import { Sma } from './sma.interface';
       MatIconButton,
       MatIcon,
       OhlcvChartSelectorModule,
-      SimpleMovingAverageModule,
+      SimpleMovingAverageParamsComponent,
     ]
 })
 export class SmaParamsComponent {

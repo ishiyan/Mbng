@@ -1,19 +1,27 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 
-import { T2ExponentialMovingAverageLengthParams, T2ExponentialMovingAverageSmoothingFactorParams }
-  from 'projects/mb/src/lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.interface';
 import { BarComponent } from 'projects/mb/src/lib/data/entities/bar-component.enum';
 import { QuoteComponent } from 'projects/mb/src/lib/data/entities/quote-component.enum';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { T2ExponentialMovingAverageModule } from '../../../../../../../../../../../mb/src/lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average.module';
-import { JsonPipe } from '@angular/common';
+import { T2ExponentialMovingAverageLengthParams, T2ExponentialMovingAverageSmoothingFactorParams }
+  from 'projects/mb/src/lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.interface';
+import { T2ExponentialMovingAverageParamsComponent }
+  from 'projects/mb/src/lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.component';
 
 @Component({
     selector: 'app-sample-t2-exponential-moving-average-1',
     templateUrl: './sample-t2-exponential-moving-average-1.component.html',
     styleUrls: ['./sample-t2-exponential-moving-average-1.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, T2ExponentialMovingAverageModule, JsonPipe]
+    imports: [
+      JsonPipe,
+      MatCard,
+      MatCardHeader,
+      MatCardTitle,
+      MatCardContent,
+      T2ExponentialMovingAverageParamsComponent
+    ]
 })
 export class SampleT2ExponentialMovingAverage1Component {
   protected selected1: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {
@@ -27,6 +35,9 @@ export class SampleT2ExponentialMovingAverage1Component {
   };
   protected selectedL4: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {
     length: 7, vFactor: 0.7, firstIsAverage: true, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
+  };
+  protected initial1: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {
+    length: 6, vFactor: 0.7, firstIsAverage: true, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid
   };
   protected selectedL5: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {
     length: 7, vFactor: 0.7, firstIsAverage: true, barComponent: BarComponent.Close, quoteComponent: QuoteComponent.Mid

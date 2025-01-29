@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, output, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
@@ -9,14 +9,21 @@ import { SimpleMovingAverageParams } from './simple-moving-average-params.interf
   styleUrls: ['./simple-moving-average-params-dialog.component.scss']
 })
 export class SimpleMovingAverageParamsDialogComponent {
+  private dialogRef = inject<MatDialogRef<SimpleMovingAverageParamsDialogComponent>>(MatDialogRef);
+  protected data = inject<SimpleMovingAverageParams>(MAT_DIALOG_DATA);
+
 
   protected params!: SimpleMovingAverageParams;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<SimpleMovingAverageParams> = new EventEmitter<SimpleMovingAverageParams>();
+  readonly selectionChange = output<SimpleMovingAverageParams>();
 
-  constructor(private dialogRef: MatDialogRef<SimpleMovingAverageParamsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) protected data: SimpleMovingAverageParams) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const data = this.data;
+
     this.params = data;
   }
 

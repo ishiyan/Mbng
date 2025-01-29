@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { DoubleExponentialMovingAverageModule }
-  from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
+//import { DoubleExponentialMovingAverageModule }
+//  from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average.module';
 
 import { SampleDoubleExponentialMovingAverage1Component }
   from './sample-1/sample-double-exponential-moving-average-1.component';
@@ -20,7 +20,7 @@ import { SampleDoubleExponentialMovingAverageRoutingModule }
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    DoubleExponentialMovingAverageModule,
+    //DoubleExponentialMovingAverageModule,
     SampleDoubleExponentialMovingAverageRoutingModule,
     SampleDoubleExponentialMovingAverage1Component,
     SampleDoubleExponentialMovingAverage2Component

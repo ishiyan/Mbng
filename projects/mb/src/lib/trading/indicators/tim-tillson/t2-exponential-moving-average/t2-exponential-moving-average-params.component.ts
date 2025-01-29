@@ -1,17 +1,15 @@
-import { Component, EventEmitter, Input, AfterContentInit, Output } from '@angular/core';
+import { Component, AfterContentInit, output, ChangeDetectionStrategy, input, effect } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { BarComponent } from '../../../../data/entities/bar-component.enum';
 import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
-
-import { T2ExponentialMovingAverageLengthParams } from './t2-exponential-moving-average-params.interface';
-import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponential-moving-average-params.interface';
-import { NgIf } from '@angular/common';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
 import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
+import { T2ExponentialMovingAverageLengthParams } from './t2-exponential-moving-average-params.interface';
+import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponential-moving-average-params.interface';
 
 const firstIsAverageDefault = true;
 const guardLength = (object: any): object is T2ExponentialMovingAverageLengthParams => 'length' in object;
@@ -20,7 +18,16 @@ const guardLength = (object: any): object is T2ExponentialMovingAverageLengthPar
     selector: 'mb-t2-exponential-moving-average-params',
     templateUrl: './t2-exponential-moving-average-params.component.html',
     styleUrls: ['./t2-exponential-moving-average-params.component.scss'],
-    imports: [NgIf, MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle, BarComponentComponent, QuoteComponentComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatLabel,
+      MatInput,
+      MatSlideToggle,
+      BarComponentComponent,
+      QuoteComponentComponent
+    ]
 })
 export class T2ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;
@@ -138,25 +145,29 @@ export class T2ExponentialMovingAverageParamsComponent implements AfterContentIn
   protected quoteComponentVisible = this.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams> =
-    new EventEmitter<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams>();
+  readonly selectionChange = output<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams>();
 
   /** Specifies an initial value. */
-  @Input() set initial(value: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams) {
-    if (guardLength(value)) {
-      this.paramsLength = value as T2ExponentialMovingAverageLengthParams;
-      this.firstIsAverage = this.paramsLength.firstIsAverage;
-      this.useAlpha = false;
-    } else {
-      this.paramsAlpha = value as T2ExponentialMovingAverageSmoothingFactorParams;
-      this.useAlpha = true;
-      this.firstIsAverage = false;
-    }
+  initial = input.required<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams>();
 
-    this.barComponent = value.barComponent;
-    this.quoteComponent = value.quoteComponent;
-    this.barComponentVisible = value.barComponent !== undefined;
-    this.quoteComponentVisible = value.quoteComponent !== undefined;
+  constructor() {
+    effect(() => {
+      const value = this.initial();
+      if (guardLength(value)) {
+        this.paramsLength = value as T2ExponentialMovingAverageLengthParams;
+        this.firstIsAverage = value.firstIsAverage;
+        this.useAlpha = false;
+      } else {
+        this.paramsAlpha = value as T2ExponentialMovingAverageSmoothingFactorParams;
+        this.firstIsAverage = false;
+        this.useAlpha = true;
+      }
+  
+      this.barComponent = value.barComponent;
+      this.quoteComponent = value.quoteComponent;
+      this.barComponentVisible = value.barComponent !== undefined;
+      this.quoteComponentVisible = value.quoteComponent !== undefined;
+    });  
   }
 
   ngAfterContentInit() {
