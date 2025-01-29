@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, input, output } from '@angular/core';
 import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
 
 import { QuoteComponent } from './quote-component.enum';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgFor } from '@angular/common';
-import { MatOption } from '@angular/material/core';
 import { KatexDisplayComponent } from '../../katex/katex-display.component';
 
 interface Comp {
@@ -18,7 +17,15 @@ interface Comp {
     selector: 'mb-quote-component',
     templateUrl: './quote-component.component.html',
     styleUrls: ['./quote-component.component.scss'],
-    imports: [MatFormField, MatLabel, MatSelect, MatSelectTrigger, NgFor, MatOption, KatexDisplayComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatFormField,
+      MatLabel,
+      MatSelect,
+      MatSelectTrigger,
+      MatOption,
+      KatexDisplayComponent
+    ]
 })
 export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [
@@ -33,22 +40,26 @@ export class QuoteComponentComponent implements OnInit {
   protected compSelected = this.comps[QuoteComponent.Mid.valueOf()];
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<QuoteComponent> = new EventEmitter<QuoteComponent>();
+  readonly selectionChange = output<QuoteComponent>();
 
   /** A label to display above the selector. */
-  @Input() label = 'Quote component';
+  readonly label = input('Quote component');
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value.enumeration);
   }
 
   /** Specifies an initial value. */
-  @Input() set initial(comp: QuoteComponent) {
-    const idxOld = this.compSelected.enumeration.valueOf();
-    const idxNew = comp.valueOf();
-    this.comps[idxOld].selected = false;
-    this.comps[idxNew].selected = true;
-    this.compSelected = this.comps[idxNew];
+  initial = input.required<QuoteComponent>();
+
+  constructor() {
+    effect(() => {
+      const idxNew = this.initial().valueOf();
+      const idxOld = this.compSelected.enumeration.valueOf();
+      this.comps[idxOld].selected = false;
+      this.comps[idxNew].selected = true;
+      this.compSelected = this.comps[idxNew];
+    });  
   }
 
   ngOnInit() {

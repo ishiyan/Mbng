@@ -1,11 +1,13 @@
 <mat-form-field style="width:10em" appearance="fill" floatLabel="always">
-  <mat-label>{{label}}</mat-label>
+  <mat-label>{{label()}}</mat-label>
   <mat-select [(value)]="compSelected" (selectionChange)="selectionChanged($event);">
     <mat-select-trigger>
       {{compSelected.name}}
     </mat-select-trigger>
-    <mat-option *ngFor="let comp of comps" [value]="comp" selected="comp.selected">
-      {{comp.name}},<mb-kd>{{comp.tex}}</mb-kd>
-    </mat-option>
+    @for (comp of comps; track comp) {
+      <mat-option [value]="comp" selected="comp.selected">
+        {{comp.name}},<mb-kd>{{comp.tex}}</mb-kd>
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

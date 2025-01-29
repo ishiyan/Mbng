@@ -52,7 +52,6 @@ export * from './lib/data/entities/bar-component.component';
 export * from './lib/data/entities/quote-component.enum';
 export * from './lib/data/entities/quote-component';
 export * from './lib/data/entities/quote-component.component';
-export * from './lib/data/entities/entities.module';
 
 export * from './lib/data/generators/generate-step';
 

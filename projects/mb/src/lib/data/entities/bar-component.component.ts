@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, effect, input, output } from '@angular/core';
 import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption } from '@angular/material/core';
 
 import { BarComponent } from './bar-component.enum';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgFor } from '@angular/common';
-import { MatOption } from '@angular/material/core';
 import { KatexDisplayComponent } from '../../katex/katex-display.component';
 
 interface Comp {
@@ -18,7 +17,15 @@ interface Comp {
     selector: 'mb-bar-component',
     templateUrl: './bar-component.component.html',
     styleUrls: ['./bar-component.component.scss'],
-    imports: [MatFormField, MatLabel, MatSelect, MatSelectTrigger, NgFor, MatOption, KatexDisplayComponent]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatFormField,
+      MatLabel,
+      MatSelect,
+      MatSelectTrigger,
+      MatOption,
+      KatexDisplayComponent
+    ]
 })
 export class BarComponentComponent implements OnInit {
   protected comps: Comp[] = [
@@ -35,22 +42,26 @@ export class BarComponentComponent implements OnInit {
   protected compSelected = this.comps[BarComponent.Typical.valueOf()];
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<BarComponent> = new EventEmitter<BarComponent>();
+  readonly selectionChange = output<BarComponent>();
 
   /** A label to display above the selector. */
-  @Input() label = 'Bar component';
+  readonly label = input('Bar component');
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value.enumeration);
   }
 
   /** Specifies an initial value. */
-  @Input() set initial(comp: BarComponent) {
-    const idxOld = this.compSelected.enumeration.valueOf();
-    const idxNew = comp.valueOf();
-    this.comps[idxOld].selected = false;
-    this.comps[idxNew].selected = true;
-    this.compSelected = this.comps[idxNew];
+  initial = input.required<BarComponent>();
+
+  constructor() {
+    effect(() => {
+      const idxNew = this.initial().valueOf();
+      const idxOld = this.compSelected.enumeration.valueOf();
+      this.comps[idxOld].selected = false;
+      this.comps[idxNew].selected = true;
+      this.compSelected = this.comps[idxNew];
+    });  
   }
 
   ngOnInit() {

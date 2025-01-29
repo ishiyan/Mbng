@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { EntitiesModule } from 'projects/mb/src/lib/data/entities/entities.module';
+//import { EntitiesModule } from 'projects/mb/src/lib/data/entities/entities.module';
 
 import { SampleDataEntities1Component } from './sample-1/sample-data-entities-1.component';
 import { SampleDataEntities2Component } from './sample-2/sample-data-entities-2.component';
@@ -16,7 +16,7 @@ import { SampleDataEntitiesRoutingModule } from './sample-data-entities-routing.
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    EntitiesModule,
+    //EntitiesModule,
     SampleDataEntitiesRoutingModule,
     SampleDataEntities1Component,
     SampleDataEntities2Component

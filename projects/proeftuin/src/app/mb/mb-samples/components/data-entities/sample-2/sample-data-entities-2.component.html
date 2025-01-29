@@ -5,7 +5,7 @@
       <mat-card-title>Default</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-quote-component (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-quote-component>
+      <mb-quote-component [initial]="default" (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-quote-component>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected1}}
@@ -29,7 +29,7 @@
       <mat-card-title>With label</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-quote-component [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);"></mb-quote-component>
+      <mb-quote-component [initial]="default" [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);"></mb-quote-component>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected3}}
