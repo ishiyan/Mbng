@@ -9,7 +9,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 // import { SnackBarModule } from 'projects/mb/src/lib/snack-bar/snack-bar.module';
 // import { SvgViewerModule } from 'projects/mb/src/lib/svg-viewer/svg-viewer.module';
 import { HistoricalDataChartModule } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-chart.module';
-import { GeneratorsModule } from 'projects/mb/src/lib/data/generators/generators.module';
+// import { GeneratorsModule } from 'projects/mb/src/lib/data/generators/generators.module';
 
 import { SyntheticDataComponent } from './synthetic-data.component';
 
@@ -24,7 +24,7 @@ import { SyntheticDataComponent } from './synthetic-data.component';
         // SnackBarModule,
         // SvgViewerModule,
         HistoricalDataChartModule,
-        GeneratorsModule,
+        // GeneratorsModule,
         SyntheticDataComponent
     ]
 })

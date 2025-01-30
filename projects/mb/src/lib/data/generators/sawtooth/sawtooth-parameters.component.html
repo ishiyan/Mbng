@@ -9,30 +9,32 @@
     <mb-katex [expression]="eq2" [options]="options"></mb-katex>
   </div>
   <mat-form-field>
-    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="sawtoothParameters.amplitude" min="4" step="1"
+    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="params.amplitude" min="4" step="1"
       required>
-    <mat-hint>The amplitude of the sawtooth impulse, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="number" matInput placeholder="Minimum value, β" [(ngModel)]="sawtoothParameters.minimalValue" min="1"
-      step="1" required>
-    <mat-hint>The minimum of the sawtooth impulse, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Sawtooth shape</mat-label>
-    <mat-select [(value)]="sawtoothParameters.sawtoothShape" [compareWith]="compare" required>
-      <mat-option *ngFor="let type of sawtoothShapes" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>The sawtooth impulse shape.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Bi-directional</mat-label>
-    <mat-select [(value)]="sawtoothParameters.isBiDirectional" required>
-      <mat-option [value]="true">Yes</mat-option>
-      <mat-option [value]="false">No</mat-option>
-    </mat-select>
-    <mat-hint>If the sawtooth impulse is reflected horizontally to form a triangle shape.</mat-hint>
-  </mat-form-field>
-</mat-expansion-panel>
+      <mat-hint>The amplitude of the sawtooth impulse, should be positive.</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Minimum value, β" [(ngModel)]="params.minimalValue" min="1"
+        step="1" required>
+        <mat-hint>The minimum of the sawtooth impulse, should be positive.</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Sawtooth shape</mat-label>
+        <mat-select [(value)]="params.sawtoothShape" [compareWith]="compare" required>
+          @for (type of sawtoothShapes; track type) {
+            <mat-option [value]="type">
+              {{type}}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-hint>The sawtooth impulse shape.</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Bi-directional</mat-label>
+        <mat-select [(value)]="params.isBiDirectional" required>
+          <mat-option [value]="true">Yes</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
+        <mat-hint>If the sawtooth impulse is reflected horizontally to form a triangle shape.</mat-hint>
+      </mat-form-field>
+    </mat-expansion-panel>

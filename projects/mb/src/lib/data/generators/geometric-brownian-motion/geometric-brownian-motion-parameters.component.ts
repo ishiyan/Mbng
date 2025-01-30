@@ -1,25 +1,46 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+
+import { KatexComponent } from '../../../katex/katex.component';
+import { Enums } from '../../../utils/enums';
 import { UniformRandomGeneratorKind } from '../uniform-random-generator-kind.enum';
 import { NormalRandomGeneratorKind } from '../normal-random-generator-kind.enum';
 import { GeometricBrownianMotionParameters } from './geometric-brownian-motion-parameters';
-import { Enums } from '../../../utils/enums';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { KatexComponent } from '../../../katex/katex.component';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatSelect } from '@angular/material/select';
-import { NgFor } from '@angular/common';
-import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'mb-data-generators-geometric-brownian-motion-parameters',
     templateUrl: './geometric-brownian-motion-parameters.component.html',
     styleUrls: ['./geometric-brownian-motion-parameters.component.scss'],
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, NgFor, MatOption]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatHint,
+      MatLabel,
+      MatInput,
+      MatSelect,
+      MatOption,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+      KatexComponent
+    ]
 })
 export class GeometricBrownianMotionParametersComponent {
-  @Input() geometricBrownianMotionParameters!: GeometricBrownianMotionParameters;
+  // sawtoothParameters = input.required<GeometricBrownianMotionParameters>();
+  geometricBrownianMotionParameters = input<GeometricBrownianMotionParameters>();
+  params: GeometricBrownianMotionParameters = new GeometricBrownianMotionParameters();
+
+  constructor() {
+    effect(() => {
+      this.params = this.geometricBrownianMotionParameters() ?? new GeometricBrownianMotionParameters();
+    });
+  }
 
   options: any = {throwOnError: false, strict: true};
 

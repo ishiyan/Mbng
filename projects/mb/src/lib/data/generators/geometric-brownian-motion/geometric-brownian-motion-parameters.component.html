@@ -12,48 +12,52 @@
     <mb-katex [expression]="eq5" [options]="options"></mb-katex>
   </div>
   <mat-form-field>
-    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="geometricBrownianMotionParameters.amplitude"
+    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="params.amplitude"
       min="4" step="1" required>
-    <mat-hint>The amplitude of the geometric Brownian motion, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="number" matInput placeholder="Minimum value, β"
-      [(ngModel)]="geometricBrownianMotionParameters.minimalValue" min="1" step="1" required>
-    <mat-hint>The minimum of the geometric Brownian motion, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field class="lesser-padding-bottom">
-    <input type="number" matInput placeholder="Drift, μ" [(ngModel)]="geometricBrownianMotionParameters.drift" min="0"
-      max="1" step="0.01" required>
-    <mat-hint>The drift (the expected return), μ.</mat-hint>
-  </mat-form-field>
-  <mat-form-field class="bigger-padding-bottom">
-    <input type="number" matInput placeholder="Volatility, σ" [(ngModel)]="geometricBrownianMotionParameters.drift"
-      min="0" max="1" step="0.01" required>
-    <mat-hint>At each step, the drift will be shocked (added or subtracted) by this value multiplied by a normal random
-      number.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Normal generator, ng</mat-label>
-    <mat-select [(value)]="geometricBrownianMotionParameters.normalRandomGeneratorKind" [compareWith]="compare"
-      required>
-      <mat-option *ngFor="let type of normalRandomGenerators" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>Gaussian distribution random generator type.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Associated uniform generator</mat-label>
-    <mat-select [(value)]="geometricBrownianMotionParameters.associatedUniformRandomGeneratorKind"
-      [compareWith]="compare" required>
-      <mat-option *ngFor="let type of uniformRandomGenerators" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>Used only by ZigguratColinGreen and BoxMuller Gaussian generators.</mat-hint>
-  </mat-form-field>
-  <mat-form-field class="last-form-field">
-    <input type="number" matInput placeholder="Generator seed" [(ngModel)]="geometricBrownianMotionParameters.seed"
-      min="0" step="1" required>
-  </mat-form-field>
-</mat-expansion-panel>
+      <mat-hint>The amplitude of the geometric Brownian motion, should be positive.</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Minimum value, β"
+        [(ngModel)]="params.minimalValue" min="1" step="1" required>
+        <mat-hint>The minimum of the geometric Brownian motion, should be positive.</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="lesser-padding-bottom">
+        <input type="number" matInput placeholder="Drift, μ" [(ngModel)]="params.drift" min="0"
+          max="1" step="0.01" required>
+          <mat-hint>The drift (the expected return), μ.</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="bigger-padding-bottom">
+          <input type="number" matInput placeholder="Volatility, σ" [(ngModel)]="params.drift"
+            min="0" max="1" step="0.01" required>
+            <mat-hint>At each step, the drift will be shocked (added or subtracted) by this value multiplied by a normal random
+            number.</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Normal generator, ng</mat-label>
+            <mat-select [(value)]="params.normalRandomGeneratorKind" [compareWith]="compare"
+              required>
+              @for (type of normalRandomGenerators; track type) {
+                <mat-option [value]="type">
+                  {{type}}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-hint>Gaussian distribution random generator type.</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Associated uniform generator</mat-label>
+            <mat-select [(value)]="params.associatedUniformRandomGeneratorKind"
+              [compareWith]="compare" required>
+              @for (type of uniformRandomGenerators; track type) {
+                <mat-option [value]="type">
+                  {{type}}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-hint>Used only by ZigguratColinGreen and BoxMuller Gaussian generators.</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="last-form-field">
+            <input type="number" matInput placeholder="Generator seed" [(ngModel)]="params.seed"
+              min="0" step="1" required>
+            </mat-form-field>
+          </mat-expansion-panel>

@@ -9,51 +9,57 @@
     <mb-katex [expression]="eq2" [options]="options"></mb-katex>
   </div>
   <mat-form-field>
-    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="fractionalBrownianMotionParameters.amplitude"
+    <input type="number" matInput placeholder="Amplitude, α" [(ngModel)]="params.amplitude"
       min="4" step="1" required>
-    <mat-hint>The amplitude of the fractional Brownian motion, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="number" matInput placeholder="Minimum value, β"
-      [(ngModel)]="fractionalBrownianMotionParameters.minimalValue" min="1" step="1" required>
-    <mat-hint>The minimum of the fractional Brownian motion, should be positive.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="number" matInput placeholder="Hurst exponent, H"
-      [(ngModel)]="fractionalBrownianMotionParameters.hurstExponent" min="0" max="1" step="0.01" required>
-    <mat-hint>The Hurst exponent of the fractional Brownian motion.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Calculation algorithm</mat-label>
-    <mat-select [(value)]="fractionalBrownianMotionParameters.algorithm" [compareWith]="compare" required>
-      <mat-option *ngFor="let type of algorithms" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>The fractional Brownian motion calculation algorithm.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Normal generator, ng</mat-label>
-    <mat-select [(value)]="fractionalBrownianMotionParameters.normalRandomGeneratorKind" [compareWith]="compare"
-      required>
-      <mat-option *ngFor="let type of normalRandomGenerators" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>Gaussian distribution random generator type.</mat-hint>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Associated uniform generator</mat-label>
-    <mat-select [(value)]="fractionalBrownianMotionParameters.associatedUniformRandomGeneratorKind"
-      [compareWith]="compare" required>
-      <mat-option *ngFor="let type of uniformRandomGenerators" [value]="type">
-        {{type}}
-      </mat-option>
-    </mat-select>
-    <mat-hint>Used only by ZigguratColinGreen and BoxMuller Gaussian generators.</mat-hint>
-  </mat-form-field>
-  <mat-form-field class="last-form-field">
-    <input type="number" matInput placeholder="Generator seed" [(ngModel)]="fractionalBrownianMotionParameters.seed"
-      min="0" step="1" required>
-  </mat-form-field>
-</mat-expansion-panel>
+      <mat-hint>The amplitude of the fractional Brownian motion, should be positive.</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Minimum value, β"
+        [(ngModel)]="params.minimalValue" min="1" step="1" required>
+        <mat-hint>The minimum of the fractional Brownian motion, should be positive.</mat-hint>
+      </mat-form-field>
+      <mat-form-field>
+        <input type="number" matInput placeholder="Hurst exponent, H"
+          [(ngModel)]="params.hurstExponent" min="0" max="1" step="0.01" required>
+          <mat-hint>The Hurst exponent of the fractional Brownian motion.</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Calculation algorithm</mat-label>
+          <mat-select [(value)]="params.algorithm" [compareWith]="compare" required>
+            @for (type of algorithms; track type) {
+              <mat-option [value]="type">
+                {{type}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint>The fractional Brownian motion calculation algorithm.</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Normal generator, ng</mat-label>
+          <mat-select [(value)]="params.normalRandomGeneratorKind" [compareWith]="compare"
+            required>
+            @for (type of normalRandomGenerators; track type) {
+              <mat-option [value]="type">
+                {{type}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint>Gaussian distribution random generator type.</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Associated uniform generator</mat-label>
+          <mat-select [(value)]="params.associatedUniformRandomGeneratorKind"
+            [compareWith]="compare" required>
+            @for (type of uniformRandomGenerators; track type) {
+              <mat-option [value]="type">
+                {{type}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-hint>Used only by ZigguratColinGreen and BoxMuller Gaussian generators.</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="last-form-field">
+          <input type="number" matInput placeholder="Generator seed" [(ngModel)]="params.seed"
+            min="0" step="1" required>
+          </mat-form-field>
+        </mat-expansion-panel>

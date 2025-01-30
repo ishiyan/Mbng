@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 
 import { MbsError } from '../../errors/mbs-error';
-import { SyntheticDataParameters } from './synthetic-data-parameters';
 import { HistoricalData } from '../historical-data';
+import { SyntheticDataParameters } from './synthetic-data-parameters';
 import { SyntheticDataKind } from './synthetic-data-kind.enum';
 import { TemporalEntityKind } from '../entities/temporal-entity-kind.enum';
 
@@ -18,9 +18,11 @@ const httpOptions = {
   })
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SyntheticDataService {
-  constructor(private httpClient: HttpClient) { }
+  private httpClient = inject(HttpClient);
 
   private static toSegment(parameters: SyntheticDataParameters): string {
     switch (parameters.temporalEntityKind) {
@@ -84,7 +86,6 @@ export class SyntheticDataService {
       const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
       text = errorResponse.message;
     }
-    // console.error(text);
     return throwError(text);
   }
 }

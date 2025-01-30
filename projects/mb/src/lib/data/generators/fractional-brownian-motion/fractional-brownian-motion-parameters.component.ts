@@ -1,26 +1,47 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+
+import { KatexComponent } from '../../../katex/katex.component';
+import { Enums } from '../../../utils/enums';
 import { UniformRandomGeneratorKind } from '../uniform-random-generator-kind.enum';
 import { NormalRandomGeneratorKind } from '../normal-random-generator-kind.enum';
 import { FractionalBrownianMotionParameters } from './fractional-brownian-motion-parameters';
 import { FractionalBrownianMotionAlgorithm } from './fractional-brownian-motion-algorithm.enum';
-import { Enums } from '../../../utils/enums';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { KatexComponent } from '../../../katex/katex.component';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatSelect } from '@angular/material/select';
-import { NgFor } from '@angular/common';
-import { MatOption } from '@angular/material/core';
 
 @Component({
     selector: 'mb-data-generators-fractional-brownian-motion-parameters',
     templateUrl: './fractional-brownian-motion-parameters.component.html',
     styleUrls: ['./fractional-brownian-motion-parameters.component.scss'],
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, NgFor, MatOption]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatFormField,
+      MatHint,
+      MatLabel,
+      MatInput,
+      MatSelect,
+      MatOption,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+      KatexComponent
+    ]
 })
 export class FractionalBrownianMotionParametersComponent {
-  @Input() fractionalBrownianMotionParameters!: FractionalBrownianMotionParameters;
+  // sawtoothParameters = input.required<FractionalBrownianMotionParameters>();
+  fractionalBrownianMotionParameters = input<FractionalBrownianMotionParameters>();
+  params: FractionalBrownianMotionParameters = new FractionalBrownianMotionParameters();
+
+  constructor() {
+    effect(() => {
+      this.params = this.fractionalBrownianMotionParameters() ?? new FractionalBrownianMotionParameters();
+    });
+  }
 
   options: any = {throwOnError: false, strict: true};
 

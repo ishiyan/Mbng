@@ -128,7 +128,6 @@ export * from './lib/data/generators/quote-parameters';
 export * from './lib/data/generators/quote-parameters.component';
 export * from './lib/data/generators/trade-parameters';
 export * from './lib/data/generators/trade-parameters.component';
-export * from './lib/data/generators/generators.module';
 
 export * from './lib/trading/currencies/currency-code.enum';
 export * from './lib/trading/markets/exchange-country.enum';

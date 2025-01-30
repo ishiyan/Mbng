@@ -1,22 +1,31 @@
-import { Component, ElementRef, viewChild, inject } from '@angular/core';
+import { Component, ElementRef, viewChild, inject, ChangeDetectionStrategy } from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
 
 import { TemporalEntityKind } from 'projects/mb/src/lib/data/entities/temporal-entity-kind.enum';
-import { SyntheticDataParameters } from 'projects/mb/src/lib/data/generators/synthetic-data-parameters';
-import { SyntheticDataService } from 'projects/mb/src/lib/data/generators/synthetic-data.service';
 import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service';
+import { SyntheticDataParameters } from 'projects/mb/src/lib/data/generators/synthetic-data-parameters';
+import { SyntheticDataParametersComponent } from 'projects/mb/src/lib/data/generators/synthetic-data-parameters.component';
+import { SyntheticDataService } from 'projects/mb/src/lib/data/generators/synthetic-data.service';
 import { HistoricalData } from 'projects/mb/src/lib/data/historical-data';
-import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { GeneratorsModule } from '../../../../../../mb/src/lib/data/generators/generators.module';
-import { MatButton } from '@angular/material/button';
-
-import { HistoricalDataChartModule } from '../../../../../../mb/src/lib/charts/historical-data-chart/historical-data-chart.module';
+import { HistoricalDataChartModule } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-chart.module';
 
 @Component({
     selector: 'mb-sample-synthetic-data',
     templateUrl: './synthetic-data.component.html',
     styleUrls: ['./synthetic-data.component.scss'],
-    imports: [MatStepper, MatStep, MatStepLabel, MatButtonToggleGroup, MatButtonToggle, GeneratorsModule, MatButton, HistoricalDataChartModule]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatButton,
+      MatButtonToggle,
+      MatButtonToggleGroup,
+      MatStepper,
+      MatStep,
+      MatStepLabel,
+      SyntheticDataParametersComponent,
+      HistoricalDataChartModule
+    ]
 })
 export class SyntheticDataComponent {
   private element = inject(ElementRef);
