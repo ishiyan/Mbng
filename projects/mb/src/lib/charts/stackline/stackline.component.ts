@@ -1,5 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, effect } from '@angular/core';
+import { HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Bar } from '../../data/entities/bar';
@@ -29,15 +29,16 @@ const TIME_AXIS_HEIGHT = 18;
     selector: 'mb-stackiline',
     templateUrl: './stackline.component.html',
     styleUrls: ['./stackline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StacklineComponent implements OnChanges, AfterViewInit {
+  private elementRef = inject(ElementRef);
+
   /** A width of the multiline. */
-  @Input() width: number | string = DEFAULT_WIDTH;
+  readonly width = input<number | string>(DEFAULT_WIDTH);
 
   /** A height of the multiline. */
-  @Input() height: number | string = DEFAULT_HEIGHT;
+  readonly height = input<number | string>(DEFAULT_HEIGHT);
 
   /**
    * Specifies how time axis will be shown. Possible values are the combination of:
@@ -47,7 +48,7 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
    *
    * If no value provided then nothing is visible.
    */
-   @Input() timeAxis: ('top' | 'bottom')[] = [];
+   readonly timeAxis = input<('top' | 'bottom')[]>([]);
 
    /**
     * Specifies how value axis will be shown. Possible values are the combination of:
@@ -58,7 +59,7 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
     *
     * If no value provided then nothing is visible.
     */
-   @Input() valueAxis: ('grid' | 'left' | 'right')[] = [];
+   readonly valueAxis = input<('grid' | 'left' | 'right')[]>([]);
 
    private currentConfiguration: LineConfiguration[] = [];
    private currentDataStacked: (Band[])[] = [];
@@ -72,104 +73,111 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
    private forcedValueMax?: number;
 
   /** Specifies fill, stroke and interpolation. */
-  @Input() set configuration(cfg: LineConfiguration[]) {
-    if (cfg && cfg != null && cfg.length > 0) {
-      const lenCfg = cfg.length;
-      const lenCurrent = this.currentConfiguration.length;
-      if (lenCurrent > 0) {
-        const minLen = Math.min(lenCfg, lenCurrent);
-        for (let i = 0; i < minLen; ++i) {
-          this.currentConfiguration[i] = { ...this.currentConfiguration[i], ...cfg[i] };
-        }
-        if (lenCfg > minLen) {
-          for (let i = minLen; i < lenCfg; ++i) {
-            this.currentConfiguration[i] = { ...cfg[i] };
-          }
-        }
-      } else {
-        this.currentConfiguration = [...cfg];
-      }
-      // this.currentConfiguration = [ ...this.currentConfiguration ];
-    }
-  }
-  get configuration(): LineConfiguration[] {
-    return this.currentConfiguration;
-  }
+  configuration = input.required<LineConfiguration[]>();
 
   /** The minimum value to use. */
-  @Input() set min(value: number | undefined) {
-    this.forcedValueMin = value;
-  }
+  min = input<number>();
 
   /** The maximum value to use. */
-  @Input() set max(value: number | undefined) {
-    this.forcedValueMax = value;
-  }
+  max = input<number>();
 
   /** The start time to use. */
-  @Input() set from(value: Date | undefined) {
-    this.forcedTimeMin = value;
-  }
+  from = input<Date>();
 
   /** The end time to use. */
-  @Input() set till(value: Date | undefined) {
-    this.forcedTimeMax = value;
-  }
+  till = input<Date>();
 
   /** The data arrays to use. */
-  @Input() set data(dat: (Bar[] | Quote[] | Trade[] | Scalar[])[]) {
-    // Assume all data series are sorted on time and has the same time stamps.
-    let minTime = MAX_DATE;
-    let maxTime = MIN_DATE;
-    let maxValue = -Infinity;
-    let empty = true;
+  data = input.required<(Bar[] | Quote[] | Trade[] | Scalar[])[]>();
 
-    const bandArrayCollection: (Band[])[] = [];
-    let maxLen = 0;
-    for (const d of dat) {
-      bandArrayCollection.push([]);
-      const len = d.length;
-      if (len < 1) {
-        continue;
+  constructor() {
+    effect(() => {
+      this.forcedValueMin = this.min();
+    });
+    effect(() => {
+      this.forcedValueMax = this.max();
+    });
+    effect(() => {
+      this.forcedTimeMin = this.from();
+    });
+    effect(() => {
+      this.forcedTimeMax = this.till();
+    });
+    effect(() => {
+      const dat = this.data();
+      // Assume all data series are sorted on time and has the same time stamps.
+      let minTime = MAX_DATE;
+      let maxTime = MIN_DATE;
+      let maxValue = -Infinity;
+      let empty = true;
+
+      const bandArrayCollection: (Band[])[] = [];
+      let maxLen = 0;
+      for (const d of dat) {
+        bandArrayCollection.push([]);
+        const len = d.length;
+        if (len < 1) {
+          continue;
+        }
+        empty = false;
+        if (maxLen < len) {
+          maxLen = len;
+        }
+        if (minTime > d[0].time) {
+          minTime = d[0].time;
+        }
+        if (maxTime < d[len - 1].time) {
+          maxTime = d[len - 1].time;
+        }
       }
-      empty = false;
-      if (maxLen < len) {
-        maxLen = len;
-      }
-      if (minTime > d[0].time) {
-        minTime = d[0].time;
-      }
-      if (maxTime < d[len - 1].time) {
-        maxTime = d[len - 1].time;
-      }
-    }
-    const datLen = dat.length;
-    for (let i = 0; i < maxLen; ++i) {
-      let valPrev = 0;
-      for (let k = 0; k < datLen; ++k) {
-        const bandArray = bandArrayCollection[k];
-        const d = dat[k];
-        if (d.length > i) {
-          let val = lineValueAccessor(d)(d[i]);
-          if (!isNaN(val)) {
-            val += valPrev;
-            bandArray.push( { time: d[i].time, lower: valPrev, upper: val } );
-            valPrev = val;
-            if (maxValue < val) {
-              maxValue = val;
+      const datLen = dat.length;
+      for (let i = 0; i < maxLen; ++i) {
+        let valPrev = 0;
+        for (let k = 0; k < datLen; ++k) {
+          const bandArray = bandArrayCollection[k];
+          const d = dat[k];
+          if (d.length > i) {
+            let val = lineValueAccessor(d)(d[i]);
+            if (!isNaN(val)) {
+              val += valPrev;
+              bandArray.push( { time: d[i].time, lower: valPrev, upper: val } );
+              valPrev = val;
+              if (maxValue < val) {
+                maxValue = val;
+              }
             }
           }
         }
       }
-    }
-    this.currentDataEmpty = empty;
-    this.dataTimeMin = minTime;
-    this.dataTimeMax = maxTime;
-    this.dataValueMax = maxValue;
-    this.currentDataStacked = bandArrayCollection;
+      this.currentDataEmpty = empty;
+      this.dataTimeMin = minTime;
+      this.dataTimeMax = maxTime;
+      this.dataValueMax = maxValue;
+      this.currentDataStacked = bandArrayCollection;
+      this.render();
+    });    
+    effect(() => {
+      const cfg = this.configuration();
+      if (cfg && cfg != null && cfg.length > 0) {
+        const lenCfg = cfg.length;
+        const lenCurrent = this.currentConfiguration.length;
+        if (lenCurrent > 0) {
+          const minLen = Math.min(lenCfg, lenCurrent);
+          for (let i = 0; i < minLen; ++i) {
+            this.currentConfiguration[i] = { ...this.currentConfiguration[i], ...cfg[i] };
+          }
+          if (lenCfg > minLen) {
+            for (let i = minLen; i < lenCfg; ++i) {
+              this.currentConfiguration[i] = { ...cfg[i] };
+            }
+          }
+        } else {
+          this.currentConfiguration = [...cfg];
+        }
+      }
+      this.render();
+    });
   }
-
-  constructor(private elementRef: ElementRef) { }
 
   ngAfterViewInit() {
     setTimeout(() => this.render(), 0);
@@ -190,11 +198,11 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
     }
     const cfg = this.currentConfiguration;
 
-    const hasTimeAxisTop = this.timeAxis.includes('top');
-    const hasTimeAxisBottom = this.timeAxis.includes('bottom');
-    const hasValueAxisLeft = this.valueAxis.includes('left');
-    const hasValueAxisRight = this.valueAxis.includes('right');
-    const hasValueGrid = this.valueAxis.includes('grid');
+    const hasTimeAxisTop = this.timeAxis().includes('top');
+    const hasTimeAxisBottom = this.timeAxis().includes('bottom');
+    const hasValueAxisLeft = this.valueAxis().includes('left');
+    const hasValueAxisRight = this.valueAxis().includes('right');
+    const hasValueGrid = this.valueAxis().includes('grid');
 
     const marginLeft = (hasValueAxisLeft || hasValueGrid) ? VALUE_AXIS_WIDTH :
       ((hasTimeAxisTop || hasTimeAxisBottom) ? VALUE_AXIS_WIDTH / 3 : 0);
@@ -205,7 +213,7 @@ export class StacklineComponent implements OnChanges, AfterViewInit {
     const marginBottom = hasTimeAxisBottom ? TIME_AXIS_HEIGHT :
       ((hasValueAxisLeft || hasValueAxisRight || hasValueGrid) ? TIME_AXIS_HEIGHT / 3 : 0);
 
-    const computed = computeDimensions(this.elementRef, this.width, this.height, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    const computed = computeDimensions(this.elementRef, this.width(), this.height(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
     const w = computed[0];
     const h = computed[1];
 

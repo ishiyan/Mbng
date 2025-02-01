@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 
-import { LinearChartModule } from 'mb';
+import { LinearChartComponent } from 'mb';
 
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
 import { ScalarSeries } from '../../../shared/data/scalar-series/scalar-series.interface';
@@ -22,7 +22,7 @@ import { QuoteSeriesSelectComponent } from '../../../shared/data/quote-series/qu
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       MatButton,
-      LinearChartModule,
+      LinearChartComponent,
       SeriesSelectComponent,
       BarSeriesSelectComponent,
       ScalarSeriesSelectComponent,

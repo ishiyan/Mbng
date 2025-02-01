@@ -227,7 +227,7 @@ export * from './lib/charts/entities/band';
 export * from './lib/charts/entities/heatmap';
 export * from './lib/charts/frequency-response-chart/frequency-response-chart.component';
 export * from './lib/charts/linear-chart/linear-chart.component';
-export * from './lib/charts/linear-chart/linear-chart.module';
+
 export * from './lib/charts/ohlcv-chart/template/template';
 export * from './lib/charts/ohlcv-chart/ohlcv-chart.component';
 export * from './lib/charts/ohlcv-chart/ohlcv-chart.module';
@@ -243,10 +243,12 @@ export * from './lib/charts/ohlcv-chart/selector/line-style.component';
 export * from './lib/charts/ohlcv-chart/selector/line-style-dialog.component';
 export * from './lib/charts/ohlcv-chart/selector/line-style-selector.component';
 export * from './lib/charts/ohlcv-chart/selector/ohlcv-chart-selector.module';
+
 export * from './lib/charts/historical-data-chart/historical-data-chart.component';
 export * from './lib/charts/historical-data-chart/historical-data-table.component';
 export * from './lib/charts/historical-data-chart/historical-data-download.component';
 export * from './lib/charts/historical-data-chart/historical-data-chart.module';
+
 export * from './lib/charts/sparkline/sparkline-configuration.interface';
 export * from './lib/charts/sparkline/sparkline.component';
 

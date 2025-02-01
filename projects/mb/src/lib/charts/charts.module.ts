@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 //import { FrequencyResponseChartModule } from './frequency-response-chart/frequency-response-chart.module';
 import { HistoricalDataChartModule } from './historical-data-chart/historical-data-chart.module';
-import { LinearChartModule } from './linear-chart/linear-chart.module';
+//import { LinearChartModule } from './linear-chart/linear-chart.module';
 import { OhlcvChartModule } from './ohlcv-chart/ohlcv-chart.module';
 
 
@@ -20,13 +20,13 @@ import { OhlcvChartModule } from './ohlcv-chart/ohlcv-chart.module';
     CommonModule,
     //FrequencyResponseChartModule,
     HistoricalDataChartModule,
-    LinearChartModule,
+    //LinearChartModule,
     OhlcvChartModule
 ],
     exports: [
     //FrequencyResponseChartModule,
     HistoricalDataChartModule,
-    LinearChartModule,
+    //LinearChartModule,
     OhlcvChartModule
 ],
     declarations: [

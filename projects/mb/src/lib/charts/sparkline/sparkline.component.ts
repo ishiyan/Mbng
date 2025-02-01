@@ -1,5 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, effect } from '@angular/core';
+import { HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Bar } from '../../data/entities/bar';
@@ -17,40 +17,39 @@ const defaultHeight = 24;
     selector: 'mb-sparkline',
     templateUrl: './sparkline.component.html',
     styleUrls: ['./sparkline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SparklineComponent implements OnChanges, AfterViewInit {
+  private elementRef = inject(ElementRef);
+
   /** A width of the sparkline. */
-  @Input() width: number | string = defaultWidth;
+  readonly width = input<number | string>(defaultWidth);
 
   /** A height of the sparkline. */
-  @Input() height: number | string = defaultHeight;
+  readonly height = input<number | string>(defaultHeight);
 
   private currentConfiguration: SparklineConfiguration = {
     fillColor: 'steelblue', strokeColor: undefined, strokeWidth: 1, interpolation: 'linear'
   };
-  private currentData!: Bar[] | Quote[] | Trade[] | Scalar[];
+  private currentData?: Bar[] | Quote[] | Trade[] | Scalar[];
 
   /** Specifies fill, stroke and interpolation. */
-  @Input() set configuration(cfg: SparklineConfiguration) {
-    if (cfg && cfg != null) {
-      this.currentConfiguration = { ...this.currentConfiguration, ...cfg };
-    }
-  }
-  get configuration(): SparklineConfiguration {
-    return this.currentConfiguration;
-  }
+  configuration = input.required<SparklineConfiguration>();
 
   /** The data array to use. */
-  @Input() set data(dat: Bar[] | Quote[] | Trade[] | Scalar[]) {
-    this.currentData = dat;
-  }
-  get data(): Bar[] | Quote[] | Trade[] | Scalar[] {
-    return this.currentData;
-  }
+  data = input.required<Bar[] | Quote[] | Trade[] | Scalar[]>();
 
-  constructor(private elementRef: ElementRef) { }
+  constructor() {
+    effect(() => {      
+      const cfg = this.configuration();
+      this.currentConfiguration = { ...this.currentConfiguration, ...cfg };
+      this.render();
+    });
+    effect(() => {
+      this.currentData = this.data();
+      this.render();
+    });
+  }
 
   ngAfterViewInit() {
     setTimeout(() => this.render(), 0);
@@ -70,7 +69,7 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
       return;
     }
     const cfg = this.currentConfiguration;
-    const computed = computeDimensions(this.elementRef, this.width, this.height, defaultWidth, defaultHeight);
+    const computed = computeDimensions(this.elementRef, this.width(), this.height(), defaultWidth, defaultHeight);
     const w = computed[0];
     const h = computed[1];
 

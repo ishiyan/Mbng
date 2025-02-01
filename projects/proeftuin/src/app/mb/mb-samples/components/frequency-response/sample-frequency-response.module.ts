@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-//import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
-
 import { SampleFrequencyResponse1Component } from './sample-1/sample-frequency-response-1.component';
 
 import { SampleFrequencyResponseRoutingModule } from './sample-frequency-response-routing.module';
@@ -15,7 +13,6 @@ import { SampleFrequencyResponseRoutingModule } from './sample-frequency-respons
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    //ChartsModule,
     SampleFrequencyResponseRoutingModule,
     SampleFrequencyResponse1Component
 ]

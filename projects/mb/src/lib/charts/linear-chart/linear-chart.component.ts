@@ -1,21 +1,20 @@
-import { Component, Input, ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, HostListener, AfterViewInit, input, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import * as d3 from 'd3';
 
-import { primitives } from '../d3-primitives';
-import { Downloader } from '../downloader';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
 import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
-import { NgIf } from '@angular/common';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatMiniFabButton } from '@angular/material/button';
+import { primitives } from '../d3-primitives';
+import { Downloader } from '../downloader';
 
 const barViewCandlesticks = 0;
 const barViewBars = 1;
@@ -54,8 +53,18 @@ const textAfterSvg = `
     selector: 'mb-linear-chart',
     templateUrl: './linear-chart.component.html',
     styleUrls: ['./linear-chart.component.scss'],
-    encapsulation: ViewEncapsulation.Emulated,
-    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatButtonToggleGroup, MatButtonToggle, MatIcon, MatSlideToggle, FormsModule, MatMiniFabButton]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatIcon,
+      MatMiniFabButton,
+      MatButtonToggle,
+      MatButtonToggleGroup,
+      MatSlideToggle,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle,
+    ]
 })
 export class LinearChartComponent implements AfterViewInit {
   private random = Math.random().toString(36).substring(2);
@@ -63,37 +72,17 @@ export class LinearChartComponent implements AfterViewInit {
   protected widthContainerId = 'linearchart-width-' + this.random;
   //@ViewChild('container', { static: true }) container!: ElementRef;
   /** If chart settings panel is visible. */
-  @Input() settingsPanelVisible = true;
+  readonly settingsPanelVisible = input(true);
   /** If *Save SVG* button is visible. */
-  @Input() saveSvgVisible = true;
+  readonly saveSvgVisible = input(true);
   /** Chart title. */
-  @Input() title = '';
+  readonly title = input('');
   /** The width of the chart as a fraction of the window width. */
-  @Input() widthFraction = 1;
+  readonly widthFraction = input(1);
   /** The height of the chart as a fraction of the chart width. */
-  @Input() heightFraction = 0.6180340;
-  @Input() set dataSeries(series: Bar[] | Quote[] | Trade[] | Scalar[]) {
-    if (series) {
-      if ((series as Bar[])[0].close !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Bar;
-      } else if ((series as Scalar[])[0].value !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Scalar;
-      } else if ((series as Trade[])[0].price !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Trade;
-      } else if ((series as Quote[])[0].askPrice !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Quote;
-      } else {
-        this.temporalEntityKind = undefined;
-      }
-
-      this.data = series;
-    } else {
-      this.temporalEntityKind = undefined;
-      this.data = [];
-    }
-
-    this.render();
-  }
+  readonly heightFraction = input(0.6180340);
+  
+  dataSeries = input<Bar[] | Quote[] | Trade[] | Scalar[]>();
 
   private temporalEntityKind: TemporalEntityKind | undefined;
   get isBar(): boolean {
@@ -178,7 +167,34 @@ export class LinearChartComponent implements AfterViewInit {
   private data: any[] = [];
   private renderNavAxis = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor() {
+    const iconRegistry = inject(MatIconRegistry);
+    const sanitizer = inject(DomSanitizer);
+
+    effect(() => {
+      const series = this.dataSeries();
+      if (series) {
+        if ((series as Bar[])[0].close !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Bar;
+        } else if ((series as Scalar[])[0].value !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Scalar;
+        } else if ((series as Trade[])[0].price !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Trade;
+        } else if ((series as Quote[])[0].askPrice !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Quote;
+        } else {
+          this.temporalEntityKind = undefined;
+        }
+  
+        this.data = series;
+      } else {
+        this.temporalEntityKind = undefined;
+        this.data = [];
+      }
+  
+      this.render();  
+    });
+    
     iconRegistry.addSvgIcon('mb-candlesticks',
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
@@ -204,8 +220,8 @@ export class LinearChartComponent implements AfterViewInit {
     }
 
     const e = d3.select('#' + this.widthContainerId).node() as Element;
-    const w = this.widthFraction * e.getBoundingClientRect().width;
-    const h = this.heightFraction * w;
+    const w = this.widthFraction() * e.getBoundingClientRect().width;
+    const h = this.heightFraction() * w;
 
     const margin = { top: 10, bottom: 20, right: 80, left: 35 };
     const marginNav = { top: h - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
