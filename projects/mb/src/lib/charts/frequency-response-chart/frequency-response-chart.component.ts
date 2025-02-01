@@ -1,4 +1,4 @@
-import { Component, Input, HostListener, AfterViewInit, ElementRef, input, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostListener, AfterViewInit, ElementRef, input, inject, ChangeDetectionStrategy, effect } from '@angular/core';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { MatMiniFabButton } from '@angular/material/button';
@@ -101,83 +101,14 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
 
   private widthValue: number | string = defaultWidth;
   /** A width of the chart in pixels or as percentage. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set width(value: number | string) {
-    this.widthValue = value;
-    this.render();
-  }
+  width = input<number | string>();
 
   private heightValue: number | string = defaultHeight;
   /** A height of the chart in pixels or as percentage. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set height(value: number | string) {
-    this.heightValue = value;
-    this.render();
-  }
+  height = input<number | string>();
 
   /** The array of frequency responses to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set data(dat: FrequencyResponseResult[]) {
-    let empty = true;
-
-    for (const d of dat) {
-      const len = d.frequencies.length;
-      if (len < 1) {
-        continue;
-      }
-
-      if (empty) {
-        // X-axis range is always the same, [0, 1], since the frequency is normalized.
-        // So we do this only the first time.
-        // Also, we know that the frequency data is sorted in ascending order.
-        empty = false;
-
-        this.xComponents[xFrequencies] = {
-          data: d.frequencies,
-          min: 0,
-          max: 1
-        };
-
-        const a = d.frequencies;
-        const r = Array.from(a).reverse();
-        for (let i = 0; i < r.length; ++i) {
-          r[i] = 2 / r[i];
-        }
-
-        this.xComponents[xPeriods] = {
-          data: r,
-          min: 2,
-          max: Math.ceil(r[r.length - 1])
-        };
-
-        for (let i = 0; i < yModeMax; ++i) {
-          this.yComponents[xFrequencies][i] = {lines: [], min: Infinity, max: -Infinity};
-          this.yComponents[xPeriods][i] = {lines: [], min: Infinity, max: -Infinity};
-        }
-      }
-
-      const yData = [d.powerDecibel, d.powerPercent, d.amplitudeDecibel, d.amplitudePercent, d.phaseDegrees, d.phaseDegreesUnwrapped];
-
-      for (let i = yPowerDecibels; i < yModeMax; ++i) {
-        const yd = yData[i];
-
-        const cf = this.yComponents[xFrequencies][i];
-        cf.lines.push({ label: d.label, line: yd.data, hover: false });
-        cf.min = Math.min(cf.min, yd.min);
-        cf.max = Math.max(cf.max, yd.max);
-
-        const cp = this.yComponents[xPeriods][i];
-        cp.lines.push({ label: d.label, line: Array.from(yd.data).reverse(), hover: false });
-        cp.min = cf.min;
-        cp.max = cf.max;
-      }
-    }
-
-    this.render();
-  }
+  data = input.required<FrequencyResponseResult[]>();
 
   /** Current x axis is xComponents[xMode] */
   private xComponents = new Array<xComponentType>(xModeMax);
@@ -185,18 +116,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   private yComponents = [new Array<yComponentType>(yModeMax), new Array<yComponentType>(yModeMax)];
 
   /** The x mode. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set xmode(value: 'frequency' | 'period') {
-    switch (value) {
-      case 'frequency':
-        this.xModeValue = xFrequencies;
-        break;
-      case 'period':
-        this.xModeValue = xPeriods;
-        break;
-    }
-  }
+  xmode = input<'frequency' | 'period'>();
   private xMode: xModeType = xFrequencies;
   protected set xModeValue(value: xModeType) {
     if (this.xMode !== value) {
@@ -215,30 +135,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
   }
 
   /** The y mode. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set ymode(value: 'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg' | 'phaseDegUnwrapped') {
-    switch (value) {
-      case 'powerDb':
-        this.yModeValue = yPowerDecibels;
-        break;
-      case 'powerPct':
-        this.yModeValue = yPowerPercents;
-        break;
-      case 'amplitudeDb':
-        this.yModeValue = yAmplitudeDecibels;
-        break;
-      case 'amplitudePct':
-        this.yModeValue = yAmplitudePercents;
-        break;
-      case 'phaseDeg':
-        this.yModeValue = yPhaseDegrees;
-        break;
-      case 'phaseDegUnwrapped':
-        this.yModeValue = yPhaseDegreesUnwrapped;
-        break;
-    }
-  }
+  ymode = input<'powerDb' | 'powerPct' | 'amplitudeDb' | 'amplitudePct' | 'phaseDeg' | 'phaseDegUnwrapped'>();
   private yMode: yModeType = yPowerDecibels;
   protected set yModeValue(value: yModeType) {
     if (this.yMode !== value) {
@@ -270,88 +167,186 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
 
   private subFigureLetter = '';
   /** The sub-figure letter of this chart. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set subfig(value: string) {
-    this.subFigureLetter = value;
-  }
+  subfig = input<string>();
 
   private forcedFrequencyMin?: number;
   private forcedFrequencyMax?: number;
   /** The minimum x frequency to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set minFrequency(value: number | undefined) {
-    this.forcedFrequencyMin = value;
-  }
+  minFrequency = input<number>();
   /** The maximum x frequency to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set maxFrequency(value: number | undefined) {
-    this.forcedFrequencyMax = value;
-  }
+  maxFrequency = input<number>();
 
   private forcedPeriodMin?: number;
   private forcedPeriodMax?: number;
   /** The minimum x period to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set minPeriod(value: number | undefined) {
-    this.forcedPeriodMin = value;
-  }
+  minPeriod = input<number>();
   /** The maximum x period to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set maxPeriod(value: number | undefined) {
-    this.forcedPeriodMax = value;
-  }
+  maxPeriod = input<number>();
 
   private forcedDbMin?: number;
   private forcedDbMax?: number;
   /** The minimum y decibels to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set minDb(value: number | undefined) {
-    this.forcedDbMin = value;
-  }
+  minDb = input<number>();
   /** The maximum y decibels to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set maxDb(value: number | undefined) {
-    this.forcedDbMax = value;
-  }
+  maxDb = input<number>();
 
   private forcedPctMin?: number;
   private forcedPctMax?: number;
   /** The minimum y percentages to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set minPct(value: number | undefined) {
-    this.forcedPctMin = value;
-  }
+  minPct = input<number>();
   /** The maximum y percentages to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set maxPct(value: number | undefined) {
-    this.forcedPctMax = value;
-  }
+  maxPct = input<number>();
 
   private forcedDegMin?: number;
   private forcedDegMax?: number;
   /** The minimum y phase degrees to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set minDeg(value: number | undefined) {
-    this.forcedDegMin = value;
-  }
+  minDeg = input<number>();
   /** The maximum y phase degrees to use. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set maxDeg(value: number | undefined) {
-    this.forcedDegMax = value;
-  }
+  maxDeg = input<number>();
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      this.widthValue = this.width() ?? defaultWidth;
+      this.render();
+    });
+    effect(() => {
+      this.heightValue = this.height() ?? defaultHeight;
+      this.render();
+    });
+    effect(() => {
+      const dat = this.data();
+      let empty = true;
+
+      for (const d of dat) {
+        const len = d.frequencies.length;
+        if (len < 1) {
+          continue;
+        }
+  
+        if (empty) {
+          // X-axis range is always the same, [0, 1], since the frequency is normalized.
+          // So we do this only the first time.
+          // Also, we know that the frequency data is sorted in ascending order.
+          empty = false;
+  
+          this.xComponents[xFrequencies] = {
+            data: d.frequencies,
+            min: 0,
+            max: 1
+          };
+  
+          const a = d.frequencies;
+          const r = Array.from(a).reverse();
+          for (let i = 0; i < r.length; ++i) {
+            r[i] = 2 / r[i];
+          }
+  
+          this.xComponents[xPeriods] = {
+            data: r,
+            min: 2,
+            max: Math.ceil(r[r.length - 1])
+          };
+  
+          for (let i = 0; i < yModeMax; ++i) {
+            this.yComponents[xFrequencies][i] = {lines: [], min: Infinity, max: -Infinity};
+            this.yComponents[xPeriods][i] = {lines: [], min: Infinity, max: -Infinity};
+          }
+        }
+  
+        const yData = [d.powerDecibel, d.powerPercent, d.amplitudeDecibel, d.amplitudePercent, d.phaseDegrees, d.phaseDegreesUnwrapped];
+  
+        for (let i = yPowerDecibels; i < yModeMax; ++i) {
+          const yd = yData[i];
+  
+          const cf = this.yComponents[xFrequencies][i];
+          cf.lines.push({ label: d.label, line: yd.data, hover: false });
+          cf.min = Math.min(cf.min, yd.min);
+          cf.max = Math.max(cf.max, yd.max);
+  
+          const cp = this.yComponents[xPeriods][i];
+          cp.lines.push({ label: d.label, line: Array.from(yd.data).reverse(), hover: false });
+          cp.min = cf.min;
+          cp.max = cf.max;
+        }
+      }
+  
+      this.render();
+     });
+    effect(() => {
+      const value = this.xmode();
+      if (value === undefined) {
+        return;
+      }
+      switch (value) {
+        case 'frequency':
+          this.xModeValue = xFrequencies;
+          break;
+        case 'period':
+          this.xModeValue = xPeriods;
+          break;
+      }
+    });
+    effect(() => {
+      const value = this.ymode();
+      if (value === undefined) {
+        return;
+      }
+      switch (value) {
+        case 'powerDb':
+          this.yModeValue = yPowerDecibels;
+          break;
+        case 'powerPct':
+          this.yModeValue = yPowerPercents;
+          break;
+        case 'amplitudeDb':
+          this.yModeValue = yAmplitudeDecibels;
+          break;
+        case 'amplitudePct':
+          this.yModeValue = yAmplitudePercents;
+          break;
+        case 'phaseDeg':
+          this.yModeValue = yPhaseDegrees;
+          break;
+        case 'phaseDegUnwrapped':
+          this.yModeValue = yPhaseDegreesUnwrapped;
+          break;
+      }  
+    });
+    effect(() => {
+      this.subFigureLetter = this.subfig() ?? '';
+    });
+    effect(() => {
+      this.forcedFrequencyMin = this.minFrequency();
+    });
+    effect(() => {
+      this.forcedFrequencyMax = this.maxFrequency();
+    });
+    effect(() => {
+      this.forcedPeriodMin = this.minPeriod();
+    });
+    effect(() => {
+      this.forcedPeriodMax = this.maxPeriod();
+    });
+    effect(() => {
+      this.forcedDbMin = this.minDb();
+    });
+    effect(() => {
+      this.forcedDbMax = this.maxDb();
+    });
+    effect(() => {
+      this.forcedPctMin = this.minPct();
+    });
+    effect(() => {
+      this.forcedPctMax = this.maxPct();
+    });
+    effect(() => {
+      this.forcedDegMin = this.minDeg();
+    });
+    effect(() => {
+      this.forcedDegMax = this.maxDeg();
+    });
+
+  }
 
   private afterViewInit = false;
   ngAfterViewInit() {
