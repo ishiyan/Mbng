@@ -1,26 +1,29 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, inject, input } from '@angular/core';
 
 @Component({
     selector: 'mb-dash-svg',
     templateUrl: './dash-svg.component.html',
-    styleUrls: ['./dash-svg.component.scss']
+    styleUrls: ['./dash-svg.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashSvgComponent implements OnInit {
-  private val = '';
-  @Input() set value(v: string) {
-    if (this.val !== v) {
-      this.val = v;
-      this.inlineSvgContent(v);
-    }
-  }
-  get value(): string {
-    return this.val;
-  }
+  private elementRef = inject(ElementRef);
 
-  constructor(private elementRef: ElementRef) { }
+  private val = '';
+  value = input.required<string>();
+
+  constructor() {
+    effect(() => {
+      const v = this.value();
+      if (this.val !== v) {
+        this.val = v;
+        this.inlineSvgContent(v);
+      }
+    });
+  }
 
   ngOnInit() {
-    this.inlineSvgContent(this.value);
+    this.inlineSvgContent(this.val);
   }
 
   private inlineSvgContent(dash: string) {

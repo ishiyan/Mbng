@@ -1,28 +1,27 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input } from '@angular/core';
 
 import { LineStyle } from './line-style';
 
 @Component({
     selector: 'mb-line-svg',
     templateUrl: './line-svg.component.html',
-    styleUrls: ['./line-svg.component.scss']
+    styleUrls: ['./line-svg.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineSvgComponent implements OnInit {
+export class LineSvgComponent {
+  private elementRef = inject(ElementRef);
+
   private val = new LineStyle();
-  @Input() set value(v: LineStyle) {
-    if (this.val !== v) {
-      this.val = v;
-      this.inlineSvgContent(v);
-    }
-  }
-  get value(): LineStyle {
-    return this.val;
-  }
+  value = input.required<LineStyle>();
 
-  constructor(private elementRef: ElementRef) { }
-
-  ngOnInit() {
-    this.inlineSvgContent(this.value);
+  constructor() {
+    effect(() => {
+      const v = this.value();
+      if (this.val !== v) {
+        this.val = v;
+        this.inlineSvgContent(v);
+      }
+    });
   }
 
   private inlineSvgContent(v: LineStyle) {

@@ -1,26 +1,29 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, effect, inject, input } from '@angular/core';
 
 @Component({
     selector: 'mb-width-svg',
     templateUrl: './width-svg.component.html',
-    styleUrls: ['./width-svg.component.scss']
+    styleUrls: ['./width-svg.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WidthSvgComponent implements OnInit {
-  private val = 1;
-  @Input() set value(v: number) {
-    if (this.val !== v) {
-      this.val = v;
-      this.inlineSvgContent(v);
-    }
-  }
-  get value(): number {
-    return this.val;
-  }
+  private elementRef = inject(ElementRef);
 
-  constructor(private elementRef: ElementRef) { }
+  private val = 1;
+  value = input.required<number>();
+
+  constructor() {
+    effect(() => {
+      const v = this.value();
+      if (this.val !== v) {
+        this.val = v;
+        this.inlineSvgContent(v);
+      }
+    });
+  }
 
   ngOnInit() {
-    this.inlineSvgContent(this.value);
+    this.inlineSvgContent(this.val);
   }
 
   private inlineSvgContent(width: number) {

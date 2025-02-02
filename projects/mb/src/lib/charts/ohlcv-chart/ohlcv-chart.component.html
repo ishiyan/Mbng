@@ -1,30 +1,31 @@
 <div id="{{widthContainerId}}" class="container"></div>
 
-<mat-expansion-panel expanded="false" *ngIf="viewMenu">
-  <mat-expansion-panel-header>
-    <mat-panel-title><mat-icon>tune</mat-icon>&nbsp;{{chartTitle}}</mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
-    (change)="ohlcvViewType = group1.value">
-    <mat-button-toggle [value]="ohlcvViewCandlesticks">
-      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="ohlcvViewBars">
-      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
-    <mat-icon>leaderboard</mat-icon>
-  </mat-slide-toggle>
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
-    <mat-icon>add</mat-icon>
-  </mat-slide-toggle>
-
-  <button mat-mini-fab color="accent" (click)="downloadSvg()" class="download" *ngIf="viewDownloadSvg">
-    <mat-icon>download</mat-icon>
-  </button>  
-</mat-expansion-panel>
+@if (viewMenu) {
+  <mat-expansion-panel expanded="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon>&nbsp;{{chartTitle}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
+      (change)="ohlcvViewType = group1.value">
+      <mat-button-toggle [value]="ohlcvViewCandlesticks">
+        <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ohlcvViewBars">
+        <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
+      <mat-icon>leaderboard</mat-icon>
+    </mat-slide-toggle>
+    <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
+      <mat-icon>add</mat-icon>
+    </mat-slide-toggle>
+    @if (viewDownloadSvg) {
+      <button mat-mini-fab color="accent" (click)="downloadSvg()" class="download">
+        <mat-icon>download</mat-icon>
+      </button>
+    }
+  </mat-expansion-panel>
+}
 
 <div id="{{svgContainerId}}"></div>

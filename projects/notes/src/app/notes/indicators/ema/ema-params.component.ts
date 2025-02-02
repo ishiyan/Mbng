@@ -3,7 +3,8 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams, ExponentialMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
+import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams, ExponentialMovingAverageParamsComponent } from 'mb';
+import { LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 import { Ema } from './ema.interface';
 
@@ -17,7 +18,7 @@ import { Ema } from './ema.interface';
       MatIconButton,
       MatIcon,
       ExponentialMovingAverageParamsComponent,
-      OhlcvChartSelectorModule,
+      LineStyleSelectorComponent
     ]
 })
 export class EmaParamsComponent {

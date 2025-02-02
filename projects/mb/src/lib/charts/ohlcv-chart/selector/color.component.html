@@ -1,6 +1,8 @@
 <span>
-  <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
+  @if (currentLabel.length > 0) {
+    <mat-label>{{currentLabel}}</mat-label>
+  }
   <br/>
   <input type="text" readonly mbColorPicker [colorPicker]="color" [style.background]="color"
-  (colorChanged)="color=$event" (colorSelected)="color=$event" />    
-</span>      
+    (colorChanged)="color=$event" (colorSelected)="color=$event" />
+  </span>

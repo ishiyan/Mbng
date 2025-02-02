@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams, TripleExponentialMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
+import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams, TripleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 import { Tema } from './tema.interface';
 
@@ -17,7 +17,7 @@ import { Tema } from './tema.interface';
       MatIconButton,
       MatIcon,
       TripleExponentialMovingAverageParamsComponent,
-      OhlcvChartSelectorModule,
+      LineStyleSelectorComponent
     ]
 })
 export class TemaParamsComponent {

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
-import { WidthSvgComponent } from './width-svg.component';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+
+import { WidthSvgComponent } from './width-svg.component';
 
 interface Elem {
   value: number;
@@ -14,9 +14,17 @@ interface Elem {
     selector: 'mb-line-width',
     templateUrl: './line-width.component.html',
     styleUrls: ['./line-width.component.scss'],
-    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, WidthSvgComponent, NgFor, MatOption]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatFormField,
+      MatLabel,
+      MatSelect,
+      MatSelectTrigger,
+      MatOption,
+      WidthSvgComponent
+    ]
 })
-export class LineWidthComponent implements OnInit {
+export class LineWidthComponent {
   protected elems: Elem[] = [
     { value: 0.1, selected: false },
     { value: 0.3, selected: false },
@@ -33,44 +41,55 @@ export class LineWidthComponent implements OnInit {
   protected elemSelected = this.elems[3].value;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<number> = new EventEmitter<number>();
+  readonly selectionChange = output<number>();
 
+  currentLabel = 'Thickness';
+  
   /** A label to display above the selector. */
-  @Input() label = 'Thickness';
+  label = input<string>();
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value);
   }
 
   /** Specifies an initial value. */
-  @Input() set initial(value: number) {
-    switch (value) {
-      case 0.1:
-      case 0.3:
-      case 0.5:
-      case 1:
-      case 1.5:
-      case 2:
-      case 2.5:
-      case 3:
-      case 3.5:
-      case 4:
-        break;
-      default:
-        return;
-    }
+  initial = input.required<number>();
 
-    for (const elem of this.elems) {
-      elem.selected = false;
-      if (elem.value === value) {
-        elem.selected = true;
+  constructor() {
+    effect(() => {
+      const lab = this.label();
+      if (lab && this.currentLabel !== lab) {
+        this.currentLabel = lab;
       }
-    }
-
-    this.elemSelected = value;
-  }
-
-  ngOnInit() {
-    this.selectionChange.emit(this.elemSelected);
+    });
+    effect(() => {
+      const value = this.initial();
+      if (value) {
+        switch (value) {
+          case 0.1:
+          case 0.3:
+          case 0.5:
+          case 1:
+          case 1.5:
+          case 2:
+          case 2.5:
+          case 3:
+          case 3.5:
+          case 4:
+            break;
+          default:
+            return;
+        }
+    
+        for (const elem of this.elems) {
+          elem.selected = false;
+          if (elem.value === value) {
+            elem.selected = true;
+          }
+        }
+    
+        this.elemSelected = value;
+      }
+    });
   }
 }

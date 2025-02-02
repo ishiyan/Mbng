@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
-import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams, DoubleExponentialMovingAverageParamsComponent, OhlcvChartSelectorModule } from 'mb';
+import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams, DoubleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { Dema } from './dema.interface';
@@ -18,7 +18,7 @@ import { Dema } from './dema.interface';
       MatIconButton,
       MatIcon,
       DoubleExponentialMovingAverageParamsComponent,
-      OhlcvChartSelectorModule
+      LineStyleSelectorComponent
     ]
 })
 export class DemaParamsComponent {

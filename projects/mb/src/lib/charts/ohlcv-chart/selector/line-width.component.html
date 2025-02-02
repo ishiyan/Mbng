@@ -1,11 +1,15 @@
 <mat-form-field style="width:7.5em" appearance="fill" floatLabel="always">
-  <mat-label *ngIf="label.length > 0">{{label}}</mat-label>
+  @if (currentLabel.length > 0) {
+    <mat-label>{{currentLabel}}</mat-label>
+  }
   <mat-select [(value)]="elemSelected" (selectionChange)="selectionChanged($event);">
     <mat-select-trigger>
       <mb-width-svg [value]="elemSelected"></mb-width-svg>
     </mat-select-trigger>
-    <mat-option *ngFor="let elem of elems" [value]="elem.value" selected="elem.selected">
-      <mb-width-svg [value]="elem.value"></mb-width-svg>
-    </mat-option>
+    @for (elem of elems; track elem.value) {
+      <mat-option [value]="elem.value" selected="elem.selected">
+        <mb-width-svg [value]="elem.value"></mb-width-svg>
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

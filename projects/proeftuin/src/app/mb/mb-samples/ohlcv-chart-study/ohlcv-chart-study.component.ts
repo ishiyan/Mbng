@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 
 import { Configuration } from 'projects/mb/src/lib/charts/ohlcv-chart/template/configuration';
+import { OhlcvChartComponent } from 'projects/mb/src/lib/charts/ohlcv-chart/ohlcv-chart.component';
+
 import { TestData } from './test-data/test-data';
-import { MatButton } from '@angular/material/button';
-import { OhlcvChartModule } from '../../../../../../mb/src/lib/charts/ohlcv-chart/ohlcv-chart.module';
 
 @Component({
     selector: 'mb-sample-ohlcv-chart-study',
     templateUrl: './ohlcv-chart-study.component.html',
     styleUrls: ['./ohlcv-chart-study.component.scss'],
-    imports: [MatButton, OhlcvChartModule]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatButton, OhlcvChartComponent]
 })
 export class OhlcvChartStudyComponent {
   public showPortal = false;

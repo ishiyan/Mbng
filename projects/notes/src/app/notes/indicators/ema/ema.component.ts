@@ -7,7 +7,7 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 
-import { Bar, generateStep, OhlcvChartModule, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
+import { Bar, generateStep, OhlcvChartComponent, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
 import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
@@ -103,7 +103,7 @@ const getConfigTemplate = (): Configuration => ({
       MatLabel,
       MatInput,
       BarSeriesSelectComponent,
-      OhlcvChartModule,
+      OhlcvChartComponent,
       SwatchesSelectComponent,
       EmaListComponent,
       KatexInlineComponent,

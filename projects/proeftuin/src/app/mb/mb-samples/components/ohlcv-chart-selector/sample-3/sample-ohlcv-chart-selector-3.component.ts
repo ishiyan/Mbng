@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { OhlcvChartSelectorModule } from '../../../../../../../../mb/src/lib/charts/ohlcv-chart/selector/ohlcv-chart-selector.module';
+
+import { LineInterpolationComponent } from 'projects/mb/src/lib/charts/ohlcv-chart/selector/line-interpolation.component';
 
 @Component({
     selector: 'app-sample-ohlcv-chart-selector-3',
     templateUrl: './sample-ohlcv-chart-selector-3.component.html',
     styleUrls: ['./sample-ohlcv-chart-selector-3.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, OhlcvChartSelectorModule]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, LineInterpolationComponent]
 })
 export class SampleOhlcvChartSelector3Component {
 
+  protected def = 'linear';
   protected initial = 'cardinal';
   protected selected1 = '';
   protected selected2 = '';

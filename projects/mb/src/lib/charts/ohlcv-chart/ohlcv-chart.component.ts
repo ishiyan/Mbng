@@ -1,6 +1,11 @@
-import { Component, Input, HostListener, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnChanges, AfterViewInit, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import * as d3 from 'd3';
 
 import { primitives } from '../d3-primitives';
@@ -11,12 +16,6 @@ import { Heatmap } from '../entities/heatmap'; */
 import * as Template from './template/template';
 import * as Chart from './chart/chart';
 import { Downloader } from '../downloader';
-import { NgIf } from '@angular/common';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatMiniFabButton } from '@angular/material/button';
 
 /** *Ohlcv* view type: *candlesticks*. */
 const ohlcvViewCandlesticks = 0;
@@ -77,7 +76,18 @@ const smoothBrushing = false;
     selector: 'mb-ohlcv-chart',
     templateUrl: './ohlcv-chart.component.html',
     styleUrls: ['./ohlcv-chart.component.scss'],
-    imports: [NgIf, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, MatButtonToggleGroup, MatButtonToggle, MatSlideToggle, FormsModule, MatMiniFabButton]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatIcon,
+      MatMiniFabButton,
+      MatButtonToggle,
+      MatButtonToggleGroup,
+      MatSlideToggle,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle
+    ]
 })
 export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   private random = Math.random().toString(36).substring(2);
@@ -870,20 +880,6 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  @Input()
-  public set configuration(cfg: Template.Configuration) {
-    if (cfg && cfg != null) {
-      this.config = cfg;
-      this.ohlcvView = cfg.ohlcv.candlesticks ? ohlcvViewCandlesticks : ohlcvViewBars;
-      this.renderCrosshair = cfg.crosshair;
-      this.renderVolume = cfg.volumeInPricePane;
-      this.currentSelection = null;
-    } else {
-      this.config = new Template.Configuration();
-    }
-    this.render();
-  }
-
   /** Gets if menu is visible. */
   public get viewMenu(): boolean {
     return this.config ? this.config.menuVisible : false;
@@ -926,7 +922,26 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     return this.config ? this.config.ohlcv.name : '---';
   }
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  configuration = input<Template.Configuration>();
+
+  constructor() {
+    effect(() => {
+      const cfg = this.configuration();
+      if (cfg && cfg != null) {
+        this.config = cfg;
+        this.ohlcvView = cfg.ohlcv.candlesticks ? ohlcvViewCandlesticks : ohlcvViewBars;
+        this.renderCrosshair = cfg.crosshair;
+        this.renderVolume = cfg.volumeInPricePane;
+        this.currentSelection = null;
+      } else {
+        this.config = new Template.Configuration();
+      }
+      this.render();
+    });
+
+    const iconRegistry = inject(MatIconRegistry);
+    const sanitizer = inject(DomSanitizer);
+
     iconRegistry.addSvgIcon('mb-candlesticks',
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
@@ -968,6 +983,9 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     // const w = e.getBoundingClientRect().width;
     const w = e.offsetWidth;
     const cfg = this.config;
+    if (!cfg || !cfg.width) {
+      return;
+    }
     const lh = OhlcvChartComponent.layoutHorizontal(cfg, w);
 
     const container = d3.select('#' + this.svgContainerId);

@@ -1,27 +1,33 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-
-import { LineStyle } from './line-style';
+import { Component, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { LineStyleComponent } from './line-style.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+
+import { LineStyle } from './line-style';
+import { LineStyleComponent } from './line-style.component';
 
 @Component({
     selector: 'mb-line-style-dialog',
     templateUrl: './line-style-dialog.component.html',
     styleUrls: ['./line-style-dialog.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, LineStyleComponent, MatDialogActions, MatButton, MatDialogClose, MatIcon]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      CdkScrollable,
+      MatButton,
+      MatIcon,
+      MatDialogContent,
+      MatDialogActions,
+      MatDialogClose,
+      LineStyleComponent,
+    ]
 })
 export class LineStyleDialogComponent {
-  protected line!: LineStyle;
+  protected data = inject<LineStyle>(MAT_DIALOG_DATA);
+  protected line: LineStyle = this.data;
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<LineStyle> = new EventEmitter<LineStyle>();
-
-  constructor(private dialogRef: MatDialogRef<LineStyleDialogComponent>, @Inject(MAT_DIALOG_DATA) protected data: LineStyle) {
-    this.line = data;
-  }
+  readonly selectionChange = output<LineStyle>();
 
   protected changed(style: LineStyle) {
     this.line = style;

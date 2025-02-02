@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
-import { DashSvgComponent } from './dash-svg.component';
+import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+
+import { DashSvgComponent } from './dash-svg.component';
 
 interface Elem {
   value: string;
@@ -14,9 +14,17 @@ interface Elem {
     selector: 'mb-line-dash',
     templateUrl: './line-dash.component.html',
     styleUrls: ['./line-dash.component.scss'],
-    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, DashSvgComponent, NgFor, MatOption]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatFormField,
+      MatLabel,
+      MatSelect,
+      MatSelectTrigger,
+      MatOption,
+      DashSvgComponent
+    ]
 })
-export class LineDashComponent implements OnInit {
+export class LineDashComponent {
   protected elems: Elem[] = [
     { value: '', selected: true },
     { value: '1,1', selected: false },
@@ -34,49 +42,57 @@ export class LineDashComponent implements OnInit {
   ];
 
   protected elemSelected = this.elems[0].value;
+  protected currentLabel = 'Dash';
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
-
-  /** A label to display above the selector. */
-  @Input() label = 'Dash';
+  readonly selectionChange = output<string>();
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value);
   }
 
+  /** A label to display above the selector. */
+  label = input<string>();
+
   /** Specifies an initial value. */
-  @Input() set initial(value: string) {
-    switch (value) {
-      case '':
-      case '1,1':
-      case '2,2':
-      case '3,3':
-      case '4,4':
-      case '5,5':
-      case '6,6':
-      case '7,7':
-      case '3,1.5':
-      case '4,2':
-      case '5,2.5':
-      case '6,3':
-      case '7,3.5':
-        break;
-      default:
-        return;
-    }
+  initial = input.required<string>();
 
-    for (const elem of this.elems) {
-      elem.selected = false;
-      if (elem.value === value) {
-        elem.selected = true;
+  constructor(){
+    effect(() => {
+      const lab = this.label();
+      if (lab && this.currentLabel !== lab) {
+        this.currentLabel = lab;
       }
-    }
-
-    this.elemSelected = value;
-  }
-
-  ngOnInit() {
-    this.selectionChange.emit(this.elemSelected);
+    });
+    effect(() => {
+      const v = this.initial();
+      switch (v) {
+        case '':
+        case '1,1':
+        case '2,2':
+        case '3,3':
+        case '4,4':
+        case '5,5':
+        case '6,6':
+        case '7,7':
+        case '3,1.5':
+        case '4,2':
+        case '5,2.5':
+        case '6,3':
+        case '7,3.5':
+          break;
+        default:
+          return;
+      }
+  
+      for (const elem of this.elems) {
+        elem.selected = false;
+        if (elem.value === v) {
+          elem.selected = true;
+        }
+      }
+  
+      this.elemSelected = v;
+      });
   }
 }

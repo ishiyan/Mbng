@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 
 interface Elem {
@@ -14,9 +13,10 @@ interface Elem {
     selector: 'mb-line-interpolation',
     templateUrl: './line-interpolation.component.html',
     styleUrls: ['./line-interpolation.component.scss'],
-    imports: [MatFormField, NgIf, MatLabel, MatSelect, NgFor, MatOption]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatFormField, MatLabel, MatSelect, MatOption]
 })
-export class LineInterpolationComponent implements OnInit {
+export class LineInterpolationComponent {
   protected elems: Elem[] = [
     { value: 'linear', option: 'linear', selected: true },
     { value: 'natural', option: 'natural', selected: false },
@@ -29,44 +29,52 @@ export class LineInterpolationComponent implements OnInit {
   ];
 
   protected elemSelected = this.elems[0].value;
+  protected currentLabel = 'Interpolation';
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
-
-  /** A label to display above the selector. */
-  @Input() label = 'Interpolation';
+  readonly selectionChange = output<string>();
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value);
   }
 
+  /** A label to display above the selector. */
+  label = input<string>();
+
   /** Specifies an initial value. */
-  @Input() set initial(value: string) {
-    switch (value) {
-      case 'linear':
-      case 'natural':
-      case 'basis':
-      case 'camullRom':
-      case 'cardinal':
-      case 'step':
-      case 'stepBefore':
-      case 'stepAfter':
-        break;
-      default:
-        return;
-    }
+  initial = input.required<string>();
 
-    for (const elem of this.elems) {
-      elem.selected = false;
-      if (elem.value === value) {
-        elem.selected = true;
+  constructor(){
+    effect(() => {
+      const lab = this.label();
+      if (lab && this.currentLabel !== lab) {
+        this.currentLabel = lab;
       }
-    }
+    });
+    effect(() => {
+      const v = this.initial();
+      switch (v) {
+        case 'linear':
+        case 'natural':
+        case 'basis':
+        case 'camullRom':
+        case 'cardinal':
+        case 'step':
+        case 'stepBefore':
+        case 'stepAfter':
+          break;
+        default:
+          return;
+      }
 
-    this.elemSelected = value;
-  }
+      for (const elem of this.elems) {
+        elem.selected = false;
+        if (elem.value === v) {
+          elem.selected = true;
+        }
+      }
 
-  ngOnInit() {
-    this.selectionChange.emit(this.elemSelected);
+      this.elemSelected = v;
+    });
   }
 }

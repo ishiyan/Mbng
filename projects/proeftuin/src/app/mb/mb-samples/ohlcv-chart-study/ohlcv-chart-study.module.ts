@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { OhlcvChartModule} from 'projects/mb/src/lib/charts/ohlcv-chart/ohlcv-chart.module';
-
 import { OhlcvChartStudyComponent } from './ohlcv-chart-study.component';
 
 @NgModule({
@@ -12,7 +10,6 @@ import { OhlcvChartStudyComponent } from './ohlcv-chart-study.component';
         CommonModule,
         FormsModule,
         MatButtonModule,
-        OhlcvChartModule,
         OhlcvChartStudyComponent
     ]
 })

@@ -5,7 +5,7 @@
       <mat-card-title>Default</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-line-dash (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-line-dash>
+      <mb-line-dash [initial]="def" (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-line-dash>
     </mat-card-content>
     <mat-card-content>
       Selected: {{selected1}}
@@ -30,7 +30,7 @@
       <mat-card-title>With label</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-line-dash [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);">
+      <mb-line-dash [initial]="def" [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);">
       </mb-line-dash>
     </mat-card-content>
     <mat-card-content>

@@ -1,27 +1,27 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatLabel } from '@angular/material/form-field';
+
 import { ColorPickerDirective } from '../../../colors/picker/color-picker.directive';
 
 @Component({
     selector: 'mb-color',
     templateUrl: './color.component.html',
     styleUrls: ['./color.component.scss'],
-    imports: [NgIf, MatLabel, ColorPickerDirective]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MatLabel, ColorPickerDirective]
 })
-export class ColorComponent implements OnInit {
+export class ColorComponent {
   private value = '#000';
+  protected currentLabel = 'Color';
 
   /** Event emitted when the selected value has been changed by the user. */
-  @Output() readonly selectionChange: EventEmitter<string> = new EventEmitter<string>();
+  readonly selectionChange = output<string>();
 
   /** A label to display above the selector. */
-  @Input() label = 'Color';
+  label = input<string>();
 
   /** Specifies an initial value. */
-  @Input() set initial(color: string) {
-    this.value = color;
-  }
+  initial = input.required<string>();
 
   protected set color(value: string) {
     if (this.value !== value) {
@@ -29,12 +29,19 @@ export class ColorComponent implements OnInit {
       this.selectionChange.emit(this.value);
     }
   }
-
   protected get color(): string {
     return this.value;
   }
 
-  ngOnInit() {
-    this.selectionChange.emit(this.value);
+  constructor(){
+    effect(() => {
+      const lab = this.label();
+      if (lab && this.currentLabel !== lab) {
+        this.currentLabel = lab;
+      }
+    });
+    effect(() => {
+      this.value = this.initial();
+    });
   }
 }
