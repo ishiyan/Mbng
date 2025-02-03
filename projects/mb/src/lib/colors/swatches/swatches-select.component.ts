@@ -1,4 +1,4 @@
-import { Component, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { NgStyle } from '@angular/common';
@@ -32,6 +32,7 @@ function inc(n: number): number {
     selector: 'mb-swatches-select',
     templateUrl: './swatches-select.component.html',
     styleUrls: ['./swatches-select.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       MatFormField,
       NgStyle,

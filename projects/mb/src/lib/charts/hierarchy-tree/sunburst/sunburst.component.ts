@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, ViewEncapsulation, HostListener, input, inject } from '@angular/core';
 import * as d3 from 'd3';
 
 import { computeDimensions } from '../../compute-dimensions';
@@ -30,11 +30,13 @@ const defaultLabelFill = 'white';
     encapsulation: ViewEncapsulation.None
 })
 export class SunburstComponent implements OnChanges {
+  private elementRef = inject(ElementRef);
+
   /**
    * Defines a value function returning a non-negative number which will be called by the **sum**
    * method of the **d3.HierarchyNode<Datum>** interface for all nodes in a hierarchy tree.
    */
-  @Input() sumFunc: HierarchyTreeSumFunction = sumNumberOfLeafNodes;
+  readonly sumFunc = input<HierarchyTreeSumFunction>(sumNumberOfLeafNodes);
 
   /**
    * Defines how nodes are sorted after summation which assigns a value to all nodes. Allowed values are:
@@ -42,45 +44,43 @@ export class SunburstComponent implements OnChanges {
    * - *desc* sort descending
    * - *none* unsorted
    */
-  @Input() sort: string = ascending;
+  readonly sort = input<string>(ascending);
 
   /** If the chart is zoomable. Tapping on a sector zooms in, tapping in the center zooms out. */
-  @Input() zoom: boolean = defaultZoom;
+  readonly zoom = input<boolean>(defaultZoom);
 
   /** Zoomable transition duration in milliseconds. */
-  @Input() transitionMsec: number = defaultTransitionMsec;
+  readonly transitionMsec = input<number>(defaultTransitionMsec);
 
   /** A number of hierarchy levels to display or **0** to display all levels. */
-  @Input() levels: number = allLevels;
+  readonly levels = input<number>(allLevels);
 
   /** A function returning a text string which will be displayed as a label for a node. */
-  @Input() labelFunc: HierarchyTreeLabelFunction = emptyLabels;
+  readonly labelFunc = input<HierarchyTreeLabelFunction>(emptyLabels);
 
   /** A fill color to draw labels. */
-  @Input() labelFill: string = defaultLabelFill;
+  readonly labelFill = input<string>(defaultLabelFill);
 
   /** A font size used to draw the labels. */
-  @Input() labelFontSizeFunc: HierarchyTreeFontSizeFunction = linearFontSize;
+  readonly labelFontSizeFunc = input<HierarchyTreeFontSizeFunction>(linearFontSize);
 
   /** A function returning a text string which will be displayed as a tooltip for a node. */
-  @Input() tooltipFunc: HierarchyTreeTooltipFunction = pathTooltips;
+  readonly tooltipFunc = input<HierarchyTreeTooltipFunction>(pathTooltips);
 
   /** A function called when a node is tapped or clicked allowing to display a node information. */
-  @Input() tapFunc: HierarchyTreeTapFunction = doNothingTap;
+  readonly tapFunc = input<HierarchyTreeTapFunction>(doNothingTap);
 
   /** A function returning a fill color of a node. */
-  @Input() fillFunc: HierarchyTreeFillFunction = coolFill;
+  readonly fillFunc = input<HierarchyTreeFillFunction>(coolFill);
 
   /** A function returning a fill color opacity of a node. */
-  @Input() fillOpacityFunc: HierarchyTreeFillOpacityFunction = opaqueFillOpacity;
+  readonly fillOpacityFunc = input<HierarchyTreeFillOpacityFunction>(opaqueFillOpacity);
 
   /** A diameter of the sunburst. */
-  @Input() diameter: number | string = defaultDiameter;
+  readonly diameter = input<number | string>(defaultDiameter);
 
   /** The data hierarchy to use. */
-  @Input() data!: HierarchyTreeNode;
-
-  constructor(private elementRef: ElementRef) { }
+  readonly data = input.required<HierarchyTreeNode>();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ngOnChanges(changes: any) {
@@ -91,11 +91,11 @@ export class SunburstComponent implements OnChanges {
   public render(): void {
     const sel = d3.select(this.elementRef.nativeElement);
     sel.select('svg').remove();
-    const dat = this.data;
+    const dat = this.data();
     if (!dat || !dat.children || dat.children.length < 1) {
       return;
     }
-    const computed = computeDimensions(this.elementRef, this.diameter, this.diameter, defaultDiameter, defaultDiameter);
+    const computed = computeDimensions(this.elementRef, this.diameter(), this.diameter(), defaultDiameter, defaultDiameter);
     const s = Math.max(computed[0], computed[1]);
     const s2 = s / 2;
     const svg: any = sel.append('svg').attr('preserveAspectRatio', 'xMinYMin meet')
@@ -103,10 +103,11 @@ export class SunburstComponent implements OnChanges {
     const g = svg.append('g')
       .attr('transform', `translate(${s2},${s2})`);
 
-    const sortFunc: HierarchyTreeSortFunction = this.sort === ascending ?
-      sortAscending : (this.sort === descending ? sortDescending : sortNone);
+    const sort = this.sort();
+    const sortFunc: HierarchyTreeSortFunction = sort === ascending ?
+      sortAscending : (sort === descending ? sortDescending : sortNone);
     const partition = (d: HierarchyTreeNode) => {
-      let rootNode = d3.hierarchy(d).sum(this.sumFunc);
+      let rootNode = d3.hierarchy(d).sum(this.sumFunc());
       if (sortFunc !== sortNone) {
         rootNode = rootNode.sort((a: d3.HierarchyNode<HierarchyTreeNode>, b: d3.HierarchyNode<HierarchyTreeNode>) => sortFunc(a, b));
       }
@@ -115,7 +116,7 @@ export class SunburstComponent implements OnChanges {
     const root = partition(dat);
     root.each((d: any) => d.current = d);
 
-    const n = (this.levels < 1 ? root.height : this.levels) + 1;
+    const n = (this.levels() < 1 ? root.height : this.levels()) + 1;
     const radius = s / (2 * n);
     const arc = d3.arc<d3.HierarchyRectangularNode<HierarchyTreeNode>>()
       .startAngle((d: d3.HierarchyRectangularNode<HierarchyTreeNode>) => d.x0)
@@ -135,8 +136,8 @@ export class SunburstComponent implements OnChanges {
     };
 
     const clicked = (event: any, p: d3.HierarchyRectangularNode<HierarchyTreeNode>) => {
-      this.tapFunc(p);
-      if (this.zoom && p.children) {
+      this.tapFunc()(p);
+      if (this.zoom() && p.children) {
         parent.datum(p.parent || root);
         root.each((d: any) => d.target = {
           x0: Math.max(0, Math.min(1, (d.x0 - p.x0) / (p.x1 - p.x0))) * twoPi,
@@ -144,7 +145,7 @@ export class SunburstComponent implements OnChanges {
           y0: Math.max(0, d.y0 - p.depth),
           y1: Math.max(0, d.y1 - p.depth)
         });
-        const t = g.transition().duration(this.transitionMsec);
+        const t = g.transition().duration(this.transitionMsec());
         // Transition the data on all arcs, even the ones that aren’t visible,
         // so that if this transition is interrupted, entering arcs will start
         // the next transition from the desired position.
@@ -155,7 +156,7 @@ export class SunburstComponent implements OnChanges {
           })
           .filter((d: any) => arcVisible(d.current) || arcVisible(d.target))
           .attr('fill-opacity', (d: any) => arcVisible(d.target) ?
-            this.fillOpacityFunc(d as d3.HierarchyRectangularNode<HierarchyTreeNode>, root.height) : 0)
+            this.fillOpacityFunc()(d as d3.HierarchyRectangularNode<HierarchyTreeNode>, root.height) : 0)
           .attrTween('d', (d: any) => () => arc(d.current));
 
         label.filter((d: any) => arcVisible(d.current) || labelVisible(d.target)).transition(t)
@@ -168,28 +169,28 @@ export class SunburstComponent implements OnChanges {
       .selectAll('path')
       .data(root.descendants().slice(1))
       .join('path')
-        .attr('fill', /*(d: d3.HierarchyRectangularNode<HierarchyTreeNode>) => */this.fillFunc/*(d)*/)
+        .attr('fill', /*(d: d3.HierarchyRectangularNode<HierarchyTreeNode>) => */this.fillFunc()/*(d)*/)
         .attr('fill-opacity', (d: any) => arcVisible(d.current) ?
-          this.fillOpacityFunc(d as d3.HierarchyRectangularNode<HierarchyTreeNode>, root.height) : 0)
+          this.fillOpacityFunc()(d as d3.HierarchyRectangularNode<HierarchyTreeNode>, root.height) : 0)
         .attr('d', (d: any) => arc(d.current))
         .on('click', clicked);
 
     path.append('title')
-      .text((d: d3.HierarchyNode<HierarchyTreeNode>) => this.tooltipFunc(d));
+      .text((d: d3.HierarchyNode<HierarchyTreeNode>) => this.tooltipFunc()(d));
 
     const label = g.append('g')
         .attr('pointer-events', 'none')
         .attr('text-anchor', 'middle')
         .style('user-select', 'none')
-        .style('fill', this.labelFill)
+        .style('fill', this.labelFill())
       .selectAll('text')
       .data(root.descendants().slice(1))
       .join('text')
-        .attr('font-size', (d: d3.HierarchyRectangularNode<HierarchyTreeNode>) => this.labelFontSizeFunc(d))
+        .attr('font-size', (d: d3.HierarchyRectangularNode<HierarchyTreeNode>) => this.labelFontSizeFunc()(d))
         .attr('dy', '0.35em')
         .attr('fill-opacity', (d: any) => +labelVisible(d.current))
         .attr('transform', (d: any) => labelTransform(d.current))
-        .text((d: d3.HierarchyNode<HierarchyTreeNode>) => this.labelFunc(d));
+        .text((d: d3.HierarchyNode<HierarchyTreeNode>) => this.labelFunc()(d));
 
     const parent = g.append('circle')
       .datum(root)

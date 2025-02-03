@@ -218,8 +218,6 @@ export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-av
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.component';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params-dialog.component';
 
-
-
 // export * from './lib/charts/d3ts/index.js';
 export * from './lib/charts/line-configuration.interface';
 export * from './lib/charts/downloader';
@@ -255,13 +253,9 @@ export * from './lib/charts/multiline/multiline.component';
 
 export * from './lib/charts/hierarchy-tree/hierarchy-tree';
 export * from './lib/charts/hierarchy-tree/treemap/treemap.component';
-
 export * from './lib/charts/hierarchy-tree/sunburst/sunburst.component';
-
 export * from './lib/charts/hierarchy-tree/icicle/icicle.component';
-
 export * from './lib/charts/hierarchy-tree/circlepack/circlepack.component';
-
 export * from './lib/charts/hierarchy-tree/voronoi/voronoi.component';
 
 export * from './lib/charts/hierarchy-tree/functions/fill-function';

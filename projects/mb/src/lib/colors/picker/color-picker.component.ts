@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef, ChangeDetectorRef, NgZone, viewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ChangeDetectorRef, NgZone, viewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -120,6 +120,7 @@ const gap = 10;
     selector: 'mb-color-picker',
     templateUrl: './color-picker.component.html',
     styleUrls: ['./color-picker.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       FormsModule,
       MatExpansionPanel,

@@ -47,8 +47,8 @@ import { HistoricalDataDownloadComponent } from './historical-data-download.comp
 })
 export class HistoricalDataTableComponent implements OnInit {
   readonly paginator = viewChild.required(MatPaginator);
-  enableDownload = input(true);
-  historicalData = input.required<HistoricalData>();
+  readonly enableDownload = input(true);
+  readonly historicalData = input.required<HistoricalData>();
 
   constructor() {
     effect(() => {

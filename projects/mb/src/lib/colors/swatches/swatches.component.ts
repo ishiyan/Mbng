@@ -1,5 +1,5 @@
-import { Component, Input, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, computed } from '@angular/core';
-import { ViewEncapsulation, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, computed } from '@angular/core';
+import { HostListener, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 
 import { computeDimensions } from '../../charts/compute-dimensions';
@@ -11,8 +11,7 @@ const DEFAULT_HEIGHT = 24;
     selector: 'mb-swatches',
     templateUrl: './swatches.component.html',
     styleUrls: ['./swatches.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SwatchesComponent implements OnChanges, AfterViewInit {
   private elementRef = inject(ElementRef);
