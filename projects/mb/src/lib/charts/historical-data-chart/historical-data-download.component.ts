@@ -1,47 +1,62 @@
-import { Component, Input } from '@angular/core';
-import { DatePipe, DecimalPipe, NgFor } from '@angular/common';
-
-import { TemporalEntityKind } from '../../data//entities/temporal-entity-kind.enum';
-import { HistoricalData } from '../../data/historical-data';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { MatButton } from '@angular/material/button';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+
+import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
+import { HistoricalData } from '../../data/historical-data';
 
 @Component({
     selector: 'mb-data-historical-data-download',
     templateUrl: './historical-data-download.component.html',
     styleUrls: ['./historical-data-download.component.scss'],
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatFormField, MatLabel, MatSelect, NgFor, MatOption, MatButton]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      MatFormField,
+      MatLabel,
+      MatButton,
+      MatSelect,
+      MatOption,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle
+    ]
 })
 export class HistoricalDataDownloadComponent {
-  @Input()
-  set historicalData(historicalData: HistoricalData) {
-    this.currentHistoricalData = historicalData;
-    if (historicalData) {
-      this.canDownload = historicalData.data && historicalData.data.length > 0;
-      switch (historicalData.temporalEntityKind) {
-        case TemporalEntityKind.Bar:
-          this.currentColumns = ['time', 'open', 'high', 'low', 'close', 'volume'];
-          break;
-        case TemporalEntityKind.Quote:
-          this.currentColumns = ['time', 'bidPrice', 'bidSize', 'askPrice', 'askSize'];
-          break;
-        case TemporalEntityKind.Trade:
-          this.currentColumns = ['time', 'price', 'volume'];
-          break;
-        case TemporalEntityKind.Scalar:
-          this.currentColumns = ['time', 'value'];
-          break;
-        default:
-          this.currentColumns = [];
-          break;
+
+  historicalData = input.required<HistoricalData>();
+  
+  constructor() {
+    effect(() => {
+      const v = this.historicalData();
+      this.currentHistoricalData = v;
+      if (v) {
+        this.canDownload = v.data && v.data.length > 0;
+        switch (v.temporalEntityKind) {
+          case TemporalEntityKind.Bar:
+            this.currentColumns = ['time', 'open', 'high', 'low', 'close', 'volume'];
+            break;
+          case TemporalEntityKind.Quote:
+            this.currentColumns = ['time', 'bidPrice', 'bidSize', 'askPrice', 'askSize'];
+            break;
+          case TemporalEntityKind.Trade:
+            this.currentColumns = ['time', 'price', 'volume'];
+            break;
+          case TemporalEntityKind.Scalar:
+            this.currentColumns = ['time', 'value'];
+            break;
+          default:
+            this.currentColumns = [];
+            break;
+        }
+      } else {
+        this.canDownload = false;
+        this.currentColumns = [];
       }
-    } else {
-      this.canDownload = false;
-      this.currentColumns = [];
-    }
+    });
   }
 
   readonly timeFormats: string[] = [

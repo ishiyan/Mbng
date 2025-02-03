@@ -4,60 +4,70 @@
     <mat-panel-title>{{chartTitle}}</mat-panel-title>
   </mat-expansion-panel-header>
 
-  <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
-    *ngIf="isOhlcv" (change)="ohlcvViewType = group1.value">
-    <mat-button-toggle [value]="ohlcvViewCandlesticks">
-      <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="ohlcvViewBars">
-      <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="ohlcvViewLine">
-      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="ohlcvViewArea">
-      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  @if (isOhlcv) {
+    <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
+      (change)="ohlcvViewType = group1.value">
+      <mat-button-toggle [value]="ohlcvViewCandlesticks">
+        <mat-icon svgIcon="mb-candlesticks" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ohlcvViewBars">
+        <mat-icon svgIcon="mb-bars" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ohlcvViewLine">
+        <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ohlcvViewArea">
+        <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  }
 
-  <mat-button-toggle-group #group2="matButtonToggleGroup" class="button-toggle-group" [value]="scalarViewType"
-    *ngIf="isScalar" (change)="scalarViewType = group2.value">
-    <mat-button-toggle [value]="scalarViewLine">
-      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="scalarViewDots">
-      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="scalarViewArea">
-      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  @if (isScalar) {
+    <mat-button-toggle-group #group2="matButtonToggleGroup" class="button-toggle-group" [value]="scalarViewType"
+      (change)="scalarViewType = group2.value">
+      <mat-button-toggle [value]="scalarViewLine">
+        <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="scalarViewDots">
+        <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="scalarViewArea">
+        <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  }
 
-  <mat-button-toggle-group #group3="matButtonToggleGroup" class="button-toggle-group" [value]="tradeViewType"
-    *ngIf="isTrade" (change)="tradeViewType = group3.value">
-    <mat-button-toggle [value]="tradeViewLine">
-      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="tradeViewDots">
-      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="tradeViewArea">
-      <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  @if (isTrade) {
+    <mat-button-toggle-group #group3="matButtonToggleGroup" class="button-toggle-group" [value]="tradeViewType"
+      (change)="tradeViewType = group3.value">
+      <mat-button-toggle [value]="tradeViewLine">
+        <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="tradeViewDots">
+        <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="tradeViewArea">
+        <mat-icon svgIcon="mb-area" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  }
 
-  <mat-button-toggle-group #group4="matButtonToggleGroup" class="button-toggle-group" [value]="quoteViewType"
-    *ngIf="isQuote" (change)="quoteViewType = group4.value">
-    <mat-button-toggle [value]="quoteViewBars">
-      <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle [value]="quoteViewDots">
-      <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  @if (isQuote) {
+    <mat-button-toggle-group #group4="matButtonToggleGroup" class="button-toggle-group" [value]="quoteViewType"
+      (change)="quoteViewType = group4.value">
+      <mat-button-toggle [value]="quoteViewBars">
+        <mat-icon svgIcon="mb-line" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="quoteViewDots">
+        <mat-icon svgIcon="mb-dots" class="svg-icon"></mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  }
 
-  <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume" *ngIf="!isScalar">Volume
-  </mat-slide-toggle>
+  @if (!isScalar) {
+    <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">Volume
+    </mat-slide-toggle>
+  }
   <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">Crosshair</mat-slide-toggle>
 </mat-expansion-panel>
 <div id="chart"></div>

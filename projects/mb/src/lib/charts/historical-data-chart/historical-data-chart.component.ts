@@ -1,22 +1,21 @@
-import { Component, ElementRef, ViewChild, Input, ViewEncapsulation, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, input, viewChild, inject, ChangeDetectionStrategy, effect } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import * as d3 from 'd3';
 
-import { primitives } from '../d3-primitives';
-import { Downloader } from '../downloader';
 import { HistoricalData } from '../../data/historical-data';
 import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enum';
 import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { NgIf } from '@angular/common';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { primitives } from '../d3-primitives';
+import { Downloader } from '../downloader';
 
 const ohlcvViewCandlesticks = 0;
 const ohlcvViewBars = 1;
@@ -55,37 +54,23 @@ const textAfterSvg = `
     selector: 'mb-historical-data-chart',
     templateUrl: './historical-data-chart.component.html',
     styleUrls: ['./historical-data-chart.component.scss'],
-    encapsulation: ViewEncapsulation.Emulated,
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgIf, MatButtonToggleGroup, MatButtonToggle, MatIcon, MatSlideToggle, FormsModule, MatButton]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+      FormsModule,
+      MatButton,
+      MatButtonToggle,
+      MatButtonToggleGroup,
+      MatSlideToggle,
+      MatIcon,
+      MatExpansionPanel,
+      MatExpansionPanelHeader,
+      MatExpansionPanelTitle
+    ]
 })
 export class HistoricalDataChartComponent {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
-  @Input()
-  set historicalData(historicalData: HistoricalData) {
-    if (historicalData && historicalData.data) {
-      const d = historicalData.data;
-      if ((d as Bar[])[0].close !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Bar;
-      } else if ((d as Scalar[])[0].value !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Scalar;
-      } else if ((d as Trade[])[0].price !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Trade;
-      } else if ((d as Quote[])[0].askPrice !== undefined) {
-        this.temporalEntityKind = TemporalEntityKind.Quote;
-      } else {
-        this.temporalEntityKind = undefined;
-      }
-
-      this.title = historicalData.moniker;
-      this.data = d;
-    } else {
-      this.temporalEntityKind = undefined;
-      this.title = undefined;
-      this.data = [];
-    }
-    this.render();
-  }
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
+  historicalData = input<HistoricalData>();
 
   private temporalEntityKind: TemporalEntityKind | undefined;
   get isOhlcv(): boolean {
@@ -175,7 +160,37 @@ export class HistoricalDataChartComponent {
   private data: any[] = [];
   private renderNavAxis = false;
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor() {
+    const iconRegistry = inject(MatIconRegistry);
+    const sanitizer = inject(DomSanitizer);
+
+    effect(() => {
+      const series = this.historicalData();
+      if (series && series.data) {
+        const d = series.data;
+        if ((d as Bar[])[0].close !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Bar;
+        } else if ((d as Scalar[])[0].value !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Scalar;
+        } else if ((d as Trade[])[0].price !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Trade;
+        } else if ((d as Quote[])[0].askPrice !== undefined) {
+          this.temporalEntityKind = TemporalEntityKind.Quote;
+        } else {
+          this.temporalEntityKind = undefined;
+        }
+  
+        this.title = series.moniker;
+        this.data = d;
+      } else {
+        this.temporalEntityKind = undefined;
+        this.title = undefined;
+        this.data = [];
+      }
+
+      this.render();
+    });
+
     iconRegistry.addSvgIcon('mb-candlesticks',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/mb-candlesticks.svg'));
     iconRegistry.addSvgIcon('mb-bars',
@@ -192,18 +207,18 @@ export class HistoricalDataChartComponent {
   render() {
     const chartId = '#chart';
     const margin = { top: 10, bottom: 20, right: 80, left: 35 };
-    const marginNav = { top: this.svgheight - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
+    const marginNav = { top: this.svgheight() - 30 - 14, bottom: 14, right: margin.right, left: margin.left };
 
-    const w = this.container.nativeElement.getBoundingClientRect().width;
+    const w = this.container().nativeElement.getBoundingClientRect().width;
     d3.select(chartId).select('svg').remove();
     const svg: any = d3.select(chartId).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
     const height = marginNav.top - margin.top - margin.bottom;
-    const heightNav = this.svgheight - marginNav.top - marginNav.bottom;
+    const heightNav = this.svgheight() - marginNav.top - marginNav.bottom;
 
     const x = (primitives.scale.financetime() as any).range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
@@ -464,7 +479,7 @@ export class HistoricalDataChartComponent {
   }
 
   public saveToSvg(): void {
-    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.container.nativeElement.parentNode, 'chart'),
+    Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(this.container().nativeElement.parentNode, 'chart'),
       textBeforeSvg, textAfterSvg), 'historical_data_chart.html');
   }
 }

@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
-
 import { SampleSunburst1Component } from './sample-1/sample-sunburst-1.component';
 import { SampleSunburst2Component } from './sample-2/sample-sunburst-2.component';
 import { SampleSunburst3Component } from './sample-3/sample-sunburst-3.component';
@@ -19,7 +17,6 @@ import { SampleSunburstRoutingModule } from './sample-sunburst-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    ChartsModule,
     SampleSunburstRoutingModule,
     SampleSunburst1Component,
     SampleSunburst2Component,

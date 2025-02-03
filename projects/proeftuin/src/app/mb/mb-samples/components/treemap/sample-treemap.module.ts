@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
-
 import { SampleTreemap1Component } from './sample-1/sample-treemap-1.component';
 import { SampleTreemap2Component } from './sample-2/sample-treemap-2.component';
 import { SampleTreemap3Component } from './sample-3/sample-treemap-3.component';
@@ -19,7 +17,6 @@ import { SampleTreemapRoutingModule } from './sample-treemap-routing.module';
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    ChartsModule,
     SampleTreemapRoutingModule,
     SampleTreemap1Component,
     SampleTreemap2Component,

@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
-import { ChartsModule } from 'projects/mb/src/lib/charts/charts.module';
-
 import { SampleCirclepack1Component } from './sample-1/sample-circlepack-1.component';
 import { SampleCirclepack2Component } from './sample-2/sample-circlepack-2.component';
 import { SampleCirclepack3Component } from './sample-3/sample-circlepack-3.component';
@@ -19,7 +17,6 @@ import { SampleCirclepackRoutingModule } from './sample-circlepack-routing.modul
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    ChartsModule,
     SampleCirclepackRoutingModule,
     SampleCirclepack1Component,
     SampleCirclepack2Component,

@@ -18,11 +18,11 @@ import { MatSelect } from '@angular/material/select';
 import { NgFor } from '@angular/common';
 import { MatOption } from '@angular/material/core';
 
-import { IcicleComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
-import { TreemapComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/treemap/treemap.component';
-import { SunburstComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/sunburst/sunburst.component';
-import { CirclepackComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
-import { VoronoiComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
+import { IcicleComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
+import { TreemapComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/treemap/treemap.component';
+import { SunburstComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/sunburst/sunburst.component';
+import { CirclepackComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
+import { VoronoiComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
 
 const flatternData = (data: HierarchyTreeNode, name: string = ''): HierarchyTreeNode => {
   const flat: HierarchyTreeNode = { name: name, children: [] };

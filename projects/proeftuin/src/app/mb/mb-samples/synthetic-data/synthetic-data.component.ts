@@ -9,7 +9,8 @@ import { SyntheticDataParameters } from 'projects/mb/src/lib/data/generators/syn
 import { SyntheticDataParametersComponent } from 'projects/mb/src/lib/data/generators/synthetic-data-parameters.component';
 import { SyntheticDataService } from 'projects/mb/src/lib/data/generators/synthetic-data.service';
 import { HistoricalData } from 'projects/mb/src/lib/data/historical-data';
-import { HistoricalDataChartModule } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-chart.module';
+import { HistoricalDataChartComponent } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-chart.component';
+import { HistoricalDataTableComponent } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-table.component';
 
 @Component({
     selector: 'mb-sample-synthetic-data',
@@ -24,7 +25,8 @@ import { HistoricalDataChartModule } from 'projects/mb/src/lib/charts/historical
       MatStep,
       MatStepLabel,
       SyntheticDataParametersComponent,
-      HistoricalDataChartModule
+      HistoricalDataChartComponent,
+      HistoricalDataTableComponent
     ]
 })
 export class SyntheticDataComponent {

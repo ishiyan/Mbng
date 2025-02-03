@@ -245,7 +245,6 @@ export * from './lib/charts/ohlcv-chart/selector/line-style-selector.component';
 export * from './lib/charts/historical-data-chart/historical-data-chart.component';
 export * from './lib/charts/historical-data-chart/historical-data-table.component';
 export * from './lib/charts/historical-data-chart/historical-data-download.component';
-export * from './lib/charts/historical-data-chart/historical-data-chart.module';
 
 export * from './lib/charts/sparkline/sparkline-configuration.interface';
 export * from './lib/charts/sparkline/sparkline.component';
@@ -275,4 +274,3 @@ export * from './lib/charts/hierarchy-tree/functions/stroke-width-function';
 export * from './lib/charts/hierarchy-tree/functions/sum-function';
 export * from './lib/charts/hierarchy-tree/functions/tap-function';
 export * from './lib/charts/hierarchy-tree/functions/tooltip-function';
-export * from './lib/charts/charts.module';

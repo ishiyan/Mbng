@@ -11,8 +11,8 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 
 
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
-import { IcicleComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
-import { CirclepackComponent } from '../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
+import { IcicleComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
+import { CirclepackComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 @Component({
     selector: 'app-hierarchies-industry-classifications',
