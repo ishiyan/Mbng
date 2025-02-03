@@ -83,7 +83,7 @@ export class SwatchesSelectComponent {
       }
     });
     effect(() => {
-      let newColors = this.colors();
+      const newColors = this.colors();
       const startId = inc(this.palettes.id);
       const newPalettes: Palettes = {
         id: startId,

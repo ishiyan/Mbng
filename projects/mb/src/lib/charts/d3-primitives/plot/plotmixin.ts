@@ -24,7 +24,6 @@ export const plotMixin = (plot: any) => {
     plotMixin_.xScale = (binder: any) => {
       priv.xScale = scale().financetime();
 
-      // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
       source.xScale = function(_?: any) {
         if (!arguments.length) {
           return priv.xScale;
@@ -44,7 +43,6 @@ export const plotMixin = (plot: any) => {
     plotMixin_.yScale = (binder: any) => {
       priv.yScale = d3.scaleLinear();
 
-      // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
       source.yScale = function(_?: any) {
         if (!arguments.length) {
           return priv.yScale;
@@ -64,7 +62,6 @@ export const plotMixin = (plot: any) => {
     plotMixin_.accessor = (accessor: any, binder: any) => {
       priv.accessor = accessor;
 
-      // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
       source.accessor = function(_?: any) {
         if (!arguments.length) {
           return priv.accessor;
@@ -84,7 +81,6 @@ export const plotMixin = (plot: any) => {
     plotMixin_.width = (binder: any) => {
       priv.width = plot.barWidth;
 
-      // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
       source.width = function(_?: any) {
         if (!arguments.length) {
           return priv.width;

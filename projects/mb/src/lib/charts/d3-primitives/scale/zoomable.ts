@@ -13,12 +13,10 @@
  * if it is used for anything else but zooming.
  */
 export const zoomable = () => {
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions, @typescript-eslint/no-shadow
   function zoomable(linear: any, zoomed: any, domainLimit: any, clamp?: any) {
     clamp = clamp !== undefined ? clamp : true;
 
     // Delegates the scale call to the underlying linear scale.
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     function scale(/* _: any */) {
       // eslint-disable-next-line prefer-rest-params
       return linear.apply(linear, arguments);
@@ -26,7 +24,6 @@ export const zoomable = () => {
 
     scale.invert = linear.invert;
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.domain = function(_?: any) {
       if (!arguments.length) {
         return linear.domain();
@@ -50,7 +47,6 @@ export const zoomable = () => {
       return scale;
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.range = function() {
       if (!arguments.length) {
         return linear.range();
@@ -59,12 +55,10 @@ export const zoomable = () => {
       throw new Error('Zoomable is a read only range. Use this scale for zooming only.');
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.copy = function() {
       return zoomable(linear.copy(), zoomed, domainLimit, clamp);
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.clamp = function(_?: any) {
       if (!arguments.length) {
         return clamp;

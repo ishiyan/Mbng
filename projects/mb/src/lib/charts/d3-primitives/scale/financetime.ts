@@ -9,7 +9,6 @@ import { zoomable as zoomable_ } from './zoomable';
  and weekends respectively. When plot, is done so without weekend gaps.
  */
 export const financetime = (scaleWiden: any) => { // Injected dependencies
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   function fintime(tickMethods: any, genericFmt: any, index?: any, domain?: any,
     padding?: any, outerPadding?: any, zoomLimit?: any, closestTicks?: any, zoomable?: any) {
     let dateIndexMap: any;
@@ -93,7 +92,6 @@ export const financetime = (scaleWiden: any) => { // Injected dependencies
      *
      * @param _ The full domain array.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.domain = function(_?: any): any {
       if (!arguments.length) {
         let visible = index.domain();
@@ -148,7 +146,6 @@ export const financetime = (scaleWiden: any) => { // Injected dependencies
      */
     scale.band = (): number => band;
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.outerPadding = function(_?: any): any {
       if (!arguments.length) {
         return outerPadding;
@@ -158,7 +155,6 @@ export const financetime = (scaleWiden: any) => { // Injected dependencies
       return applyDomain();
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.padding = function(_?: any): any {
       if (!arguments.length) {
         return padding;
@@ -247,7 +243,6 @@ export const financetime = (scaleWiden: any) => { // Injected dependencies
      * @param _ Optional `boolean` value. If argument is passed, sets the value
      *          and returns this instance, if no argument, returns the current value.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     scale.closestTicks = function(_?: any): any {
       if (!arguments.length) {
         return closestTicks;
@@ -263,8 +258,9 @@ export const financetime = (scaleWiden: any) => { // Injected dependencies
      * otherwise a default tickFormat will be returned which may not be the optimal
      * representation of the current domain state.
      */
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    scale.tickFormat = (): Function => (date: any) => tickState.tickFormat(date);
+    scale.tickFormat = (): ((date: Date) => string) => {
+      return (date: Date) => tickState.tickFormat(date);
+    };
 
     rebindCallback(scale, index, zoomed, 'range');
     domainMap();
@@ -441,4 +437,3 @@ const d3_v3_multi_shim = (multi: any) => (d: any) => {
     }
   }
 };
-

@@ -1,6 +1,5 @@
 export const trendline = () => {
   /** Supports getter and setter. */
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   const startTime = function(d: any, _?: any) {
     if (arguments.length < 2) {
       return d.start.time;
@@ -10,7 +9,6 @@ export const trendline = () => {
   };
 
   /** Supports getter and setter. */
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   const startValue = function(d: any, _?: any) {
     if (arguments.length < 2) {
       return d.start.value;
@@ -20,7 +18,6 @@ export const trendline = () => {
   };
 
   /** Supports getter and setter. */
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   const endTime = function(d: any, _?: any) {
     if (arguments.length < 2) {
       return d.end.time;
@@ -30,7 +27,6 @@ export const trendline = () => {
   };
 
   /** Supports getter and setter. */
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   const endValue = function(d: any, _?: any) {
     if (arguments.length < 2) {
       return d.end.value;

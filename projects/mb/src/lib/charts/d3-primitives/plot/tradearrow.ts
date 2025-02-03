@@ -68,7 +68,6 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
      * @param _ Either a constant or function that returns the orientation of the rendered arrow.
      *          Ensure for every input type a corresponding `svgArrow` orient value is returned.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     tradearrow_.orient = function(_?: any) {
       if (!arguments.length) {
         return svgArrow.orient();
@@ -83,7 +82,6 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
      * Useful if required to show under or over OHLC quotes.
      * Defaults to showing the arrow on the trade price value.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     tradearrow_.y = function(_?: any) {
       if (!arguments.length) {
         return y;

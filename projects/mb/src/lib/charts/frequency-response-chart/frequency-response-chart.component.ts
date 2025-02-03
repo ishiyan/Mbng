@@ -511,7 +511,7 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
       let length;
       try {
         length = tg.node().getComputedTextLength() + labelCircleRadius * 2 + labelGap + labelSpacing;
-      } catch (_) {
+      } catch {
         length = labelDefaultTextLength + labelCircleRadius * 2 + labelGap + labelSpacing;
       }
       let xpos = xposNext;

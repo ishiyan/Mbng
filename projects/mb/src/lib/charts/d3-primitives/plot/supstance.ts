@@ -36,7 +36,6 @@ export const supstance = (supstanceAccessor: any, plot: any, plotMixin: any) => 
       g.selectAll('.interaction path').call(dragBody(dispatch, p.accessor, p.xScale, p.yScale, annotationComposer));
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     supstance__.annotation = function(_?: any) {
       if (!arguments.length) {
         return annotationComposer.plots();

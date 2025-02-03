@@ -109,7 +109,6 @@ export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     crosshair_.xAnnotation = function(_?: any) {
       if (!arguments.length) {
         return xAnnotationComposer.plots();
@@ -120,7 +119,6 @@ export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     crosshair_.yAnnotation = function(_?: any) {
       if (!arguments.length) {
         return yAnnotationComposer.plots();
@@ -131,7 +129,6 @@ export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     crosshair_.verticalWireRange = function(_?: any) {
       if (!arguments.length) {
         return verticalWireRange;
@@ -142,7 +139,6 @@ export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     crosshair_.horizontalWireRange = function(_?: any) {
       if (!arguments.length) {
         return horizontalWireRange;

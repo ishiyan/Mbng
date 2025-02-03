@@ -60,7 +60,6 @@ export const arrow = () => {
     return path + ' z';
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.x = function(_?: any) {
     if (!arguments.length) {
       return fx;
@@ -69,7 +68,6 @@ export const arrow = () => {
     return arrow;
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.y = function(_?: any) {
     if (!arguments.length) {
       return fy;
@@ -79,7 +77,6 @@ export const arrow = () => {
     return arrow;
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.height = function(_?: any) {
     if (!arguments.length) {
       return height;
@@ -89,7 +86,6 @@ export const arrow = () => {
     return arrow;
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.width = function(_?: any) {
     if (!arguments.length) {
       return width;
@@ -99,7 +95,6 @@ export const arrow = () => {
     return arrow;
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.orient = function(_?: any): any {
     if (!arguments.length) {
       return orient;
@@ -109,7 +104,6 @@ export const arrow = () => {
     return arrow;
   };
 
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   arrow.tail = function(_?: any) {
     if (!arguments.length) {
       return tail;

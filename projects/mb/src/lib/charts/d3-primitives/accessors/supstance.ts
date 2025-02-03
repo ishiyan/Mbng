@@ -1,6 +1,5 @@
 export const supstance = () => {
   /** Supports getter and setter. */
-  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
   const value = function(d: any, _?: any) {
     if (arguments.length < 2) {
       return d.value;

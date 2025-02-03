@@ -30,7 +30,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.axis = function(_?: any) {
       if (!arguments.length) {
         return axis;
@@ -41,7 +40,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.orient = function(_?: any) {
       if (!arguments.length) {
         return orient;
@@ -52,7 +50,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.format = function(_?: any) {
       if (!arguments.length) {
         return format;
@@ -63,7 +60,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.height = function(_?: any) {
       if (!arguments.length) {
         return height;
@@ -74,7 +70,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.width = function(_?: any) {
       if (!arguments.length) {
         return width;
@@ -85,7 +80,6 @@ export const axisannotation = (valueAccessor: any, plotMixin: any) =>
     };
 
     /** Supports getter and setter. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     annotation.translate = function(_?: any) {
       if (!arguments.length) {
         return translate;

@@ -22,7 +22,6 @@ export const plot = () => {
     /**
      * `DataSelector.mapper.unity`, `DataSelector.mapper.array`, or custom data mapper.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     dataSelect.mapper = function(_?: any) {
       if (!arguments.length) {
         return mapper;
@@ -32,7 +31,6 @@ export const plot = () => {
       return dataSelect;
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     dataSelect.scope = function(_?: any) {
       if (!arguments.length) {
         return scope;
@@ -43,7 +41,6 @@ export const plot = () => {
       return dataSelect;
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     dataSelect.key = function(_?: any) {
       if (!arguments.length) {
         return key;
@@ -184,7 +181,6 @@ export const plot = () => {
       });
     };
 
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     plotComposer.plots = function(_?: any) {
       if (!arguments.length) {
         return plots;
@@ -195,7 +191,6 @@ export const plot = () => {
     };
 
     /** The scale of the parent. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     plotComposer.scale = function(_?: any) {
       if (!arguments.length) {
         return scale;
@@ -210,7 +205,6 @@ export const plot = () => {
      *
      * @param _ A function taking d and returning a value.
      */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     plotComposer.accessor = function(_?: any) {
       if (!arguments.length) {
         return accessor;
@@ -221,7 +215,6 @@ export const plot = () => {
     };
 
     /** A string id that distinguishes this composed plot from another. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     plotComposer.scope = function(_?: any) {
       if (!arguments.length) {
         return dataSelector.scope();
@@ -232,7 +225,6 @@ export const plot = () => {
     };
 
     /** A function to obtain the scale of the child plots. */
-    // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
     plotComposer.plotScale = function(_?: any) {
       if (!arguments.length) {
         return plotScale;
