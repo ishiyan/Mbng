@@ -1,7 +1,9 @@
-<app-series-card *ngFor="let series of seriesArray" [series]="series" [removable]="series.removable"
+@for (series of seriesArray; track series.data) {
+  <app-series-card [series]="series" [removable]="series.removable"
     (removed)="removed($event);">
-</app-series-card>
+  </app-series-card>
+}
 
 <div class="loader">
-    <app-quote-series-load></app-quote-series-load>
+  <app-quote-series-load></app-quote-series-load>
 </div>

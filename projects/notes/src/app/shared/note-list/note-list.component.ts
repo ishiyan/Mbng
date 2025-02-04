@@ -1,27 +1,40 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 import { MatChipSelectionChange, MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatToolbar } from '@angular/material/toolbar';
 
 import { Note } from '../note.interface';
 import { notes as initialNotes } from '../../notes';
 import { Tag } from '../tag.interface';
 import { tags as initialTags } from '../../tags';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { NgIf, NgFor } from '@angular/common';
 import { NoteCardComponent } from '../note-card/note-card.component';
 
 const empty = '';
 
 @Component({
-    selector: 'app-note-list',
-    templateUrl: './note-list.component.html',
-    styleUrls: ['./note-list.component.scss'],
-    imports: [MatToolbar, MatIconButton, MatIcon, MatFormField, MatPrefix, MatInput, NgIf, MatSuffix, MatChipListbox, NgFor, MatChipOption, NoteCardComponent]
+  selector: 'app-note-list',
+  templateUrl: './note-list.component.html',
+  styleUrls: ['./note-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatPrefix,
+    MatSuffix,
+    MatInput,
+    MatIcon,
+    MatIconButton,
+    MatChipListbox,
+    MatChipOption,
+    MatToolbar,
+    NoteCardComponent
+  ]
 })
 export class NoteListComponent {
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input()
   notes: Note[] = initialNotes;
 

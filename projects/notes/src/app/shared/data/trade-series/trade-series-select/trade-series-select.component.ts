@@ -1,36 +1,50 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+
+import { SparklineComponent } from 'mb';
 
 import { SeriesSelect } from '../../abstractions/series-select';
 import { Series } from '../../series.interface';
 import { TradeSeries } from '../trade-series.interface';
 import { TradeSeriesService } from '../trade-series.service';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
-import { MatSelect, MatSelectTrigger } from '@angular/material/select';
-import { SparklineComponent } from 'mb';
-import { MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'app-trade-series-select',
-    templateUrl: '../../abstractions/series-select.html',
-    styleUrls: ['../../abstractions/series-select.scss'],
-    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption]
+  selector: 'app-trade-series-select',
+  templateUrl: '../../abstractions/series-select.html',
+  styleUrls: ['../../abstractions/series-select.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    SparklineComponent
+  ]
 })
 export class TradeSeriesSelectComponent extends SeriesSelect implements OnInit {
+  private tradeSeriesService = inject(TradeSeriesService);
+
   /** Specifies the sparkline fill color. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set color(c: string) {
     this.setColor(c);
   }
 
   /** Specifies the label of the form field. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set label(text: string) {
     this.setLabel(text);
   }
 
   /** Event emitted when the selection has been changed. */
-  @Output() selectionChange: EventEmitter<TradeSeries> = new EventEmitter<TradeSeries>();
+  readonly selectionChange = output<TradeSeries>();
 
-  constructor(private tradeSeriesService: TradeSeriesService) {
+  constructor() {
     super();
     this.seriesArray = this.tradeSeriesService.get();
     this.selected = this.seriesArray[0];

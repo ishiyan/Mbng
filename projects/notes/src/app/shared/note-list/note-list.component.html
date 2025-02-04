@@ -8,22 +8,28 @@
       <mat-icon matPrefix>search</mat-icon>
       <!-- mat-label>search</mat-label -->
       <input matInput #search type="text" (keyup)="searchChanged($event.target.value)">
-      <button *ngIf="search.value.length > 0" matSuffix mat-icon-button (click)="search.value=''; searchChanged('')">
-        <mat-icon>clear</mat-icon>
-      </button>
+      @if (search.value.length > 0) {
+        <button matSuffix mat-icon-button (click)="search.value=''; searchChanged('')">
+          <mat-icon>clear</mat-icon>
+        </button>
+      }
     </mat-form-field>
   </div>
 </mat-toolbar>
-<ng-container *ngIf="tagsVisible">
+@if (tagsVisible) {
   <div class="fullwidth">
     <mat-chip-listbox [selectable]="true" [multiple]="true">
-      <mat-chip-option *ngFor="let tag of tags" [selectable]="true" [selected]="tag.enabled"
-        (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
-        {{tag.title}}
-      </mat-chip-option>
+      @for (tag of tags; track tag.title) {
+        <mat-chip-option [selectable]="true" [selected]="tag.enabled"
+          (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
+          {{tag.title}}
+        </mat-chip-option>
+      }
     </mat-chip-listbox>
   </div>
-</ng-container>
+}
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center">
-  <app-note-card *ngFor="let note of notes; let i = index" [note]="note"></app-note-card>
+  @for (note of notes; track note.title; let i = $index) {
+    <app-note-card [note]="note"></app-note-card>
+  }
 </div>

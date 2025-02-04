@@ -1,32 +1,32 @@
 <mat-expansion-panel expanded="false">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      <mb-sparkline [width]="220" [height]="32" [configuration]="configSparkline" [data]="series.data">
+      <mb-sparkline [width]="220" [height]="32" [configuration]="configSparkline" [data]="series().data">
       </mb-sparkline>
     </mat-panel-title>
     <mat-panel-description>
-      {{series.mnemonic}}
+      {{series().mnemonic}}
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div class="limitwidth">
-    <ng-container *ngIf="removable">
+    @if (removable()) {
       <button mat-icon-button color="warn" (click)="remove()">
         <mat-icon>delete</mat-icon>
       </button>
-    </ng-container>
-    {{series.description}}
+    }
+    {{series().description}}
   </div>
   <div class="mtopbot">
     <mat-divider></mat-divider>
   </div>
   <div>
-    {{series.data.length}} <i>{{series.timeGranularity}}</i> points
-    ({{series.timeStart|date}} to {{series.timeEnd|date}})
+    {{series().data.length}} <i>{{series().timeGranularity}}</i> points
+    ({{series().timeStart|date}} to {{series().timeEnd|date}})
   </div>
   <div class="mtopbot">
     <mat-divider></mat-divider>
   </div>
-  <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[series.data]"
+  <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[series().data]"
     [timeAxis]="['bottom']" [valueAxis]="['grid']">
   </mb-multiline>
 </mat-expansion-panel>

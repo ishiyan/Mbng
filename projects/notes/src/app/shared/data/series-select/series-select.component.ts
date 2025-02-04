@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOptgroup, MatOption } from '@angular/material/core';
 
 import { SparklineConfiguration, SparklineComponent } from 'mb';
 
@@ -8,33 +11,45 @@ import { ScalarSeriesService } from '../scalar-series/scalar-series.service';
 import { TradeSeriesService } from '../trade-series/trade-series.service';
 import { QuoteSeriesService } from '../quote-series/quote-series.service';
 import { Series } from '../series.interface';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { NgIf, NgFor } from '@angular/common';
-import { MatSelect, MatSelectTrigger } from '@angular/material/select';
-import { MatOptgroup, MatOption } from '@angular/material/core';
 
 @Component({
-    selector: 'app-series-select',
-    templateUrl: './series-select.component.html',
-    styleUrls: ['./series-select.component.scss'],
-    imports: [MatFormField, NgIf, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOptgroup, NgFor, MatOption]
+  selector: 'app-series-select',
+  templateUrl: './series-select.component.html',
+  styleUrls: ['./series-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    MatOptgroup,
+    SparklineComponent
+  ]
 })
 export class SeriesSelectComponent implements OnInit {
-  protected barSeriesArray!: Series[];
-  protected scalarSeriesArray!: Series[];
-  protected tradeSeriesArray!: Series[];
-  protected quoteSeriesArray!: Series[];
+  private barSeriesService = inject(BarSeriesService);
+  private scalarSeriesService = inject(ScalarSeriesService);
+  private tradeSeriesService = inject(TradeSeriesService);
+  private quoteSeriesService = inject(QuoteSeriesService);
+
+  protected barSeriesArray: Series[] = this.barSeriesService.get();
+  protected scalarSeriesArray: Series[] = this.scalarSeriesService.get();
+  protected tradeSeriesArray: Series[] = this.tradeSeriesService.get();
+  protected quoteSeriesArray: Series[] = this.quoteSeriesService.get();
   protected allSeriesArray!: Series[];
-  protected selected!: Series;
+  protected selected: Series = this.barSeriesArray[0];
   protected labelText = '';
   protected configFill: SparklineConfiguration = {
     fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
   };
 
   /** Event emitted when the selection has been changed. */
-  @Output() selectionChange: EventEmitter<Series> = new EventEmitter<Series>();
+  readonly selectionChange = output<Series>();
 
   /** Specifies the sparkline fill color. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set color(c: string) {
     if (c && c != null && c.length > 0) {
       this.configFill.fillColor = c;
@@ -43,22 +58,20 @@ export class SeriesSelectComponent implements OnInit {
   }
 
   /** Specifies the label of the form field. */
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set label(text: string) {
     if (text && text != null) {
       this.labelText = text;
     }
   }
 
-  constructor(
-    private barSeriesService: BarSeriesService,
-    private scalarSeriesService: ScalarSeriesService,
-    private tradeSeriesService: TradeSeriesService,
-    private quoteSeriesService: QuoteSeriesService) {
-    this.barSeriesArray = this.barSeriesService.get();
+  constructor() {
+    /* this.barSeriesArray = this.barSeriesService.get();
     this.scalarSeriesArray = this.scalarSeriesService.get();
     this.tradeSeriesArray = this.tradeSeriesService.get();
-    this.quoteSeriesArray = this.quoteSeriesService.get();
-    this.selected = this.barSeriesArray[0];
+    this.quoteSeriesArray = this.quoteSeriesService.get(); */
+    //this.selected = this.barSeriesArray[0];
   }
 
   ngOnInit(): void {

@@ -1,15 +1,17 @@
 <mat-form-field style="width:330px">
-  <ng-container *ngIf="labelText.length > 0">
+  @if (labelText.length > 0) {
     <mat-label>{{labelText}}</mat-label>
-  </ng-container>
+  }
   <mat-select style="margin-top: 8px;" [(value)]="selected" (selectionChange)="changed(selected)">
     <mat-select-trigger>
       <mb-sparkline [width]="160" [height]="24" [data]="selected.data" [configuration]="configFill">
       </mb-sparkline> {{selected.mnemonic}}
     </mat-select-trigger>
-    <mat-option *ngFor="let series of seriesArray" [value]="series">
-      <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill"></mb-sparkline>
-      {{series.mnemonic}}
-    </mat-option>
+    @for (series of seriesArray; track series.data) {
+      <mat-option [value]="series">
+        <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill"></mb-sparkline>
+        {{series.mnemonic}}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

@@ -1,8 +1,8 @@
 <div class="wrapper">
   <mat-card appearance="outlined" class="note-card mat-elevation-z4">
     <mat-card-header>
-      <mat-card-title [routerLink]="note.route">{{note.title}}</mat-card-title>
-      <mat-card-subtitle>{{note.created|date}}</mat-card-subtitle>
+      <mat-card-title [routerLink]="note().route">{{note().title}}</mat-card-title>
+      <mat-card-subtitle>{{note().created|date}}</mat-card-subtitle>
     </mat-card-header>
     <!--mat-card-content>{{note.summary}}<br/>
     <mat-chip-list disabled>

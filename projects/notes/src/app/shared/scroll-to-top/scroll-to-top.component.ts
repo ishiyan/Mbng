@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-scroll-to-top',
   templateUrl: './scroll-to-top.component.html',
   styleUrls: ['./scroll-to-top.component.scss'],
-  imports: [FlexLayoutModule, MatButtonModule, MatIconModule],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FlexLayoutModule, MatButtonModule, MatIconModule]
 })
 export class ScrollToTopComponent {
   @Output() scrollToTop = new EventEmitter<void>();

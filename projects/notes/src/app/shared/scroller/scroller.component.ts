@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-scroller',
   templateUrl: './scroller.component.html',
   styleUrls: ['./scroller.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, MatIconModule]
 })
 export class ScrollerComponent {

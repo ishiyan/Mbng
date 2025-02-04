@@ -1,50 +1,50 @@
 <!-- '$event.target.value = null;' resets the file input, otherwise you cannot load the same file twice -->
 <input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
-    accept=".csv, .csv.gz" />
-<div>
+  accept=".csv, .csv.gz" />
+  <div>
     <button color="primary" mat-mini-fab (click)="fileInput.click()">
-        <mat-icon>add</mat-icon>
+      <mat-icon>add</mat-icon>
     </button>
-    <ng-container *ngIf="filePath.length > 0">
-        <span class="selected-file-name">{{filePath}}</span>
-    </ng-container>
-</div>
-<ng-container *ngIf="filePath.length > 0">
+    @if (filePath.length > 0) {
+      <span class="selected-file-name">{{filePath}}</span>
+    }
+  </div>
+  @if (filePath.length > 0) {
     <div class="selected-file-size">{{fileBytes|filesize}}, {{fileType}}</div>
-</ng-container>
-<ng-container *ngIf="progressVisible">
+  }
+  @if (progressVisible) {
     <mat-progress-bar color="accent" mode="indeterminate" [value]="progressPercentage" class="mtop"></mat-progress-bar>
-</ng-container>
-<ng-container *ngIf="errorText.length > 0">
+  }
+  @if (errorText.length > 0) {
     <div class="warn mtop limitwidth">{{errorText}}</div>
     <button mat-raised-button color="warn" class="mtop" (click)="clear()">
-        <mat-icon>backspace</mat-icon>
+      <mat-icon>backspace</mat-icon>
     </button>
-</ng-container>
-<ng-container *ngIf="data.length > 0">
+  }
+  @if (data.length > 0) {
     <div class="mtop">
-        {{data.length}} <i>{{granularity}}</i> {{entity}}
-        ({{data[0].time|date}} to {{data[data.length-1].time|date}})
+      {{data.length}} <i>{{granularity}}</i> {{entity}}
+      ({{data[0].time|date}} to {{data[data.length-1].time|date}})
     </div>
     <div class="mtop"></div>
     <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[data]" [min]="0"
-        [timeAxis]="['bottom']" [valueAxis]="['grid']">
+      [timeAxis]="['bottom']" [valueAxis]="['grid']">
     </mb-multiline>
     <div class="mtop">
-        <mat-form-field>
-            <input matInput type="text" minlength="1" maxlength="16" size="16" placeholder="mnemonic"
-                [(ngModel)]="mnemonic">
+      <mat-form-field>
+        <input matInput type="text" minlength="1" maxlength="16" size="16" placeholder="mnemonic"
+          [(ngModel)]="mnemonic">
         </mat-form-field>
-    </div>
-    <div>
+      </div>
+      <div>
         <mat-form-field class="fullwidth">
-            <textarea matInput minlength="1" placeholder="description" rows="1" [(ngModel)]="description"></textarea>
+          <textarea matInput minlength="1" placeholder="description" rows="1" [(ngModel)]="description"></textarea>
         </mat-form-field>
-    </div>
-    <button mat-mini-fab color="primary" (click)="add()">
+      </div>
+      <button mat-mini-fab color="primary" (click)="add()">
         <mat-icon>done</mat-icon>
-    </button>
-    <button mat-mini-fab color="warn" class="mleft" (click)="clear()">
+      </button>
+      <button mat-mini-fab color="warn" class="mleft" (click)="clear()">
         <mat-icon>close</mat-icon>
-    </button>
-</ng-container>
+      </button>
+  }

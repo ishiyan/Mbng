@@ -1,7 +1,9 @@
 <!--div *ngIf="showScroller" (click)="gotoTop()" class="scroll-to-top">
-  <i class="fas fa-angle-up">scrool to top</i>
+<i class="fas fa-angle-up">scrool to top</i>
 </div-->
 
-<button *ngIf="showScroller" mat-mini-fab color="primary" (click)="gotoTop()" class="scroll-to-top">
-  <mat-icon>arrow_upward</mat-icon>
-</button>
+@if (showScroller) {
+  <button mat-mini-fab color="primary" (click)="gotoTop()" class="scroll-to-top">
+    <mat-icon>arrow_upward</mat-icon>
+  </button>
+}
