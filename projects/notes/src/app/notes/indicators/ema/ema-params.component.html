@@ -4,6 +4,8 @@
   </button>
   <mb-exponential-moving-average-params [initial]="current.params" (selectionChange)="updateParams($event);">
   </mb-exponential-moving-average-params>
-  <mb-line-style-selector [initial]="current.style" [label]="'Line'" (selectionChange)="updateStyle($event);" *ngIf="current.showStyle">
-  </mb-line-style-selector>  
+  @if (current.showStyle) {
+    <mb-line-style-selector [initial]="current.style" [label]="'Line'" (selectionChange)="updateStyle($event);">
+    </mb-line-style-selector>
+  }
 </div>

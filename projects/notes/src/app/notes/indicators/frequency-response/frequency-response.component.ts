@@ -10,16 +10,16 @@ import { IdentityFilter } from './identity-filter';
 const sl = 4096;
 
 @Component({
-    selector: 'app-ind-frequency-response',
-    templateUrl: './frequency-response.component.html',
-    styleUrls: ['./frequency-response.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FlexModule,
-      KatexInlineComponent,
-      KatexDisplayComponent,
-      FrequencyResponseChartComponent
-    ]
+  selector: 'app-ind-frequency-response',
+  templateUrl: './frequency-response.component.html',
+  styleUrls: ['./frequency-response.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FlexModule,
+    KatexInlineComponent,
+    KatexDisplayComponent,
+    FrequencyResponseChartComponent
+  ]
 })
 export class FrequencyResponseComponent {
   protected frNote = frequencyResponseOfAnIndicatorNote;

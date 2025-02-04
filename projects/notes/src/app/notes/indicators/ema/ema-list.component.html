@@ -1,9 +1,11 @@
-<app-ema-params *ngFor="let ema of emaArray" [initial]="ema"
+@for (ema of emaArray; track ema.id) {
+  <app-ema-params [initial]="ema"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-ema-params>
+  </app-ema-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

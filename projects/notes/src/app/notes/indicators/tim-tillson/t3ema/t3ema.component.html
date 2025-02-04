@@ -9,19 +9,23 @@
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
-    </mb-swatches-select>
-    <app-t3ema-list [initialLength]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);">
-    </app-t3ema-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+        (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+      </mb-swatches-select>
+      <app-t3ema-list [initialLength]="initialIndicators" [colors]="selectedPalette"
+        (changed)="indicatorsChanged($event);">
+      </app-t3ema-list>
+    </mat-expansion-panel>
+  }
 
-  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank"></a>{{dataSelection.urlName}}</span></figcaption>
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank"></a>{{dataSelection.urlName}}</span>
+  }</figcaption>
 </figure>
 
 <div style="width:100%">
@@ -81,28 +85,27 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Max period to display</mat-label>
-      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Height</mat-label>
-      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
-    </mat-form-field>
-
-    <app-t3ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-t3ema-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="fill">
+        <mat-label>Max period to display</mat-label>
+        <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+      </mat-form-field>
+      <app-t3ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-t3ema-list>
+    </mat-expansion-panel>
+  }
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
@@ -117,25 +120,25 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 
 <figure class="figwide">
   <!--mat-grid-list cols="2" rowHeight="260px">
-    <mat-grid-tile>
-    </mat-grid-tile>
-  </mat-grid-list-->
-  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="15" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various T3EMA lengths.</figcaption>
+  <mat-grid-tile>
+  </mat-grid-tile>
+</mat-grid-list-->
+<mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+  [xmode]="'period'" [maxPeriod]="15" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+[settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+<mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+  [xmode]="'frequency'" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+[settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+<figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various T3EMA lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various T3EMA lengths.</figcaption>
 </figure>
 

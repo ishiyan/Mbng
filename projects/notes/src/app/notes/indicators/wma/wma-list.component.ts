@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -19,67 +18,83 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createWma = (showStyle: boolean, len: number, comp?: BarComponent): Wma => {
+const createWma = (sid: number, showStyle: boolean, len: number, comp?: BarComponent): Wma => {
   const params = {length: len, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-wma-list',
-    templateUrl: './wma-list.component.html',
-    styleUrls: ['./wma-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      WmaParamsComponent,
-    ]
+  selector: 'app-wma-list',
+  templateUrl: './wma-list.component.html',
+  styleUrls: ['./wma-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    WmaParamsComponent
+  ]
 })
 export class WmaListComponent implements AfterViewInit {
-
   /** Specifies the initial indicator array. */
-  @Input() set initial(init: WmaInput) {
-    const arr: Wma[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const wma = createWma(init.showStyle, init.length[i], init.barComponent);
-      wma.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(wma);
-    }
-
-    this.wmaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initial = input<WmaInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: Wma[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.wmaArray.length; i++) {
-        const wma = {...this.wmaArray[i]};
-        wma.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initial();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Wma[] = [];
 
-        arr.push(wma);
+        for (let i = 0; i < init.length.length; i++) {
+          const wma = createWma(sid + i, init.showStyle, init.length[i], init.barComponent);
+          wma.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(wma);
+        }
+    
+        this.wmaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
-
-      this.wmaArray = arr;
-    }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Wma[] = [];
+        this.colorArray = inp;
+  
+        for (let i = 0; i < this.wmaArray.length; i++) {
+          const wma = {...this.wmaArray[i]};
+          wma.style.color = inp[i%inp.length];
+          wma.id = sid + i;  
+          arr.push(wma);
+        }
+  
+        this.wmaArray = arr;
+      }
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<Wma[]> = new EventEmitter<Wma[]>();
+  readonly changed = output<Wma[]>();
 
   protected wmaArray: Wma[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -90,7 +105,11 @@ export class WmaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const wma = createWma(showStyle, this.getLastLength() + 5, this.defaultBarComponent);
+    const wma = createWma(
+      this.startId + this.wmaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      this.defaultBarComponent);
 
     if (showStyle) {
       wma.style.color = this.colorArray[this.wmaArray.length%this.colorArray.length];
@@ -112,6 +131,10 @@ export class WmaListComponent implements AfterViewInit {
     const i = this.getIndex(wma);
     if (i >= 0) {
       this.wmaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.wmaArray.length; ++j) {
+        this.wmaArray[j].id = sid + j;
+      }
       this.wmaArray = [...this.wmaArray];
       this.notify();
     }

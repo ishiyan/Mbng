@@ -1,9 +1,11 @@
-<app-tema-params *ngFor="let tema of temaArray" [initial]="tema"
+@for (tema of temaArray; track tema.id) {
+  <app-tema-params [initial]="tema"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-tema-params>
+  </app-tema-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

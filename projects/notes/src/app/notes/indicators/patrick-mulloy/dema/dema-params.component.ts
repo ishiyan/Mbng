@@ -1,38 +1,41 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams, DoubleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
+import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import {  DoubleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { Dema } from './dema.interface';
 
 @Component({
-    selector: 'app-dema-params',
-    templateUrl: './dema-params.component.html',
-    styleUrls: ['./dema-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      DoubleExponentialMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-dema-params',
+  templateUrl: './dema-params.component.html',
+  styleUrls: ['./dema-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    LineStyleSelectorComponent,
+    DoubleExponentialMovingAverageParamsComponent
+  ]
 })
 export class DemaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(dema: Dema) {
-    this.current = dema;
+  readonly initial = input.required<Dema>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Dema> = new EventEmitter<Dema>();
+  readonly removed = output<Dema>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Dema> = new EventEmitter<Dema>();
+  readonly changed = output<Dema>();
 
   protected current!: Dema;
 

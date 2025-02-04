@@ -1,38 +1,40 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { SimpleMovingAverageParams, SimpleMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
-import { LineStyle } from 'mb';
+import { SimpleMovingAverageParams, SimpleMovingAverageParamsComponent } from 'mb';
+import { LineStyle, LineStyleSelectorComponent } from 'mb';
 
 import { Sma } from './sma.interface';
 
 @Component({
-    selector: 'app-sma-params',
-    templateUrl: './sma-params.component.html',
-    styleUrls: ['./sma-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      LineStyleSelectorComponent,
-      SimpleMovingAverageParamsComponent
-    ]
+  selector: 'app-sma-params',
+  templateUrl: './sma-params.component.html',
+  styleUrls: ['./sma-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    LineStyleSelectorComponent,
+    SimpleMovingAverageParamsComponent
+ ]
 })
 export class SmaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(sma: Sma) {
-    this.current = sma;
+  readonly initial = input.required<Sma>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Sma> = new EventEmitter<Sma>();
+  readonly removed = output<Sma>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Sma> = new EventEmitter<Sma>();
+  readonly changed = output<Sma>();
 
   protected current!: Sma;
 

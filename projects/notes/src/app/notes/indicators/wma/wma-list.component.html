@@ -1,9 +1,11 @@
-<app-wma-params *ngFor="let wma of wmaArray" [initial]="wma"
+@for (wma of wmaArray; track wma.id) {
+  <app-wma-params [initial]="wma"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-wma-params>
+  </app-wma-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

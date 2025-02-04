@@ -9,31 +9,35 @@
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
-    </mb-swatches-select>
-    <app-wma-list [initial]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);">
-    </app-wma-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+        (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+      </mb-swatches-select>
+      <app-wma-list [initial]="initialIndicators" [colors]="selectedPalette"
+        (changed)="indicatorsChanged($event);">
+      </app-wma-list>
+    </mat-expansion-panel>
+  }
 
-  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span></figcaption>
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+  }</figcaption>
 </figure>
 <p></p>
 
 <div style="width:100%">
   <figure class="figleft">
     (a)
-    <mb-svg-viewer src="assets/indicators/wma-weights-5.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/wma-weights-5.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
     (b)
-    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
-  
+
     <figcaption>Weighting factors of the (a) WMA and (b) SMA.</figcaption>
   </figure>
   <p></p>
@@ -42,9 +46,9 @@
   of length <mb-ki>L \ge 2</mb-ki> is the weighted mean of the last
   <mb-ki>L</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
   where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge L</mb-ki>.
-  
+
   <p></p>
-  It is similar to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but the multiplier 
+  It is similar to the <a href="/{{smaNote.route}}">Simple Moving Average</a>, but the multiplier
   weighting coefficients linearly descend from <mb-ki>L</mb-ki> at the last to <mb-ki>1</mb-ki>
   at the first element of the moving average window, so the earlier samples have less impact on the WMA.
   <mb-kd>{{"\\tag*{(1)}wma_{k}=\\frac{\\sum\\limits_{m=1}^{L}{m x_{k-L+m}}}{\\sum\\limits_{m=1}^{L}{m}}"}}</mb-kd>
@@ -54,7 +58,7 @@
 
   <p></p>
   The WMA has a reduced lag which results from the most recent data being the most heavily weighted.
-  
+
   The WMA coefficient values form a triangle across the width of the moving average window,
   resulting a center of the gravity being <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
 
@@ -82,7 +86,7 @@
   <mb-kd>{{"\\tag*{}-x_{k-L+1}-2x_{k-L+2}-3x_{k-L+3}-\\,\\ldots\\,-(L-1)x_{k-1}-Lx_{k}"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=-x_{k-L+1}-x_{k-L+2}-x_{k-L+3}-\\,\\ldots\\,-x_{k-1}-x_{k}+Lx_{k+1}"}}</mb-kd>
   <mb-kd>{{"\\tag*{}=Lx_{k+1}-\\sum\\limits_{n=k-L+1}^{k}{x_{n}}"}}</mb-kd>
-  
+
   Denoting
   <mb-kd>{{"\\tag*{(4)}s_{k}=\\sum\\limits_{n=k-L+1}^{k}{x_{n}}"}}</mb-kd>
 
@@ -146,28 +150,27 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Max period to display</mat-label>
-      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Height</mat-label>
-      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
-    </mat-form-field>
-
-    <app-wma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-wma-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="fill">
+        <mat-label>Max period to display</mat-label>
+        <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+      </mat-form-field>
+      <app-wma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-wma-list>
+    </mat-expansion-panel>
+  }
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
@@ -188,10 +191,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[wma5, wma10, wma20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[wma5, wma10, wma20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a normalized frequency of a cycle.</figcaption>
 </figure>
 <p></p>

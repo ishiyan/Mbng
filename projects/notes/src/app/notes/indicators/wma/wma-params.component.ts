@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
 import { LineStyle, WeightedMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { WeightedMovingAverageParams } from 'mb';
@@ -9,30 +8,32 @@ import { WeightedMovingAverageParams } from 'mb';
 import { Wma } from './wma.interface';
 
 @Component({
-    selector: 'app-wma-params',
-    templateUrl: './wma-params.component.html',
-    styleUrls: ['./wma-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      WeightedMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-wma-params',
+  templateUrl: './wma-params.component.html',
+  styleUrls: ['./wma-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIconButton,
+    MatIcon,
+    LineStyleSelectorComponent,
+    WeightedMovingAverageParamsComponent,
+  ]
 })
 export class WmaParamsComponent {
-
   /** Specifies the input values. */
-  @Input() set initial(wma: Wma) {
-    this.current = wma;
+  readonly initial = input.required<Wma>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Wma> = new EventEmitter<Wma>();
+  readonly removed = output<Wma>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Wma> = new EventEmitter<Wma>();
+  readonly changed = output<Wma>();
 
   protected current!: Wma;
 

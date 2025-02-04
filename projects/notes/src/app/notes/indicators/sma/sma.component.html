@@ -9,19 +9,23 @@
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
-    </mb-swatches-select>
-    <app-sma-list [initial]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);">
-    </app-sma-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+        (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+      </mb-swatches-select>
+      <app-sma-list [initial]="initialIndicators" [colors]="selectedPalette"
+        (changed)="indicatorsChanged($event);">
+      </app-sma-list>
+    </mat-expansion-panel>
+  }
 
-  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span></figcaption>
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+  }</figcaption>
 </figure>
 <p></p>
 
@@ -119,28 +123,27 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'frequency'"
     [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Max period to display</mat-label>
-      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Height</mat-label>
-      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
-    </mat-form-field>
-
-    <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="fill">
+        <mat-label>Max period to display</mat-label>
+        <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+      </mat-form-field>
+      <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
+    </mat-expansion-panel>
+  }
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a cycle.</figcaption>
 </figure>
@@ -162,40 +165,40 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma2, sma4, sma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma3, sma5, sma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[sma2, sma4, sma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma2, sma4, sma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma3, sma5, sma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[sma2, sma4, sma6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 <p></p>

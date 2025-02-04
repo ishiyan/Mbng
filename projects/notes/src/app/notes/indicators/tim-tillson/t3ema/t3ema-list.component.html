@@ -1,9 +1,11 @@
-<app-t3ema-params *ngFor="let t3ema of t3emaArray" [initial]="t3ema"
+@for (t3ema of t3emaArray; track t3ema.id) {
+  <app-t3ema-params [initial]="t3ema"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-t3ema-params>
+  </app-t3ema-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

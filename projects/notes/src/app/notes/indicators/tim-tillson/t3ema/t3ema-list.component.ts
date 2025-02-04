@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -22,91 +21,114 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createLengthT3ema = (showStyle: boolean, len: number, vf: number, first: boolean, comp?: BarComponent): T3ema => {
+const createLengthT3ema = (sid: number, showStyle: boolean, len: number, vf: number, first: boolean, comp?: BarComponent): T3ema => {
   const params = {length: len, vFactor: vf, firstIsAverage: first, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
-const createAlphaT3ema = (showStyle: boolean, sf: number, vf: number, comp?: BarComponent): T3ema => {
+const createAlphaT3ema = (sid: number, showStyle: boolean, sf: number, vf: number, comp?: BarComponent): T3ema => {
   const params = {smoothingFactor: sf, vFactor: vf, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-t3ema-list',
-    templateUrl: './t3ema-list.component.html',
-    styleUrls: ['./t3ema-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      T3emaParamsComponent,
-    ]
+  selector: 'app-t3ema-list',
+  templateUrl: './t3ema-list.component.html',
+  styleUrls: ['./t3ema-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    T3emaParamsComponent
+  ]
 })
 export class T3emaListComponent implements AfterViewInit {
 
   /** Specifies the initial indicator array. */
-  @Input() set initialLength(init: T3emaLengthInput) {
-    const arr: T3ema[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const t3ema = createLengthT3ema(init.showStyle, init.length[i], init.vFactor, init.firstIsAverage, init.barComponent);
-      t3ema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(t3ema);
-    }
-
-    this.t3emaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
+  readonly initialLength = input<T3emaLengthInput>();
 
   /** Specifies the initial indicator array. */
-  @Input() set initialSmoothingFactor(init: T3emaSmoothingFactorInput) {
-    const arr: T3ema[] = [];
-
-    for (let i = 0; i < init.smoothingFactor.length; i++) {
-      const t3ema = createAlphaT3ema(init.showStyle, init.smoothingFactor[i], init.vFactor, init.barComponent);
-      t3ema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(t3ema);
-    }
-
-    this.t3emaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initialSmoothingFactor = input<T3emaSmoothingFactorInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: T3ema[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.t3emaArray.length; i++) {
-        const t3ema = {...this.t3emaArray[i]};
-        t3ema.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initialLength();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T3ema[] = [];
 
-        arr.push(t3ema);
+        for (let i = 0; i < init.length.length; i++) {
+          const t3ema = createLengthT3ema(sid + i, init.showStyle, init.length[i], init.vFactor, init.firstIsAverage, init.barComponent);
+          t3ema.style.color = this.colorArray[i%this.colorArray.length];
+          arr.push(t3ema);
+        }
+    
+        this.t3emaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
+    });
+    effect(() => {
+      const init = this.initialSmoothingFactor();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T3ema[] = [];
 
-      this.t3emaArray = arr;
-    }
+        for (let i = 0; i < init.smoothingFactor.length; i++) {
+          const t3ema = createAlphaT3ema(sid + i, init.showStyle, init.smoothingFactor[i], init.vFactor, init.barComponent);
+          t3ema.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(t3ema);
+        }
+        
+        this.t3emaArray = arr;
+        this.defaultBarComponent = init.barComponent;
+      }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T3ema[] = [];
+        this.colorArray = inp;
+  
+        for (let i = 0; i < this.t3emaArray.length; i++) {
+          const ema = {...this.t3emaArray[i]};
+          ema.style.color = inp[i%inp.length];
+          ema.id = sid + i;
+          arr.push(ema);
+        }
+  
+        this.t3emaArray = arr;
+      }
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<T3ema[]> = new EventEmitter<T3ema[]>();
+  readonly changed = output<T3ema[]>();
 
   protected t3emaArray: T3ema[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -117,7 +139,13 @@ export class T3emaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const t3ema = createLengthT3ema(showStyle, this.getLastLength() + 5, 0.7, true, this.defaultBarComponent);
+    const t3ema = createLengthT3ema(
+      this.startId + this.t3emaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      0.7,
+      true,
+      this.defaultBarComponent);
 
     if (showStyle) {
       t3ema.style.color = this.colorArray[this.t3emaArray.length%this.colorArray.length];
@@ -139,6 +167,10 @@ export class T3emaListComponent implements AfterViewInit {
     const i = this.getIndex(t3ema);
     if (i >= 0) {
       this.t3emaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.t3emaArray.length; ++j) {
+        this.t3emaArray[j].id = sid + j;
+      }
       this.t3emaArray = [...this.t3emaArray];
       this.notify();
     }

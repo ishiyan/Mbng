@@ -1,8 +1,9 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, generateStep, OhlcvChartComponent, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
@@ -14,8 +15,6 @@ import { DoubleExponentialMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
 import { DoubleExponentialMovingAverageLengthParams, DoubleExponentialMovingAverageSmoothingFactorParams } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
@@ -69,57 +68,56 @@ const calculateFrequencyResponse = (dema: DoubleExponentialMovingAverage): Frequ
 };
 
 const getConfigTemplate = (): Configuration => ({
-    width: '100%', widthMin: 360, // widthMax: 700,
-    navigationPane: {
-      height: 30, heightMin: 30, heightMax: 30, // timeTicksFormat: '%Y-%m-%d',
-      hasLine: false, hasArea: true, hasTimeAxis: false, timeTicks: 0,
-      // hasLine: true, hasArea: false, hasTimeAxis: true, timeTicks: 0,
-    },
-    heightNavigationPane: 30,
-    timeAnnotationFormat: '%Y-%m-%d', // timeTicks: 5, timeTicksFormat: '%Y-%m-%d',
-    axisLeft: true,
-    axisRight: false,
-    margin: { left: 0, top: 10, right: 20, bottom: 0 },
-    ohlcv: { name: '', data: [], candlesticks: false },
-    pricePane: {
-      height: '30%', heightMin: 300, heightMax: 800,
-      valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10,
-      bands: [],
-      lineAreas: [],
-      horizontals: [],
-      arrows: [],
-      lines: []
-    },
-    indicatorPanes: [],
-    crosshair: false,
-    volumeInPricePane: false,
-    menuVisible: true, downloadSvgVisible: true
-  });
+  width: '100%', widthMin: 360, // widthMax: 700,
+  navigationPane: {
+    height: 30, heightMin: 30, heightMax: 30, // timeTicksFormat: '%Y-%m-%d',
+    hasLine: false, hasArea: true, hasTimeAxis: false, timeTicks: 0,
+    // hasLine: true, hasArea: false, hasTimeAxis: true, timeTicks: 0,
+  },
+  heightNavigationPane: 30,
+  timeAnnotationFormat: '%Y-%m-%d', // timeTicks: 5, timeTicksFormat: '%Y-%m-%d',
+  axisLeft: true,
+  axisRight: false,
+  margin: { left: 0, top: 10, right: 20, bottom: 0 },
+  ohlcv: { name: '', data: [], candlesticks: false },
+  pricePane: {
+    height: '30%', heightMin: 300, heightMax: 800,
+    valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10,
+    bands: [],
+    lineAreas: [],
+    horizontals: [],
+    arrows: [],
+    lines: []
+  },
+  indicatorPanes: [],
+  crosshair: false,
+  volumeInPricePane: false,
+  menuVisible: true, downloadSvgVisible: true
+});
 
 @Component({
-    selector: 'app-ind-dema',
-    templateUrl: './dema.component.html',
-    styleUrls: ['./dema.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      FormsModule,
-      MatSlideToggle,
-      MatIcon,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      BarSeriesSelectComponent,
-      OhlcvChartComponent,
-      SwatchesSelectComponent,
-      DemaListComponent,
-      KatexInlineComponent,
-      KatexDisplayComponent,
-      FrequencyResponseChartComponent
-    ]
+  selector: 'app-ind-dema',
+  templateUrl: './dema.component.html',
+  styleUrls: ['./dema.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatIcon,
+    MatSlideToggle,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    BarSeriesSelectComponent,
+    OhlcvChartComponent,
+    SwatchesSelectComponent,
+    KatexInlineComponent,
+    KatexDisplayComponent,
+    FrequencyResponseChartComponent,
+    DemaListComponent
+  ]
 })
 export class DemaComponent implements AfterViewInit {
 

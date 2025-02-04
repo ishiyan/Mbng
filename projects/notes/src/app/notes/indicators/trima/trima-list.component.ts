@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -19,67 +18,84 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createTrima = (showStyle: boolean, len: number, comp?: BarComponent): Trima => {
+const createTrima = (sid: number, showStyle: boolean, len: number, comp?: BarComponent): Trima => {
   const params = {length: len, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-trima-list',
-    templateUrl: './trima-list.component.html',
-    styleUrls: ['./trima-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      TrimaParamsComponent,
-    ]
+  selector: 'app-trima-list',
+  templateUrl: './trima-list.component.html',
+  styleUrls: ['./trima-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    TrimaParamsComponent
+  ]
 })
 export class TrimaListComponent implements AfterViewInit {
 
   /** Specifies the initial indicator array. */
-  @Input() set initial(init: TrimaInput) {
-    const arr: Trima[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const trima = createTrima(init.showStyle, init.length[i], init.barComponent);
-      trima.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(trima);
-    }
-
-    this.trimaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initial = input<TrimaInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: Trima[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.trimaArray.length; i++) {
-        const trima = {...this.trimaArray[i]};
-        trima.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initial();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Trima[] = [];
 
-        arr.push(trima);
+        for (let i = 0; i < init.length.length; i++) {
+          const trima = createTrima(sid + i, init.showStyle, init.length[i], init.barComponent);
+          trima.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(trima);
+        }
+    
+        this.trimaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Trima[] = [];
+        this.colorArray = inp;
 
-      this.trimaArray = arr;
-    }
+        for (let i = 0; i < this.trimaArray.length; i++) {
+          const trima = {...this.trimaArray[i]};
+          trima.style.color = inp[i%inp.length];  
+          trima.id = sid + i;  
+          arr.push(trima);
+        }
+  
+        this.trimaArray = arr;
+      }
+      });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<Trima[]> = new EventEmitter<Trima[]>();
+  readonly changed = output<Trima[]>();
 
   protected trimaArray: Trima[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -90,7 +106,11 @@ export class TrimaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const trima = createTrima(showStyle, this.getLastLength() + 5, this.defaultBarComponent);
+    const trima = createTrima(
+      this.startId + this.trimaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      this.defaultBarComponent);
 
     if (showStyle) {
       trima.style.color = this.colorArray[this.trimaArray.length%this.colorArray.length];
@@ -112,6 +132,10 @@ export class TrimaListComponent implements AfterViewInit {
     const i = this.getIndex(trima);
     if (i >= 0) {
       this.trimaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.trimaArray.length; ++j) {
+        this.trimaArray[j].id = sid + j;
+      }
       this.trimaArray = [...this.trimaArray];
       this.notify();
     }

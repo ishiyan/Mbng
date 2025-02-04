@@ -1,9 +1,11 @@
-<app-trima-params *ngFor="let trima of trimaArray" [initial]="trima"
+@for (trima of trimaArray; track trima.id) {
+  <app-trima-params [initial]="trima"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-trima-params>
+  </app-trima-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

@@ -9,19 +9,23 @@
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
-    </mb-swatches-select>
-    <app-ema-list [initialLength]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);">
-    </app-ema-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+        (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+      </mb-swatches-select>
+      <app-ema-list [initialLength]="initialIndicators" [colors]="selectedPalette"
+        (changed)="indicatorsChanged($event);">
+      </app-ema-list>
+    </mat-expansion-panel>
+  }
 
-  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span></figcaption>
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+  }</figcaption>
 </figure>
 <p></p>
 
@@ -85,62 +89,62 @@
 
 <div style="width:100%">
   The step response of the EMA can be derived analytically.
-It is the output of the EMA when a Heaviside step function (Oppenheim et al., 2009, p.13)
-<mb-kd>
-  {{"\\tag*{}H_{k} = \\begin{cases} 0, & k \\lt 0 \\\\ 1, & k \\ge 0 \\end{cases}"}}
-</mb-kd>
-is applied as an input. Using equation (2),
-<mb-kd>
-  {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}H_{k-m}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{(5)}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
-</mb-kd>
-To simplify the expression above, we can recall a sum of geometric series
-<mb-kd>
-  {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = 1 + x + x^2 + \\ldots + x^{k-1}"}}
-</mb-kd>
-Multiplying both sides by <mb-ki>{{"1-x"}}</mb-ki> and simplifying
-<mb-kd>
-  {{"\\tag*{}(1-x)\\sum_{m=0}^{k-1}x^m = (1-x)(1 + x + x^2 + \\ldots + x^{k-1})"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}= 1 + x + x^2 + \\ldots + x^{k-1} - x - x^2 - \\ldots - x^{k-1} - x^k"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}= 1 - x^k"}}
-</mb-kd>
-gives a well-known identity for a sum of geometric series (Jeffrey and Dai, 2008, 1.2.2.2):
-<mb-kd>
-  {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = \\begin{cases} (1-x^k)/(1-x), & x \\neq 1 \\\\ k, & x = 1 \\end{cases}"}}
-</mb-kd>
-Substituting the sum of geometric series into equaton (5) gives
-<mb-kd>
-  {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\alpha\\frac{1-(1-\\alpha)^k}{1-(1-\\alpha)}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{(6)}=1-(1-\\alpha)^{k}"}}
-</mb-kd>
-<p></p>
+  It is the output of the EMA when a Heaviside step function (Oppenheim et al., 2009, p.13)
+  <mb-kd>
+    {{"\\tag*{}H_{k} = \\begin{cases} 0, & k \\lt 0 \\\\ 1, & k \\ge 0 \\end{cases}"}}
+  </mb-kd>
+  is applied as an input. Using equation (2),
+  <mb-kd>
+    {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}H_{k-m}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(5)}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
+  </mb-kd>
+  To simplify the expression above, we can recall a sum of geometric series
+  <mb-kd>
+    {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = 1 + x + x^2 + \\ldots + x^{k-1}"}}
+  </mb-kd>
+  Multiplying both sides by <mb-ki>{{"1-x"}}</mb-ki> and simplifying
+  <mb-kd>
+    {{"\\tag*{}(1-x)\\sum_{m=0}^{k-1}x^m = (1-x)(1 + x + x^2 + \\ldots + x^{k-1})"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}= 1 + x + x^2 + \\ldots + x^{k-1} - x - x^2 - \\ldots - x^{k-1} - x^k"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}= 1 - x^k"}}
+  </mb-kd>
+  gives a well-known identity for a sum of geometric series (Jeffrey and Dai, 2008, 1.2.2.2):
+  <mb-kd>
+    {{"\\tag*{}\\sum_{m=0}^{k-1}x^m = \\begin{cases} (1-x^k)/(1-x), & x \\neq 1 \\\\ k, & x = 1 \\end{cases}"}}
+  </mb-kd>
+  Substituting the sum of geometric series into equaton (5) gives
+  <mb-kd>
+    {{"\\tag*{}ema_{k}^{step}=\\alpha\\sum\\limits_{m=0}^{k-1}{(1-\\alpha)^{m}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\alpha\\frac{1-(1-\\alpha)^k}{1-(1-\\alpha)}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(6)}=1-(1-\\alpha)^{k}"}}
+  </mb-kd>
+  <p></p>
 
-The unit impulse response <mb-ki>{{"h_{k}"}}</mb-ki> of the EMA is the output of the EMA when a Kronecker delta function
-<mb-kd>
-  {{"\\tag*{}\\delta_{k} = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
-</mb-kd>
-is applied to the input. Using the equation (2), we get
-<mb-kd>
-  {{"\\tag*{}h_{k}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}x_{k-m}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}\\delta_{k-m}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{(7)}=\\alpha(1-\\alpha)^{k}"}}
-</mb-kd>
-<p></p>
+  The unit impulse response <mb-ki>{{"h_{k}"}}</mb-ki> of the EMA is the output of the EMA when a Kronecker delta function
+  <mb-kd>
+    {{"\\tag*{}\\delta_{k} = \\begin{cases} 1, & k=0 \\\\ 0, & k \\neq 0 \\end{cases}"}}
+  </mb-kd>
+  is applied to the input. Using the equation (2), we get
+  <mb-kd>
+    {{"\\tag*{}h_{k}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}x_{k-m}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\alpha\\sum\\limits_{m=0}^{\\infty}{(1-\\alpha)^{m}\\delta_{k-m}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(7)}=\\alpha(1-\\alpha)^{k}"}}
+  </mb-kd>
+  <p></p>
 </div>
 
 <h2>Frequency response</h2>
@@ -160,28 +164,27 @@ is applied to the input. Using the equation (2), we get
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Max period to display</mat-label>
-      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Height</mat-label>
-      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
-    </mat-form-field>
-
-    <app-ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-ema-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="fill">
+        <mat-label>Max period to display</mat-label>
+        <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+      </mat-form-field>
+      <app-ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-ema-list>
+    </mat-expansion-panel>
+  }
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
@@ -203,116 +206,116 @@ is applied to the input. Using the equation (2), we get
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[ema2, ema5, ema10, ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[ema2, ema5, ema10, ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various EMA lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'period'" [maxPeriod]="40" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-70" [maxDeg]="20" [data]="[ema2, ema5, ema10, ema20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various EMA lengths.</figcaption>
 </figure>
 <p></p>
 
 <div style="width:100%">
   The frequency response of the EMA can be derived analytically from the transfer function of the EMA.
-The transfer function is defined using the unilateral Z-transform (Oppenheim et al., 2009, p.99)
-<mb-kd>
-  {{"\\tag*{}Z\\{x[n]\\}\\Leftrightarrow\\sum\\limits_{n=0}^{\\infty}{x[n]z^{-n}}"}}
-</mb-kd>
-where <mb-ki>{{"z"}}</mb-ki> is a complex variable. If 
-<mb-kd>
-  {{"\\tag*{}X(z)=Z\\{x[n]\\}, \\qquad Y(z)=Z\\{y[n]\\}"}}
-</mb-kd>
-are Z-transforms of the input <mb-ki>{{"x[n]"}}</mb-ki> and the output <mb-ki>{{"y[n]"}}</mb-ki>
-respectively, then the transfer function (sometimes called system function) is defined as
-(Oppenheim et al., 2009, p.131)
-<mb-kd>
-  {{"\\tag*{}H(z)=\\frac{Y(z)}{X(z)}"}}
-</mb-kd>
+  The transfer function is defined using the unilateral Z-transform (Oppenheim et al., 2009, p.99)
+  <mb-kd>
+    {{"\\tag*{}Z\\{x[n]\\}\\Leftrightarrow\\sum\\limits_{n=0}^{\\infty}{x[n]z^{-n}}"}}
+  </mb-kd>
+  where <mb-ki>{{"z"}}</mb-ki> is a complex variable. If
+  <mb-kd>
+    {{"\\tag*{}X(z)=Z\\{x[n]\\}, \\qquad Y(z)=Z\\{y[n]\\}"}}
+  </mb-kd>
+  are Z-transforms of the input <mb-ki>{{"x[n]"}}</mb-ki> and the output <mb-ki>{{"y[n]"}}</mb-ki>
+  respectively, then the transfer function (sometimes called system function) is defined as
+  (Oppenheim et al., 2009, p.131)
+  <mb-kd>
+    {{"\\tag*{}H(z)=\\frac{Y(z)}{X(z)}"}}
+  </mb-kd>
 
-<p></p>
-Applying Z-transorm to the equation (1) and using the linearity and the translation (time shift)
-properties of the Z-transform translation (Oppenheim et al., 2009, pp.124-125)
-<mb-kd>
-  {{"\\tag*{}Z\\{y(n - m)\\}\\Leftrightarrow z^{-m}Y(z)"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}Z\\{ax[n]+by[n]\\}\\Leftrightarrow aX(z)+bY(z)"}}
-</mb-kd>
-we get:
-<mb-kd>
-  {{"\\tag*{}Z\\{y[n]\\}=Z\\{\\alpha x[n]+(1-\\alpha)y[n-1]\\}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)Z\\{y[n-1]\\}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)z^{-1}Z\\{y[n]\\}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}Y(z)=\\alpha X(z)+(1-\\alpha)z^{-1}Y(z)"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}Y(z)(1-(1-\\alpha)z^{-1})=\\alpha X(z)"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{(8)}H(z)=\\frac{Y(z)}{X(z)}=\\frac{\\alpha}{1-(1-\\alpha)z^{-1}}"}}
-</mb-kd>
+  <p></p>
+  Applying Z-transorm to the equation (1) and using the linearity and the translation (time shift)
+  properties of the Z-transform translation (Oppenheim et al., 2009, pp.124-125)
+  <mb-kd>
+    {{"\\tag*{}Z\\{y(n - m)\\}\\Leftrightarrow z^{-m}Y(z)"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}Z\\{ax[n]+by[n]\\}\\Leftrightarrow aX(z)+bY(z)"}}
+  </mb-kd>
+  we get:
+  <mb-kd>
+    {{"\\tag*{}Z\\{y[n]\\}=Z\\{\\alpha x[n]+(1-\\alpha)y[n-1]\\}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)Z\\{y[n-1]\\}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\alpha Z\\{x[n]\\}+(1-\\alpha)z^{-1}Z\\{y[n]\\}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}Y(z)=\\alpha X(z)+(1-\\alpha)z^{-1}Y(z)"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}Y(z)(1-(1-\\alpha)z^{-1})=\\alpha X(z)"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(8)}H(z)=\\frac{Y(z)}{X(z)}=\\frac{\\alpha}{1-(1-\\alpha)z^{-1}}"}}
+  </mb-kd>
 
-<p></p>
-The frequency response function is the transfer function where z is located on the unit circle,
-<mb-ki>{{"z=exp(-i\\omega)"}}</mb-ki>. Here <mb-ki>{{"\\omega"}}</mb-ki> is an angular frequency
-(in radians per sample), <mb-ki>{{"\\nu"}}</mb-ki> is a frequency, and <mb-ki>{{"\\tau"}}</mb-ki>
-is a period of a cycle in samples:
-<mb-kd>
-  {{"\\tag*{}\\omega = 2\\pi\\nu = \\frac{2\\pi}{\\tau}"}}
-</mb-kd>
-Then, the equation (8) becomes
-<mb-kd>
-  {{"\\tag*{(9)}H(\\omega)=\\frac{\\alpha}{1-(1-\\alpha)exp(-i\\omega)}"}}
-</mb-kd>
-Let's calculate the squared modulus of the <mb-ki>{{"H(\\omega)"}}</mb-ki> using the Euler's formula
-for writing the exponential as sines and cosines: <mb-ki>{{"exp(ix)=\\cos x+i\\sin x"}}</mb-ki>.
-<mb-kd>
-  {{"\\tag*{}\\left|H(\\omega)\\right|^{2}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)exp(-i\\omega)\\right|^{2}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)(\\cos(-\\omega)+i\\sin(-\\omega))\\right|^{2}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\frac{\\alpha^{2}}{(1-(1-\\alpha)\\cos(\\omega))^{2}+((1-\\alpha)\\sin(\\omega))^{2}}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}\\cos^{2}(\\omega)+(1-\\alpha)^{2}\\sin^{2}(\\omega)}"}}
-</mb-kd>
-<mb-kd>
-  {{"\\tag*{(10)}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}"}}
-</mb-kd>
-and
-<mb-kd>
-  {{"\\tag*{(11)}\\left|H(\\omega)\\right|=\\frac{\\alpha}{\\sqrt{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}}"}}
-</mb-kd>
+  <p></p>
+  The frequency response function is the transfer function where z is located on the unit circle,
+  <mb-ki>{{"z=exp(-i\\omega)"}}</mb-ki>. Here <mb-ki>{{"\\omega"}}</mb-ki> is an angular frequency
+  (in radians per sample), <mb-ki>{{"\\nu"}}</mb-ki> is a frequency, and <mb-ki>{{"\\tau"}}</mb-ki>
+  is a period of a cycle in samples:
+  <mb-kd>
+    {{"\\tag*{}\\omega = 2\\pi\\nu = \\frac{2\\pi}{\\tau}"}}
+  </mb-kd>
+  Then, the equation (8) becomes
+  <mb-kd>
+    {{"\\tag*{(9)}H(\\omega)=\\frac{\\alpha}{1-(1-\\alpha)exp(-i\\omega)}"}}
+  </mb-kd>
+  Let's calculate the squared modulus of the <mb-ki>{{"H(\\omega)"}}</mb-ki> using the Euler's formula
+  for writing the exponential as sines and cosines: <mb-ki>{{"exp(ix)=\\cos x+i\\sin x"}}</mb-ki>.
+  <mb-kd>
+    {{"\\tag*{}\\left|H(\\omega)\\right|^{2}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)exp(-i\\omega)\\right|^{2}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{\\alpha^{2}}{\\left|1-(1-\\alpha)(\\cos(-\\omega)+i\\sin(-\\omega))\\right|^{2}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{\\alpha^{2}}{(1-(1-\\alpha)\\cos(\\omega))^{2}+((1-\\alpha)\\sin(\\omega))^{2}}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}\\cos^{2}(\\omega)+(1-\\alpha)^{2}\\sin^{2}(\\omega)}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(10)}=\\frac{\\alpha^{2}}{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}"}}
+  </mb-kd>
+  and
+  <mb-kd>
+    {{"\\tag*{(11)}\\left|H(\\omega)\\right|=\\frac{\\alpha}{\\sqrt{1-2(1-\\alpha)\\cos(\\omega)+(1-\\alpha)^{2}}}"}}
+  </mb-kd>
 
-(Mak, 2006, p.15) mentions that the phase of the <mb-ki>{{"H(\\omega)"}}</mb-ki> can be derived as
-<mb-kd>
-  {{"\\tag*{(12)}\\phi(\\omega)=\\tan^{-1}\\left( \\frac{-(1-\\alpha)\\sin\\omega}{1-(1-\\alpha)\\cos\\omega} \\right)"}}
-</mb-kd>
-We can also express the phase lag <mb-ki>{{"\\phi(\\omega)"}}</mb-ki> in the equation above
-in terms of a lag in a number of bars (data points)
-<mb-kd>
-  {{"\\tag*{(13)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}"}}
-</mb-kd>
-I was not able to derive both equations (12) and (13), and (Mak, 2006, p.15) do not have the simplified
-formula for the equation (13).
-<p></p>
+  (Mak, 2006, p.15) mentions that the phase of the <mb-ki>{{"H(\\omega)"}}</mb-ki> can be derived as
+  <mb-kd>
+    {{"\\tag*{(12)}\\phi(\\omega)=\\tan^{-1}\\left( \\frac{-(1-\\alpha)\\sin\\omega}{1-(1-\\alpha)\\cos\\omega} \\right)"}}
+  </mb-kd>
+  We can also express the phase lag <mb-ki>{{"\\phi(\\omega)"}}</mb-ki> in the equation above
+  in terms of a lag in a number of bars (data points)
+  <mb-kd>
+    {{"\\tag*{(13)}bar\\ lag=\\frac{\\phi(\\omega)}{\\omega}"}}
+  </mb-kd>
+  I was not able to derive both equations (12) and (13), and (Mak, 2006, p.15) do not have the simplified
+  formula for the equation (13).
+  <p></p>
 </div>
 
 <div style="width:100%">

@@ -1,38 +1,41 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoothingFactorParams, T3ExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
+import { T3ExponentialMovingAverageLengthParams, T3ExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { T3ExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 
 import { T3ema } from './t3ema.interface';
 
 @Component({
-    selector: 'app-t3ema-params',
-    templateUrl: './t3ema-params.component.html',
-    styleUrls: ['./t3ema-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      T3ExponentialMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-t3ema-params',
+  templateUrl: './t3ema-params.component.html',
+  styleUrls: ['./t3ema-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    LineStyleSelectorComponent,
+    T3ExponentialMovingAverageParamsComponent
+  ]
 })
 export class T3emaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(t3ema: T3ema) {
-    this.current = t3ema;
+  readonly initial = input.required<T3ema>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<T3ema> = new EventEmitter<T3ema>();
+  readonly removed = output<T3ema>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<T3ema> = new EventEmitter<T3ema>();
+  readonly changed = output<T3ema>();
 
   protected current!: T3ema;
 

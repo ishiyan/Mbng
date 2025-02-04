@@ -9,34 +9,38 @@
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
-      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
-    </mb-swatches-select>
-    <app-trima-list [initial]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event);">
-    </app-trima-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+        (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+      </mb-swatches-select>
+      <app-trima-list [initial]="initialIndicators" [colors]="selectedPalette"
+        (changed)="indicatorsChanged($event);">
+      </app-trima-list>
+    </mat-expansion-panel>
+  }
 
-  <figcaption>{{dataSelection.description}}. <span *ngIf="dataSelection.url"><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span></figcaption>
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+  }</figcaption>
 </figure>
 <p></p>
 
 <div style="width:100%">
   <figure class="figleft">
     (a)
-    <mb-svg-viewer src="assets/indicators/trima-weights-6.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/trima-weights-6.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
     (b)
-    <mb-svg-viewer src="assets/indicators/trima-weights-5.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/trima-weights-5.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
     (c)
-    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
-  
+
     <figcaption>Weight coefficients of the (a) TRIMA(6), (b) TRIMA(5) and (c) SMA(5).</figcaption>
   </figure>
   <p></p>
@@ -60,7 +64,7 @@
 
   It is easy to see that <mb-ki>w_m</mb-ki> values form two arithmetic progressions, one ascending and
   one descending. This allows us to calculate the sum of weighting coefficients in denominator of equation (1).
-  <p></p>  
+  <p></p>
   Let's consider an arithmetic progression:
   <mb-kd>{{"\\tag*{}a_n=a_{n-1}+d,\\ d=const"}}</mb-kd>
   Its sum when starting summation from the very first element is:
@@ -102,12 +106,12 @@
 
   <figure class="figleft">
     (a)
-    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-6.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-6.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
     (b)
-    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-5.svg" [scaleToContainer]="true">    
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-5.svg" [scaleToContainer]="true">
     </mb-svg-viewer>
-  
+
     <figcaption>SMA over SMA calculation grid for the even and odd length of the TRIMA: (a) TRIMA(6) and (b) TRIMA(5).</figcaption>
   </figure>
 
@@ -122,27 +126,27 @@
   shows the count <mb-ki>{{"w"}}</mb-ki> (weight) for the every sample.
   The weight values form an imaginary triangular shape, similar to ones on the figure 2.
   <p></p>
- </div>
+</div>
 
- <h2>Step response</h2>
- <div style="width:100%">
+<h2>Step response</h2>
+<div style="width:100%">
   Two figures below demonstrate the response to the step-up and step-down data.
   The transition is clearly not linear.
   Both responses touch the step data with the lag equal to the length <mb-ki>{{"L"}}</mb-ki> of the filter.
   The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
   <p></p>
 
- <figure class="figwide">
-   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
-   <figcaption>Step-up response.</figcaption>
- </figure>
- <figure class="figwide">
-   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
-   <figcaption>Step-down response.</figcaption>
- </figure>
- <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
+    <figcaption>Step-up response.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
+    <figcaption>Step-down response.</figcaption>
+  </figure>
+  <p></p>
 </div>
- 
+
 <h2>Frequency response</h2>
 <div style="width:100%">
   The figures below show an amplitude and a phase lag of the unit sample response of the TRIMA as a function
@@ -170,28 +174,27 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
-  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;" *ngIf="unlocked">
-    <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Max period to display</mat-label>
-      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Height</mat-label>
-      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
-    </mat-form-field>
-
-    <app-trima-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-trima-list>
-  </mat-expansion-panel>
+  @if (unlocked) {
+    <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+      <mat-expansion-panel-header>
+        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-form-field appearance="fill">
+        <mat-label>Max period to display</mat-label>
+        <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+      </mat-form-field>
+      <app-trima-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-trima-list>
+    </mat-expansion-panel>
+  }
 
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
 </figure>
@@ -208,12 +211,12 @@
   <p></p>
   <table>
     <thead>
-        <td><mb-ki>{{"L"}}</mb-ki></td>
-        <td><mb-ki>{{"l"}}</mb-ki></td>
-        <td><mb-ki>{{"L_{inner}"}}</mb-ki></td>
-        <td><mb-ki>{{"L_{outer}"}}</mb-ki></td>
-        <td><mb-ki>{{"dB, \\tau = 2"}}</mb-ki></td>
-        <td><mb-ki>{{"poles, \\tau"}}</mb-ki></td>  
+      <td><mb-ki>{{"L"}}</mb-ki></td>
+      <td><mb-ki>{{"l"}}</mb-ki></td>
+      <td><mb-ki>{{"L_{inner}"}}</mb-ki></td>
+      <td><mb-ki>{{"L_{outer}"}}</mb-ki></td>
+      <td><mb-ki>{{"dB, \\tau = 2"}}</mb-ki></td>
+      <td><mb-ki>{{"poles, \\tau"}}</mb-ki></td>
     </thead>
     <tbody>
       <tr>
@@ -321,62 +324,62 @@
         <td>8, 7, 8/2=4, 7/2=3.5, 8/3=2.7, 7/3=2.3</td>
       </tr>
       <!-- tr>
-        <td>15</td>
-        <td>7</td>
-        <td>8</td>
-        <td>8</td>
-        <td>-100</td>
-        <td>8, 8/2=4, 8/3=2.7</td>
-      </tr>
-      <tr>
-        <td>16</td>
-        <td>8</td>
-        <td>8</td>
-        <td>9</td>
-        <td>-100</td>
-        <td>9, 8, 9/2=4.5, 8/2=4, 9/3=3, 8/3=2.7, 9/4=2.25</td>
-      </tr>
-      <tr>
-        <td>17</td>
-        <td>8</td>
-        <td>9</td>
-        <td>9</td>
-        <td>-40</td>
-        <td>9, 9/2=4.5, 9/3=3, 9/4=2.25</td>
-      </tr>
-      <tr>
-        <td>18</td>
-        <td>9</td>
-        <td>9</td>
-        <td>10</td>
-        <td>-100</td>
-        <td>10, 9, 10/2=5, 9/2=4.5, 10/3=3.3, 9/3=3, 8/3=2.7, 10/4=2.5, 9/4=2.25</td>
-      </tr>
-      <tr>
-        <td>19</td>
-        <td>9</td>
-        <td>10</td>
-        <td>10</td>
-        <td>-100</td>
-        <td>10, 10/2=5, 10/3=3.3, 10/4=2.5</td>
-      </tr>
-      <tr>
-        <td>20</td>
-        <td>10</td>
-        <td>10</td>
-        <td>11</td>
-        <td>-100</td>
-        <td>11, 10, 11/2=5.5, 10/2=5, 11/3=3.67, 10/3=3.3, 11/4=2.75, 10/4=2.5</td>
-      </tr>
-      <tr>
-        <td>21</td>
-        <td>10</td>
-        <td>11</td>
-        <td>11</td>
-        <td>-43</td>
-        <td>11, 11/2=5.5, 11/3=3.67, 11/4=2.75, 11/5=2.2</td>
+      <td>15</td>
+      <td>7</td>
+      <td>8</td>
+      <td>8</td>
+      <td>-100</td>
+      <td>8, 8/2=4, 8/3=2.7</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>8</td>
+      <td>8</td>
+      <td>9</td>
+      <td>-100</td>
+      <td>9, 8, 9/2=4.5, 8/2=4, 9/3=3, 8/3=2.7, 9/4=2.25</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>8</td>
+      <td>9</td>
+      <td>9</td>
+      <td>-40</td>
+      <td>9, 9/2=4.5, 9/3=3, 9/4=2.25</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>9</td>
+      <td>9</td>
+      <td>10</td>
+      <td>-100</td>
+      <td>10, 9, 10/2=5, 9/2=4.5, 10/3=3.3, 9/3=3, 8/3=2.7, 10/4=2.5, 9/4=2.25</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>9</td>
+      <td>10</td>
+      <td>10</td>
+      <td>-100</td>
+      <td>10, 10/2=5, 10/3=3.3, 10/4=2.5</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>10</td>
+      <td>10</td>
+      <td>11</td>
+      <td>-100</td>
+      <td>11, 10, 11/2=5.5, 10/2=5, 11/3=3.67, 10/3=3.3, 11/4=2.75, 10/4=2.5</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>10</td>
+      <td>11</td>
+      <td>11</td>
+      <td>-43</td>
+      <td>11, 11/2=5.5, 11/3=3.67, 11/4=2.75, 11/5=2.2</td>
       </tr -->
-    </tbody>  
+    </tbody>
   </table>
   <div class="tablecaption">The poles of the amplitude response for increasing length of the TRIMA.</div>
   <p></p>
@@ -392,40 +395,40 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4, trima6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5, trima7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima2, trima4, trima6]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima3, trima5, trima7]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[trima2, trima4]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[trima3, trima5]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 <p></p>

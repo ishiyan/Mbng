@@ -1,38 +1,41 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams, ExponentialMovingAverageParamsComponent } from 'mb';
-import { LineStyleSelectorComponent } from 'mb';
-import { LineStyle } from 'mb';
+import { ExponentialMovingAverageLengthParams, ExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { ExponentialMovingAverageParamsComponent } from 'mb';
+import { LineStyle, LineStyleSelectorComponent } from 'mb';
+
 import { Ema } from './ema.interface';
 
 @Component({
-    selector: 'app-ema-params',
-    templateUrl: './ema-params.component.html',
-    styleUrls: ['./ema-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      ExponentialMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-ema-params',
+  templateUrl: './ema-params.component.html',
+  styleUrls: ['./ema-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    LineStyleSelectorComponent,
+    ExponentialMovingAverageParamsComponent
+  ]
 })
 export class EmaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(ema: Ema) {
-    this.current = ema;
+  readonly initial = input.required<Ema>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Ema> = new EventEmitter<Ema>();
+  readonly removed = output<Ema>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Ema> = new EventEmitter<Ema>();
+  readonly changed = output<Ema>();
 
   protected current!: Ema;
 

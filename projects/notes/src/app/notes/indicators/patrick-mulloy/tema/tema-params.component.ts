@@ -1,37 +1,40 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams, TripleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
+import { TripleExponentialMovingAverageLengthParams, TripleExponentialMovingAverageSmoothingFactorParams } from 'mb';
+import { TripleExponentialMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
 import { LineStyle } from 'mb';
 import { Tema } from './tema.interface';
 
 @Component({
-    selector: 'app-tema-params',
-    templateUrl: './tema-params.component.html',
-    styleUrls: ['./tema-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      TripleExponentialMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-tema-params',
+  templateUrl: './tema-params.component.html',
+  styleUrls: ['./tema-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    LineStyleSelectorComponent,
+    TripleExponentialMovingAverageParamsComponent
+  ]
 })
 export class TemaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(tema: Tema) {
-    this.current = tema;
+  readonly initial = input.required<Tema>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Tema> = new EventEmitter<Tema>();
+  readonly removed = output<Tema>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Tema> = new EventEmitter<Tema>();
+  readonly changed = output<Tema>();
 
   protected current!: Tema;
 

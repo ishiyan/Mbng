@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -19,67 +18,84 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createSma = (showStyle: boolean, len: number, comp?: BarComponent): Sma => {
+const createSma = (sid: number, showStyle: boolean, len: number, comp?: BarComponent): Sma => {
   const params = {length: len, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-sma-list',
-    templateUrl: './sma-list.component.html',
-    styleUrls: ['./sma-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      SmaParamsComponent,
-    ]
+  selector: 'app-sma-list',
+  templateUrl: './sma-list.component.html',
+  styleUrls: ['./sma-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    SmaParamsComponent
+ ]
 })
 export class SmaListComponent implements AfterViewInit {
 
   /** Specifies the initial indicator array. */
-  @Input() set initial(init: SmaInput) {
-    const arr: Sma[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const sma = createSma(init.showStyle, init.length[i], init.barComponent);
-      sma.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(sma);
-    }
-
-    this.smaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initial = input<SmaInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: Sma[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.smaArray.length; i++) {
-        const sma = {...this.smaArray[i]};
-        sma.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initial();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Sma[] = [];
 
-        arr.push(sma);
+        for (let i = 0; i < init.length.length; i++) {
+          const sma = createSma(sid + i, init.showStyle, init.length[i], init.barComponent);
+          sma.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(sma);
+        }
+    
+        this.smaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
-
-      this.smaArray = arr;
-    }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Sma[] = [];
+        this.colorArray = inp;
+  
+        for (let i = 0; i < this.smaArray.length; i++) {
+          const sma = {...this.smaArray[i]};
+          sma.style.color = inp[i%inp.length];
+          sma.id = sid + i;  
+          arr.push(sma);
+        }
+  
+        this.smaArray = arr;
+      }
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<Sma[]> = new EventEmitter<Sma[]>();
+  readonly changed = output<Sma[]>();
 
   protected smaArray: Sma[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -90,7 +106,11 @@ export class SmaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const sma = createSma(showStyle, this.getLastLength() + 5, this.defaultBarComponent);
+    const sma = createSma(
+      this.startId + this.smaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      this.defaultBarComponent);
 
     if (showStyle) {
       sma.style.color = this.colorArray[this.smaArray.length%this.colorArray.length];
@@ -112,6 +132,10 @@ export class SmaListComponent implements AfterViewInit {
     const i = this.getIndex(sma);
     if (i >= 0) {
       this.smaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.smaArray.length; ++j) {
+        this.smaArray[j].id = sid + j;
+      }
       this.smaArray = [...this.smaArray];
       this.notify();
     }

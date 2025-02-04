@@ -1,11 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { MatIcon } from '@angular/material/icon';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, generateStep, OhlcvChartComponent, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
 import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
@@ -59,57 +58,56 @@ const calculateStep = (bars: Bar[], t2ema: T2ExponentialMovingAverage, barCompon
 };
 
 const getConfigTemplate = (): Configuration => ({
-    width: '100%', widthMin: 360, // widthMax: 700,
-    navigationPane: {
-      height: 30, heightMin: 30, heightMax: 30, // timeTicksFormat: '%Y-%m-%d',
-      hasLine: false, hasArea: true, hasTimeAxis: false, timeTicks: 0,
-      // hasLine: true, hasArea: false, hasTimeAxis: true, timeTicks: 0,
-    },
-    heightNavigationPane: 30,
-    timeAnnotationFormat: '%Y-%m-%d', // timeTicks: 5, timeTicksFormat: '%Y-%m-%d',
-    axisLeft: true,
-    axisRight: false,
-    margin: { left: 0, top: 10, right: 20, bottom: 0 },
-    ohlcv: { name: '', data: [], candlesticks: false },
-    pricePane: {
-      height: '30%', heightMin: 300, heightMax: 800,
-      valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10,
-      bands: [],
-      lineAreas: [],
-      horizontals: [],
-      arrows: [],
-      lines: []
-    },
-    indicatorPanes: [],
-    crosshair: false,
-    volumeInPricePane: false,
-    menuVisible: true, downloadSvgVisible: true
-  });
+  width: '100%', widthMin: 360, // widthMax: 700,
+  navigationPane: {
+    height: 30, heightMin: 30, heightMax: 30, // timeTicksFormat: '%Y-%m-%d',
+    hasLine: false, hasArea: true, hasTimeAxis: false, timeTicks: 0,
+    // hasLine: true, hasArea: false, hasTimeAxis: true, timeTicks: 0,
+  },
+  heightNavigationPane: 30,
+  timeAnnotationFormat: '%Y-%m-%d', // timeTicks: 5, timeTicksFormat: '%Y-%m-%d',
+  axisLeft: true,
+  axisRight: false,
+  margin: { left: 0, top: 10, right: 20, bottom: 0 },
+  ohlcv: { name: '', data: [], candlesticks: false },
+  pricePane: {
+    height: '30%', heightMin: 300, heightMax: 800,
+    valueMarginPercentageFactor: 0.01, valueFormat: ',.2f', // valueTicks: 10,
+    bands: [],
+    lineAreas: [],
+    horizontals: [],
+    arrows: [],
+    lines: []
+  },
+  indicatorPanes: [],
+  crosshair: false,
+  volumeInPricePane: false,
+  menuVisible: true, downloadSvgVisible: true
+});
 
 @Component({
-    selector: 'app-ind-t2ema',
-    templateUrl: './t2ema.component.html',
-    styleUrls: ['./t2ema.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      FormsModule,
-      MatSlideToggle,
-      MatIcon,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      BarSeriesSelectComponent,
-      OhlcvChartComponent,
-      SwatchesSelectComponent,
-      T2emaListComponent,
-      KatexInlineComponent,
-      KatexDisplayComponent,
-      FrequencyResponseChartComponent
-    ]
+  selector: 'app-ind-t2ema',
+  templateUrl: './t2ema.component.html',
+  styleUrls: ['./t2ema.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatIcon,
+    MatSlideToggle,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    BarSeriesSelectComponent,
+    OhlcvChartComponent,
+    SwatchesSelectComponent,
+    KatexInlineComponent,
+    KatexDisplayComponent,
+    FrequencyResponseChartComponent,
+    T2emaListComponent
+  ]
 })
 export class T2emaComponent implements AfterViewInit {
 
@@ -118,11 +116,11 @@ export class T2emaComponent implements AfterViewInit {
   protected selectedIndex = 0; // 20
 
   protected readonly initialIndicators: T2emaLengthInput = {
-    length: [5,10,20], vFactor: 0.7, firstIsAverage: false, barComponent: BarComponent.Median, showStyle: true
+    length: [2,4,6], vFactor: 0.7, firstIsAverage: false, barComponent: BarComponent.Median, showStyle: true
   };
 
   protected readonly initialFreqs: T2emaLengthInput = {
-    length: [5,10,20], vFactor: 0.7, firstIsAverage: false, showStyle: false
+    length: [2,4,6], vFactor: 0.7, firstIsAverage: false, showStyle: false
   };
 
   protected get maxPeriod(): number {

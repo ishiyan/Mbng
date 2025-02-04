@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -22,91 +21,114 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createLengthTema = (showStyle: boolean, len: number, first: boolean, comp?: BarComponent): Tema => {
+const createLengthTema = (sid: number, showStyle: boolean, len: number, first: boolean, comp?: BarComponent): Tema => {
   const params = {length: len, firstIsAverage: first, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
-const createAlphaTema = (showStyle: boolean, sf: number, comp?: BarComponent): Tema => {
+const createAlphaTema = (sid: number, showStyle: boolean, sf: number, comp?: BarComponent): Tema => {
   const params = {smoothingFactor: sf, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-tema-list',
-    templateUrl: './tema-list.component.html',
-    styleUrls: ['./tema-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      TemaParamsComponent,
-    ]
+  selector: 'app-tema-list',
+  templateUrl: './tema-list.component.html',
+  styleUrls: ['./tema-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    TemaParamsComponent
+  ]
 })
 export class TemaListComponent implements AfterViewInit {
 
   /** Specifies the initial indicator array. */
-  @Input() set initialLength(init: TemaLengthInput) {
-    const arr: Tema[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const tema = createLengthTema(init.showStyle, init.length[i], init.firstIsAverage, init.barComponent);
-      tema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(tema);
-    }
-
-    this.temaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
+  readonly initialLength = input<TemaLengthInput>();
 
   /** Specifies the initial indicator array. */
-  @Input() set initialSmoothingFactor(init: TemaSmoothingFactorInput) {
-    const arr: Tema[] = [];
-
-    for (let i = 0; i < init.smoothingFactor.length; i++) {
-      const tema = createAlphaTema(init.showStyle, init.smoothingFactor[i], init.barComponent);
-      tema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(tema);
-    }
-
-    this.temaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initialSmoothingFactor = input<TemaSmoothingFactorInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: Tema[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.temaArray.length; i++) {
-        const tema = {...this.temaArray[i]};
-        tema.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initialLength();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Tema[] = [];
 
-        arr.push(tema);
+        for (let i = 0; i < init.length.length; i++) {
+          const tema = createLengthTema(sid + i, init.showStyle, init.length[i], init.firstIsAverage, init.barComponent);
+          tema.style.color = this.colorArray[i%this.colorArray.length];
+          arr.push(tema);
+        }
+    
+        this.temaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
+    });
+    effect(() => {
+      const init = this.initialSmoothingFactor();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Tema[] = [];
 
-      this.temaArray = arr;
-    }
+        for (let i = 0; i < init.smoothingFactor.length; i++) {
+          const tema = createAlphaTema(sid + i, init.showStyle, init.smoothingFactor[i], init.barComponent);
+          tema.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(tema);
+        }
+        
+        this.temaArray = arr;
+        this.defaultBarComponent = init.barComponent;
+      }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: Tema[] = [];
+        this.colorArray = inp;
+  
+        for (let i = 0; i < this.temaArray.length; i++) {
+          const ema = {...this.temaArray[i]};
+          ema.style.color = inp[i%inp.length];
+          ema.id = sid + i;
+          arr.push(ema);
+        }
+  
+        this.temaArray = arr;
+      }
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<Tema[]> = new EventEmitter<Tema[]>();
+  readonly changed = output<Tema[]>();
 
   protected temaArray: Tema[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -117,7 +139,12 @@ export class TemaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const tema = createLengthTema(showStyle, this.getLastLength() + 5, true, this.defaultBarComponent);
+    const tema = createLengthTema(
+      this.startId + this.temaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      true,
+      this.defaultBarComponent);
 
     if (showStyle) {
       tema.style.color = this.colorArray[this.temaArray.length%this.colorArray.length];
@@ -139,6 +166,10 @@ export class TemaListComponent implements AfterViewInit {
     const i = this.getIndex(tema);
     if (i >= 0) {
       this.temaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.temaArray.length; ++j) {
+        this.temaArray[j].id = sid + j;
+      }
       this.temaArray = [...this.temaArray];
       this.notify();
     }

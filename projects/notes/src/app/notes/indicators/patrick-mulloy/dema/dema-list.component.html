@@ -1,9 +1,11 @@
-<app-dema-params *ngFor="let dema of demaArray" [initial]="dema"
+@for (dema of demaArray; track dema.id) {
+  <app-dema-params [initial]="dema"
     (changed)="updated($event);" (removed)="removed($event);">
-</app-dema-params>
+  </app-dema-params>
+}
 
 <div>
-    <button mat-mini-fab color="primary" (click)="add();">
-        <mat-icon>add</mat-icon>
-    </button>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

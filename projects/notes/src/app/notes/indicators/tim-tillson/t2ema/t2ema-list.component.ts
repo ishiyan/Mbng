@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { MatMiniFabButton } from '@angular/material/button';
+import { Component, ChangeDetectionStrategy, AfterViewInit, output, input, effect } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
@@ -22,91 +21,114 @@ const createStyle = (): LineStyle => {
   return style;
 };
 
-const createLengthT2ema = (showStyle: boolean, len: number, vf: number, first: boolean, comp?: BarComponent): T2ema => {
+const createLengthT2ema = (sid: number, showStyle: boolean, len: number, vf: number, first: boolean, comp?: BarComponent): T2ema => {
   const params = {length: len, vFactor: vf, firstIsAverage: first, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
-const createAlphaT2ema = (showStyle: boolean, sf: number, vf: number, comp?: BarComponent): T2ema => {
+const createAlphaT2ema = (sid: number, showStyle: boolean, sf: number, vf: number, comp?: BarComponent): T2ema => {
   const params = {smoothingFactor: sf, vFactor: vf, barComponent: comp};
   return {
-    params,
+    id: sid,
+    params: params,
     style: createStyle(),
-    showStyle
+    showStyle: showStyle
   };
 };
 
+function inc(n: number): number {
+  return n === 1000 ? 0 : 1000;
+}
+
 @Component({
-    selector: 'app-t2ema-list',
-    templateUrl: './t2ema-list.component.html',
-    styleUrls: ['./t2ema-list.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgFor,
-      MatMiniFabButton,
-      MatIcon,
-      T2emaParamsComponent,
-    ]
+  selector: 'app-t2ema-list',
+  templateUrl: './t2ema-list.component.html',
+  styleUrls: ['./t2ema-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatMiniFabButton,
+    T2emaParamsComponent
+  ]
 })
 export class T2emaListComponent implements AfterViewInit {
 
   /** Specifies the initial indicator array. */
-  @Input() set initialLength(init: T2emaLengthInput) {
-    const arr: T2ema[] = [];
-
-    for (let i = 0; i < init.length.length; i++) {
-      const t2ema = createLengthT2ema(init.showStyle, init.length[i], init.vFactor, init.firstIsAverage, init.barComponent);
-      t2ema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(t2ema);
-    }
-
-    this.t2emaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
+  readonly initialLength = input<T2emaLengthInput>();
 
   /** Specifies the initial indicator array. */
-  @Input() set initialSmoothingFactor(init: T2emaSmoothingFactorInput) {
-    const arr: T2ema[] = [];
-
-    for (let i = 0; i < init.smoothingFactor.length; i++) {
-      const t2ema = createAlphaT2ema(init.showStyle, init.smoothingFactor[i], init.vFactor, init.barComponent);
-      t2ema.style.color = this.colorArray[i%this.colorArray.length];
-
-      arr.push(t2ema);
-    }
-
-    this.t2emaArray = arr;
-    this.defaultBarComponent = init.barComponent;
-  }
-
+  readonly initialSmoothingFactor = input<T2emaSmoothingFactorInput>();
+ 
   /** Specifies the input colors. */
-  @Input() set colors(inp: string[]) {
-    if (inp && inp.length > 0) {
-      const arr: T2ema[] = [];
-      this.colorArray = inp;
+  readonly colors = input<string[]>();
 
-      for (let i = 0; i < this.t2emaArray.length; i++) {
-        const t2ema = {...this.t2emaArray[i]};
-        t2ema.style.color = inp[i%inp.length];
+  constructor() {
+    effect(() => {
+      const init = this.initialLength();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T2ema[] = [];
 
-        arr.push(t2ema);
+        for (let i = 0; i < init.length.length; i++) {
+          const t2ema = createLengthT2ema(sid + i, init.showStyle, init.length[i], init.vFactor, init.firstIsAverage, init.barComponent);
+          t2ema.style.color = this.colorArray[i%this.colorArray.length];
+          arr.push(t2ema);
+        }
+    
+        this.t2emaArray = arr;
+        this.defaultBarComponent = init.barComponent;
       }
+    });
+    effect(() => {
+      const init = this.initialSmoothingFactor();
+      if (init) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T2ema[] = [];
 
-      this.t2emaArray = arr;
-    }
+        for (let i = 0; i < init.smoothingFactor.length; i++) {
+          const t2ema = createAlphaT2ema(sid + i, init.showStyle, init.smoothingFactor[i], init.vFactor, init.barComponent);
+          t2ema.style.color = this.colorArray[i%this.colorArray.length];    
+          arr.push(t2ema);
+        }
+        
+        this.t2emaArray = arr;
+        this.defaultBarComponent = init.barComponent;
+      }
+    });
+    effect(() => {
+      const inp = this.colors();
+      if (inp && inp.length > 0) {
+        this.startId = inc(this.startId);
+        const sid = this.startId;
+        const arr: T2ema[] = [];
+        this.colorArray = inp;
+  
+        for (let i = 0; i < this.t2emaArray.length; i++) {
+          const ema = {...this.t2emaArray[i]};
+          ema.style.color = inp[i%inp.length];
+          ema.id = sid + i;
+          arr.push(ema);
+        }
+  
+        this.t2emaArray = arr;
+      }
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly changed: EventEmitter<T2ema[]> = new EventEmitter<T2ema[]>();
+  readonly changed = output<T2ema[]>();
 
   protected t2emaArray: T2ema[] = [];
   protected colorArray = ['#ff0000'];
 
+  private startId = 0;
   private initialized = false;
   private defaultBarComponent?: BarComponent;
 
@@ -117,7 +139,13 @@ export class T2emaListComponent implements AfterViewInit {
 
   protected add(): void {
     const showStyle = this.getShowStyle();
-    const t2ema = createLengthT2ema(showStyle, this.getLastLength() + 5, 0.7, true, this.defaultBarComponent);
+    const t2ema = createLengthT2ema(
+      this.startId + this.t2emaArray.length,
+      showStyle,
+      this.getLastLength() + 5,
+      0.7,
+      true,
+      this.defaultBarComponent);
 
     if (showStyle) {
       t2ema.style.color = this.colorArray[this.t2emaArray.length%this.colorArray.length];
@@ -139,6 +167,10 @@ export class T2emaListComponent implements AfterViewInit {
     const i = this.getIndex(t2ema);
     if (i >= 0) {
       this.t2emaArray.splice(i, 1);
+      const sid = this.startId;
+      for (let j = i; j < this.t2emaArray.length; ++j) {
+        this.t2emaArray[j].id = sid + j;
+      }
       this.t2emaArray = [...this.t2emaArray];
       this.notify();
     }

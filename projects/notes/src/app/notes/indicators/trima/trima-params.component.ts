@@ -1,38 +1,40 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
 
-import { LineStyle, TriangularMovingAverageParamsComponent, LineStyleSelectorComponent } from 'mb';
-import { TriangularMovingAverageParams } from 'mb';
+import { LineStyle, LineStyleSelectorComponent } from 'mb';
+import { TriangularMovingAverageParams, TriangularMovingAverageParamsComponent } from 'mb';
 
 import { Trima } from './trima.interface';
 
 @Component({
-    selector: 'app-trima-params',
-    templateUrl: './trima-params.component.html',
-    styleUrls: ['./trima-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      MatIconButton,
-      MatIcon,
-      TriangularMovingAverageParamsComponent,
-      LineStyleSelectorComponent
-    ]
+  selector: 'app-trima-params',
+  templateUrl: './trima-params.component.html',
+  styleUrls: ['./trima-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatIcon,
+    MatIconButton,
+    TriangularMovingAverageParamsComponent,
+    LineStyleSelectorComponent
+  ]
 })
 export class TrimaParamsComponent {
 
   /** Specifies the input values. */
-  @Input() set initial(trima: Trima) {
-    this.current = trima;
+  readonly initial = input.required<Trima>();
+
+  constructor() {
+    effect(() => {
+      this.current = this.initial();
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
-  @Output() readonly removed: EventEmitter<Trima> = new EventEmitter<Trima>();
+  readonly removed = output<Trima>();
 
   /** Event emitted when the indicator has been changed by the user. */
-  @Output() readonly changed: EventEmitter<Trima> = new EventEmitter<Trima>();
+  readonly changed = output<Trima>();
 
   protected current!: Trima;
 
