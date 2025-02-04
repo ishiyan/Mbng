@@ -7,7 +7,9 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": true,
+          "changeDetection": "OnPush"
         }
       },
       "root": "projects/notes",
@@ -17,10 +19,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": {
-              "base": "dist/notes"
-            },
+            "outputPath": "dist/notes",
             "index": "projects/notes/src/index.html",
+            "browser": "projects/notes/src/main.ts",
             "polyfills": [
               "projects/notes/src/polyfills.ts"
             ],
@@ -28,6 +29,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/notes/src/favicon.ico",
+              "projects/notes/src/robots.txt",
               "projects/notes/src/assets",
               {
                 "glob": "**/*",
@@ -38,8 +40,7 @@
             "styles": [
               "projects/notes/src/styles.scss"
             ],
-            "scripts": [],
-            "browser": "projects/notes/src/main.ts"
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -123,7 +124,9 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": true,
+          "changeDetection": "OnPush"
         }
       },
       "root": "projects/proeftuin",
@@ -247,6 +250,13 @@
     },
     "mb": {
       "projectType": "library",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "standalone": true,
+          "changeDetection": "OnPush"
+        }
+      },
       "root": "projects/mb",
       "sourceRoot": "projects/mb/src",
       "prefix": "mb",

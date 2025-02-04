@@ -1,3 +1,9 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+   "typescript.tsdk": "node_modules/typescript/lib",
+   // Exclude third party modules and build artifacts from the editor watchers/searches.
+   "files.watcherExclude": {
+      "**/.git/**": true,
+      "**/node_modules/**": true,
+      "**/dist/**": true,
+   }
 }
