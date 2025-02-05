@@ -124,20 +124,20 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   </mat-grid-tile>
 </mat-grid-list-->
 <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-  [xmode]="'period'" [maxPeriod]="15" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+  [xmode]="'period'" [maxPeriod]="15" [data]="[t3ema2, t3ema4, t3ema6]"
 [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-  [xmode]="'frequency'" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+  [xmode]="'frequency'" [data]="[t3ema2, t3ema4, t3ema6]"
 [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various T3EMA lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema4, t3ema6]"
   [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema5, t3ema10, t3ema20]"
+    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t3ema2, t3ema4, t3ema6]"
   [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various T3EMA lengths.</figcaption>
 </figure>

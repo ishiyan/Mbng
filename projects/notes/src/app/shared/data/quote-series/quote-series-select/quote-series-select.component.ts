@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
@@ -28,24 +28,22 @@ export class QuoteSeriesSelectComponent extends SeriesSelect implements OnInit {
   private quoteSeriesService = inject(QuoteSeriesService);
 
   /** Specifies the sparkline fill color. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set color(c: string) {
-    this.setColor(c);
-  }
+  readonly color = input<string>();
 
   /** Specifies the label of the form field. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set label(text: string) {
-    this.setLabel(text);
-  }
+  readonly label = input<string>();
 
   /** Event emitted when the selection has been changed. */
   readonly selectionChange = output<QuoteSeries>();
 
   constructor() {
     super();
+    effect(() => {
+      this.setColor(this.color());
+    });
+    effect(() => {
+      this.setLabel(this.label());
+    });
     this.seriesArray = this.quoteSeriesService.get();
     this.selected = this.seriesArray[0];
   }

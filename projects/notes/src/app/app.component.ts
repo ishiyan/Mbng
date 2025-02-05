@@ -1,11 +1,12 @@
-import { Component, HostBinding } from '@angular/core';
-import { OverlayContainer } from '@angular/cdk/overlay';
+import { ChangeDetectionStrategy, Component, HostBinding, inject } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { FlexModule } from '@angular/flex-layout/flex';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+
 import { SeriesListComponent } from './shared/data/series-list/series-list.component';
 import { KatexSettingsComponent } from './shared/katex-settings/katex-settings.component';
 
@@ -13,15 +14,28 @@ const darkClassName = 'darkMode';
 const lightClassName = '';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    imports: [FlexModule, MatToolbar, MatIconButton, RouterLink, MatIcon, MatSidenavContainer, MatSidenav, SeriesListComponent, KatexSettingsComponent, MatSidenavContent, RouterOutlet]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RouterLink,
+    FlexModule,
+    MatToolbar,
+    RouterOutlet,
+    MatIconButton,
+    MatIcon,
+    MatSidenavContainer,
+    MatSidenav,
+    MatSidenavContent,
+    SeriesListComponent,
+    KatexSettingsComponent
+  ]
 })
 export class AppComponent {
-  @HostBinding('class') className = lightClassName;
+  private overlay = inject(OverlayContainer);
 
-  constructor(private overlay: OverlayContainer) { }
+  @HostBinding('class') className = lightClassName;
 
   protected isDarkTheme(): boolean {
     return this.className === darkClassName;

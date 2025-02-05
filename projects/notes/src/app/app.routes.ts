@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { NoteListComponent } from './shared/note-list/note-list.component';
-
 export const routes: Routes = [
-  { path: '', component: NoteListComponent },
+  { path: '', loadComponent: () => import('./shared/note-list/note-list.component')
+    .then(m => m.NoteListComponent) },
   { path: '9', loadComponent: () => import('./notes/indicators/tim-tillson/t3ema/t3ema.component')
     .then(m => m.T3emaComponent) },
   { path: '8', loadComponent: () => import('./notes/indicators/tim-tillson/t2ema/t2ema.component')

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -33,11 +33,15 @@ const empty = '';
   ]
 })
 export class NoteListComponent {
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input()
-  notes: Note[] = initialNotes;
+  readonly notes = input<Note[]>(initialNotes);
 
+  constructor() {
+    effect(() => {
+      this.currentNotes = this.notes();
+    });
+  }
+
+  protected currentNotes: Note[] = initialNotes;
   protected tags: Tag[] = initialTags;
   protected tagsVisible = false;
   protected pattern = empty;
@@ -103,6 +107,6 @@ export class NoteListComponent {
       }
     }
 
-    this.notes = filteredNotes;
+    this.currentNotes = filteredNotes;
   }
 }

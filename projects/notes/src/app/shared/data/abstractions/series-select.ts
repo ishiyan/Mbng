@@ -14,14 +14,14 @@ export abstract class SeriesSelect {
     fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
   };
 
-  protected setColor(c: string) {
+  protected setColor(c: string | undefined) {
     if (c && c != null && c.length > 0) {
       this.configFill.fillColor = c;
       this.configFill = { ...this.configFill };
     }
   }
 
-  protected setLabel(text: string) {
+  protected setLabel(text: string | undefined) {
     if (text && text != null) {
       this.labelText = text;
     }

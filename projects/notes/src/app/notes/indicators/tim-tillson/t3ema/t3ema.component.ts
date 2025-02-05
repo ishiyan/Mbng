@@ -171,9 +171,8 @@ export class T3emaComponent implements AfterViewInit {
   protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
   protected t3ema2 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 2, vFactor: 0.7, firstIsAverage: false}), 4);
-  protected t3ema5 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 5, vFactor: 0.7, firstIsAverage: false}), 10);
-  protected t3ema10 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 10, vFactor: 0.7, firstIsAverage: false}), 20);
-  protected t3ema20 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 20, vFactor: 0.7, firstIsAverage: false}), 40);
+  protected t3ema4 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 4, vFactor: 0.7, firstIsAverage: false}), 6);
+  protected t3ema6 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.7, firstIsAverage: false}), 8);
 
   ngAfterViewInit() {
     this.initialized = true;

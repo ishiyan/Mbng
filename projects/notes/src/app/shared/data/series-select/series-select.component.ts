@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOptgroup, MatOption } from '@angular/material/core';
@@ -44,34 +44,29 @@ export class SeriesSelectComponent implements OnInit {
     fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
   };
 
+  /** Specifies the sparkline fill color. */
+  readonly color = input<string>();
+
+  /** Specifies the label of the form field. */
+  readonly label = input<string>();
+
   /** Event emitted when the selection has been changed. */
   readonly selectionChange = output<Series>();
 
-  /** Specifies the sparkline fill color. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set color(c: string) {
-    if (c && c != null && c.length > 0) {
-      this.configFill.fillColor = c;
-      this.configFill = { ...this.configFill };
-    }
-  }
-
-  /** Specifies the label of the form field. */
-  // TODO: Skipped for migration because:
-  //  Accessor inputs cannot be migrated as they are too complex.
-  @Input() set label(text: string) {
-    if (text && text != null) {
-      this.labelText = text;
-    }
-  }
-
   constructor() {
-    /* this.barSeriesArray = this.barSeriesService.get();
-    this.scalarSeriesArray = this.scalarSeriesService.get();
-    this.tradeSeriesArray = this.tradeSeriesService.get();
-    this.quoteSeriesArray = this.quoteSeriesService.get(); */
-    //this.selected = this.barSeriesArray[0];
+    effect(() => {
+      const c = this.color();
+      if (c && c != null && c.length > 0) {
+        this.configFill.fillColor = c;
+        this.configFill = { ...this.configFill };
+      }
+    });
+    effect(() => {
+      const text = this.label();
+      if (text && text != null) {
+        this.labelText = text;
+      }
+    });
   }
 
   ngOnInit(): void {
