@@ -2,11 +2,11 @@
 
 ## Projects in this monorepo
 
-| Project     | Description |
-| ----------- | ----------- |
-| `mb`        | A library with shared components and widgets |
-| `proeftuin` | A testing ground for the `mb` library |
-| `notes`     | An interactive assorted notes for various topics |
+| Project     | Description | Live |
+| ----------- | ----------- | ------------ |
+| `mb`        | A library with shared components and widgets | |
+| `proeftuin` | A testing ground for the `mb` library | [Github pages](https://ishiyan.github.io/Proeftuin) |
+| `notes`     | An interactive assorted notes for various topics | [Github pages](https://ishiyan.github.io/notes) |
 
 ## indicators
 
@@ -29,7 +29,7 @@ x n l patrick-mullow/TripleExponentialMovingAverage (note text describes WMA)
 
 Server Side Rendering on the fly as new request comes in.
 This will require node server when you deploy the project.
-So you cannot deploy it on GitHubPages.
+So you cannot deploy it on `GitHub Pages`.
 
 Add the following to `angular.json` before `scripts`:
 
@@ -62,6 +62,25 @@ Add the following to `angular.json` before `scripts`:
             // -------------------------------------------
             "scripts": []
 ```
+
+### Deploy SSG-built notes to GitHub Pages
+
+```bash
+ng build notes --base-href /notes/
+```
+
+There will be errors like shown below where asset svg icons ere not found during SSG buid,
+but it will find them on GitHub pages.
+
+```text
+Error retrieving icon :mb-candlesticks! Http failure response
+for http://ng-localhost/notes/assets/mb/mb-candlesticks.svg
+```
+
+- When build is done, clean all files in the `notes` repo, leave only `README.md`.
+- Copy everything inside the `dist/notes/browser` to the root of the `notes` repo.
+- In `notes` repo, clone the `index.html` as the `404.html`.
+- Add all, commit and push the `notes` repo.
 
 ## Updating
 
