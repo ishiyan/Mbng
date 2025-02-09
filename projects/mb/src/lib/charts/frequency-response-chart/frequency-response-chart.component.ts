@@ -1,4 +1,5 @@
-import { Component, HostListener, AfterViewInit, ElementRef, input, inject, ChangeDetectionStrategy, effect } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, ElementRef, input, inject,effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { MatMiniFabButton } from '@angular/material/button';
@@ -85,8 +86,10 @@ const textAfterSvg = `
       MatMiniFabButton
     ]
 })
-export class FrequencyResponseChartComponent implements AfterViewInit {
+export class FrequencyResponseChartComponent {
   private elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private random = Math.random().toString(36).substring(2);
   private clipId = 'frchart-clip-' +  this.random;
@@ -345,18 +348,16 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     effect(() => {
       this.forcedDegMax = this.maxDeg();
     });
-
-  }
-
-  private afterViewInit = false;
-  ngAfterViewInit() {
-    this.afterViewInit = true;
-    setTimeout(() => this.render(), 0);
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
   @HostListener('window:resize', [])
   render() {
-    if (!this.afterViewInit) {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
       return;
     }
 
@@ -374,6 +375,9 @@ export class FrequencyResponseChartComponent implements AfterViewInit {
     const suffixY =yModeSuffices[this.yMode];
     const componentX = this.xComponents[this.xMode];
     const componentY = this.yComponents[this.xMode][this.yMode];
+    if (!componentX || !componentY) {
+      return;
+    }    
     const ll = componentY.lines.length;
 
     let xmin = componentX.min;

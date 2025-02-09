@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, computed } from '@angular/core';
-import { HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, HostListener, ChangeDetectionStrategy, PLATFORM_ID, input, inject, computed, afterNextRender, effect } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 import { computeDimensions } from '../../charts/compute-dimensions';
@@ -13,8 +13,10 @@ const DEFAULT_HEIGHT = 24;
     styleUrls: ['./swatches.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SwatchesComponent implements OnChanges, AfterViewInit {
-  private elementRef = inject(ElementRef);
+export class SwatchesComponent {
+  private readonly elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
   
   /** A width of the swatches. */
   readonly width = input<number | string>(DEFAULT_WIDTH);
@@ -33,18 +35,32 @@ export class SwatchesComponent implements OnChanges, AfterViewInit {
     return [];
   });
 
-  ngAfterViewInit() {
-    setTimeout(() => this.render(), 0);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ngOnChanges(_changes: any) {
-    this.render();
+  constructor() {
+    effect(() => {
+      this.currentColors();
+      this.width();
+      this.height();
+      this.render();
+    });
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
   @HostListener('window:resize', [])
   public render(): void {
-    const sel = d3.select(this.elementRef.nativeElement);
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const e = this.elementRef.nativeElement;
+    if (!e || e === null) {
+      return;
+    }
+
+    const sel = d3.select(e);
     sel.select('svg').remove();
 
     const clrs = this.currentColors();

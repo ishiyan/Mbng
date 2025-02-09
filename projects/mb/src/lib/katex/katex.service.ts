@@ -1,6 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
 import katex from 'katex';
-
 import { KatexOptions } from 'katex';
 
 @Injectable({

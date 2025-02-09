@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, effect } from '@angular/core';
-import { HostListener, AfterViewInit } from '@angular/core';
+import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 import { Bar } from '../../data/entities/bar';
@@ -19,8 +19,10 @@ const defaultHeight = 24;
     styleUrls: ['./sparkline.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SparklineComponent implements OnChanges, AfterViewInit {
-  private elementRef = inject(ElementRef);
+export class SparklineComponent {
+  private readonly elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   /** A width of the sparkline. */
   readonly width = input<number | string>(defaultWidth);
@@ -49,25 +51,30 @@ export class SparklineComponent implements OnChanges, AfterViewInit {
       this.currentData = this.data();
       this.render();
     });
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => this.render(), 0);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ngOnChanges(changes: any) {
-    this.render();
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
   @HostListener('window:resize', [])
   public render(): void {
-    const sel = d3.select(this.elementRef.nativeElement);
-    sel.select('svg').remove();
-    const dat = this.currentData;
-    if (!dat || dat.length < 1) {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
       return;
     }
+
+    const dat = this.currentData;
+    if (!dat || dat === null || dat.length < 1) {
+      return;
+    }
+
+    const sel = d3.select(this.elementRef.nativeElement);
+    if (!sel || sel === null) {
+      return;
+    }
+
+    sel.select('svg').remove();
     const cfg = this.currentConfiguration;
     const computed = computeDimensions(this.elementRef, this.width(), this.height(), defaultWidth, defaultHeight);
     const w = computed[0];

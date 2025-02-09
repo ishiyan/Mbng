@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnChanges, ChangeDetectionStrategy, input, inject, effect } from '@angular/core';
-import { HostListener, AfterViewInit } from '@angular/core';
+import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 import { Bar } from '../../data/entities/bar';
@@ -30,8 +30,10 @@ const TIME_AXIS_HEIGHT = 18;
     styleUrls: ['./multiline.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MultilineComponent implements OnChanges, AfterViewInit {
-  private elementRef = inject(ElementRef);
+export class MultilineComponent {
+  private readonly elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private currentConfiguration: LineConfiguration[] = [];
   private currentData: (Bar[] | Quote[] | Trade[] | Scalar[])[] = [];
@@ -166,25 +168,28 @@ export class MultilineComponent implements OnChanges, AfterViewInit {
       }
       this.render();
     });
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => this.render(), 0);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ngOnChanges(changes: any) {
-    this.render();
+    afterNextRender(() => {
+      this.render();
+    });
   }
 
   @HostListener('window:resize', [])
   public render(): void {
-    const sel = d3.select(this.elementRef.nativeElement);
-    sel.select('svg').remove();
-    const dat = this.currentData;
-    if (this.currentDataEmpty || !dat || dat.length < 1) {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
       return;
     }
+
+    const dat = this.currentData;
+    if (this.currentDataEmpty || !dat || dat === null || dat.length < 1) {
+      return;
+    }
+
+    const sel = d3.select(this.elementRef.nativeElement);
+    if (!sel || sel === null) {
+      return;
+    }
+
+    sel.select('svg').remove();
     const cfg = this.currentConfiguration;
 
     const hasTimeAxisTop = this.timeAxis().includes('top');

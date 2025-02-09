@@ -1,4 +1,5 @@
-import { Component, HostListener, AfterViewInit, input, inject, effect, ChangeDetectionStrategy } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
@@ -66,10 +67,13 @@ const textAfterSvg = `
       MatExpansionPanelTitle,
     ]
 })
-export class LinearChartComponent implements AfterViewInit {
+export class LinearChartComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
   private random = Math.random().toString(36).substring(2);
   protected svgContainerId = 'linearchart-svg-' + this.random;
   protected widthContainerId = 'linearchart-width-' + this.random;
+
   //@ViewChild('container', { static: true }) container!: ElementRef;
   /** If chart settings panel is visible. */
   readonly settingsPanelVisible = input(true);
@@ -82,7 +86,7 @@ export class LinearChartComponent implements AfterViewInit {
   /** The height of the chart as a fraction of the chart width. */
   readonly heightFraction = input(0.6180340);
   
-  dataSeries = input<Bar[] | Quote[] | Trade[] | Scalar[]>();
+  dataSeries = input.required<Bar[] | Quote[] | Trade[] | Scalar[]>();
 
   private temporalEntityKind: TemporalEntityKind | undefined;
   get isBar(): boolean {
@@ -205,21 +209,28 @@ export class LinearChartComponent implements AfterViewInit {
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-area.svg'));
     iconRegistry.addSvgIcon('mb-dots',
       sanitizer.bypassSecurityTrustResourceUrl('assets/mb/mb-dots.svg'));
-  }
 
-  private afterViewInit = false;
-  ngAfterViewInit() {
-    this.afterViewInit = true;
-    setTimeout(() => this.render(), 0);
-  }
+      afterNextRender({
+        write: () => {
+          this.render();
+        }
+      });
+    }
 
   @HostListener('window:resize', [])
   render() {
-    if (!this.afterViewInit) {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+    if (!this.data || this.data === null) {
+      return;
+    }
+  
+    const e = d3.select('#' + this.widthContainerId).node() as any;
+    if (!e || e === null) {
       return;
     }
 
-    const e = d3.select('#' + this.widthContainerId).node() as Element;
     const w = this.widthFraction() * e.getBoundingClientRect().width;
     const h = this.heightFraction() * w;
 

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, PLATFORM_ID, effect, inject, input, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 import { LineStyle } from './line-style';
 
@@ -9,7 +10,9 @@ import { LineStyle } from './line-style';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineSvgComponent {
-  private elementRef = inject(ElementRef);
+  private readonly elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private val = new LineStyle();
   value = input.required<LineStyle>();
@@ -22,10 +25,24 @@ export class LineSvgComponent {
         this.inlineSvgContent(v);
       }
     });
+    afterNextRender({
+      write: () => {
+        this.inlineSvgContent(this.val);
+      }
+    });
   }
 
   private inlineSvgContent(v: LineStyle) {
-    this.elementRef.nativeElement.innerHTML =
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const e = this.elementRef.nativeElement;
+    if (!e || e === null) {
+      return;
+    }
+
+    e.innerHTML =
       '<svg width="90" height="6" viewBox="0 0 90 6" xmlns="http://www.w3.org/2000/svg">' +
       `<line x1="0" y1="3" x2="89" y2="3" stroke-width="${v.width}" stroke-dasharray="${v.dash}" stroke="${v.color}"></line></svg>`;
   }

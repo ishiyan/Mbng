@@ -40,6 +40,9 @@
             "styles": [
               "projects/notes/src/styles.scss"
             ],
+            "server": "projects/notes/src/main.server.ts",
+            "ssr": false,
+            "prerender": true,
             "scripts": []
           },
           "configurations": {

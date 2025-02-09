@@ -4,7 +4,7 @@
     <mat-select-trigger>
       <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette.palette"></mb-swatches>
     </mat-select-trigger>
-    @for (p of palettes; track p.id) {
+    @for (p of palettes.palettes; track p.id) {
       <mat-option [value]="p">
         <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p.palette"></mb-swatches>
       </mat-option>

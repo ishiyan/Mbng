@@ -2,6 +2,12 @@ import { ElementRef } from '@angular/core';
 
 export const computeDimensions = (elementRef: ElementRef, width: number | string, height: number | string,
   defaultWidth: number, defaultHeight: number): [number, number] => {
+
+  // Skip the logic if we're not in the browser
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return [defaultWidth, defaultHeight];
+  }
+
   let w = defaultWidth;
   let h = defaultHeight;
   const nativeElement = elementRef.nativeElement;

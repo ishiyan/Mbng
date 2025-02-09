@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, output } from '@angular/core';
 import { MatSelectChange, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { NgStyle } from '@angular/common';
@@ -63,7 +63,7 @@ export class SwatchesSelectComponent {
   triggerWidthPixels = TRIGGER_HEIGHT_PIXELS * MIN_SWATCHES;
   selectWidthPixels = SELECT_PADDING_PIXELS + this.triggerWidthPixels;
 
-  palettes: Palettes = { id: 0, palettes: [], [Symbol.iterator]: function (): Iterator<Palette> { return this.palettes[Symbol.iterator](); } };
+  palettes : Palettes = { id: 0, palettes: [], [Symbol.iterator]: function (): Iterator<Palette> { return this.palettes[Symbol.iterator](); }};
   selectedPalette: Palette = { id: 0, palette: [] };
   selectedIndex = 0;
 
@@ -92,10 +92,10 @@ export class SwatchesSelectComponent {
           return this.palettes[Symbol.iterator]();
         }
       };
+
       newColors.forEach((paletteArray, index) => {
-        const paletteId = startId + index;
         newPalettes.palettes.push({
-          id: paletteId,
+          id: startId + index,
           palette: paletteArray
         });
       });

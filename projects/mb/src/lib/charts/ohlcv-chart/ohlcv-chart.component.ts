@@ -1,4 +1,5 @@
-import { Component, HostListener, OnChanges, AfterViewInit, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, inject, input, effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
@@ -89,7 +90,9 @@ const smoothBrushing = false;
       MatExpansionPanelTitle
     ]
 })
-export class OhlcvChartComponent implements OnChanges, AfterViewInit {
+export class OhlcvChartComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
   private random = Math.random().toString(36).substring(2);
   protected svgContainerId = 'ohlcv-chart-svg-' + this.random;
   protected widthContainerId = 'ohlcv-chart-width-' + this.random;
@@ -98,7 +101,6 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
   private renderVolume: boolean;
   private renderCrosshair: boolean;
   private ohlcvView: number;
-  private afterViewInit = false;
   public readonly ohlcvViewCandlesticks = ohlcvViewCandlesticks;
   public readonly ohlcvViewBars = ohlcvViewBars;
 
@@ -922,7 +924,7 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     return this.config ? this.config.ohlcv.name : '---';
   }
 
-  configuration = input<Template.Configuration>();
+  configuration = input.required<Template.Configuration>();
 
   constructor() {
     effect(() => {
@@ -950,6 +952,12 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
     this.renderVolume = this.config ? this.config.volumeInPricePane : true;
     this.renderCrosshair = this.config ? this.config.crosshair : true;
     this.ohlcvView = (this.config && !this.config.ohlcv.candlesticks) ? ohlcvViewBars : ohlcvViewCandlesticks;
+
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
   public downloadSvg(): void {
@@ -961,31 +969,27 @@ export class OhlcvChartComponent implements OnChanges, AfterViewInit {
       textBeforeSvg, textAfterSvg), filename);
   }
 
-  ngOnChanges() {
-    this.render();
-  }
-
-  ngAfterViewInit() {
-    this.afterViewInit = true;
-    setTimeout(() => this.render(), 0);
-  }
-
   @HostListener('window:resize', [])
   public render(): void {
-    if (!this.afterViewInit) {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
       return;
     }
 
-    const id = this.random;
-    const e = d3.select('#' + this.widthContainerId).node() as any; // Element;
-    // console.log('offsetWidth=' + e.offsetWidth);
-    // console.log('width=' + e.getBoundingClientRect().width);
-    // const w = e.getBoundingClientRect().width;
-    const w = e.offsetWidth;
     const cfg = this.config;
     if (!cfg || !cfg.width) {
       return;
     }
+
+    const id = this.random;
+    const e = d3.select('#' + this.widthContainerId).node() as any;
+    if (!e || e === null) {
+      return;
+    }
+
+    // console.log('offsetWidth=' + e.offsetWidth);
+    // console.log('width=' + e.getBoundingClientRect().width);
+    // const w = e.getBoundingClientRect().width;
+    const w = e.offsetWidth;
     const lh = OhlcvChartComponent.layoutHorizontal(cfg, w);
 
     const container = d3.select('#' + this.svgContainerId);
