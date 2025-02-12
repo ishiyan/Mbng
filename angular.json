@@ -37,6 +37,11 @@
                 "output": "/assets/"
               }
             ],
+            "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": ["color-functions", "global-builtin", "import", "mixed-decls"]
+              }
+            },
             "styles": [
               "projects/notes/src/styles.scss"
             ],

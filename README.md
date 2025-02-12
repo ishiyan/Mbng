@@ -8,6 +8,55 @@
 | `proeftuin` | A testing ground for the `mb` library | [Github pages](https://ishiyan.github.io/Proeftuin) |
 | `notes`     | An interactive assorted notes for various topics | [Github pages](https://ishiyan.github.io/notes) |
 
+## TODO
+
+### Migrate to M3
+
+to do.
+
+### Sass deprecation warnings
+
+```bash
+ Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0
+```
+
+Need to use `use` instead of `import`, see
+[Breaking Change: `@import` and global built-in functions](https://sass-lang.com/documentation/breaking-changes/import/)
+
+Temporary, can be disabled in `angular.json` by inserting a snippet before `"styles"`:
+
+```json
+            // --------------------------------
+            "stylePreprocessorOptions": {
+              "sass": {
+                "silenceDeprecations": ["color-functions", "global-builtin", "import", "mixed-decls"]
+              }
+            },
+            // --------------------------------
+            "styles": [
+              "projects/notes/src/styles.scss"
+            ],
+```
+
+### SEO
+
+[SEO](https://moz.com/blog/meta-data-templates-123)
+
+```ts
+export class SeoComponent {
+    private readonly title = inject(Title);
+    private readonly meta = inject(Meta);
+
+    constructor() {
+        // set SEO metadata
+        this.title.setTitle("My fancy page/route title. Ideal length 60-70 chars");
+        this.meta.addTag({ name: "description", content: "My fancy meta description. Ideal length 120-150 characters." });
+    }
+}
+```
+
+Look at [adev](https://github.com/angular/angular/blob/main/adev/src/index.html)
+
 ## Indicators
 
 Looks good: ma, ems, wma, trima, dema
