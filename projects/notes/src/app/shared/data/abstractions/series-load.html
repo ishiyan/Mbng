@@ -21,10 +21,10 @@
       <mat-icon>backspace</mat-icon>
     </button>
   }
-  @if (data.length > 0) {
+  @if (data().length > 0) {
     <div class="mtop">
       {{data.length}} <i>{{granularity}}</i> {{entity}}
-      ({{data[0].time|date}} to {{data[data.length-1].time|date}})
+      ({{data()[0].time|date}} to {{data()[data().length-1].time|date}})
     </div>
     <div class="mtop"></div>
     <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[data]" [min]="0"

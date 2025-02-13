@@ -4,6 +4,7 @@ import { TimeGranularity } from 'mb';
 
 import { primaryColor } from '../../theme-colors';
 import { Series } from '../series.interface';
+import { signal } from '@angular/core';
 
 const empty = '';
 
@@ -24,19 +25,20 @@ export abstract class SeriesLoad {
   protected progressVisible = false;
   protected progressPercentage = 0;
   protected errorText = empty;
-  protected data: TemporalEntity[] = [];
+  protected data = signal<TemporalEntity[]>([]);
   protected granularity = TimeGranularity.Aperiodic;
   protected mnemonic = empty;
   protected description = empty;
 
   protected add(): void {
+    const d = this.data();
     const s: Series = {
       mnemonic: this.mnemonic,
       description: this.description,
       timeGranularity: this.granularity,
-      timeStart: this.data[0].time,
-      timeEnd: this.data[this.data.length - 1].time,
-      data: this.data
+      timeStart:d[0].time,
+      timeEnd: d[d.length - 1].time,
+      data: d
     };
     this.clear();
     this.addSeries(s);
@@ -49,7 +51,7 @@ export abstract class SeriesLoad {
     this.progressVisible = false;
     this.progressPercentage = 0;
     this.errorText = empty;
-    this.data = [];
+    this.data.set([]);
     this.granularity = TimeGranularity.Aperiodic;
     this.mnemonic = empty;
     this.description = empty;
@@ -69,7 +71,7 @@ export abstract class SeriesLoad {
               this.granularity = this.determineGranularity(data);
               this.mnemonic = 'temp';
               this.description = this.filePath;
-              this.data = data;
+              this.data.set(data);
             }).catch(error => this.errorText = empty + error)
             .finally(() => this.progressVisible = false);
         }).catch(error => {

@@ -35,7 +35,6 @@ export class Table1Component implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
   }
 
   public getMic(instrument: Instrument): ExchangeMic {

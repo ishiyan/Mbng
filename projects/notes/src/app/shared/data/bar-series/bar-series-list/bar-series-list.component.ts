@@ -18,10 +18,6 @@ export class BarSeriesListComponent implements OnInit {
 
   protected seriesArray: RemovableSeries[] = this.seriesService.get();
 
-/*  constructor() {
-    this.seriesArray = this.seriesService.get();
-  } */
-
   ngOnInit(): void {
     this.seriesService.getObservable().subscribe(x => (this.seriesArray = x as RemovableSeries[]));
   }

@@ -64,12 +64,6 @@
                   "maximumError": "9mb"
                 }
               ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/notes/src/environments/environment.ts",
-                  "with": "projects/notes/src/environments/environment.prod.ts"
-                }
-              ],
               "outputHashing": "all"
             },
             "development": {

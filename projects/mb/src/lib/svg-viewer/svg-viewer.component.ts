@@ -1,4 +1,4 @@
-import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, afterNextRender, effect, Injector } from '@angular/core';
+import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, afterNextRender, effect } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
