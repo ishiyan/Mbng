@@ -1,76 +1,43 @@
-import { Directive, ElementRef, OnChanges, SimpleChanges, input, inject } from '@angular/core';
+import { Directive, ElementRef, OnChanges, SimpleChanges, input, inject, effect } from '@angular/core';
 
-const MathJax = (window as any).MathJax || {};
+import { MathJaxService } from './math-jax.service';
+
+//const MathJax = (window as any).MathJax || {};
 
 /** Typeset the content or expressions using MathJax library. */
 @Directive({
   selector: '[mbMathJax]',
 })
 export class MathJaxDirective implements OnChanges {
+  private readonly mathJaxService = inject(MathJaxService);
+  private readonly element = inject(ElementRef);
+
   /** An input MathJax expression. */
-  public readonly mbMathJax = input.required<string>();
-
-  /** The associated native element. */
-  readonly element: HTMLElement;
-
-  private static isMathJax(expression: string): boolean {
-    return !!expression?.match(/(?:\$|\\\(|\\\[|\\begin\{.*?})/);
-  }
-
-  /** Fixes few issues with MathJax strings. */
-  private static fixMathJaxBugs(jax: string): string {
-    return jax
-      // Line break error.
-      .replace(/<br \/>/gi, '<br/> ')
-      // Automatic breakline.
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .replace(/[$]([\s\S]+?)[$]/gi, (m, p: string, _o, _s) =>
-        p.includes('\\\\') && !p.includes('\\begin')
-          ? `$\\begin{align*}${p}\\end{align*}$`
-          : `$${p}$`);
-  }
-
-  private static typeset(code: () => void) {
-    if (MathJax?.startup) {
-      MathJax.startup.promise = MathJax.startup.promise
-        .then(() => {
-          code();
-          return MathJax.typesetPromise ? MathJax.typesetPromise() : null;
-        })
-        .catch((err: Error) =>
-          console.error('MathJax Typeset failed: ' + err.message)
-        );
-      return MathJax.startup.promise;
-    } else {
-      code();
-    }
-  }
+  public readonly mbMathJax = input<string>();
 
   constructor() {
-    const el = inject(ElementRef);
-    this.element = el.nativeElement;
+    effect(() => {
+      const expr = this.mbMathJax();
+      if (expr) {
+        console.log('directive effect:', expr);
+        this.render(expr);
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const expressions = changes['mbMathJax'];
+    console.log('directive changes 0:', expressions);
     if (!expressions) {
       return;
     }
 
     const s = expressions.currentValue as string;
-    this.typeset(s);
+    console.log('directive changes 1:', s);
+    this.render(s);
   }
 
-  typeset(s: string) {
-    if (MathJaxDirective.isMathJax(s)) {
-      const fixed = MathJaxDirective.fixMathJaxBugs(s);
-      // console.log('typeset (isMathJax=true):', fixed);
-      MathJaxDirective.typeset(() => {
-        this.element.innerHTML = `<span class='jax-process'>${fixed}</span>`;
-      });
-    } else {
-      // console.log('typeset (isMathJax=false):', s);
-      this.element.innerHTML = s;
-    }
+  render(s: string) {
+    this.mathJaxService.render(s, this.element.nativeElement);
   }
 }

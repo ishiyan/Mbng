@@ -19,8 +19,6 @@ export class KatexDirective {
   constructor() {
     effect(() => {
       this.mbKatex();
-      this.options();
-      this.renderString();
       this.render();
     });
     afterNextRender({

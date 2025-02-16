@@ -2,16 +2,17 @@ import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, Elem
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { KatexOptions } from 'katex';
 
-import { KatexSettingsService } from './katex-settings.service';
 import { KatexDirective } from './katex.directive';
 
 /** KaTeX settings taken from  https://katex.org/docs/options.html. */
 const defaultOptions: KatexOptions = {
   throwOnError: false,
   strict: true,
-  displayMode: false,
-  output: 'html' // Set to 'mathml' to display TeX source.
+  displayMode: false, // Display or inline mode.
+  output: 'html' // html (HTML only), mathml (MathML only), htmlAndMathml (both).
 };
+
+const empty = '';
 
 /** Component to render a TeX input in inline mode. */
 @Component({
@@ -25,19 +26,15 @@ export class KatexInlineComponent implements AfterContentInit {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly element = inject(ElementRef);
-  private readonly settings = inject(KatexSettingsService);
 
   protected options: KatexOptions = defaultOptions;
-  protected expression = '';
+  protected expression = empty;
   protected hidden = false;
 
   constructor() {
     afterNextRender({
       write: () => {
         this.render();
-        this.settings.sourceObservable().subscribe({next: s => {
-          this.options = { ...defaultOptions, output: s ? 'mathml' : 'html' };
-        }});
       }
     });
   }
@@ -54,8 +51,10 @@ export class KatexInlineComponent implements AfterContentInit {
       return;
     }
 
-    const tex = this.element.nativeElement.innerText;
-    this.expression = tex;
+    if (this.expression === empty) {
+      this.expression = this.element.nativeElement.innerText;
+    }
+
     this.hidden = true;
   }
 }

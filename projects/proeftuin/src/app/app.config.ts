@@ -23,16 +23,6 @@ export const appConfig: ApplicationConfig = {
       scrollPositionRestoration: 'enabled'
     })),
     provideMathJax(mathJaxConfig),
-    /*provideMathJax({
-      version: '3',
-      config: 'tex-svg',
-      online: true
-    }),*/
-    /*{ provide: MathJaxConfiguration, useValue: {
-      version: '3',
-      config: 'tex-svg',
-      online: false
-    }},*/
     provideNativeDateAdapter(), // otherwise date and time pickers don't work
     provideAnimationsAsync()]
 };

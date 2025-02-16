@@ -8,7 +8,7 @@
     </mat-form-field>
     @if (showMathJax()) {
       <div>
-        MathJax display: <mb-mathjax [expression]="'$$'+source.value+'$$'"></mb-mathjax>
+        MathJax display: <mb-mathjax [expression]="displayExpression()"></mb-mathjax>
       </div>
     }
     @if (showKatex()) {
@@ -18,7 +18,7 @@
     }
     @if (showMathJax()) {
       <div>
-        MathJax inline: <mb-mathjax #matJaxInl [expression]="'$'+source.value+'$'"></mb-mathjax>
+        MathJax inline: <mb-mathjax [expression]="inlineExpression()"></mb-mathjax>
       </div>
     }
     @if (showKatex()) {

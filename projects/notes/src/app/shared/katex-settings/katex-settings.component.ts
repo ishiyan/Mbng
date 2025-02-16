@@ -12,22 +12,10 @@ import { KatexSettingsService } from 'mb';
   imports: [MatSlideToggle, MatIcon]
 })
 export class KatexSettingsComponent {
-  protected settings = inject(KatexSettingsService);
+  protected readonly settings = inject(KatexSettingsService);
 
-  protected sourceInitial: boolean;
-  protected tagLeftInitial: boolean;
-  protected equationLeftInitial: boolean;
-
-  constructor() {
-    const settings = this.settings;
-    this.sourceInitial = settings.source;
-    this.tagLeftInitial = settings.tagLeft;
-    this.equationLeftInitial = settings.equationLeft;
-  }
-
-  protected sourceChanged(event: MatSlideToggleChange) {
-    this.settings.source = event.checked;
-  }
+  protected tagLeftInitial: boolean = this.settings.tagLeft;
+  protected equationLeftInitial: boolean = this.settings.equationLeft;
 
   protected tagLeftChanged(event: MatSlideToggleChange) {
     this.settings.tagLeft = event.checked;

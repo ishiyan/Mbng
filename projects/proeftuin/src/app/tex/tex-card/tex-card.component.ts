@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, inject, viewChild, input } from '@angular/core';
+import { Component, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy, inject, viewChild, input, signal, effect } from '@angular/core';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatInput } from '@angular/material/input';
 import { MatFormField } from '@angular/material/form-field';
@@ -32,9 +32,18 @@ export class TexCardComponent implements AfterViewChecked {
   readonly sample = input.required<Sample>();
   readonly showMathJax = input(true);
   readonly showKatex = input(true);
+  protected displayExpression = signal<string>('');
+  protected inlineExpression = signal<string>('');
 
   katexDisplayOptions: any = {displayMode: true, throwOnError: false, strict: true};
-  katexInlineOptions: any = {throwOnError: false, strict: true};
+  katexInlineOptions: any = {displayMode: false, throwOnError: false, strict: true};
+
+  constructor() {
+    effect(() => {
+      const code = this.sample().code;
+      this.updateMathJax(code);
+    });
+  }
 
   ngAfterViewChecked() {
     this.autosize().resizeToFitContent(true);
@@ -42,6 +51,7 @@ export class TexCardComponent implements AfterViewChecked {
   }
 
   updateMathJax(text: string) {
-    //console.log(this.matJaxDis, text);
+    this.displayExpression.set('$$'+text+'$$');
+    this.inlineExpression.set('$'+text+'$');
   }
 }
