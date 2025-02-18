@@ -1,0 +1,152 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default configuration</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-hilbert-curve></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Constant size</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[size]="200"</mat-card-subtitle>
+      <mb-hilbert-curve [size]="200"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[size]="300"</mat-card-subtitle>
+      <mb-hilbert-curve [size]="300"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[size]="400"</mat-card-subtitle>
+      <mb-hilbert-curve [size]="400"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Percentage size</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>style="width:95%"</mat-card-subtitle>
+      <mb-hilbert-curve style="width:95%"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[size]="'50%'"</mat-card-subtitle>
+      <mb-hilbert-curve [size]="'50%'"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>style="min-width:200px;max-width:400px" [size]="'50%'"</mat-card-subtitle>
+      <mb-hilbert-curve style="min-width:200px;max-width:400px" [size]="'50%'"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Order</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="1"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="1"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="2"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="2"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="3"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="3"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="4"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="4"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="5"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="5"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[order]="6"</mat-card-subtitle>
+      <mb-hilbert-curve [order]="6"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Stroke width</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeWidth]="1"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeWidth]="1"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeWidth]="2"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeWidth]="2"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeWidth]="3"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeWidth]="3"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeWidth]="4"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeWidth]="4"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Stroke color func</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeColorFunc]="undefined"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeColorFunc]="undefined"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeColorFunc]="cool"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeColorFunc]="cool"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeColorFunc]="warm"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeColorFunc]="warm"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeColorFunc]="sinebow"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeColorFunc]="sinebow"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[strokeColorFunc]="rainbow"</mat-card-subtitle>
+      <mb-hilbert-curve [strokeColorFunc]="rainbow"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Fill color func</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>[fillColorFunc]="undefined"</mat-card-subtitle>
+      <mb-hilbert-curve [fillColorFunc]="undefined"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[fillColorFunc]="cool"</mat-card-subtitle>
+      <mb-hilbert-curve [fillColorFunc]="cool"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[fillColorFunc]="warm"</mat-card-subtitle>
+      <mb-hilbert-curve [fillColorFunc]="warm"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[fillColorFunc]="sinebow"</mat-card-subtitle>
+      <mb-hilbert-curve [fillColorFunc]="sinebow"></mb-hilbert-curve>
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>[fillColorFunc]="rainbow"</mat-card-subtitle>
+      <mb-hilbert-curve [fillColorFunc]="rainbow"></mb-hilbert-curve>
+    </mat-card-content>
+  </mat-card>
+
+</div>

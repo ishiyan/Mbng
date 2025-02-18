@@ -69,7 +69,11 @@ export class HilbertPathsComponent implements OnInit {
     }
     segments[segments.length - 1][1] = max2;
     this.svg.append('g').selectAll('path').data(segments).enter().append('path')
-      .attr('fill', 'transparent').attr('stroke', (d: any, i: any) => color(i)).attr('stroke-width', '8').attr('stroke-linecap', 'square')
+      .attr('fill', 'transparent')
+      //.attr('stroke', (d: any, i: any) => color(i))
+      .attr('stroke', (d: any, i: any) => d3.interpolateSinebow(i / segments.length))
+      .attr('stroke-width', '8')
+      .attr('stroke-linecap', 'square')
       .attr('d', (d: any) => 'M' + d3.range(d[0], d[1])
         .map(e => {
           const xy = distance2xy(e);

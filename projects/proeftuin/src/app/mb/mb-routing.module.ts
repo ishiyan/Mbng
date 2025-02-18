@@ -49,6 +49,10 @@ const routes: Routes = [
           import('./mb-samples/components/voronoi/sample-voronoi.module').then(m => m.SampleVoronoiModule)
       },
       {
+        path: 'comp-hilbert-curve', loadChildren: () =>
+          import('./mb-samples/components/hilbert-curve/sample-hilbert-curve.module').then(m => m.SampleHilbertCurveModule)
+      },
+      {
         path: 'comp-swatches', loadChildren: () =>
           import('./mb-samples/components/swatches/sample-swatches.module').then(m => m.SampleSwatchesModule)
       },

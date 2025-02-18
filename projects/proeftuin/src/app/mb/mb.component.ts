@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
 
 import { MbSample } from './mb-samples/mb-sample';
 import { treeNodes } from './mb-samples/mb-samples';
@@ -14,7 +14,7 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
     selector: 'mb-sample-collection',
     templateUrl: './mb.component.html',
     styleUrls: ['./mb.component.scss'],
-    imports: [MatToolbar, MatButton, MatIcon, MatSidenavContainer, MatSidenav, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet, MatSidenavContent, RouterOutlet]
+    imports: [MatToolbar, MatButton, MatIcon, MatSidenavContainer, MatSidenav, MatTree, MatTreeNodeDef, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet, MatSidenavContent, RouterOutlet]
 })
 export class MbComponent {
   public sample: MbSample = treeNodes[0];

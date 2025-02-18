@@ -116,6 +116,7 @@ Add the following to `angular.json` before `scripts`:
 
 ```bash
 ng build notes --base-href /notes/
+ng build proeftuin --base-href /Proeftuin/
 ```
 
 There will be errors like shown below where asset svg icons are not found during SSG buid,

@@ -6,3 +6,4 @@
 @forward "./lib/charts/ohlcv-chart/ohlcv-chart-theme" as mb-* show mb-ohlcv-chart-theme;
 @forward "./lib/charts/ohlcv-chart/selector/width-svg-theme" as mb-* show mb-width-svg-theme;
 @forward "./lib/charts/ohlcv-chart/selector/dash-svg-theme" as mb-* show mb-dash-svg-theme;
+@forward "./lib/charts/hilbert-curve/hilbert-curve-theme" as mb-* show mb-hilbert-curve-theme;

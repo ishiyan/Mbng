@@ -11,6 +11,7 @@
 @use "../../mb/src/lib/charts/ohlcv-chart/selector/dash-svg-theme" as *;
 @use "../../mb/src/lib/charts/ohlcv-chart/selector/width-svg-theme" as *;
 @use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as *;
+@use "../../mb/src/lib/charts/hilbert-curve/hilbert-curve-theme" as *;
 
 @mixin app-components-theme($theme) {
   $primary: map-get($theme, primary);
@@ -29,4 +30,5 @@
   @include dash-svg-theme($theme);
   @include width-svg-theme($theme);
   @include frequency-response-chart-theme($theme);
+  @include hilbert-curve-theme($theme);
 }

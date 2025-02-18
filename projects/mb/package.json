@@ -22,6 +22,9 @@
     },
     "./theming/dash-svg-theme": {
       "sass": "./src/lib/charts/ohlcv-chart/selector/_dash-svg-theme.scss"
+    },
+    "./theming/hilbert-curve-theme": {
+      "sass": "./src/lib/charts/hilbert-curve/_hilbert-curve-theme.scss"
     }
   },
   "peerDependencies": {

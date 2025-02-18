@@ -101,6 +101,12 @@ export const treeNodes: MbSample[] = [
         ]
       },
       {
+        name: 'Hilbert curve',
+        children: [
+          { name: 'Features', header: 'Hilbert curve features', route: 'comp-hilbert-curve/s1' }
+        ]
+      },
+      {
         name: 'Swatches',
         children: [
           { name: 'Features', header: 'Swatches features', route: 'comp-swatches/s1' },

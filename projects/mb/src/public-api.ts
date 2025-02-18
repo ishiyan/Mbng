@@ -268,3 +268,6 @@ export * from './lib/charts/hierarchy-tree/functions/stroke-width-function';
 export * from './lib/charts/hierarchy-tree/functions/sum-function';
 export * from './lib/charts/hierarchy-tree/functions/tap-function';
 export * from './lib/charts/hierarchy-tree/functions/tooltip-function';
+
+export * from './lib/charts/hilbert-curve/hilbert-curve.component';
+export * from './lib/charts/hilbert-curve/color-interpolation';
