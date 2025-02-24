@@ -1,40 +1,59 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-zooming',
-    templateUrl: './d3tc-zooming.component.html',
-    styleUrls: ['./d3tc-zooming.component.scss']
+  selector: 'app-d3-sample-d3tc-zooming',
+  templateUrl: './d3tc-zooming.component.html',
+  styleUrls: ['./d3tc-zooming.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class D3tcZoomingComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcZoomingComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const data: Bar[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    const height = this.svgheight() - margin.top - margin.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
-    const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
     const accessor = candlestick.accessor();
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
@@ -69,8 +88,8 @@ export class D3tcZoomingComponent implements OnInit {
     svg.append('rect').attr('class', 'pane').attr('width', width).attr('height', height).call(zoom);
 
     // data begin ----------------------------------
-    x.domain(data.map(accessor.d));
-    y.domain(d3tc.scale.plot.ohlc(data, accessor).domain());
+    x.domain(data.map(accessor.time));
+    y.domain(primitives.scale.plot.ohlc(data, accessor).domain());
     svg.select('g.candlestick').datum(data);
     draw();
     // Associate the zoom with the scale after a domain has been applied

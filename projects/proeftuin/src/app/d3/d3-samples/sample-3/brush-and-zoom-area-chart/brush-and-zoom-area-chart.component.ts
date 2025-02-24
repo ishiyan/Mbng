@@ -1,38 +1,54 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
-import { D3DatePrice } from '../../data/d3-date-price';
-import { d3Sp500 } from '../../data/d3-sp500';
+import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
+import { dataScalarDailySp500 } from '../../data/data-scalar-daily-sp500';
 
 // https://observablehq.com/@d3/focus-context
 
 @Component({
-    selector: 'app-d3-sample-brush-and-zoom-area-chart',
-    templateUrl: './brush-and-zoom-area-chart.component.html',
-    styleUrls: ['./brush-and-zoom-area-chart.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-d3-sample-brush-and-zoom-area-chart',
+  templateUrl: './brush-and-zoom-area-chart.component.html',
+  styleUrls: ['./brush-and-zoom-area-chart.component.scss'],
+  encapsulation: ViewEncapsulation.None, // Otherwise it doesn't see the stylesheet.
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BrushAndZoomAreaChartComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  // @Input() svgwidth: any;
-  @Input() svgheight: any;
+export class BrushAndZoomAreaChartComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit(): void {
-    const data: D3DatePrice[] = d3Sp500;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    //const data: D3DatePrice[] = d3Sp500;
+    const data: Scalar[] = dataScalarDailySp500;
 
     const margin: any = { top: 20, right: 20, bottom: 110, left: 40 };
     const margin2: any = { top: 430, right: 20, bottom: 30, left: 40 };
 
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight);
+      .attr('height', this.svgheight());
     const width: number = +w - margin.left - margin.right;
-    const height: number = +this.svgheight - margin.top - margin.bottom;
-    const height2: number = +this.svgheight - margin2.top - margin2.bottom;
+    const height: number = +this.svgheight() - margin.top - margin.bottom;
+    const height2: number = +this.svgheight() - margin2.top - margin2.bottom;
 
     const x = d3.scaleTime().range([0, width]);
     const x2 = d3.scaleTime().range([0, width]);
@@ -50,8 +66,8 @@ export class BrushAndZoomAreaChartComponent implements OnInit {
       .translateExtent([[0, 0], [width, height]])
       .extent([[0, 0], [width, height]]);
 
-    const ti = 'date';
-    const p = 'price';
+    const ti = 'time';
+    const p = 'value';
     const area = d3.area()
       .curve(d3.curveMonotoneX)
       .x((d: any) => x(d[ti]) as number)
@@ -81,10 +97,10 @@ export class BrushAndZoomAreaChartComponent implements OnInit {
     // data begin ----------------------------------
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    x.domain(d3.extent(data, d => d.date));
+    x.domain(d3.extent(data, d => d.time));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    y.domain([0, d3.max(data, d => d.price)]);
+    y.domain([0, d3.max(data, d => d.value)]);
     x2.domain(x.domain());
     y2.domain(y.domain());
 
@@ -110,10 +126,7 @@ export class BrushAndZoomAreaChartComponent implements OnInit {
         x.domain(s.map(x2.invert, x2));
         focus.select('.area').attr('d', area);
         focus.select('.axis--x').call(xAxis);
-        svg.select('.zoom').call(zoom.transform, d3.zoomIdentity
-          .scale(width / (s[1] - s[0]))
-          .translate(-s[0], 0));
-        }
+      }
     });
 
     zoom.on('zoom', (event: any) => {

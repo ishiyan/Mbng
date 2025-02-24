@@ -9,8 +9,8 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
   () => {
     const p = {} as any;
     const dispatch = d3.dispatch('mouseenter', 'mouseout');
-    const svgArrow = arrow().orient((d: any) => p.accessor.type(d) === 'buy' ? 'up' : 'down');
     let y = (d: any) => p.yScale(p.accessor.price(d));
+    const svgArrow = arrow().orient((d: any) => p.accessor.type(d).startsWith('buy') ? 'up' : 'down');
     let arrowGenerator: any;
 
     // eslint-disable-next-line no-underscore-dangle
@@ -37,7 +37,7 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           dispatch.call('mouseenter', this, nearest.d, nearest.i);
-        }).on('mouseout', function(data: any) {
+        }).on('mouseout', function(event: any, data: any) {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           d3.select(this.parentNode).selectAll('path.highlight').datum([])
@@ -106,14 +106,14 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
       // Definitely know we're over a trade, but witch one?
       // Find the nearest...?
       // Should work _most_ of the time.
-      data.map((q: any, j: any) => ({ d: q, i: j, x: p.xScale(p.accessor.time(q)) }))
+      data.map((d: any, i: any) => ({ d: d, i: i, x: p.xScale(p.accessor.time(d)) }))
         .reduce((q: any, c: any) => Math.abs(q.x - x) < Math.abs(c.x - x) ? q : c);
 
     const typesToClasses = (data: any) =>
-      data.map((d: any) => p.accessor.time(d))
+      data.map((d: any) => p.accessor.type(d))
       .reduce((prev: any, cur: any) => {
           if (prev[cur] === undefined) {
-            prev[cur] = (d: any) => cur === p.accessor.time(d);
+            prev[cur] = (d: any) => cur === p.accessor.type(d);
           }
 
           return prev;

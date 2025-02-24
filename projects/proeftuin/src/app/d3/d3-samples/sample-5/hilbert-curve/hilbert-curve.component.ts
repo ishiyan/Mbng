@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, inject } from '@angular/core';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import * as d3 from 'd3';
@@ -16,6 +16,8 @@ import { MatOption } from '@angular/material/core';
     imports: [MatFormField, MatSelect, MatOption, MatSlideToggle]
 })
 export class HilbertCurveComponent implements OnInit {
+  private element = inject(ElementRef);
+
   public colors = false;
   public selectedLevel = '6';
   private level = 6;
@@ -25,9 +27,6 @@ export class HilbertCurveComponent implements OnInit {
   private readonly x = d3.scaleLinear().domain([0, this.level10]).range([0, this.w]);
   private line: any;
   private g: any;
-
-  constructor(private element: ElementRef) {
-  }
 
   ngOnInit() {
     // why can't it find the svg element? have to use svg id instead

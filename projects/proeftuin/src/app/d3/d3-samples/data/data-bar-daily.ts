@@ -1,6 +1,6 @@
-﻿import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
+﻿import { Bar } from 'projects/mb/src/lib/data/entities/bar';
 
-export const dataOhlcvDaily: Ohlcv[] = [
+export const dataOhlcvDaily: Bar[] = [
   { time: new Date(2013, 12, 2), open: 24.6, high: 24.66, low: 24.455, close: 24.57, volume: 2731765 },
   { time: new Date(2013, 12, 3), open: 24.595, high: 24.63, low: 24.29, close: 24.37, volume: 4429795 },
   { time: new Date(2013, 12, 4), open: 24.5, high: 24.5, low: 24.14, close: 24.305, volume: 4362571 },

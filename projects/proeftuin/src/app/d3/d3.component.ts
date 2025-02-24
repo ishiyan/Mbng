@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
@@ -21,7 +21,9 @@ export class D3Component {
   public treeControl = new NestedTreeControl<D3Sample>(node => node.children);
   public dataSource = new MatTreeNestedDataSource<D3Sample>();
 
-  constructor(router: Router) {
+  constructor() {
+    const router = inject(Router);
+
     const routeUrl = router.routerState.snapshot.url;
     for (const node of treeNodes) {
       const n = D3Component.findEqual(node, routeUrl);

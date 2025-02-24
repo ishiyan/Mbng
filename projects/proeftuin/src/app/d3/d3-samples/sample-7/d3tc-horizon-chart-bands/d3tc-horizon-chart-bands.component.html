@@ -9,9 +9,11 @@
 </mat-form-field>
 <mat-form-field class="ml12px">
   <mat-select placeholder="interpolation" [(ngModel)]="interpolation">
-    <mat-option *ngFor="let interpolation of interpolations" [value]="interpolation.value">
-      {{ interpolation.viewValue }}
-    </mat-option>
+    @for (interpolation of interpolations; track interpolation) {
+      <mat-option [value]="interpolation.value">
+        {{ interpolation.viewValue }}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>
 <mat-form-field class="ml12px">
@@ -60,16 +62,16 @@
 <br />
 <br />
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="7"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="6"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="5"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="4"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="3"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="2"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
 <app-d3-sample-d3tc-horizon-chart-single class="ml12px" [data]="data" [width]="width" [height]="height" [mode]="mode" [bands]="1"
-  [interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>
+[interpolation]="interpolation" [colors]="color"></app-d3-sample-d3tc-horizon-chart-single>

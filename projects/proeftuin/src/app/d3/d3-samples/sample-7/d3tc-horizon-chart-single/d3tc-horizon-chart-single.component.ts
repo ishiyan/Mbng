@@ -1,17 +1,20 @@
-import { Component, OnInit, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, inject } from '@angular/core';
 import * as d3 from 'd3';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as d3tc from '../../../../shared/d3tc';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-horizon-chart-single',
-    templateUrl: './d3tc-horizon-chart-single.component.html',
-    styleUrls: ['./d3tc-horizon-chart-single.component.scss']
+  selector: 'app-d3-sample-d3tc-horizon-chart-single',
+  templateUrl: './d3tc-horizon-chart-single.component.html',
+  styleUrls: ['./d3tc-horizon-chart-single.component.scss']
 })
 export class D3tcHorizonChartSingleComponent implements OnInit {
+  private element = inject(ElementRef);
+
   private theWidth = 700;
   private theHeight = 40;
   private theBands = 3;
@@ -22,6 +25,8 @@ export class D3tcHorizonChartSingleComponent implements OnInit {
   private svg: any;
   private g: any;
   private chart: any;
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set width(value: number) {
     this.theWidth = value;
     if (this.svg) {
@@ -29,6 +34,8 @@ export class D3tcHorizonChartSingleComponent implements OnInit {
       this.g.call(this.chart.duration(0).width(value));
     }
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set height(value: number) {
     this.theHeight = value;
     if (this.svg) {
@@ -36,39 +43,46 @@ export class D3tcHorizonChartSingleComponent implements OnInit {
       this.g.call(this.chart.duration(0).height(value));
     }
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set bands(value: number) {
     this.theBands = value;
     if (this.g) {
       this.g.call(this.chart.duration(0).bands(value));
     }
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set mode(value: string) {
     this.theMode = value;
     if (this.g) {
       this.g.call(this.chart.duration(500).mode(value));
     }
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set colors(value: string[]) {
     this.theColors = value;
     if (this.g) {
       this.g.call(this.chart.duration(500).colors(value));
     }
   }
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
   @Input() set interpolation(value: any) {
     this.theInterpolation = value;
     if (this.g) {
       this.g.call(this.chart.duration(500).interpolate(value));
     }
   }
-  @Input() set data(value: D3Ohlcv[]) {
+  // TODO: Skipped for migration because:
+  //  Accessor inputs cannot be migrated as they are too complex.
+  @Input() set data(value: Bar[]) {
     const mean = value.map(c => c.close).reduce((p, v) => p + v, 0) / value.length;
-    this.horizonData = value.map(c => [c.date, c.close ? (c.close - mean) : null]);
+    this.horizonData = value.map(c => [c.time, c.close ? (c.close - mean) : null]);
     if (this.g) {
       this.g.data([this.horizonData]).call(this.chart);
     }
-  }
-
-  constructor(private element: ElementRef) {
   }
 
   ngOnInit() {

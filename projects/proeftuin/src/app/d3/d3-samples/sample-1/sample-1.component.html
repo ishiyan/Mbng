@@ -1,1 +1,1 @@
-<app-d3-sample-barchart *ngIf="chartData" [data]="chartData"></app-d3-sample-barchart>
+@if (chartData) {<app-d3-sample-barchart [data]="chartData"></app-d3-sample-barchart>}

@@ -1,44 +1,62 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
-import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
-
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import * as d3 from 'd3';
+
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-trendlines',
-    templateUrl: './d3tc-trendlines.component.html',
-    styleUrls: ['./d3tc-trendlines.component.scss'],
-    encapsulation: ViewEncapsulation.None // does not see css without this
-    ,
-    imports: [MatButton]
+  selector: 'app-d3-sample-d3tc-trendlines',
+  templateUrl: './d3tc-trendlines.component.html',
+  styleUrls: ['./d3tc-trendlines.component.scss'],
+  encapsulation: ViewEncapsulation.None, // does not see css without this
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButton]
 })
-export class D3tcTrendlinesComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcTrendlinesComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const data: Bar[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    const height = this.svgheight() - margin.top - margin.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
-    const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
     const accessor = candlestick.accessor();
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
@@ -66,11 +84,13 @@ export class D3tcTrendlinesComponent implements OnInit {
       refreshText(z);
     }
 
-    const trendline = d3tc.plot.trendline().xScale(x).yScale(y).on('mouseenter', enter).on('mouseout', out).on('drag', drag);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const trendline = primitives.plot.trendline().xScale(x).yScale(y).on('mouseenter', enter).on('mouseout', out).on('drag', drag);
 
-    function draw(dat: D3Ohlcv[], trendlineDat: any) {
-      x.domain(dat.map(accessor.d));
-      y.domain(d3tc.scale.plot.ohlc(dat, accessor).domain());
+    function draw(dat: Bar[], trendlineDat: any) {
+      x.domain(dat.map(accessor.time));
+      y.domain(primitives.scale.plot.ohlc(dat, accessor).domain());
       svg.selectAll('g.candlestick').datum(dat).call(candlestick);
       svg.selectAll('g.x.axis').call(xAxis);
       svg.selectAll('g.y.axis').call(yAxis);
@@ -86,11 +106,11 @@ export class D3tcTrendlinesComponent implements OnInit {
       .style('text-anchor', 'end').text('Price');
 
     const trendlineData = [
-      { start: { date: new Date(2014, 1, 23), value: 25.91 }, end: { date: new Date(2014, 7, 24), value: 30.79 } },
-      { start: { date: new Date(2014, 10, 15), value: 29.54 }, end: { date: new Date(2014, 11, 16), value: 25.69 } }
+      { start: { time: new Date(2014, 1, 23), value: 25.91 }, end: { time: new Date(2014, 7, 24), value: 30.79 } },
+      { start: { time: new Date(2014, 10, 15), value: 29.54 }, end: { time: new Date(2014, 11, 16), value: 25.69 } }
     ];
     let toggle = true;
-    const d: D3Ohlcv[] = data.slice(0, data.length - 20);
+    const d: Bar[] = data.slice(0, data.length - 20);
     const t = trendlineData.slice(0, trendlineData.length - 1);
     draw(d, t);
     d3.select(this.element.nativeElement).select('button').on('click', () => {

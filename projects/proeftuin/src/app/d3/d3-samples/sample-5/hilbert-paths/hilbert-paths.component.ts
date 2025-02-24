@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, inject } from '@angular/core';
 import * as d3 from 'd3';
 
 function distance2xy(d: number): { x: number; y: number } {
@@ -39,10 +39,9 @@ function distance2xy(d: number): { x: number; y: number } {
     styleUrls: ['./hilbert-paths.component.scss']
 })
 export class HilbertPathsComponent implements OnInit {
-  private svg: any;
+  private element = inject(ElementRef);
 
-  constructor(private element: ElementRef) {
-  }
+  private svg: any;
 
   ngOnInit() {
     if (this.svg) {

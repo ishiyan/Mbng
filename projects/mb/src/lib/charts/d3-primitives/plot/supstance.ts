@@ -66,7 +66,7 @@ export const supstance = (supstanceAccessor: any, plot: any, plotMixin: any) => 
   const dragBody = (dispatch: any, accessor: any, x: any, y: any, annotationComposer: any) => {
     const drag = d3.drag()
       .subject((d: any) => ({ x: 0, y: y(accessor(d)) }))
-      .on('drag', (event: any, d: any) => {
+      .on('drag', function(event: any, d: any) {
         const value = y.invert(event.y);
 
         // Go up to the selected items parent only (not the list of items).

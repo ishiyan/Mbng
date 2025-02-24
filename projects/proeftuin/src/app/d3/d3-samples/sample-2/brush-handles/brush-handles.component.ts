@@ -1,30 +1,46 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 // https://observablehq.com/@d3/brush-handles
 
 @Component({
-    selector: 'app-d3-sample-brush-handles',
-    templateUrl: './brush-handles.component.html',
-    styleUrls: ['./brush-handles.component.scss'],
-    encapsulation: ViewEncapsulation.None
+selector: 'app-d3-sample-brush-handles',
+  templateUrl: './brush-handles.component.html',
+  styleUrls: ['./brush-handles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None // Otherwise active circles will not be highlighted.
 })
-export class BrushHandlesComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class BrushHandlesComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  private readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit(): void {
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
     const data: Array<number> = d3.range(800).map(Math.random);
     const margin: any = { top: 20, right: 10, bottom: 40, left: 20 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight);
+      .attr('height', this.svgheight());
     const width: number = +w - margin.left - margin.right;
-    const height: number = +this.svgheight - margin.top - margin.bottom;
+    const height: number = +this.svgheight() - margin.top - margin.bottom;
     const g: any = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const x: d3.ScaleLinear<number, number> = d3.scaleLinear().range([0, width]);
     const y: any = d3.randomNormal(height / 2, height / 8);
@@ -50,9 +66,9 @@ export class BrushHandlesComponent implements OnInit {
       .enter().append('path')
       .attr('class', 'handle--custom')
       .attr('fill', '#666')
-      .attr('fill-opacity', 0.8)
-      .attr('stroke', '#000')
-      .attr('stroke-width', 1.5)
+      .attr('fill-opacity', 0.5)
+      .attr('stroke', '#666')
+      .attr('stroke-width', 0)
       .attr('cursor', 'ew-resize')
       .attr('d', d3.arc()
         .innerRadius(0)

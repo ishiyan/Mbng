@@ -1,14 +1,18 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, input, viewChild, ChangeDetectionStrategy, PLATFORM_ID, HostListener, inject, effect, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 @Component({
-    selector: 'app-d3-sample-barchart',
-    templateUrl: './barchart.component.html',
-    styleUrls: ['./barchart.component.scss']
+  selector: 'app-d3-sample-barchart',
+  templateUrl: './barchart.component.html',
+  styleUrls: ['./barchart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BarchartComponent implements OnInit, OnChanges {
-  @ViewChild('chart', { static: true }) private chartContainer!: ElementRef;
-  @Input() public data!: Array<any>;
+export class BarchartComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly elementRef = viewChild.required<ElementRef>('chart');
+  public readonly data = input.required<Array<any>>();
   private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
   private chart: any;
   private width!: number;
@@ -19,26 +23,39 @@ export class BarchartComponent implements OnInit, OnChanges {
   private xAxis: any;
   private yAxis: any;
 
-  ngOnInit() {
-    this.createChart();
-    if (this.data) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.createChart();
+        this.updateChart();
+      }
+    });
+    effect(() => {
+      this.data();
       this.updateChart();
-    }
+    });
   }
 
-  ngOnChanges() {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
-
+  @HostListener('window:resize', [])
   createChart() {
-    const element = this.chartContainer.nativeElement;
-    this.width = element.offsetWidth - this.margin.left - this.margin.right;
-    this.height = element.offsetHeight - this.margin.top - this.margin.bottom;
-    const svg = d3.select(element).append('svg')
-      .attr('width', element.offsetWidth)
-      .attr('height', element.offsetHeight);
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const element = this.elementRef().nativeElement;
+    let w = element.offsetWidth;
+    let h = element.offsetHeight;
+
+    this.width = w - this.margin.left - this.margin.right;
+    this.height = h - this.margin.top - this.margin.bottom;
+    const sel = d3.select(element);
+    sel.select('svg').remove();
+
+    const svg: any = sel.append('svg')
+      .attr('preserveAspectRatio', 'xMinYMin meet')
+      .attr('width', w)
+      .attr('height', h)
+      .attr('viewBox', `0 0 ${w} ${h}`);
 
     // chart plot area
     this.chart = svg.append('g')
@@ -46,15 +63,15 @@ export class BarchartComponent implements OnInit, OnChanges {
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
     // define X & Y domains
-    const xDomain = this.data.map(d => d[0]);
-    const yDomain = [0, d3.max(this.data, d => d[1])];
+    const xDomain = this.data().map(d => d[0]);
+    const yDomain = [0, d3.max(this.data(), d => d[1])];
 
     // create scales
     this.xScale = d3.scaleBand().padding(0.1).domain(xDomain).rangeRound([0, this.width]);
     this.yScale = d3.scaleLinear().domain(yDomain).range([this.height, 0]);
 
     // bar colors
-    this.colors = d3.scaleLinear().domain([0, this.data.length]).range(['green', 'blue'] as any[]);
+    this.colors = d3.scaleLinear().domain([0, this.data().length]).range(['green', 'blue'] as any[]);
 
     // x & y axis
     this.xAxis = svg.append('g')
@@ -68,15 +85,24 @@ export class BarchartComponent implements OnInit, OnChanges {
   }
 
   updateChart() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    if (!this.chart) {
+      return;
+    }
+
     // update scales & axis
-    this.xScale.domain(this.data.map(d => d[0]));
-    this.yScale.domain([0, d3.max(this.data, d => d[1])]);
-    this.colors.domain([0, this.data.length]);
+    const data = this.data();
+    this.xScale.domain(data.map(d => d[0]));
+    this.yScale.domain([0, d3.max(data, d => d[1])]);
+    this.colors.domain([0, data.length]);
     this.xAxis.transition().call(d3.axisBottom(this.xScale));
     this.yAxis.transition().call(d3.axisLeft(this.yScale));
 
     const update = this.chart.selectAll('.bar')
-      .data(this.data);
+      .data(data);
 
     // remove exiting bars
     update.exit().remove();

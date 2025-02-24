@@ -1,39 +1,54 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
-import { dataOhlcvIntraday } from '../../data/data-ohlcv-intraday';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
+import { dataOhlcvIntraday } from '../../data/data-bar-intraday';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-finance-time',
-    templateUrl: './d3tc-finance-time.component.html',
-    styleUrls: ['./d3tc-finance-time.component.scss'],
-    encapsulation: ViewEncapsulation.None // does not see css without this
+  selector: 'app-d3-sample-d3tc-finance-time',
+  templateUrl: './d3tc-finance-time.component.html',
+  styleUrls: ['./d3tc-finance-time.component.scss'],
+  encapsulation: ViewEncapsulation.None, // does not see css without this
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class D3tcFinanceTimeComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcFinanceTimeComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const dataDaily: D3Ohlcv[] = dataOhlcvDaily;
-    const dataIntraday: D3Ohlcv[] = dataOhlcvIntraday;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const dataDaily: Bar[] = dataOhlcvDaily;
+    const dataIntraday: Bar[] = dataOhlcvIntraday;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    const height = this.svgheight() - margin.top - margin.bottom;
 
     const zoom = d3.zoom();
     const x = d3.scaleTime().range([0, width]);
@@ -41,12 +56,24 @@ export class D3tcFinanceTimeComponent implements OnInit {
     const xIntraday = d3.scaleTime().range([0, width]);
     const xIntradayUtc = d3.scaleUtc().range([0, width]);
 
-    const time = d3tc.scale.financetime().range([0, width]);
-    const timeNonClamped = d3tc.scale.financetime().range([0, width]);
-    const timeUtcNonClamped = d3tc.scale.financetime.utc().range([0, width]);
-    const intradayTime = d3tc.scale.financetime().range([0, width]);
-    const intradayTimeNonClamped = d3tc.scale.financetime().range([0, width]);
-    const intradayUtcTimeNonClamped = d3tc.scale.financetime.utc().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const time = primitives.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const timeNonClamped = primitives.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const timeUtcNonClamped = primitives.scale.financetime.utc().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const intradayTime = primitives.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const intradayTimeNonClamped = primitives.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const intradayUtcTimeNonClamped = primitives.scale.financetime.utc().range([0, width]);
 
     let timeInit: any;
     let timeNonClampedInit: any;
@@ -178,11 +205,13 @@ export class D3tcFinanceTimeComponent implements OnInit {
     }
 
     zoom.on('zoom', zoomed);
-    const accessor = d3tc.accessor.ohlc();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const accessor = primitives.plot.ohlc().accessor();
 
     // data begin ----------------------------------
-    const d3evDaily = d3.extent(dataDaily, d => d.date);
-    const vDaily = dataDaily.map(d => d.date);
+    const d3evDaily = d3.extent(dataDaily, d => d.time);
+    const vDaily = dataDaily.map(d => d.time);
     // @ts-ignore
     x.domain(d3evDaily);
     // @ts-ignore
@@ -191,8 +220,8 @@ export class D3tcFinanceTimeComponent implements OnInit {
     timeNonClampedInit = timeNonClamped.domain(vDaily).zoomable().clamp(false).copy();
     timeUtcNonClampedInit = timeUtcNonClamped.domain(vDaily).zoomable().clamp(false).copy();
 
-    const d3evIntraday = d3.extent(dataIntraday, d => d.date);
-    const vIntraday = dataIntraday.map(d => d.date);
+    const d3evIntraday = d3.extent(dataIntraday, d => d.time);
+    const vIntraday = dataIntraday.map(d => d.time);
     // @ts-ignore
     xIntraday.domain(d3evIntraday);
     // @ts-ignore

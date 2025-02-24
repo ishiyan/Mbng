@@ -1,52 +1,77 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily-big';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-brush',
-    templateUrl: './d3tc-brush.component.html',
-    styleUrls: ['./d3tc-brush.component.scss'],
-    encapsulation: ViewEncapsulation.None // does not see css without this
+  selector: 'app-d3-sample-d3tc-brush',
+  templateUrl: './d3tc-brush.component.html',
+  styleUrls: ['./d3tc-brush.component.scss'],
+  encapsulation: ViewEncapsulation.None, // does not see css without this
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class D3tcBrushComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcBrushComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const data: Bar[] = dataOhlcvDaily;
 
     const margin = { top: 10, bottom: 20, right: 80, left: 35 };
-    const marginNav = { top: this.svgheight - 30 - 40, bottom: 40, right: margin.right, left: margin.left };
+    const marginNav = { top: this.svgheight() - 30 - 40, bottom: 40, right: margin.right, left: margin.left };
 
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
     const height = marginNav.top - margin.top - margin.bottom;
-    const heightNav = this.svgheight - marginNav.top - marginNav.bottom;
+    const heightNav = this.svgheight() - marginNav.top - marginNav.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
     const yVolume = d3.scaleLinear().range([y(0) as number, y(0.3) as number]);
-    const xNav = d3tc.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const xNav = primitives.scale.financetime().range([0, width]);
     const yNav = d3.scaleLinear().range([heightNav, 0]);
     const brush = d3.brushX().extent([[0, 0], [width, heightNav]]);
-    const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
-    const volume = d3tc.plot.volume().xScale(x).yScale(yVolume);
-    const close = d3tc.plot.close().xScale(xNav).yScale(yNav);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const volume = primitives.plot.volume().xScale(x).yScale(yVolume);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const close = primitives.plot.closeline().xScale(xNav).yScale(yNav);
     // const area = d3.area().curve(d3.curveMonotoneX)
-    //     .x(function(d) { return xNav(d['date']); }).y0(heightNav).y1(function(d) { return yNav(d['close']); });
+    //     .x(function(d) { return xNav(d['time']); }).y0(heightNav).y1(function(d) { return yNav(d['close']); });
 
     const accessor = candlestick.accessor();
 
@@ -55,12 +80,17 @@ export class D3tcBrushComponent implements OnInit {
     const yAxisLeft = d3.axisLeft(y);
     // const yAxisNavLeft = d3.axisLeft(yNav).ticks(0);
 
-    const ohlcAnnotationLeft = d3tc.plot.axisannotation().axis(yAxisLeft).orient('left')
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const ohlcAnnotationLeft = primitives.plot.axisannotation().axis(yAxisLeft).orient('left')
       .format(d3.format(',.2f'));
-    const timeAnnotationBottom = d3tc.plot.axisannotation().axis(xAxisBottom).orient('bottom')
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const timeAnnotationBottom = primitives.plot.axisannotation().axis(xAxisBottom).orient('bottom')
       .format(d3.timeFormat('%Y-%m-%d')).width(65).translate([0, height]);
-
-    const crosshair = d3tc.plot.crosshair().xScale(x).yScale(y)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const crosshair = primitives.plot.crosshair().xScale(x).yScale(y)
       .xAnnotation(timeAnnotationBottom).yAnnotation(ohlcAnnotationLeft);
 
     const focus = svg.append('g').attr('class', 'focus').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -84,7 +114,7 @@ export class D3tcBrushComponent implements OnInit {
     function draw() {
       const candlestickSelection = focus.select('g.candlestick');
       const datum = candlestickSelection.datum();
-      y.domain(d3tc.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
+      y.domain(primitives.scale.plot.ohlc(datum.slice.apply(datum, x.zoomable().domain()), accessor).domain());
       candlestickSelection.call(candlestick);
       focus.select('g.volume').call(volume);
 
@@ -109,11 +139,11 @@ export class D3tcBrushComponent implements OnInit {
     brush.on('end', brushed);
 
     // data begin ----------------------------------
-    x.domain(data.map(accessor.d));
+    x.domain(data.map(accessor.time));
     xNav.domain(x.domain());
-    y.domain(d3tc.scale.plot.ohlc(data, accessor).domain());
+    y.domain(primitives.scale.plot.ohlc(data, accessor).domain());
     yNav.domain(y.domain());
-    yVolume.domain(d3tc.scale.plot.volume(data).domain());
+    yVolume.domain(primitives.scale.plot.volume(data).domain());
 
     focus.select('g.candlestick').datum(data);
     focus.select('g.volume').datum(data);

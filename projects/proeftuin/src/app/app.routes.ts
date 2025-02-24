@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   { path: 'tex', loadChildren: () => import('./tex/tex.routes').then(m => m.routes) },
-  { path: 'd3', loadChildren: () => import('./d3/d3.module').then(m => m.D3Module) },
+  { path: 'd3', loadChildren: () => import('./d3/d3.routes').then(m => m.routes) },
   { path: 'mb', loadChildren: () => import('./mb/mb.module').then(m => m.MbModule) },
   { path: 'notes', loadChildren: () => import('./notes/notes.module').then(m => m.NotesModule) },
   { path: '**', redirectTo: 'tex', pathMatch: 'full' }

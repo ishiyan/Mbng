@@ -1,8 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, inject } from '@angular/core';
 import * as d3 from 'd3';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily-big';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as hilbert from '../hilbert';
@@ -13,16 +15,15 @@ import * as hilbert from '../hilbert';
     styleUrls: ['./hilbert-stocks.component.scss']
 })
 export class HilbertStocksComponent implements OnInit {
+  private element = inject(ElementRef);
 
-  constructor(private element: ElementRef) {
-  }
 
   ngOnInit() {
     const w = 500;
     const svg: any = d3.select(this.element.nativeElement).select('svg')
       .attr('class', 'hilbert').attr('opacity', 1).attr('width', w + 10).attr('height', w + 30);
 
-    const plot = (chart: any, lev: number, curve: any, data: D3Ohlcv[]) => {
+    const plot = (chart: any, lev: number, curve: any, data: Bar[]) => {
       const open = 'open';
       const dat: number[] = data.map((d): number => +d[open]);
       const level2 = Math.pow(2, lev / 2); // 1 << lev

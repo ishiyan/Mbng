@@ -1,53 +1,75 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
-import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
-
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { MatButton } from '@angular/material/button';
+import * as d3 from 'd3';
+
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-trade-arrows',
-    templateUrl: './d3tc-trade-arrows.component.html',
-    styleUrls: ['./d3tc-trade-arrows.component.scss'],
-    encapsulation: ViewEncapsulation.None // does not see css without this
-    ,
-    imports: [MatButton]
+  selector: 'app-d3-sample-d3tc-trade-arrows',
+  templateUrl: './d3tc-trade-arrows.component.html',
+  styleUrls: ['./d3tc-trade-arrows.component.scss'],
+  encapsulation: ViewEncapsulation.None, // does not see css without this
+  changeDetection: ChangeDetectionStrategy.OnPush,    
+  imports: [MatButton]
 })
-export class D3tcTradeArrowsComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcTradeArrowsComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const data: Bar[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    const height = this.svgheight() - margin.top - margin.bottom;
 
-    const x = d3tc.scale.financetime().range([0, width]);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const x = primitives.scale.financetime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
-    const candlestick = d3tc.plot.candlestick().xScale(x).yScale(y);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const candlestick = primitives.plot.candlestick().xScale(x).yScale(y);
     const accessor = candlestick.accessor();
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
-    const valueText = svg.append('text').style('text-anchor', 'end').attr('class', 'coords').attr('x', width - 5).attr('y', 15);
+    const valueText = svg.append('text')
+      .style('text-anchor', 'end')
+      .attr('class', 'coords')
+      .attr('x', width - 5)
+      .attr('y', 15);
 
     function refreshText(z: any) {
       const dateFormat = d3.timeFormat('%d-%b-%y');
       const valueFormat = d3.format(',.2f');
-      valueText.text('Trade: ' + dateFormat(z.date) + ', ' + z.type + ', ' + valueFormat(z.price));
+      valueText.text(dateFormat(z.time) + ', ' + z.type + ', ' + z.quantity + '@' + valueFormat(z.price));
     }
     function enter(z: any) {
       valueText.style('display', 'inline');
@@ -57,12 +79,15 @@ export class D3tcTradeArrowsComponent implements OnInit {
       valueText.style('display', 'none');
     }
 
-    const tradearrow = d3tc.plot.tradearrow().xScale(x).yScale(y)
-      .orient((z: any) => z.type.startsWith('buy') ? 'up' : 'down').on('mouseenter', enter).on('mouseout', out);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const tradearrow = primitives.plot.tradearrow().xScale(x).yScale(y)
+      .on('mouseenter', enter)
+      .on('mouseout', out);
 
-    function draw(dat: D3Ohlcv[], trad: any) {
-      x.domain(dat.map(accessor.d));
-      y.domain(d3tc.scale.plot.ohlc(dat, accessor).domain());
+    function draw(dat: Bar[], trad: any) {
+      x.domain(dat.map(accessor.time));
+      y.domain(primitives.scale.plot.ohlc(dat, accessor).domain());
       svg.selectAll('g.candlestick').datum(dat).call(candlestick);
       svg.selectAll('g.tradearrow').datum(trad).call(tradearrow);
       svg.selectAll('g.x.axis').call(xAxis);
@@ -77,14 +102,14 @@ export class D3tcTradeArrowsComponent implements OnInit {
       .append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '.71em')
       .style('text-anchor', 'end').text('Price');
     const trades = [
-      { date: data[67].date, type: 'buy', price: data[67].low, quantity: 1000 },
-      { date: data[100].date, type: 'sell', price: data[100].high, quantity: 200 },
-      { date: data[156].date, type: 'buy', price: data[156].open, quantity: 500 },
-      { date: data[167].date, type: 'sell', price: data[167].close, quantity: 300 },
-      { date: data[187].date, type: 'buy-pending', price: data[187].low, quantity: 300 }
+      { time: data[67].time, type: 'buy', price: data[67].low, quantity: 1000 },
+      { time: data[100].time, type: 'sell', price: data[100].high, quantity: 200 },
+      { time: data[156].time, type: 'buy', price: data[156].open, quantity: 500 },
+      { time: data[167].time, type: 'sell', price: data[167].close, quantity: 300 },
+      { time: data[187].time, type: 'buy-pending', price: data[187].low, quantity: 300 }
     ];
     let toggle = true;
-    const d: D3Ohlcv[] = data.slice(0, data.length - 20);
+    const d: Bar[] = data.slice(0, data.length - 20);
     const t = trades.slice(0, trades.length - 1);
     draw(d, t);
     d3.select(this.element.nativeElement).select('button').on('click', () => {

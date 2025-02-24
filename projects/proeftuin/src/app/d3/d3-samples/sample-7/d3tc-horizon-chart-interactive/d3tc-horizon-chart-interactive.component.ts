@@ -1,28 +1,31 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
-import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { Component, OnInit, ElementRef, input, viewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/core';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import * as d3 from 'd3';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as d3tc from '../../../../shared/d3tc';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily-big';
-import { MatFormField } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
-import { NgFor } from '@angular/common';
-import { MatInput } from '@angular/material/input';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily-big';
 
 @Component({
     selector: 'app-d3-sample-d3tc-horizon-chart-interactive',
     templateUrl: './d3tc-horizon-chart-interactive.component.html',
     styleUrls: ['./d3tc-horizon-chart-interactive.component.scss'],
-    imports: [MatFormField, MatSelect, FormsModule, MatOption, NgFor, MatInput, MatRadioGroup, MatRadioButton]
+    imports: [MatFormField, MatSelect, FormsModule, MatOption, MatInput, MatRadioGroup, MatRadioButton]
 })
 export class D3tcHorizonChartInteractiveComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+  private element = inject(ElementRef);
+
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
   bands = 1;
   mode = 'mirror';
   interpolations = [
@@ -52,18 +55,15 @@ export class D3tcHorizonChartInteractiveComponent implements OnInit {
   private chart: any;
   private height!: number;
 
-  constructor(private element: ElementRef) {
-  }
-
   ngOnInit() {
-    const data: D3Ohlcv[] = dataOhlcvDaily;
-    const w = this.container.nativeElement.getBoundingClientRect().width;
+    const data: Bar[] = dataOhlcvDaily;
+    const w = this.container().nativeElement.getBoundingClientRect().width;
     const margin = { left: 12, right: 12 };
     const width = w - margin.left - margin.right;
-    this.height = this.svgheight;
+    this.height = this.svgheight();
     this.svg = d3.select(this.element.nativeElement).select('svg').attr('width', width).attr('height', this.height).append('g');
     const mean = data.map(c => c.close).reduce((p, v) => p + v, 0) / data.length;
-    const horizonData = data.map(c => [c.date, c.close ? (c.close - mean) : null]);
+    const horizonData = data.map(c => [c.time, c.close ? (c.close - mean) : null]);
     this.chart = d3tc.horizonChart().width(width).height(this.height / this.bands).bands(this.bands).mode(this.mode)
       .interpolate(this.interpolation).colors(this.color).defined((d: any) => d[1]);
     this.svg.data([horizonData]).call(this.chart);

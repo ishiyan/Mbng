@@ -1,26 +1,26 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, viewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 import { MatRadioChange, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import * as d3 from 'd3';
 
-import { D3Ohlcv } from '../../data/d3-ohlcv';
-import { dataOhlcvDaily } from '../../data/data-ohlcv-daily';
-import { MatFormField } from '@angular/material/form-field';
-import { MatSelect } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
-import { NgFor } from '@angular/common';
-import { MatInput } from '@angular/material/input';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
+import { dataOhlcvDaily } from '../../data/data-bar-daily';
 import { D3tcHorizonChartSingleComponent } from '../d3tc-horizon-chart-single/d3tc-horizon-chart-single.component';
 
 @Component({
     selector: 'app-d3-sample-d3tc-horizon-chart-bands',
     templateUrl: './d3tc-horizon-chart-bands.component.html',
     styleUrls: ['./d3tc-horizon-chart-bands.component.scss'],
-    imports: [MatFormField, MatSelect, FormsModule, MatOption, NgFor, MatInput, MatRadioGroup, MatRadioButton, D3tcHorizonChartSingleComponent]
+    imports: [MatFormField, MatSelect, FormsModule, MatOption, MatInput, MatRadioGroup, MatRadioButton, D3tcHorizonChartSingleComponent]
 })
 export class D3tcHorizonChartBandsComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  data: D3Ohlcv[] = dataOhlcvDaily;
+  readonly container = viewChild.required<ElementRef>('container');
+  data: Bar[] = dataOhlcvDaily;
   width = 900;
   height = 40;
   mode = 'mirror';
@@ -52,7 +52,7 @@ export class D3tcHorizonChartBandsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const w = this.container.nativeElement.getBoundingClientRect().width;
+    const w = this.container().nativeElement.getBoundingClientRect().width;
     const margin = { right: 12, left: 12 };
     this.width = w - margin.left - margin.right;
   }

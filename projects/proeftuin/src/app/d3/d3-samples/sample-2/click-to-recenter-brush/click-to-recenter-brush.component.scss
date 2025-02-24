@@ -1,11 +1,11 @@
 circle {
   fill-opacity: 0.2;
   transition: fill-opacity 250ms linear;
+  fill: forestgreen;
 }
 
 circle.active {
-  fill: red;
-  stroke: brown;
+  stroke: lime;
 }
 
 .container {

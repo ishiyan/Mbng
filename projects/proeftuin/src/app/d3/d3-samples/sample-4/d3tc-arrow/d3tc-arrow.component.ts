@@ -1,41 +1,56 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as d3tc from '../../../../shared/d3tc';
+
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-arrow',
-    templateUrl: './d3tc-arrow.component.html',
-    styleUrls: ['./d3tc-arrow.component.scss'],
-    encapsulation: ViewEncapsulation.None // does not see css without this
+  selector: 'app-d3-sample-d3tc-arrow',
+  templateUrl: './d3tc-arrow.component.html',
+  styleUrls: ['./d3tc-arrow.component.scss'],
+  encapsulation: ViewEncapsulation.None, // does not see css without this
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class D3tcArrowComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcArrowComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const svg: any = d3.select(this.element.nativeElement).select('svg')
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const svg: any = d3.select(this.element.nativeElement).append('svg')
       .attr('width', w)
-      .attr('height', this.svgheight)
+      .attr('height', this.svgheight())
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     const data = ['up', 'right', 'down', 'left'];
 
-    const arrow = d3tc.svg.arrow().x(230).y(0).height(50).width(50);
+    const arrow = primitives.shapes.arrow().x(230).y(0).height(50).width(50);
 
-    const arrowOrient = d3tc.svg.arrow().orient((d: any) => d)
+    const arrowOrient = primitives.shapes.arrow().orient((d: any) => d)
       .x((d: any, i: any) => 0 + i * 50)
       .y((d: any, i: any) => 0 + i * 50);
 
-    const arrowTranslate = d3tc.svg.arrow().tail(false);
+    const arrowTranslate = primitives.shapes.arrow().tail(false);
 
     svg.append('path').attr('class', 'arrow').attr('d', arrow);
 

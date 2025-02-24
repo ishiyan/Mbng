@@ -1,33 +1,51 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
-import { primitives } from 'projects/mb/src/lib/charts/d3-primitives'; //'../../../../shared/d3tc';
-import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 
-// import { D3Ohlcv } from '../../data/d3-ohlcv';
+import { primitives } from 'projects/mb/src/lib/charts/d3-primitives';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+
 import { dataOhlcvDaily } from '../../data/data-bar-daily';
 
 @Component({
-    selector: 'app-d3-sample-d3tc-feed',
-    templateUrl: './d3tc-feed.component.html',
-    styleUrls: ['./d3tc-feed.component.scss']
+  selector: 'app-d3-sample-d3tc-feed',
+  templateUrl: './d3tc-feed.component.html',
+  styleUrls: ['./d3tc-feed.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class D3tcFeedComponent implements OnInit {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class D3tcFeedComponent {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
-    const data: Ohlcv[] = dataOhlcvDaily;
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
+    const data: Bar[] = dataOhlcvDaily;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
-    const sv: any = d3.select(this.element.nativeElement).select('svg').attr('width', w).attr('height', this.svgheight);
+    const w = this.container().nativeElement.getBoundingClientRect().width;
+    d3.select(this.element.nativeElement).select('svg').remove();
+    const sv: any = d3.select(this.element.nativeElement).append('svg')
+      .attr('width', w)
+      .attr('height', this.svgheight());
     const defs = sv.append('defs');
     const svg = sv.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     const width = w - margin.left - margin.right;
-    const height = this.svgheight - margin.top - margin.bottom;
+    const height = this.svgheight() - margin.top - margin.bottom;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -78,7 +96,7 @@ export class D3tcFeedComponent implements OnInit {
       .xAnnotation(timeAnnotation).yAnnotation([ohlcAnnotation, volumeAnnotation]).on('move', move);
 
     const feed = data;
-    function redraw(dat: Ohlcv[]) {
+    function redraw(dat: Bar[]) {
       x.domain(dat.map(accessor.time));
       // Show only 150 points on the plot
       x.zoomable().domain([dat.length - 130, dat.length]);

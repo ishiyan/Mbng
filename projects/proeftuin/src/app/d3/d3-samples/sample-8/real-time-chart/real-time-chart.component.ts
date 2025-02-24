@@ -1,26 +1,42 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as rtc from './realTimeChart.js';
 
 @Component({
-    selector: 'app-d3-sample-real-time-chart',
-    templateUrl: './real-time-chart.component.html',
-    styleUrls: ['./real-time-chart.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-d3-sample-real-time-chart',
+  templateUrl: './real-time-chart.component.html',
+  styleUrls: ['./real-time-chart.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RealTimeChartComponent implements OnInit, OnDestroy {
-  @ViewChild('container', { static: true }) container!: ElementRef;
-  @Input() svgheight: any;
+export class RealTimeChartComponent implements OnDestroy {
+  private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly element = inject(ElementRef);
+  readonly container = viewChild.required<ElementRef>('container');
+  readonly svgheight = input<any>();
   private chart: any;
 
-  constructor(private element: ElementRef) {
+  constructor() {
+    afterNextRender({
+      write: () => {
+        this.render();
+      }
+    });
   }
 
-  ngOnInit() {
+  @HostListener('window:resize', [])
+  render() {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
+
     const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-    const w = this.container.nativeElement.getBoundingClientRect().width;
+    const w = this.container().nativeElement.getBoundingClientRect().width;
     const viewDiv: any = d3.select(this.element.nativeElement).select('#viewDiv');
     // const width = w - margin.left - margin.right;
     // const height = this.svgheight - margin.top - margin.bottom;
@@ -50,11 +66,12 @@ export class RealTimeChartComponent implements OnInit, OnDestroy {
     // create the real time chart
     const chart = rtc.realTimeChart()
       // .title('Chart Title').yTitle('Y Scale').xTitle('X Scale')
-      .border(false).width(w).height(this.svgheight).barWidth(2)
+      .border(false).width(w).height(this.svgheight()).barWidth(2)
       .left(margin.left).top(margin.top).right(margin.right).bottom(margin.bottom)
       .initialData(data);
 
     // invoke the chart (alternative invocation is chart(chartDiv);)
+    viewDiv.select('#chartDiv').remove();
     viewDiv.append('div').attr('id', 'chartDiv').call(chart);
 
     // drive data into the chart roughly every second

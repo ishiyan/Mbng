@@ -1,33 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+
 import { BarchartComponent } from './barchart/barchart.component';
 
 @Component({
-    selector: 'app-d3-sample-1',
-    templateUrl: './sample-1.component.html',
-    styleUrls: ['./sample-1.component.scss'],
-    imports: [NgIf, BarchartComponent]
+  selector: 'app-d3-sample-1',
+  templateUrl: './sample-1.component.html',
+  styleUrls: ['./sample-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [BarchartComponent]
 })
-export class Sample1Component implements OnInit {
+export class Sample1Component {
+  private readonly cdr = inject(ChangeDetectorRef);
   public chartData!: Array<any>;
 
-  ngOnInit() {
-    // give everything a chance to get loaded before starting the animation to reduce choppiness
-    setTimeout(() => {
+  constructor() {
+    effect(() => {
       this.generateData();
-
-      // change the data periodically
-      setInterval(() => this.generateData(), 3000);
-    }, 1000);
+    });
   }
 
   generateData() {
     this.chartData = [];
     for (let i = 0; i < (8 + Math.floor(Math.random() * 50)); ++i) {
       this.chartData.push([
-        `Index ${i}`,
+        `${i}`,
         Math.floor(Math.random() * 100)
       ]);
     }
+    this.cdr.markForCheck();
+    setTimeout(() => {
+      this.generateData();
+    }, 3000);
   }
 }

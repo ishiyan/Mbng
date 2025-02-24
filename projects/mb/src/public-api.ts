@@ -218,7 +218,6 @@ export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-av
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params.component';
 export * from './lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average-params-dialog.component';
 
-// export * from './lib/charts/d3ts/index.js';
 export * from './lib/charts/line-configuration.interface';
 export * from './lib/charts/downloader';
 export * from './lib/charts/entities/band';
