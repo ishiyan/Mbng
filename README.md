@@ -146,7 +146,7 @@ npm list -g
 ng update
 # This will do an actual update of specified packages
 # Use an optional `--force` switch if something is not compatible
-ng update --force @angular/cli @angular/core @angular-eslint/schematics @angular/material @angular/cdk
+ng update --force @angular/cli @angular/core @angular-eslint/schematics @angular/material @angular/cdk @angular/ssr @angular/platform-server
 
 # This will show updates for the rest of packages
 ncu
