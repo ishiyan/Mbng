@@ -22,9 +22,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>All palettes</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesMaterial" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesMaterial; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>
@@ -50,9 +52,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>All palettes</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettes" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettes; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>
@@ -63,9 +67,11 @@
       <mat-card-subtitle>spans</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <span *ngFor="let s of linearPalettes; let i = index">
-        <mb-swatches [width]="160" [height]="32" [colors]="s"></mb-swatches>&nbsp;{{i + 2}}
-      </span>
+      @for (s of linearPalettes; track s; let i = $index) {
+        <span>
+          <mb-swatches [width]="160" [height]="32" [colors]="s"></mb-swatches>&nbsp;{{i + 2}}
+        </span>
+      }
     </mat-card-content>
   </mat-card>
 

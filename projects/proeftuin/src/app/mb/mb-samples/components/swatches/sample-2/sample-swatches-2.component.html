@@ -22,9 +22,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>spans</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesA" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesA; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-content>
@@ -32,9 +34,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>'7421' sequence</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesAOrdered" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesAOrdered; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>
@@ -61,9 +65,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>spans</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettes" style="margin-right:10px">
-          <mb-swatches [width]="320" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettes; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="320" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
     <mat-card-content>
@@ -71,9 +77,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>'9876543210' sequence</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesOrdered" style="margin-right:10px">
-          <mb-swatches [width]="320" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesOrdered; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="320" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-content>
   </mat-card>

@@ -8,7 +8,7 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { NgFor } from '@angular/common';
+
 import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
 import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
@@ -16,7 +16,7 @@ import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colo
     selector: 'app-sample-swatches-6',
     templateUrl: './sample-swatches-6.component.html',
     styleUrls: ['./sample-swatches-6.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgFor]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
 })
 export class SampleSwatches6Component {
 

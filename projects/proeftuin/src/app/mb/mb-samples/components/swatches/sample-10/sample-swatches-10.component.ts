@@ -6,7 +6,7 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { NgFor } from '@angular/common';
+
 import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
 import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
@@ -124,7 +124,7 @@ const tripletsMaterialCount = tripletsMaterial.length;
     selector: 'app-sample-swatches-10',
     templateUrl: './sample-swatches-10.component.html',
     styleUrls: ['./sample-swatches-10.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgFor]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
 })
 export class SampleSwatches10Component {
   private numberOfSwatches = 5;

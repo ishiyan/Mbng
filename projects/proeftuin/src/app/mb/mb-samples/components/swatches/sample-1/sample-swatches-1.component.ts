@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatSelectionList, MatListOption, MatList, MatListItem } from '@angular/material/list';
@@ -12,20 +12,19 @@ import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swa
     templateUrl: './sample-swatches-1.component.html',
     styleUrls: ['./sample-swatches-1.component.scss'],
     imports: [
-      NgFor,
-      FormsModule,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      MatCardActions,
-      MatSelectionList,
-      MatListOption,
-      MatList,
-      MatListItem,
-      SwatchesComponent,
-      SwatchesSelectComponent
-    ]
+    FormsModule,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatCardActions,
+    MatSelectionList,
+    MatListOption,
+    MatList,
+    MatListItem,
+    SwatchesComponent,
+    SwatchesSelectComponent
+]
 })
 export class SampleSwatches1Component {
 

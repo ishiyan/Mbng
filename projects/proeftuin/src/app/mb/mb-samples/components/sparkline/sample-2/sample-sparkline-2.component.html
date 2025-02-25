@@ -18,19 +18,21 @@
         <mat-select [(value)]="arrayItemFixed">
           <mat-select-trigger>
             <mb-sparkline [width]="160" [height]="24" [data]="arrayItemFixed.data"
-              [configuration]="arrayItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{arrayItemFixed.name}}
+            [configuration]="arrayItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{arrayItemFixed.name}}
           </mat-select-trigger>
-          <mat-option *ngFor="let d of dataArray" [value]="d">
-            <mb-sparkline [width]="160" [height]="24" [data]="d.data"
+          @for (d of dataArray; track d) {
+            <mat-option [value]="d">
+              <mb-sparkline [width]="160" [height]="24" [data]="d.data"
               [configuration]="arrayItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{d.name}}
-          </mat-option>
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>outlined
     </mat-card-content>
     <mat-card-actions>
       You selected:
       <mb-sparkline [width]="100" [height]="16" [data]="arrayItemFixed.data"
-        [configuration]="arrayItemIsLineFixed ? configFill : configLine"></mb-sparkline>
+      [configuration]="arrayItemIsLineFixed ? configFill : configLine"></mb-sparkline>
       {{arrayItemFixed.name}}
     </mat-card-actions>
   </mat-card>
@@ -45,7 +47,7 @@
           <mat-radio-button name="groupedFixed" value="true" color="primary">&nbsp;line</mat-radio-button>&nbsp;&nbsp;
           <mat-radio-button name="groupedFixed" value="false" color="primary" checked>&nbsp;fill</mat-radio-button>
         </mat-radio-group>
-        </mat-card-subtitle>
+      </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field style="width:300px">
@@ -53,21 +55,25 @@
         <mat-select [(value)]="groupItemFixed">
           <mat-select-trigger>
             <mb-sparkline [width]="160" [height]="24" [data]="groupItemFixed.data"
-              [configuration]="groupItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{groupItemFixed.name}}
+            [configuration]="groupItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{groupItemFixed.name}}
           </mat-select-trigger>
-          <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
-            <mat-option *ngFor="let d of group.items" [value]="d">
-              <mb-sparkline [width]="140" [height]="24" [data]="d.data"
-                [configuration]="groupItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{d.name}}
-            </mat-option>
-          </mat-optgroup>
+          @for (group of dataGroups; track group) {
+            <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+              @for (d of group.items; track d) {
+                <mat-option [value]="d">
+                  <mb-sparkline [width]="140" [height]="24" [data]="d.data"
+                  [configuration]="groupItemIsLineFixed ? configLine : configFill"></mb-sparkline> {{d.name}}
+                </mat-option>
+              }
+            </mat-optgroup>
+          }
         </mat-select>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
       You selected:
       <mb-sparkline [width]="100" [height]="16" [data]="groupItemFixed.data"
-        [configuration]="groupItemIsLineFixed ? configFill : configLine"></mb-sparkline>
+      [configuration]="groupItemIsLineFixed ? configFill : configLine"></mb-sparkline>
       {{groupItemFixed.name}}
     </mat-card-actions>
   </mat-card>
@@ -90,19 +96,21 @@
         <mat-select [(value)]="arrayItem">
           <mat-select-trigger>
             <mb-sparkline [width]="'50%mat-select'" [height]="24" [data]="arrayItem.data"
-              [configuration]="arrayItemIsLine ? configLine : configFill"></mb-sparkline> {{arrayItem.name}}
+            [configuration]="arrayItemIsLine ? configLine : configFill"></mb-sparkline> {{arrayItem.name}}
           </mat-select-trigger>
-          <mat-option *ngFor="let d of dataArray" [value]="d">
-            <mb-sparkline [width]="'50%parent'" [height]="24" [data]="d.data"
+          @for (d of dataArray; track d) {
+            <mat-option [value]="d">
+              <mb-sparkline [width]="'50%parent'" [height]="24" [data]="d.data"
               [configuration]="arrayItemIsLine ? configLine : configFill"></mb-sparkline> {{d.name}}
-          </mat-option>
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
       You selected:
       <mb-sparkline [width]="100" [height]="16" [data]="arrayItem.data"
-        [configuration]="arrayItemIsLine ? configFill : configLine"></mb-sparkline>
+      [configuration]="arrayItemIsLine ? configFill : configLine"></mb-sparkline>
       {{arrayItem.name}}
     </mat-card-actions>
   </mat-card>
@@ -125,21 +133,25 @@
         <mat-select [(value)]="groupItem">
           <mat-select-trigger>
             <mb-sparkline [width]="'50%mat-select'" [height]="24" [data]="groupItem.data"
-              [configuration]="groupItemIsLine ? configLine : configFill"></mb-sparkline> {{groupItem.name}}
+            [configuration]="groupItemIsLine ? configLine : configFill"></mb-sparkline> {{groupItem.name}}
           </mat-select-trigger>
-          <mat-optgroup *ngFor="let group of dataGroups" [label]="group.name" [disabled]="group.disabled">
-            <mat-option *ngFor="let d of group.items" [value]="d">
-              <mb-sparkline [width]="'50%offsetParent'" [height]="24" [data]="d.data"
-                [configuration]="groupItemIsLine ? configLine : configFill"></mb-sparkline> {{d.name}}
-            </mat-option>
-          </mat-optgroup>
+          @for (group of dataGroups; track group) {
+            <mat-optgroup [label]="group.name" [disabled]="group.disabled">
+              @for (d of group.items; track d) {
+                <mat-option [value]="d">
+                  <mb-sparkline [width]="'50%offsetParent'" [height]="24" [data]="d.data"
+                  [configuration]="groupItemIsLine ? configLine : configFill"></mb-sparkline> {{d.name}}
+                </mat-option>
+              }
+            </mat-optgroup>
+          }
         </mat-select>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
       You selected:
       <mb-sparkline [width]="100" [height]="16" [data]="groupItem.data"
-        [configuration]="groupItemIsLine ? configFill : configLine"></mb-sparkline>
+      [configuration]="groupItemIsLine ? configFill : configLine"></mb-sparkline>
       {{groupItem.name}}
     </mat-card-actions>
   </mat-card>

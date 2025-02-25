@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
@@ -56,7 +56,12 @@ export class NotesComponent {
 
   public hasChild = (_: number, node: NotesSample) => !!node.children && node.children.length > 0;
 
-  constructor(router: Router) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const router = inject(Router);
+
     const routeUrl = router.routerState.snapshot.url;
     for (const node of treeNodes) {
       const n = NotesComponent.findEqual(node, routeUrl);

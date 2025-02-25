@@ -15,7 +15,7 @@ import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 
-import { NgFor } from '@angular/common';
+
 import { MatOption, MatOptgroup } from '@angular/material/core';
 import { SparklineComponent } from '../../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 
@@ -34,7 +34,7 @@ interface DataGroup {
     selector: 'app-sample-sparkline-2',
     templateUrl: './sample-sparkline-2.component.html',
     styleUrls: ['./sample-sparkline-2.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption, MatCardActions, MatOptgroup]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOption, MatCardActions, MatOptgroup]
 })
 export class SampleSparkline2Component {
 

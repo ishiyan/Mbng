@@ -5,85 +5,105 @@
       <mat-form-field class="w90">
         <mat-label>width</mat-label>
         <mat-select [(ngModel)]="widthSelected" name="width">
-          <mat-option *ngFor="let width of widthArray" [value]="width.value">
-            {{width.key}}
-          </mat-option>
+          @for (width of widthArray; track width) {
+            <mat-option [value]="width.value">
+              {{width.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w130">
         <mat-label>height</mat-label>
         <mat-select [(ngModel)]="heightSelected" name="height">
-          <mat-option *ngFor="let height of heightArray" [value]="height.value">
-            {{height.key}}
-          </mat-option>
+          @for (height of heightArray; track height) {
+            <mat-option [value]="height.value">
+              {{height.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w90">
         <mat-label>levels</mat-label>
         <mat-select [(ngModel)]="levelsSelected" name="levels">
-          <mat-option *ngFor="let levels of levelsArray" [value]="levels">
-            {{levels}}
-          </mat-option>
+          @for (levels of levelsArray; track levels) {
+            <mat-option [value]="levels">
+              {{levels}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w250">
         <mat-label>sumFunc</mat-label>
         <mat-select [(ngModel)]="sumFuncSelected" name="sumFunc">
-          <mat-option *ngFor="let sumFunc of sumFuncArray" [value]="sumFunc.value">
-            {{sumFunc.key}}
-          </mat-option>
+          @for (sumFunc of sumFuncArray; track sumFunc) {
+            <mat-option [value]="sumFunc.value">
+              {{sumFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w80">
         <mat-label>sort</mat-label>
         <mat-select [(ngModel)]="sortSelected" name="sort">
-          <mat-option *ngFor="let sort of sortArray" [value]="sort">
-            {{sort}}
-          </mat-option>
+          @for (sort of sortArray; track sort) {
+            <mat-option [value]="sort">
+              {{sort}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w130">
         <mat-label>fillFunc</mat-label>
         <mat-select [(ngModel)]="fillFuncSelected" name="fillFunc">
-          <mat-option *ngFor="let fillFunc of fillFuncArray" [value]="fillFunc.value">
-            {{fillFunc.key}}
-          </mat-option>
+          @for (fillFunc of fillFuncArray; track fillFunc) {
+            <mat-option [value]="fillFunc.value">
+              {{fillFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w140">
         <mat-label>fillOpacityFunc</mat-label>
         <mat-select [(ngModel)]="fillOpacityFuncSelected" name="fillOpacityFunc">
-          <mat-option *ngFor="let fillOpacityFunc of fillOpacityFuncArray" [value]="fillOpacityFunc.value">
-            {{fillOpacityFunc.key}}
-          </mat-option>
+          @for (fillOpacityFunc of fillOpacityFuncArray; track fillOpacityFunc) {
+            <mat-option [value]="fillOpacityFunc.value">
+              {{fillOpacityFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w110">
         <mat-label>labelFunc</mat-label>
         <mat-select [(ngModel)]="labelFuncSelected" name="labelFunc">
-          <mat-option *ngFor="let labelFunc of labelFuncArray" [value]="labelFunc.value">
-            {{labelFunc.key}}
-          </mat-option>
+          @for (labelFunc of labelFuncArray; track labelFunc) {
+            <mat-option [value]="labelFunc.value">
+              {{labelFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w130">
         <mat-label>labelFill</mat-label>
         <mat-select [(ngModel)]="labelFillSelected" name="labelFill">
-          <mat-option *ngFor="let labelFill of labelFillArray" [value]="labelFill">
-            {{labelFill}}
-          </mat-option>
+          @for (labelFill of labelFillArray; track labelFill) {
+            <mat-option [value]="labelFill">
+              {{labelFill}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w160">
         <mat-label>labelFontSizeFunc</mat-label>
         <mat-select [(ngModel)]="labelFontSizeFuncSelected" name="labelFontSizeFunc">
-          <mat-option *ngFor="let labelFontSizeFunc of labelFontSizeFuncArray" [value]="labelFontSizeFunc.value">
-            {{labelFontSizeFunc.key}}
-          </mat-option>
+          @for (labelFontSizeFunc of labelFontSizeFuncArray; track labelFontSizeFunc) {
+            <mat-option [value]="labelFontSizeFunc.value">
+              {{labelFontSizeFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
-      <mat-slide-toggle [(ngModel)]="rootVisible" color="primary">root</mat-slide-toggle>  
-      <mat-slide-toggle [(ngModel)]="zoom" color="primary">zoom</mat-slide-toggle>  
+      <mat-slide-toggle [(ngModel)]="rootVisible" color="primary">root</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="zoom" color="primary">zoom</mat-slide-toggle>
     </mat-card-content>
   </mat-card>
 
@@ -92,10 +112,10 @@
       <mb-icicle [data]="contriesHierarchy" [width]="widthSelected" [height]="heightSelected" [levels]="levelsSelected"
         [sumFunc]="sumFuncSelected" [sort]="sortSelected" [fillFunc]="fillFuncSelected" [fillOpacityFunc]="fillOpacityFuncSelected"
         [zoom]="zoom" [tapFunc]="tapFunc" [labelFunc]="labelFuncSelected" [rootVisible]="rootVisible"
-        [labelFill]="labelFillSelected" [labelFontSizeFunc]="labelFontSizeFuncSelected"></mb-icicle>
+      [labelFill]="labelFillSelected" [labelFontSizeFunc]="labelFontSizeFuncSelected"></mb-icicle>
     </mat-card-content>
     <mat-card-actions>
-    {{selectedNodeInfo}}
+      {{selectedNodeInfo}}
     </mat-card-actions>
   </mat-card>
 

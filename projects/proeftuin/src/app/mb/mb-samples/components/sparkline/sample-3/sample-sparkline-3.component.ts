@@ -14,7 +14,7 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
 import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatSelectionList, MatListOption, MatListItemLine, MatList, MatListItem } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+
 
 import { SparklineComponent } from '../../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 
@@ -27,7 +27,7 @@ interface DataItem {
     selector: 'app-sample-sparkline-3',
     templateUrl: './sample-sparkline-3.component.html',
     styleUrls: ['./sample-sparkline-3.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatSelectionList, FormsModule, NgFor, MatListOption, SparklineComponent, MatCardActions, MatListItemLine, MatList, MatListItem]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatSelectionList, FormsModule, MatListOption, SparklineComponent, MatCardActions, MatListItemLine, MatList, MatListItem]
 })
 export class SampleSparkline3Component {
 

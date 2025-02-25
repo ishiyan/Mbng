@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SampleOhlcvChartSelector1Component } from './sample-1/sample-ohlcv-chart-selector-1.component';
-import { SampleOhlcvChartSelector2Component } from './sample-2/sample-ohlcv-chart-selector-2.component';
-import { SampleOhlcvChartSelector3Component } from './sample-3/sample-ohlcv-chart-selector-3.component';
-import { SampleOhlcvChartSelector4Component } from './sample-4/sample-ohlcv-chart-selector-4.component';
-import { SampleOhlcvChartSelector5Component } from './sample-5/sample-ohlcv-chart-selector-5.component';
-import { SampleOhlcvChartSelector6Component } from './sample-6/sample-ohlcv-chart-selector-6.component';
+
+
+
+
+
+
 
 const routes: Routes = [
-  { path: 's1', component: SampleOhlcvChartSelector1Component },
-  { path: 's2', component: SampleOhlcvChartSelector2Component },
-  { path: 's3', component: SampleOhlcvChartSelector3Component },
-  { path: 's4', component: SampleOhlcvChartSelector4Component },
-  { path: 's5', component: SampleOhlcvChartSelector5Component },
-  { path: 's6', component: SampleOhlcvChartSelector6Component } // ,
+  { path: 's1', loadComponent: () => import('./sample-1/sample-ohlcv-chart-selector-1.component').then(m => m.SampleOhlcvChartSelector1Component) },
+  { path: 's2', loadComponent: () => import('./sample-2/sample-ohlcv-chart-selector-2.component').then(m => m.SampleOhlcvChartSelector2Component) },
+  { path: 's3', loadComponent: () => import('./sample-3/sample-ohlcv-chart-selector-3.component').then(m => m.SampleOhlcvChartSelector3Component) },
+  { path: 's4', loadComponent: () => import('./sample-4/sample-ohlcv-chart-selector-4.component').then(m => m.SampleOhlcvChartSelector4Component) },
+  { path: 's5', loadComponent: () => import('./sample-5/sample-ohlcv-chart-selector-5.component').then(m => m.SampleOhlcvChartSelector5Component) },
+  { path: 's6', loadComponent: () => import('./sample-6/sample-ohlcv-chart-selector-6.component').then(m => m.SampleOhlcvChartSelector6Component) } // ,
   // { path: '**', redirectTo: 's1' }
 ];
 

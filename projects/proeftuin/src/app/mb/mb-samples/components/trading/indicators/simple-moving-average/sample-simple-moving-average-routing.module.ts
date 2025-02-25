@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SampleSimpleMovingAverage1Component} from './sample-1/sample-simple-moving-average-1.component';
-import { SampleSimpleMovingAverage2Component } from './sample-2/sample-simple-moving-average-2.component';
+
+
 
 const routes: Routes = [
-  { path: 's1', component: SampleSimpleMovingAverage1Component },
-  { path: 's2', component: SampleSimpleMovingAverage2Component } // ,
+  { path: 's1', loadComponent: () => import('./sample-1/sample-simple-moving-average-1.component').then(m => m.SampleSimpleMovingAverage1Component) },
+  { path: 's2', loadComponent: () => import('./sample-2/sample-simple-moving-average-2.component').then(m => m.SampleSimpleMovingAverage2Component) } // ,
   // { path: '**', redirectTo: 's1' }
 ];
 

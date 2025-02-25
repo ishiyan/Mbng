@@ -3,120 +3,148 @@
   <mat-card appearance="raised" class="example-card">
     <mat-card-content>
       <p>
-        <mat-slide-toggle [(ngModel)]="zoom" color="primary">zoom</mat-slide-toggle>  
-        <mat-slide-toggle [(ngModel)]="flat" color="primary">flat</mat-slide-toggle>  
-        <mat-slide-toggle [(ngModel)]="rootCircle" color="primary">rootCircle</mat-slide-toggle>  
+        <mat-slide-toggle [(ngModel)]="zoom" color="primary">zoom</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="flat" color="primary">flat</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="rootCircle" color="primary">rootCircle</mat-slide-toggle>
       </p>
       <mat-form-field class="w130">
         <mat-label>data</mat-label>
         <mat-select [(ngModel)]="datasetSelected" name="dataset">
-          <mat-option *ngFor="let dataset of datasetArray" [value]="dataset.value">
-            {{dataset.key}}
-          </mat-option>
+          @for (dataset of datasetArray; track dataset) {
+            <mat-option [value]="dataset.value">
+              {{dataset.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w110">
         <mat-label>diameter</mat-label>
         <mat-select [(ngModel)]="diameterSelected" name="diameter">
-          <mat-option *ngFor="let diameter of diameterArray" [value]="diameter.value">
-            {{diameter.key}}
-          </mat-option>
+          @for (diameter of diameterArray; track diameter) {
+            <mat-option [value]="diameter.value">
+              {{diameter.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w110">
         <mat-label>padding</mat-label>
         <mat-select [(ngModel)]="paddingSelected" name="padding">
-          <mat-option *ngFor="let padding of paddingArray" [value]="padding">
-            {{padding}}
-          </mat-option>
+          @for (padding of paddingArray; track padding) {
+            <mat-option [value]="padding">
+              {{padding}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w190">
         <mat-label>sumFunc</mat-label>
         <mat-select [(ngModel)]="sumFuncSelected" name="sumFunc">
-          <mat-option *ngFor="let sumFunc of sumFuncArray" [value]="sumFunc.value">
-            {{sumFunc.key}}
-          </mat-option>
+          @for (sumFunc of sumFuncArray; track sumFunc) {
+            <mat-option [value]="sumFunc.value">
+              {{sumFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w80">
         <mat-label>sort</mat-label>
         <mat-select [(ngModel)]="sortSelected" name="sort">
-          <mat-option *ngFor="let sort of sortArray" [value]="sort">
-            {{sort}}
-          </mat-option>
+          @for (sort of sortArray; track sort) {
+            <mat-option [value]="sort">
+              {{sort}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w140">
         <mat-label>fillFunc</mat-label>
         <mat-select [(ngModel)]="fillFuncSelected" name="fillFunc">
-          <mat-option *ngFor="let fillFunc of fillFuncArray" [value]="fillFunc.value">
-            {{fillFunc.key}}
-          </mat-option>
+          @for (fillFunc of fillFuncArray; track fillFunc) {
+            <mat-option [value]="fillFunc.value">
+              {{fillFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w140">
         <mat-label>fillOpacityFunc</mat-label>
         <mat-select [(ngModel)]="fillOpacityFuncSelected" name="fillOpacityFunc">
-          <mat-option *ngFor="let fillOpacityFunc of fillOpacityFuncArray" [value]="fillOpacityFunc.value">
-            {{fillOpacityFunc.key}}
-          </mat-option>
+          @for (fillOpacityFunc of fillOpacityFuncArray; track fillOpacityFunc) {
+            <mat-option [value]="fillOpacityFunc.value">
+              {{fillOpacityFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w130">
         <mat-label>strokeFunc</mat-label>
         <mat-select [(ngModel)]="strokeFuncSelected" name="strokeFunc">
-          <mat-option *ngFor="let strokeFunc of strokeFuncArray" [value]="strokeFunc.value">
-            {{strokeFunc.key}}
-          </mat-option>
+          @for (strokeFunc of strokeFuncArray; track strokeFunc) {
+            <mat-option [value]="strokeFunc.value">
+              {{strokeFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w160">
         <mat-label>strokeWidthFunc</mat-label>
         <mat-select [(ngModel)]="strokeWidthFuncSelected" name="strokeWidthFunc">
-          <mat-option *ngFor="let strokeWidthFunc of strokeWidthFuncArray" [value]="strokeWidthFunc.value">
-            {{strokeWidthFunc.key}}
-          </mat-option>
+          @for (strokeWidthFunc of strokeWidthFuncArray; track strokeWidthFunc) {
+            <mat-option [value]="strokeWidthFunc.value">
+              {{strokeWidthFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w110">
         <mat-label>labelFunc</mat-label>
         <mat-select [(ngModel)]="labelFuncSelected" name="labelFunc">
-          <mat-option *ngFor="let labelFunc of labelFuncArray" [value]="labelFunc.value">
-            {{labelFunc.key}}
-          </mat-option>
+          @for (labelFunc of labelFuncArray; track labelFunc) {
+            <mat-option [value]="labelFunc.value">
+              {{labelFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w140">
         <mat-label>labelMinRadius</mat-label>
         <mat-select [(ngModel)]="labelMinRadiusSelected" name="labelMinRadius">
-          <mat-option *ngFor="let labelMinRadius of labelMinRadiusArray" [value]="labelMinRadius">
-            {{labelMinRadius}}
-          </mat-option>
+          @for (labelMinRadius of labelMinRadiusArray; track labelMinRadius) {
+            <mat-option [value]="labelMinRadius">
+              {{labelMinRadius}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w130">
         <mat-label>labelFill</mat-label>
         <mat-select [(ngModel)]="labelFillSelected" name="labelFill">
-          <mat-option *ngFor="let labelFill of labelFillArray" [value]="labelFill">
-            {{labelFill}}
-          </mat-option>
+          @for (labelFill of labelFillArray; track labelFill) {
+            <mat-option [value]="labelFill">
+              {{labelFill}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w210">
         <mat-label>labelShadow</mat-label>
         <mat-select [(ngModel)]="labelShadowSelected" name="labelShadow">
-          <mat-option *ngFor="let labelShadow of labelShadowArray" [value]="labelShadow">
-            {{labelShadow}}
-          </mat-option>
+          @for (labelShadow of labelShadowArray; track labelShadow) {
+            <mat-option [value]="labelShadow">
+              {{labelShadow}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="w160">
         <mat-label>labelFontSizeFunc</mat-label>
         <mat-select [(ngModel)]="labelFontSizeFuncSelected" name="labelFontSizeFunc">
-          <mat-option *ngFor="let labelFontSizeFunc of labelFontSizeFuncArray" [value]="labelFontSizeFunc.value">
-            {{labelFontSizeFunc.key}}
-          </mat-option>
+          @for (labelFontSizeFunc of labelFontSizeFuncArray; track labelFontSizeFunc) {
+            <mat-option [value]="labelFontSizeFunc.value">
+              {{labelFontSizeFunc.key}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </mat-card-content>
@@ -129,7 +157,7 @@
         [strokeFunc]="strokeFuncSelected" [strokeWidthFunc]="strokeWidthFuncSelected"
         [zoom]="zoom" [flat]="flat" [rootCircle]="rootCircle" [tapFunc]="tapFunc" [labelFunc]="labelFuncSelected"
         [labelMinRadius]="labelMinRadiusSelected" [labelFill]="labelFillSelected" [labelShadow]="labelShadowSelected"
-        [labelFontSizeFunc]="labelFontSizeFuncSelected"></mb-circlepack>
+      [labelFontSizeFunc]="labelFontSizeFuncSelected"></mb-circlepack>
     </mat-card-content>
     <mat-card-actions>
       {{selectedNodeInfo}}

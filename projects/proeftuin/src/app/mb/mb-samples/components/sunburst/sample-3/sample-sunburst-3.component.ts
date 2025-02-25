@@ -15,7 +15,7 @@ import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card'
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+
 import { MatOption } from '@angular/material/core';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
@@ -72,7 +72,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-sunburst-3',
     templateUrl: './sample-sunburst-3.component.html',
     styleUrls: ['./sample-sunburst-3.component.scss'],
-    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, NgFor, MatOption, MatSlideToggle, SunburstComponent, MatCardActions]
+    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, MatOption, MatSlideToggle, SunburstComponent, MatCardActions]
 })
 export class SampleSunburst3Component {
 

@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MbComponent } from './mb.component';
-import { OhlcvChartStudyComponent } from './mb-samples/ohlcv-chart-study/ohlcv-chart-study.component';
-import { SyntheticDataComponent } from './mb-samples/synthetic-data/synthetic-data.component';
-import { InstrumentsTableComponent } from './mb-samples/instruments-table/instruments-table.component';
+
+
+
+
 
 const routes: Routes = [
   {
-    path: '', component: MbComponent, children: [
-      { path: 'ohlcv-chart-study', component: OhlcvChartStudyComponent },
-      { path: 'synthetic-data', component: SyntheticDataComponent },
-      { path: 'instruments-table', component: InstrumentsTableComponent },
+    path: '', loadComponent: () => import('./mb.component').then(m => m.MbComponent), children: [
+      { path: 'ohlcv-chart-study', loadComponent: () => import('./mb-samples/ohlcv-chart-study/ohlcv-chart-study.component').then(m => m.OhlcvChartStudyComponent) },
+      { path: 'synthetic-data', loadComponent: () => import('./mb-samples/synthetic-data/synthetic-data.component').then(m => m.SyntheticDataComponent) },
+      { path: 'instruments-table', loadComponent: () => import('./mb-samples/instruments-table/instruments-table.component').then(m => m.InstrumentsTableComponent) },
       {
         path: 'comp-freqresp', loadChildren: () =>
           import('./mb-samples/components/frequency-response/sample-frequency-response.module').then(m => m.SampleFrequencyResponseModule)
@@ -114,7 +114,7 @@ const routes: Routes = [
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.module').then(m => m.SampleOhlcvChartSelectorModule)
       },
-      { path: '', component: OhlcvChartStudyComponent }
+      { path: '', loadComponent: () => import('./mb-samples/ohlcv-chart-study/ohlcv-chart-study.component').then(m => m.OhlcvChartStudyComponent) }
     ]
   },
   { path: '**', redirectTo: '' }

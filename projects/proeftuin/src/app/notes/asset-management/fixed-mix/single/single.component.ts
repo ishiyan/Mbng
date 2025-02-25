@@ -29,7 +29,7 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 
-import { NgFor } from '@angular/common';
+
 import { MatOption } from '@angular/material/core';
 
 
@@ -47,7 +47,7 @@ import { SwatchesSelectComponent } from '../../../../../../../mb/src/lib/colors/
     selector: 'app-fixed-single',
     templateUrl: './single.component.html',
     styleUrls: ['./single.component.scss'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, NgFor, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexComponent]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexComponent]
 })
 export class SingleComponent {
 
@@ -84,7 +84,7 @@ export class SingleComponent {
   hrThreshold = 1;
   fractionalPositionsValue = false;
 
-  private constructor() {
+  constructor() {
     this.calculate();
   }
 

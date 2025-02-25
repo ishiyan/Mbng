@@ -18,7 +18,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
-import { NgFor } from '@angular/common';
+
 import { MatOption } from '@angular/material/core';
 
 import { CirclepackComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
@@ -78,7 +78,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-circlepack-2',
     templateUrl: './sample-circlepack-2.component.html',
     styleUrls: ['./sample-circlepack-2.component.scss'],
-    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, MatFormField, MatLabel, MatSelect, NgFor, MatOption, CirclepackComponent, MatCardActions]
+    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, MatFormField, MatLabel, MatSelect, MatOption, CirclepackComponent, MatCardActions]
 })
 export class SampleCirclepack2Component {
 

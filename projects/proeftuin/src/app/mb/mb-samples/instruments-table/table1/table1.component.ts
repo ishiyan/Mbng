@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, viewChild, inject } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { InstrumentType } from 'projects/mb/src/lib/trading/instruments/types/instrument-type.enum';
@@ -22,16 +22,21 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
     imports: [MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class Table1Component implements OnInit {
-  @ViewChild('container') container!: ElementRef;
+  private element = inject(ElementRef);
+
+  readonly container = viewChild.required<ElementRef>('container');
 
   public InstrumentType = InstrumentType;
   public ExchangeMic = ExchangeMic;
   public CurrencyCode = CurrencyCode; // added
   public expandedInstrument!: Instrument; // added
   displayedColumns: string[] = ['type', 'symbol', 'name', 'isin', 'mic'];
-  dataSource: any[] = []; // euronextListShort;
+  dataSource: any[] = [];
 
-  constructor(private element: ElementRef) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]); // euronextListShort;
+
+  constructor() {
   }
 
   ngOnInit() {

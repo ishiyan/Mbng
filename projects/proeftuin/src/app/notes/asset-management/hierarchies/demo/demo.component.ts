@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { MatSelect } from '@angular/material/select';
-import { NgFor } from '@angular/common';
+
 import { MatOption } from '@angular/material/core';
 
 import { IcicleComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/icicle/icicle.component';
@@ -48,7 +48,7 @@ const sumFuncAexWeightPerc: HierarchyTreeSumFunction = (d: any) => d.constituent
     selector: 'app-hierarchies-demo',
     templateUrl: './demo.component.html',
     styleUrls: ['./demo.component.scss'],
-    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, IcicleComponent, TreemapComponent, SunburstComponent, CirclepackComponent, MatSelect, NgFor, MatOption, VoronoiComponent]
+    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, IcicleComponent, TreemapComponent, SunburstComponent, CirclepackComponent, MatSelect, MatOption, VoronoiComponent]
 })
 export class DemoComponent {
 

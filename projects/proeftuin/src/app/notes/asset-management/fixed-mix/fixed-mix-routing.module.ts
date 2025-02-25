@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { BucketsComponent } from './buckets/buckets.component';
-import { BucketsInteractiveComponent } from './buckets-interactive/buckets-interactive.component';
-import { SingleComponent } from './single/single.component';
-import { SingleInteractiveComponent } from './single-interactive/single-interactive.component';
+
+
+
+
 
 const routes: Routes = [
-  { path: 's1', component: SingleComponent },
-  { path: 's2', component: SingleInteractiveComponent },
-  { path: 'b1', component: BucketsComponent },
-  { path: 'b2', component: BucketsInteractiveComponent },
+  { path: 's1', loadComponent: () => import('./single/single.component').then(m => m.SingleComponent) },
+  { path: 's2', loadComponent: () => import('./single-interactive/single-interactive.component').then(m => m.SingleInteractiveComponent) },
+  { path: 'b1', loadComponent: () => import('./buckets/buckets.component').then(m => m.BucketsComponent) },
+  { path: 'b2', loadComponent: () => import('./buckets-interactive/buckets-interactive.component').then(m => m.BucketsInteractiveComponent) },
   { path: '**', redirectTo: 's1' }
 ];
 

@@ -86,13 +86,15 @@
         <mat-form-field appearance="fill">
           <mat-label>Select number of swatches</mat-label>
           <input matInput type="number" min="2" max="60" [(ngModel)]="generatedPalettesLength">
-        </mat-form-field>  
+        </mat-form-field>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <span *ngFor="let s of generatedPalettes">
-        <div><mb-swatches [width]="260" [height]="32" [colors]="s"></mb-swatches></div>
-      </span>
+      @for (s of generatedPalettes; track s) {
+        <span>
+          <div><mb-swatches [width]="260" [height]="32" [colors]="s"></mb-swatches></div>
+        </span>
+      }
     </mat-card-content>
   </mat-card>
 

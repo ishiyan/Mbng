@@ -10,82 +10,98 @@
     <mat-card-content>
       <input mbColorPicker [colorPicker]="color1" [style.background]="color1"
         (colorChanged)="color1=$event" (colorSelected)="color1=$event" />
-    </mat-card-content>
-    <mat-card-content>
-      Selected:
-      <button *ngIf="selected1.length > 0" mat-mini-fab color="primary" (click)="selected1=''">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <div *ngIf="selected1.length > 0">{{selected1}}</div>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+      <mat-card-content>
+        Selected:
+        @if (selected1.length > 0) {
+          <button mat-mini-fab color="primary" (click)="selected1=''">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+        @if (selected1.length > 0) {
+          <div>{{selected1}}</div>
+        }
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card appearance="raised" class="example-card">
-    <mat-card-header>
-      <mat-card-title>No alpha</mat-card-title>
-      <mat-card-subtitle>
-        [colorAlpha]="{{alpha2}}"
-      </mat-card-subtitle>
-      <mat-card-subtitle>
-        <mat-slide-toggle [(ngModel)]="alpha2">Alpha</mat-slide-toggle>
-      </mat-card-subtitle>    
-    </mat-card-header>
-    <mat-card-content>
-      <input mbColorPicker [colorPicker]="color2" [style.background]="color2" [colorAlpha]="alpha2"
-        (colorChanged)="color2=$event" (colorSelected)="color2=$event" />
-    </mat-card-content>
-    <mat-card-content>
-      Selected:
-      <button *ngIf="selected2.length > 0" mat-mini-fab color="primary" (click)="selected2=''">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <div *ngIf="selected2.length > 0">{{selected2}}</div>
-    </mat-card-content>
-  </mat-card>
+    <mat-card appearance="raised" class="example-card">
+      <mat-card-header>
+        <mat-card-title>No alpha</mat-card-title>
+        <mat-card-subtitle>
+          [colorAlpha]="{{alpha2}}"
+        </mat-card-subtitle>
+        <mat-card-subtitle>
+          <mat-slide-toggle [(ngModel)]="alpha2">Alpha</mat-slide-toggle>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <input mbColorPicker [colorPicker]="color2" [style.background]="color2" [colorAlpha]="alpha2"
+          (colorChanged)="color2=$event" (colorSelected)="color2=$event" />
+        </mat-card-content>
+        <mat-card-content>
+          Selected:
+          @if (selected2.length > 0) {
+            <button mat-mini-fab color="primary" (click)="selected2=''">
+              <mat-icon>clear</mat-icon>
+            </button>
+          }
+          @if (selected2.length > 0) {
+            <div>{{selected2}}</div>
+          }
+        </mat-card-content>
+      </mat-card>
 
-  <mat-card appearance="raised" class="example-card">
-    <mat-card-header>
-      <mat-card-title>Preset colors</mat-card-title>
-      <mat-card-subtitle>
-        [colorPresets]="['#fff500', 'rgb(236,64,64)', 'rgba(236,64,64,0.5)']"
-      </mat-card-subtitle>
-      <mat-card-subtitle>
-        <mb-swatches-select [colors]="palettes3" (selectionChange)="paletteSelectionChanged3($event);">          
-        </mb-swatches-select>
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <input mbColorPicker [colorPicker]="color3" [style.background]="color3" [colorPresets]="selectedPalette3"
-        (colorChanged)="color3=$event" (colorSelected)="color3=$event" />
-    </mat-card-content>
-    <mat-card-content>
-      Selected:
-      <button *ngIf="selected3.length > 0" mat-mini-fab color="primary" (click)="selected3=''">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <div *ngIf="selected3.length > 0">{{selected3}}</div>
-    </mat-card-content>
-  </mat-card>
+      <mat-card appearance="raised" class="example-card">
+        <mat-card-header>
+          <mat-card-title>Preset colors</mat-card-title>
+          <mat-card-subtitle>
+            [colorPresets]="['#fff500', 'rgb(236,64,64)', 'rgba(236,64,64,0.5)']"
+          </mat-card-subtitle>
+          <mat-card-subtitle>
+            <mb-swatches-select [colors]="palettes3" (selectionChange)="paletteSelectionChanged3($event);">
+            </mb-swatches-select>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <input mbColorPicker [colorPicker]="color3" [style.background]="color3" [colorPresets]="selectedPalette3"
+            (colorChanged)="color3=$event" (colorSelected)="color3=$event" />
+          </mat-card-content>
+          <mat-card-content>
+            Selected:
+            @if (selected3.length > 0) {
+              <button mat-mini-fab color="primary" (click)="selected3=''">
+                <mat-icon>clear</mat-icon>
+              </button>
+            }
+            @if (selected3.length > 0) {
+              <div>{{selected3}}</div>
+            }
+          </mat-card-content>
+        </mat-card>
 
-  <mat-card appearance="raised" class="example-card">
-    <mat-card-header>
-      <mat-card-title>Preset colors, no alpha</mat-card-title>
-      <mat-card-subtitle>
-        [colorAlpha]="false" [colorPresets]="['rgba(236,64,64,0.5)']"
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <input mbColorPicker [colorPicker]="color4" [style.background]="color4"
-        [colorAlpha]="false" [colorPresets]="['rgba(236,64,64,0.5)']"
-        (colorChanged)="color4=$event" (colorSelected)="color4=$event" />
-    </mat-card-content>
-    <mat-card-content>
-      Selected:
-      <button *ngIf="selected4.length > 0" mat-mini-fab color="primary" (click)="selected4=''">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <div *ngIf="selected4.length > 0">{{selected4}}</div>
-    </mat-card-content>
-  </mat-card>
+        <mat-card appearance="raised" class="example-card">
+          <mat-card-header>
+            <mat-card-title>Preset colors, no alpha</mat-card-title>
+            <mat-card-subtitle>
+              [colorAlpha]="false" [colorPresets]="['rgba(236,64,64,0.5)']"
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <input mbColorPicker [colorPicker]="color4" [style.background]="color4"
+              [colorAlpha]="false" [colorPresets]="['rgba(236,64,64,0.5)']"
+              (colorChanged)="color4=$event" (colorSelected)="color4=$event" />
+            </mat-card-content>
+            <mat-card-content>
+              Selected:
+              @if (selected4.length > 0) {
+                <button mat-mini-fab color="primary" (click)="selected4=''">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              }
+              @if (selected4.length > 0) {
+                <div>{{selected4}}</div>
+              }
+            </mat-card-content>
+          </mat-card>
 
-</div>
+        </div>

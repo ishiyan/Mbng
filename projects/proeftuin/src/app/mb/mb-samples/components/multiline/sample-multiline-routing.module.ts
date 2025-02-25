@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SampleMultiline1Component } from './sample-1/sample-multiline-1.component';
+
 
 const routes: Routes = [
-  { path: 's1', component: SampleMultiline1Component },
+  { path: 's1', loadComponent: () => import('./sample-1/sample-multiline-1.component').then(m => m.SampleMultiline1Component) },
   { path: '**', redirectTo: 's1' }
 ];
 

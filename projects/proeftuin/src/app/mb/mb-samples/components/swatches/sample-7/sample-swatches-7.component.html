@@ -22,9 +22,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>spans</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesSequence" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesSequence; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-actions>
   </mat-card>
@@ -45,9 +47,11 @@
         <mat-expansion-panel-header>
           <mat-panel-title>spans</mat-panel-title>
         </mat-expansion-panel-header>
-        <span *ngFor="let p of palettesAll" style="margin-right:10px">
-          <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
-        </span>
+        @for (p of palettesAll; track p) {
+          <span style="margin-right:10px">
+            <mb-swatches [width]="160" [height]="32" [colors]="p"></mb-swatches>
+          </span>
+        }
       </mat-expansion-panel>
     </mat-card-actions>
   </mat-card>

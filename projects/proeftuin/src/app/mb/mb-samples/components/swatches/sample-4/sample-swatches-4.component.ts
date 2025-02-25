@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
-import { NgFor } from '@angular/common';
+
 import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
 import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
@@ -17,7 +17,7 @@ import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colo
     selector: 'app-sample-swatches-4',
     templateUrl: './sample-swatches-4.component.html',
     styleUrls: ['./sample-swatches-4.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatMiniFabButton, MatIcon, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, NgFor]
+    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatMiniFabButton, MatIcon, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
 })
 export class SampleSwatches4Component {
 

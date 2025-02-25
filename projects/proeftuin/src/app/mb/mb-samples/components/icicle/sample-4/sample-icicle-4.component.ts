@@ -15,7 +15,7 @@ import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card'
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+
 import { MatOption } from '@angular/material/core';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
@@ -66,7 +66,7 @@ interface LabelFontSizeFunc {
     selector: 'app-sample-icicle-4',
     templateUrl: './sample-icicle-4.component.html',
     styleUrls: ['./sample-icicle-4.component.scss'],
-    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, NgFor, MatOption, MatSlideToggle, IcicleComponent, MatCardActions]
+    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, MatOption, MatSlideToggle, IcicleComponent, MatCardActions]
 })
 export class SampleIcicle4Component {
 
