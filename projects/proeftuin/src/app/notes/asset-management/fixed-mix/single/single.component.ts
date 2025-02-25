@@ -1,7 +1,19 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
 import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
+import { SparklineComponent } from 'projects/mb/src/lib/charts/sparkline/sparkline.component';
+import { StacklineComponent } from 'projects/mb/src/lib/charts/stackline/stackline.component';
+import { MultilineComponent } from 'projects/mb/src/lib/charts/multiline/multiline.component';
+import { KatexComponent } from 'projects/mb/src/lib/katex/katex.component';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 // import { colorsCoSequential5PalettesSelection } from 'projects/mb/src/lib/colors/colors-co-sequential-5-palettes-selection';
 
 import { TestInstrument } from '../../test-data/test-instrument.interface';
@@ -25,29 +37,31 @@ import { russell2000MiniFuture } from '../../test-data/russell-2000-mini-future'
 import { djEuroStoxxTotalMarketTr } from '../../test-data/dj-euro-stoxx-total-market-tr';
 import { stoxxGlobal1800ExApacNr } from '../../test-data/stoxx-global-1800-ex-asia-pacific-nr';
 import { stoxx1800Nr } from '../../test-data/stoxx-1800-nr';
-import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect, MatSelectTrigger } from '@angular/material/select';
-
-
-import { MatOption } from '@angular/material/core';
-
-
-import { MatSlider, MatSliderThumb } from '@angular/material/slider';
-
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { KatexComponent } from 'projects/mb/src/lib/katex/katex.component';
-import { SparklineComponent } from '../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
-import { StacklineComponent } from '../../../../../../../mb/src/lib/charts/stackline/stackline.component';
-import { MultilineComponent } from '../../../../../../../mb/src/lib/charts/multiline/multiline.component';
-import { SwatchesSelectComponent } from '../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
-    selector: 'app-fixed-single',
-    templateUrl: './single.component.html',
-    styleUrls: ['./single.component.scss'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOption, StacklineComponent, MultilineComponent, MatSlider, MatSliderThumb, SwatchesSelectComponent, MatSlideToggle, FormsModule, KatexComponent]
+  selector: 'app-fixed-single',
+  templateUrl: './single.component.html',
+  styleUrls: ['./single.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatCard,
+    MatCardTitle,
+    MatCardContent,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    MatSlider,
+    MatSliderThumb,
+    MatSlideToggle,
+    SparklineComponent,
+    StacklineComponent,
+    MultilineComponent,
+    KatexComponent,
+    SwatchesSelectComponent
+  ]
 })
 export class SingleComponent {
 

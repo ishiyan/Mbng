@@ -1,20 +1,37 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
 
 import { MbSample } from './mb-samples/mb-sample';
 import { treeNodes } from './mb-samples/mb-samples';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
-    selector: 'mb-sample-collection',
-    templateUrl: './mb.component.html',
-    styleUrls: ['./mb.component.scss'],
-    imports: [MatToolbar, MatButton, MatIcon, MatSidenavContainer, MatSidenav, MatTree, MatTreeNodeDef, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet, MatSidenavContent, RouterOutlet]
+  selector: 'mb-sample-collection',
+  templateUrl: './mb.component.html',
+  styleUrls: ['./mb.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatButton,
+    MatIcon,
+    MatToolbar,
+    MatSidenavContainer,
+    MatSidenavContent,
+    MatSidenav,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNodeToggle,
+    MatNestedTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeOutlet
+  ]
 })
 export class MbComponent {
   public sample: MbSample = treeNodes[0];
@@ -56,12 +73,8 @@ export class MbComponent {
 
   public hasChild = (_: number, node: MbSample) => !!node.children && node.children.length > 0;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     const router = inject(Router);
-
     const routeUrl = router.routerState.snapshot.url;
     for (const node of treeNodes) {
       const n = MbComponent.findEqual(node, routeUrl);

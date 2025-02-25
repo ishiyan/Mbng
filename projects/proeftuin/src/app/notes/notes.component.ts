@@ -1,20 +1,37 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
 
 import { NotesSample } from './notes-sample';
 import { treeNodes } from './notes-samples';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
-    selector: 'app-notes-collection',
-    templateUrl: './notes.component.html',
-    styleUrls: ['./notes.component.scss'],
-    imports: [MatToolbar, MatButton, MatIcon, MatSidenavContainer, MatSidenav, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet, MatSidenavContent, RouterOutlet]
+  selector: 'app-notes-collection',
+  templateUrl: './notes.component.html',
+  styleUrls: ['./notes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatButton,
+    MatIcon,
+    MatToolbar,
+    MatSidenav,
+    MatSidenavContainer,
+    MatSidenavContent,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNodeToggle,
+    MatNestedTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeOutlet
+  ]
 })
 export class NotesComponent {
   public sample: NotesSample = treeNodes[0];
@@ -56,12 +73,8 @@ export class NotesComponent {
 
   public hasChild = (_: number, node: NotesSample) => !!node.children && node.children.length > 0;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     const router = inject(Router);
-
     const routeUrl = router.routerState.snapshot.url;
     for (const node of treeNodes) {
       const n = NotesComponent.findEqual(node, routeUrl);

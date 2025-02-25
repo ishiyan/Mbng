@@ -1,20 +1,37 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
-import {NestedTreeControl} from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
 
 import { D3Sample } from './d3-samples/d3-sample';
 import { treeNodes } from './d3-samples/d3-samples';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
-    selector: 'app-d3-sample-collection',
-    templateUrl: './d3.component.html',
-    styleUrls: ['./d3.component.scss'],
-    imports: [MatToolbar, MatButton, MatIcon, MatSidenavContainer, MatSidenav, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet, MatSidenavContent, RouterOutlet]
+  selector: 'app-d3-sample-collection',
+  templateUrl: './d3.component.html',
+  styleUrls: ['./d3.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    MatButton,
+    MatIcon,
+    MatToolbar,
+    MatSidenav,
+    MatSidenavContainer,
+    MatSidenavContent,
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNodeToggle,
+    MatNestedTreeNode,
+    MatTreeNodePadding,
+    MatTreeNodeOutlet
+  ]
 })
 export class D3Component {
   public sample: D3Sample = treeNodes[0];
@@ -23,7 +40,6 @@ export class D3Component {
 
   constructor() {
     const router = inject(Router);
-
     const routeUrl = router.routerState.snapshot.url;
     for (const node of treeNodes) {
       const n = D3Component.findEqual(node, routeUrl);
