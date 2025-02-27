@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatOption, MatOptgroup } from '@angular/material/core';
 
 import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
-
+import { SparklineComponent } from 'projects/mb/src/lib/charts/sparkline/sparkline.component';
 import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 import { Quote } from 'projects/mb/src/lib/data/entities/quote';
 import { Trade } from 'projects/mb/src/lib/data/entities/trade';
@@ -10,14 +15,6 @@ import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
 import { testDataOhlcv } from '../../../test-data/indicators/test-data-ohlcv';
 import { testDataBbBw } from '../../../test-data/indicators/test-data-bb-bw';
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect, MatSelectTrigger } from '@angular/material/select';
-
-
-import { MatOption, MatOptgroup } from '@angular/material/core';
-import { SparklineComponent } from '../../../../../../../../mb/src/lib/charts/sparkline/sparkline.component';
 
 interface DataItem {
   data: Ohlcv[] | Quote[] | Trade[] | Scalar[];
@@ -31,13 +28,29 @@ interface DataGroup {
 }
 
 @Component({
-    selector: 'app-sample-sparkline-2',
-    templateUrl: './sample-sparkline-2.component.html',
-    styleUrls: ['./sample-sparkline-2.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatRadioGroup, MatRadioButton, MatCardContent, MatFormField, MatLabel, MatSelect, MatSelectTrigger, SparklineComponent, MatOption, MatCardActions, MatOptgroup]
+  selector: 'app-sample-sparkline-2',
+  templateUrl: './sample-sparkline-2.component.html',
+  styleUrls: ['./sample-sparkline-2.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatRadioGroup,
+    MatRadioButton,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatCardActions,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    MatOptgroup,
+    SparklineComponent
+  ]
 })
 export class SampleSparkline2Component {
-
   dataOhlcv = testDataOhlcv;
   dataScalar = testDataBbBw;
   dataScalarWithNaN = testDataBbMa;

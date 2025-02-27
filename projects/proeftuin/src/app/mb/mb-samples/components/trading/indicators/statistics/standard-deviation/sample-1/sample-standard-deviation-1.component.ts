@@ -10,18 +10,18 @@ import { StandardDeviationParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/statistics/standard-deviation/standard-deviation-params.component';
 
 @Component({
-    selector: 'app-sample-standard-deviation-1',
-    templateUrl: './sample-standard-deviation-1.component.html',
-    styleUrls: ['./sample-standard-deviation-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      StandardDeviationParamsComponent
-    ]
+  selector: 'app-sample-standard-deviation-1',
+  templateUrl: './sample-standard-deviation-1.component.html',
+  styleUrls: ['./sample-standard-deviation-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    StandardDeviationParamsComponent
+  ]
 })
 export class SampleStandardDeviation1Component {
   protected selected1: StandardDeviationParams = {

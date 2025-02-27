@@ -10,18 +10,18 @@ import { ExponentialMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/exponential-moving-average/exponential-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-exponential-moving-average-2',
-    templateUrl: './sample-exponential-moving-average-2.component.html',
-    styleUrls: ['./sample-exponential-moving-average-2.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      ExponentialMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-exponential-moving-average-2',
+  templateUrl: './sample-exponential-moving-average-2.component.html',
+  styleUrls: ['./sample-exponential-moving-average-2.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    ExponentialMovingAverageParamsComponent
+  ]
 })
 export class SampleExponentialMovingAverage2Component {
   protected selected1: ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams = {

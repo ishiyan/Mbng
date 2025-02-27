@@ -10,18 +10,18 @@ import { TriangularMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/triangular-moving-average/triangular-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-triangular-moving-average-1',
-    templateUrl: './sample-triangular-moving-average-1.component.html',
-    styleUrls: ['./sample-triangular-moving-average-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      TriangularMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-triangular-moving-average-1',
+  templateUrl: './sample-triangular-moving-average-1.component.html',
+  styleUrls: ['./sample-triangular-moving-average-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    TriangularMovingAverageParamsComponent
+  ]
 })
 export class SampleTriangularMovingAverage1Component {
   protected selected1: TriangularMovingAverageParams = {

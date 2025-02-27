@@ -7,11 +7,11 @@ import { OhlcvChartComponent } from 'projects/mb/src/lib/charts/ohlcv-chart/ohlc
 import { TestData } from './test-data/test-data';
 
 @Component({
-    selector: 'mb-sample-ohlcv-chart-study',
-    templateUrl: './ohlcv-chart-study.component.html',
-    styleUrls: ['./ohlcv-chart-study.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatButton, OhlcvChartComponent]
+  selector: 'mb-sample-ohlcv-chart-study',
+  templateUrl: './ohlcv-chart-study.component.html',
+  styleUrls: ['./ohlcv-chart-study.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButton, OhlcvChartComponent]
 })
 export class OhlcvChartStudyComponent {
   public showPortal = false;

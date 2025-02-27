@@ -13,21 +13,21 @@ import { HistoricalDataChartComponent } from 'projects/mb/src/lib/charts/histori
 import { HistoricalDataTableComponent } from 'projects/mb/src/lib/charts/historical-data-chart/historical-data-table.component';
 
 @Component({
-    selector: 'mb-sample-synthetic-data',
-    templateUrl: './synthetic-data.component.html',
-    styleUrls: ['./synthetic-data.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatButton,
-      MatButtonToggle,
-      MatButtonToggleGroup,
-      MatStepper,
-      MatStep,
-      MatStepLabel,
-      SyntheticDataParametersComponent,
-      HistoricalDataChartComponent,
-      HistoricalDataTableComponent
-    ]
+  selector: 'mb-sample-synthetic-data',
+  templateUrl: './synthetic-data.component.html',
+  styleUrls: ['./synthetic-data.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatButton,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+    MatStepper,
+    MatStep,
+    MatStepLabel,
+    SyntheticDataParametersComponent,
+    HistoricalDataChartComponent,
+    HistoricalDataTableComponent
+  ]
 })
 export class SyntheticDataComponent {
   private element = inject(ElementRef);

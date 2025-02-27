@@ -10,18 +10,18 @@ import { VarianceParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/statistics/variance/variance-params.component';
 
 @Component({
-    selector: 'app-sample-variance-1',
-    templateUrl: './sample-variance-1.component.html',
-    styleUrls: ['./sample-variance-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      VarianceParamsComponent
-    ]
+  selector: 'app-sample-variance-1',
+  templateUrl: './sample-variance-1.component.html',
+  styleUrls: ['./sample-variance-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    VarianceParamsComponent
+  ]
 })
 export class SampleVariance1Component {
   protected selected1: VarianceParams = {

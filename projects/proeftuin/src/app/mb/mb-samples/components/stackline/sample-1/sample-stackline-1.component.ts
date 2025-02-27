@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from '@angular/material/card';
 
 import { LineConfiguration } from 'projects/mb/src/lib/charts/line-configuration.interface';
+import { StacklineComponent } from 'projects/mb/src/lib/charts/stackline/stackline.component';
 
 import { testDataOhlcv } from '../../../test-data/indicators/test-data-ohlcv';
 import { testDataBbBw } from '../../../test-data/indicators/test-data-bb-bw';
@@ -8,18 +10,22 @@ import { testDataBbPercentB } from '../../../test-data/indicators/test-data-bb-p
 import { testDataBbMa } from '../../../test-data/indicators/test-data-bb-ma';
 import { testDataBbLo } from '../../../test-data/indicators/test-data-bb-lo';
 import { testDataBbUp } from '../../../test-data/indicators/test-data-bb-up';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardSubtitle } from '@angular/material/card';
-
-import { StacklineComponent } from '../../../../../../../../mb/src/lib/charts/stackline/stackline.component';
 
 @Component({
-    selector: 'app-sample-stackline-1',
-    templateUrl: './sample-stackline-1.component.html',
-    styleUrls: ['./sample-stackline-1.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, StacklineComponent, MatCardSubtitle]
+  selector: 'app-sample-stackline-1',
+  templateUrl: './sample-stackline-1.component.html',
+  styleUrls: ['./sample-stackline-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatCardSubtitle,
+    StacklineComponent
+  ]
 })
 export class SampleStackline1Component {
-
   dataOhlcv = testDataOhlcv;
   dataScalarBw = testDataBbBw;
   dataScalarPercentB = testDataBbPercentB;

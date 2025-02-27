@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
@@ -13,17 +19,9 @@ import { HierarchyTreeTapFunction } from 'projects/mb/src/lib/charts/hierarchy-t
 import { pathParentTooltips } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tooltip-function';
 import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/label-function';
 import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
+import { VoronoiComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
 
 import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../../test-data/hierarchies/aex-index';
-import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
-
-import { MatOption } from '@angular/material/core';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-
-import { VoronoiComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
 
 interface Dataset {
   value: AexIndexHierarchyTreeNode;
@@ -84,13 +82,24 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-    selector: 'app-sample-voronoi-3',
-    templateUrl: './sample-voronoi-3.component.html',
-    styleUrls: ['./sample-voronoi-3.component.scss'],
-    imports: [MatCard, MatCardContent, MatFormField, MatLabel, MatSelect, FormsModule, MatOption, MatSlideToggle, VoronoiComponent, MatCardActions]
+  selector: 'app-sample-voronoi-3',
+  templateUrl: './sample-voronoi-3.component.html',
+  styleUrls: ['./sample-voronoi-3.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatCard,
+    MatCardContent,
+    MatCardActions,
+    MatSlideToggle,
+    MatSelect,
+    MatOption,
+    VoronoiComponent
+  ]
 })
 export class SampleVoronoi3Component {
-
   flat = false;
 
   readonly datasetArray: Dataset[] = [

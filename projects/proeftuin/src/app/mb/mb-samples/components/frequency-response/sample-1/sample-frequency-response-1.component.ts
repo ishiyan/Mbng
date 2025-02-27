@@ -9,24 +9,23 @@ import { FrequencyResponseChartComponent } from 'projects/mb/src/lib/charts/freq
 const sl = 2048;
 
 @Component({
-    selector: 'mb-sample-frequency-response-1',
-    templateUrl: './sample-frequency-response-1.component.html',
-    styleUrls: ['./sample-frequency-response-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      MatCardSubtitle,
-      MatGridList,
-      MatGridTile,
-      FlexModule,
-      FrequencyResponseChartComponent
-    ]
+  selector: 'mb-sample-frequency-response-1',
+  templateUrl: './sample-frequency-response-1.component.html',
+  styleUrls: ['./sample-frequency-response-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatCardSubtitle,
+    MatGridList,
+    MatGridTile,
+    FlexModule,
+    FrequencyResponseChartComponent
+  ]
 })
 export class SampleFrequencyResponse1Component {
-
   protected readonly sma2 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({ length: 2}), 4);
   protected readonly sma3 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({ length: 3}), 6);
   protected readonly sma4 = FrequencyResponse.calculate(sl, new SimpleMovingAverage({ length: 4}), 8);

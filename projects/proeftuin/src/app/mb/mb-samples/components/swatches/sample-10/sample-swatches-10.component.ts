@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
-import { tripleInterpolatedPalette } from 'projects/mb/src/lib/colors/triple-interpolated-palette';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
-import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
-import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
+import { tripleInterpolatedPalette } from 'projects/mb/src/lib/colors/triple-interpolated-palette';
+import { SwatchesComponent } from 'projects/mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 // https://medialab.github.io/iwanthue/
 const triplets: string[][] = [
@@ -121,10 +120,26 @@ const tripletsCount = triplets.length;
 const tripletsMaterialCount = tripletsMaterial.length;
 
 @Component({
-    selector: 'app-sample-swatches-10',
-    templateUrl: './sample-swatches-10.component.html',
-    styleUrls: ['./sample-swatches-10.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
+  selector: 'app-sample-swatches-10',
+  templateUrl: './sample-swatches-10.component.html',
+  styleUrls: ['./sample-swatches-10.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SwatchesComponent,
+    SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches10Component {
   private numberOfSwatches = 5;

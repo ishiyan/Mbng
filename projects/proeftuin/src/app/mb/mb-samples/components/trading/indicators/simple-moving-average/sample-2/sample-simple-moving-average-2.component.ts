@@ -10,18 +10,18 @@ import { SimpleMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/simple-moving-average/simple-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-simple-moving-average-2',
-    templateUrl: './sample-simple-moving-average-2.component.html',
-    styleUrls: ['./sample-simple-moving-average-2.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      SimpleMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-simple-moving-average-2',
+  templateUrl: './sample-simple-moving-average-2.component.html',
+  styleUrls: ['./sample-simple-moving-average-2.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    SimpleMovingAverageParamsComponent
+  ]
 })
 export class SampleSimpleMovingAverage2Component {
   protected selected1: SimpleMovingAverageParams = {

@@ -10,18 +10,18 @@ import { T2ExponentialMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/tim-tillson/t2-exponential-moving-average/t2-exponential-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-t2-exponential-moving-average-1',
-    templateUrl: './sample-t2-exponential-moving-average-1.component.html',
-    styleUrls: ['./sample-t2-exponential-moving-average-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      T2ExponentialMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-t2-exponential-moving-average-1',
+  templateUrl: './sample-t2-exponential-moving-average-1.component.html',
+  styleUrls: ['./sample-t2-exponential-moving-average-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    T2ExponentialMovingAverageParamsComponent
+  ]
 })
 export class SampleT2ExponentialMovingAverage1Component {
   protected selected1: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams = {

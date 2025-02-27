@@ -10,18 +10,18 @@ import { WeightedMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/weighted-moving-average/weighted-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-weighted-moving-average-2',
-    templateUrl: './sample-weighted-moving-average-2.component.html',
-    styleUrls: ['./sample-weighted-moving-average-2.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      WeightedMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-weighted-moving-average-2',
+  templateUrl: './sample-weighted-moving-average-2.component.html',
+  styleUrls: ['./sample-weighted-moving-average-2.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    WeightedMovingAverageParamsComponent
+  ]
 })
 export class SampleWeightedMovingAverage2Component {
   protected selected1: WeightedMovingAverageParams = {

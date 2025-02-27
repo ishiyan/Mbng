@@ -1,26 +1,42 @@
-import { Component } from '@angular/core';
-
-import { randomPalette } from 'projects/mb/src/lib/colors/random-procedural-palettes';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
-import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
-import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
+import { randomPalette } from 'projects/mb/src/lib/colors/random-procedural-palettes';
+import { SwatchesComponent } from 'projects/mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
-    selector: 'app-sample-swatches-4',
-    templateUrl: './sample-swatches-4.component.html',
-    styleUrls: ['./sample-swatches-4.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatFormField, MatLabel, MatInput, FormsModule, MatCardContent, SwatchesComponent, SwatchesSelectComponent, MatMiniFabButton, MatIcon, MatCardActions, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
+  selector: 'app-sample-swatches-4',
+  templateUrl: './sample-swatches-4.component.html',
+  styleUrls: ['./sample-swatches-4.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatMiniFabButton,
+    MatIcon,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatCardActions,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SwatchesComponent,
+    SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches4Component {
-
   private randomPaletteSwatches = 8;
   randomPalettes: string[][] = this.generateRandomPalettes();
   selectedRandomPaletteIndex = 0;

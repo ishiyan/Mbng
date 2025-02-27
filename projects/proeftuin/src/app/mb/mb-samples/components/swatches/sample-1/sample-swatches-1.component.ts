@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatSelectionList, MatListOption, MatList, MatListItem } from '@angular/material/list';
@@ -8,26 +7,26 @@ import { SwatchesComponent } from 'projects/mb/src/lib/colors/swatches/swatches.
 import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
-    selector: 'app-sample-swatches-1',
-    templateUrl: './sample-swatches-1.component.html',
-    styleUrls: ['./sample-swatches-1.component.scss'],
-    imports: [
-    FormsModule,
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardContent,
-    MatCardActions,
-    MatSelectionList,
-    MatListOption,
-    MatList,
-    MatListItem,
-    SwatchesComponent,
-    SwatchesSelectComponent
-]
+  selector: 'app-sample-swatches-1',
+  templateUrl: './sample-swatches-1.component.html',
+  styleUrls: ['./sample-swatches-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+   FormsModule,
+   MatCard,
+   MatCardHeader,
+   MatCardTitle,
+   MatCardContent,
+   MatCardActions,
+   MatSelectionList,
+   MatListOption,
+   MatList,
+   MatListItem,
+   SwatchesComponent,
+   SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches1Component {
-
   readonly colors2: string[] = [ '#5C849F', '#93B2C1', '#6BAEA7', '#73C0DC' ];
   readonly colors1: string[] = [ '#31B9B0', '#5AF0BC', '#32D2BA', '#26BBBE', '#32BEA1' ];
 

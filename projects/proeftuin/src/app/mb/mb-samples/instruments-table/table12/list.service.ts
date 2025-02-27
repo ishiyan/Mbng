@@ -35,8 +35,6 @@ export class ListService {
       const errorResponse: HttpErrorResponse = error as HttpErrorResponse;
       text = errorResponse.message;
     }
-    // console.error(text);
     return throwError(text);
   }
-
 }

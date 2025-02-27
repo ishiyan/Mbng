@@ -10,18 +10,18 @@ import { DoubleExponentialMovingAverageParamsComponent }
   from 'projects/mb/src/lib/trading/indicators/patrick-mulloy/double-exponential-moving-average/double-exponential-moving-average-params.component';
 
 @Component({
-    selector: 'app-sample-double-exponential-moving-average-1',
-    templateUrl: './sample-double-exponential-moving-average-1.component.html',
-    styleUrls: ['./sample-double-exponential-moving-average-1.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      JsonPipe,
-      MatCard,
-      MatCardHeader,
-      MatCardTitle,
-      MatCardContent,
-      DoubleExponentialMovingAverageParamsComponent
-    ]
+  selector: 'app-sample-double-exponential-moving-average-1',
+  templateUrl: './sample-double-exponential-moving-average-1.component.html',
+  styleUrls: ['./sample-double-exponential-moving-average-1.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    JsonPipe,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    DoubleExponentialMovingAverageParamsComponent
+  ]
 })
 export class SampleDoubleExponentialMovingAverage1Component {
   protected selected1: DoubleExponentialMovingAverageLengthParams | DoubleExponentialMovingAverageSmoothingFactorParams = {

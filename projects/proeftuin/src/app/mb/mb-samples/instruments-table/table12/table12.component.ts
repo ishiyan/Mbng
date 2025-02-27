@@ -1,5 +1,7 @@
-import { Component, OnInit, ElementRef, Input, viewChild, inject } from '@angular/core';
+import { Component, viewChild, inject, afterNextRender, ChangeDetectionStrategy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
@@ -10,26 +12,40 @@ import { CurrencyCode } from 'projects/mb/src/lib/trading/currencies/currency-co
 import { Instrument } from 'projects/mb/src/lib/trading/instruments/instrument';
 import { ListService } from './list.service';
 import { SnackBarService } from 'projects/mb/src/lib/snack-bar/snack-bar.service';
-import { MatFormField } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 
 @Component({
-    selector: 'mb-sample-table12',
-    templateUrl: './table12.component.html',
-    styleUrls: ['./table12.component.scss'],
-    animations: [
-        trigger('detailExpand', [
-            state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
-            state('expanded', style({ height: '*' })),
-            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-        ]),
-    ],
-    imports: [MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator]
+  selector: 'mb-sample-table12',
+  templateUrl: './table12.component.html',
+  styleUrls: ['./table12.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatInput,
+    MatTable,
+    MatSort,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatPaginator
+  ]
 })
-export class Table12Component implements OnInit {
-  private listService = inject(ListService);
-  private snackBarService = inject(SnackBarService);
-
+export class Table12Component {
+  private readonly listService = inject(ListService);
+  private readonly snackBarService = inject(SnackBarService);
   readonly paginator = viewChild.required(MatPaginator);
   readonly sort = viewChild.required(MatSort);
 
@@ -94,24 +110,25 @@ export class Table12Component implements OnInit {
             (data.fund.tradingMode && data.fund.tradingMode.toLowerCase().indexOf(filter) !== -1) ||
             (data.fund.cfi && data.fund.cfi.toLowerCase().indexOf(filter) !== -1) ||
             (data.fund.issuer && data.fund.issuer.toLowerCase().indexOf(filter) !== -1)));
-  }
-
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator();
-    this.dataSource.sort = this.sort();
-    this.listService.getInstrumentList('euronext')
-      .subscribe({
-        next: list => {
-          this.expandedInstrument = null;
-          this.dataSource.data = list;
-        },
-        error: error => {
-          this.expandedInstrument = null;
-          this.dataSource.data = [];
-          this.snackBarService.add(error as string);
-          console.error(error as string);
-        }
-      });
+    afterNextRender({
+      write: () => {
+        this.dataSource.paginator = this.paginator();
+        this.dataSource.sort = this.sort();
+        this.listService.getInstrumentList('euronext')
+          .subscribe({
+            next: list => {
+              this.expandedInstrument = null;
+              this.dataSource.data = list;
+            },
+            error: error => {
+              this.expandedInstrument = null;
+              this.dataSource.data = [];
+              this.snackBarService.add(error as string);
+              console.error(error as string);
+            }
+          });
+      }
+    });
   }
 
   applyFilter(filterValue: string) {
@@ -129,9 +146,5 @@ export class Table12Component implements OnInit {
   getType(instrument: Instrument): InstrumentType {
     // @ts-ignore
     return InstrumentType[instrument.type];
-  }
-
-  helpWindow(event: any) {
-    window.open(document.URL, '_blank', 'location=no,height=570,width=520,scrollbars=yes,status=yes');
   }
 }

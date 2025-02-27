@@ -1,24 +1,36 @@
-import { Component } from '@angular/core';
-
-import { predefinedInterpolatedPalettes } from 'projects/mb/src/lib/colors/predefined-interpolated-palettes';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
-import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
-import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
+import { predefinedInterpolatedPalettes } from 'projects/mb/src/lib/colors/predefined-interpolated-palettes';
+import { SwatchesComponent } from 'projects/mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
-    selector: 'app-sample-swatches-8',
-    templateUrl: './sample-swatches-8.component.html',
-    styleUrls: ['./sample-swatches-8.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
+  selector: 'app-sample-swatches-8',
+  templateUrl: './sample-swatches-8.component.html',
+  styleUrls: ['./sample-swatches-8.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SwatchesComponent,
+    SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches8Component {
-
   private numberOfSwatches = 5;
   private selectedIndex = 0;
 

@@ -1,13 +1,11 @@
-import { Component } from '@angular/core';
-
-import { materialPalettesA } from 'mb';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 
+import { materialPalettesA } from 'projects/mb/src/lib/colors/material-palettes-a';
 import { ColorPickerDirective } from 'projects/mb/src/lib/colors/picker/color-picker.directive';
 import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
@@ -17,10 +15,23 @@ const colorChanged = (log: string, color: string): string => {
 };
 
 @Component({
-    selector: 'app-sample-swatches-9',
-    templateUrl: './sample-swatches-9.component.html',
-    styleUrls: ['./sample-swatches-9.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, ColorPickerDirective, MatMiniFabButton, MatIcon, MatSlideToggle, FormsModule, SwatchesSelectComponent]
+  selector: 'app-sample-swatches-9',
+  templateUrl: './sample-swatches-9.component.html',
+  styleUrls: ['./sample-swatches-9.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatMiniFabButton,
+    MatIcon,
+    MatSlideToggle,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    ColorPickerDirective,
+    SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches9Component {
   protected palettes3: string[][] = materialPalettesA();

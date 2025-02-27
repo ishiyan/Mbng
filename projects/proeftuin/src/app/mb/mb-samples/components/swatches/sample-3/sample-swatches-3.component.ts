@@ -1,24 +1,37 @@
-import { Component } from '@angular/core';
-
-import { linearInterpolatedPalette } from 'projects/mb/src/lib/colors/linear-interpolated-palette';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
-import { SwatchesComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches.component';
-import { SwatchesSelectComponent } from '../../../../../../../../mb/src/lib/colors/swatches/swatches-select.component';
+import { linearInterpolatedPalette } from 'projects/mb/src/lib/colors/linear-interpolated-palette';
+import { SwatchesComponent } from 'projects/mb/src/lib/colors/swatches/swatches.component';
+import { SwatchesSelectComponent } from 'projects/mb/src/lib/colors/swatches/swatches-select.component';
 
 @Component({
-    selector: 'app-sample-swatches-3',
-    templateUrl: './sample-swatches-3.component.html',
-    styleUrls: ['./sample-swatches-3.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatFormField, MatLabel, MatInput, FormsModule, SwatchesComponent, SwatchesSelectComponent, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle]
+  selector: 'app-sample-swatches-3',
+  templateUrl: './sample-swatches-3.component.html',
+  styleUrls: ['./sample-swatches-3.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SwatchesComponent,
+    SwatchesSelectComponent
+  ]
 })
 export class SampleSwatches3Component {
-
   private readonly colorsStart: string[] = [
     '#114b5f',
     '#05668d',

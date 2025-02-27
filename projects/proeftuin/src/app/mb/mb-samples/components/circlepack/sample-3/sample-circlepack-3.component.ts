@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 /* eslint-disable max-len */
 import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
@@ -11,17 +17,9 @@ import { HierarchyTreeTapFunction } from 'projects/mb/src/lib/charts/hierarchy-t
 import { pathParentTooltips } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tooltip-function';
 import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/label-function';
 import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize14, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
+import { CirclepackComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../../test-data/hierarchies/aex-index';
-import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { FormsModule } from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatSelect } from '@angular/material/select';
-
-import { MatOption } from '@angular/material/core';
-
-import { CirclepackComponent } from '../../../../../../../../mb/src/lib/charts/hierarchy-tree/circlepack/circlepack.component';
 
 interface Dataset {
   value: AexIndexHierarchyTreeNode;
@@ -81,13 +79,24 @@ interface LabelFontSizeFunc {
 }
 
 @Component({
-    selector: 'app-sample-circlepack-3',
-    templateUrl: './sample-circlepack-3.component.html',
-    styleUrls: ['./sample-circlepack-3.component.scss'],
-    imports: [MatCard, MatCardContent, MatSlideToggle, FormsModule, MatFormField, MatLabel, MatSelect, MatOption, CirclepackComponent, MatCardActions]
+  selector: 'app-sample-circlepack-3',
+  templateUrl: './sample-circlepack-3.component.html',
+  styleUrls: ['./sample-circlepack-3.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatCard,
+    MatCardContent,
+    MatCardActions,
+    MatSlideToggle,
+    MatSelect,
+    MatOption,
+    CirclepackComponent
+  ]
 })
 export class SampleCirclepack3Component {
-
   readonly datasetArray: Dataset[] = [
     { key: 'issuers', value: aexIndexIssuerCountries },
     { key: 'tickers', value: aexIndexTickers },
