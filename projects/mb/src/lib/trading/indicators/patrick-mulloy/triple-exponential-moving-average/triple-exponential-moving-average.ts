@@ -19,6 +19,9 @@ export const tripleExponentialMovingAverageMnemonic =
   }
 };
 
+// https://store.traders.com/-v12-c01-smoothi-pdf.html
+// https://store.traders.com/-v12-c02-smoothi-pdf.html
+
 /** __Triple Exponential Moving Average__ line indicator computes the triple exponential, or triple exponentially weighted, moving average (_TEMA_).
  *
  * The TEMA was developed by Patrick G. Mulloy and is described in two articles:
