@@ -52,12 +52,10 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
   private readonly firstIsAverage: boolean;
   private readonly length: number;
   private readonly length2: number;
-  private sum1 = 0;
-  private sum2 = 0;
-  private count1 = 0;
-  private count2 = 0;
-  private value1 = 0;
-  private value2 = 0;
+  private sum = 0;
+  private count = 0;
+  private ema1 = 0;
+  private ema2 = 0;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -86,7 +84,7 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
       this.firstIsAverage = false;
     }
 
-    this.length2 = this.length * 2;
+    this.length2 = 2 * this.length - 1;
     this.mnemonic = doubleExponentialMovingAverageMnemonic(params);
     this.primed = false;
   }
@@ -98,47 +96,48 @@ export class DoubleExponentialMovingAverage extends LineIndicator {
     }
 
     if (this.primed) {
-      this.value1 += (sample - this.value1) * this.smoothingFactor;
-      this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
-      return  2 * this.value1 - this.value2;
-    } else { // Not primed.
-      if (this.firstIsAverage) {
-        if (this.length > this.count1) {
-          this.sum1 += sample;
-          if (this.length === ++this.count1) {
-            this.value1 = this.sum1 / this.length;
-            this.sum2 += this.value1;
-          }
-        } else {
-          this.value1 += (sample - this.value1) * this.smoothingFactor;
-          this.sum2 += this.value1;
-          if (this.length === ++this.count2) {
-            this.primed = true;
-            this.value2 = this.sum2 / this.length;
-            return 2 * this.value1 - this.value2;
-          }
-        }
-      } else { // firstIsAverage is false.
-        if (this.length > this.count1) {
-          if (1 === ++this.count1) {
-            this.value1 = sample;
-          } else {
-            this.value1 += (sample - this.value1) * this.smoothingFactor;
-          }
-        } else {
-          this.value1 += (sample - this.value1) * this.smoothingFactor;
-          if (this.length === this.count1++) {
-            this.value2 = this.value1;
-          } else {
-            this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
-            if (this.length2 == this.count1) {
-              this.primed = true;
-              return 2 * this.value1 - this.value2;
-            }            
-          }
-        }
-      }  
+      this.ema1 += (sample - this.ema1) * this.smoothingFactor;
+      this.ema2 += (this.ema1 - this.ema2) * this.smoothingFactor;
+      return  2 * this.ema1 - this.ema2;
     }
+
+    // Not primed.
+    ++this.count;
+    if (this.firstIsAverage) { // First is the simple average. 
+      if (this.count === 1) {
+        this.sum = sample;
+      } else if (this.length >= this.count) {
+        this.sum += sample;
+        if (this.length === this.count) {
+          this.ema1 = this.sum / this.length;
+          this.sum = this.ema1;
+        }
+      } else { // if (this.length2 >= this.count) {
+        this.ema1 += (sample - this.ema1) * this.smoothingFactor;
+        this.sum += this.ema1;
+        if (this.length2 === this.count) {
+          this.primed = true;
+          this.ema2 = this.sum / this.length;
+          return 2 * this.ema1 - this.ema2;
+        }
+      }
+    } else { // firstIsAverage is false, Metastock.
+      if (this.count === 1) {
+        this.ema1 = sample;
+      } else if (this.length >= this.count) {
+        this.ema1 += (sample - this.ema1) * this.smoothingFactor;
+        if (this.length === this.count) {
+          this.ema2 = this.ema1;
+        }
+      } else { // if (this.length2 >= this.count) {
+        this.ema1 += (sample - this.ema1) * this.smoothingFactor;
+        this.ema2 += (this.ema1 - this.ema2) * this.smoothingFactor;
+        if (this.length2 === this.count) {
+          this.primed = true;
+          return 2 * this.ema1 - this.ema2;
+        }
+      }
+    }  
 
     return Number.NaN;
   }

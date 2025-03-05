@@ -204,17 +204,17 @@ describe('FrequencyResponse', () => {
     }
   });
 
-  it('normalizes degrees to [-180, 180] range', () => {
-    const expected = [-80, -180, -90, -180, -90, 0, 90, 180, 90, 180, 80];
-    const actual = [-800, -360, -270, -180, -90, 0, 90, 180, 270, 360, 800];
+  it('unwraps phase degrees from [-180, 180] range', () => {
+    const wrapped = [-80, -180, -90, -180, -90, 0, 90, 180, 90, 180, 80];
+    const expected = [-80, -280, -280, -460, -460, -460, -460, -460, -640, -640, -840];
 
-    for (let i = 0; i < actual.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/dot-notation
-      actual[i] = FrequencyResponse['normalizeDegrees'](actual[i]);
-    }
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    const actual = FrequencyResponse['createFrequencyResponseComponent'](wrapped.length);
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    FrequencyResponse['unwrapPhaseDegrees'](wrapped.length, wrapped, actual, 89);
 
-    for (let i = 0; i < actual.length; i++) {
-      expect(actual[i]).toBe(expected[i]);
+    for (let i = 0; i < wrapped.length; i++) {
+      expect(actual.data[i]).toBe(expected[i]);
     }
   });
 
