@@ -98,23 +98,31 @@ describe('T3ExponentialMovingAverage', () => {
 
   it('should return expected mnemonic', () => {
     let t3ema = new T3ExponentialMovingAverage({length: 7, vFactor: 0.6781, firstIsAverage: true});
-    expect(t3ema.getMnemonic()).toBe('t3ema(7, 0.678, sma)');
+    expect(t3ema.getMnemonic()).toBe('t3(7, 0.678, sma)');
     t3ema = new T3ExponentialMovingAverage({length: 7, vFactor: 0.6789, firstIsAverage: false});
-    expect(t3ema.getMnemonic()).toBe('t3ema(7, 0.679)');
+    expect(t3ema.getMnemonic()).toBe('t3(7, 0.679)');
     t3ema = new T3ExponentialMovingAverage({smoothingFactor: 0.12345, vFactor: 0.56789});
-    expect(t3ema.getMnemonic()).toBe('t3ema(0.123, 0.568)');
+    expect(t3ema.getMnemonic()).toBe('t3(0.123, 0.568)');
   });
 
   it('should throw if length is less than 2', () => {
     expect(() => { new T3ExponentialMovingAverage({length: 1, vFactor: 0.7, firstIsAverage: true}); }).toThrow();
   });
 
-  it('should throw if smoothing factor is less or equal to 0', () => {
-    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: 0, vFactor: 0.7}); }).toThrow();
+  it('should throw if smoothing factor is less than 0', () => {
+    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: -0.1, vFactor: 0.7}); }).toThrow();
   });
 
-  it('should throw if smoothing factor is greater or equal to 1', () => {
-    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: 1, vFactor: 0.7}); }).toThrow();
+  it('should throw if smoothing factor is greater than 1', () => {
+    expect(() => { new T3ExponentialMovingAverage({smoothingFactor: 1.1, vFactor: 0.7}); }).toThrow();
+  });
+
+  it('should throw if volume factor is less than 0', () => {
+    expect(() => { new T3ExponentialMovingAverage({length: 5, vFactor: -0.1, firstIsAverage: true}); }).toThrow();
+  });
+
+  it('should throw if volume factor is greater than 1', () => {
+    expect(() => { new T3ExponentialMovingAverage({length: 5, vFactor: 1.1, firstIsAverage: true}); }).toThrow();
   });
 
   it('should calculate expected output and prime state for length 5, first is NOT SMA', () => {
@@ -132,9 +140,9 @@ describe('T3ExponentialMovingAverage', () => {
       expect(t3ema.isPrimed()).toBe(true);
 
       if (i === 24) {
-        expect(act).toBeCloseTo(85.73, epsilon);
+        expect(act).toBeCloseTo(85.749, epsilon);
       } else if (i === 25) {
-        expect(act).toBeCloseTo(84.37, epsilon);
+        expect(act).toBeCloseTo(84.380, epsilon);
       } else if (i === 250) {
         expect(act).toBeCloseTo(109.03, epsilon);
       } else if (i === 251) {

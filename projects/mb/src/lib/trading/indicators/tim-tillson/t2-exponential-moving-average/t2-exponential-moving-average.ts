@@ -10,17 +10,68 @@ export const t2ExponentialMovingAverageMnemonic =
   (params: T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams): string => {
   if (guardLength(params)) {
     const p = params as T2ExponentialMovingAverageLengthParams;
-    return 't2ema('.concat(Math.floor(p.length).toString(), ', ', p.vFactor.toFixed(3), p.firstIsAverage ? ', sma' : '',
+    return 't2('.concat(Math.floor(p.length).toString(), ', ', p.vFactor.toFixed(3), p.firstIsAverage ? ', sma' : '',
       componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
   } else {
     const p = params as T2ExponentialMovingAverageSmoothingFactorParams;
-    return 't2ema('.concat(p.smoothingFactor.toFixed(3), ', ', p.vFactor.toFixed(3),
+    return 't2('.concat(p.smoothingFactor.toFixed(3), ', ', p.vFactor.toFixed(3),
       componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
   }
 };
 
-/** __T2 Exponential Moving Average__ line indicator computes the xxx, moving average (_T2EMA_).
+/** __T2 Exponential Moving Average__ (T2 Exponential Moving Average, T2, T2EMA) line indicator
+ * is a smoothing indicator with less lag than a straight exponential moving average.
  *
+ * The T2 was developed by Tim Tillson and is described in the article:
+ *
+ *	 ❶ Technical Analysis of Stocks & Commodities v.16:1 (33-37), Smoothing Techniques For More Accurate Signals.
+ *
+ * The calculation is as follows:
+ *
+ *	EMA¹ᵢ = EMA(Pᵢ) = αPᵢ + (1-α)EMA¹ᵢ₋₁ = EMA¹ᵢ₋₁ + α(Pᵢ - EMA¹ᵢ₋₁), 0 < α ≤ 1
+ *
+ *	EMA²ᵢ = EMA(EMA¹ᵢ) = αEMA¹ᵢ + (1-α)EMA²ᵢ₋₁ = EMA²ᵢ₋₁ + α(EMA¹ᵢ - EMA²ᵢ₋₁), 0 < α ≤ 1
+ *
+ *	GDᵛᵢ = (1+ν)EMA¹ᵢ - νEMA²ᵢ = EMA¹ᵢ + ν(EMA¹ᵢ - EMA²ᵢ), 0 < ν ≤ 1
+ *
+ *	T2ᵢ = GDᵛᵢ(GDᵛᵢ)
+ *
+ * where GD stands for 'Generalized DEMA' with 'volume' ν. The default value of ν is 0.7.
+ * When ν=0, GD is just an EMA, and when ν=1, GD is DEMA. In between, GD is a cooler DEMA.
+ *
+ * If x< stands for the action of running a time series through an EMA,
+ * ƒ is our formula for Generalized Dema with 'volume' ν:
+ *
+ *	ƒ = (1+ν)x -νx²
+ *
+ * Running the filter though itself three times is equivalent to cubing ƒ:
+ *
+ *	v²x⁴ - 2v(1+ν)x³ + (1+ν)²x²
+ *
+ * The Metastock code for T2 is:
+ *
+ *	e1=Mov(P,periods,E)
+ *
+ *	e2=Mov(e1,periods,E)
+ ^
+ *	e3=Mov(e2,periods,E)
+ *
+ *	e4=Mov(e3,periods,E)
+ *
+ *	c1=v²
+ *
+ *	c2=-2v(1+ν)
+ *
+ *	c3=(1+ν)²
+ *
+ *	t2=c1*e4+c2*e3+c3*e2
+ *
+ * The very first EMA value (the seed for subsequent values) is calculated differently.
+ * This implementation allows for two algorithms for this seed.
+ *
+ *	❶ Use a simple average of the first 'period'. This is the most widely documented approach.
+ *
+ *	❷ Use first sample value as a seed. This is used in Metastock.
  */
 export class T2ExponentialMovingAverage extends LineIndicator {
   private readonly smoothingFactor: number;
@@ -29,19 +80,15 @@ export class T2ExponentialMovingAverage extends LineIndicator {
   private readonly length2: number;
   private readonly length3: number;
   private readonly length4: number;
-  private readonly length5: number;
-  private readonly length6: number;
   private readonly c1: number;
   private readonly c2: number;
   private readonly c3: number;
-  private readonly c4: number;
   private count = 0;
-  private e1 = 0;
-  private e2 = 0;
-  private e3 = 0;
-  private e4 = 0;
-  private e5 = 0;
-  private e6 = 0;
+  private sum = 0;
+  private ema1 = 0;
+  private ema2 = 0;
+  private ema3 = 0;
+  private ema4 = 0;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -59,7 +106,7 @@ export class T2ExponentialMovingAverage extends LineIndicator {
 
       v = p.vFactor;
       if (v < 0 || v > 1) {
-        throw new Error('v-factor should be in range [0, 1]');
+        throw new Error('volume factor should be in range [0, 1]');
       }
 
       this.firstIsAverage = p.firstIsAverage;
@@ -73,7 +120,7 @@ export class T2ExponentialMovingAverage extends LineIndicator {
 
       v = p.vFactor;
       if (v < 0 || v > 1) {
-        throw new Error('v-factor should be in range [0, 1]');
+        throw new Error('volume factor should be in range [0, 1]');
       }
 
       this.firstIsAverage = false;
@@ -81,18 +128,15 @@ export class T2ExponentialMovingAverage extends LineIndicator {
       this.length = Math.round(2 / this.smoothingFactor) - 1;
     }
 
-    const v2 = v * v;
-    this.c1 = -v2 * v;
-    this.c2 = 3 * (v2 - this.c1);
-    this.c3 = -6 * v2 - 3 * (v - this.c1);
-    this.c4 = 1 + 3 * v - this.c1 + 3 * v2;
+    const v1 = v + 1;
+    this.c1 = v * v;
+    this.c2 = -2 * v * v1;
+    this.c3 = v1 * v1;
 
     const l = this.length;
     this.length2 = l * 2 - 1;
     this.length3 = l * 3 - 2;
     this.length4 = l * 4 - 3;
-    this.length5 = l * 5 - 4;
-    this.length6 = l * 6 - 5;
 
     this.mnemonic = t2ExponentialMovingAverageMnemonic(params);
     this.primed = false;
@@ -105,123 +149,82 @@ export class T2ExponentialMovingAverage extends LineIndicator {
     }
 
     const sf = this.smoothingFactor;
-    const omsf = 1 - sf;
     if (this.primed) {      
-      this.e1 = sf * sample + omsf * this.e1;
-      this.e2 = sf * this.e1 + omsf * this.e2;
-      this.e3 = sf * this.e2 + omsf * this.e3;
-      this.e4 = sf * this.e3 + omsf * this.e4;
-      this.e5 = sf * this.e4 + omsf * this.e5;
-      this.e6 = sf * this.e5 + omsf * this.e6;
-      return this.c1 * this.e6 + this.c2 * this.e5 + this.c3 * this.e4 + this.c4 * this.e3;
-    } else { // Not primed.
-      if (this.firstIsAverage) {
-        if (this.length > this.count) {
-          this.e1 += sample;
-          if (this.length === ++this.count) {
-            this.e1 /= this.length;
-            this.e2 = this.e1;
-          }
-        } else if (this.length2 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 += this.e1;
-          if (this.length2 === ++this.count) {
-            this.e2 /= this.length;
-            this.e3 = this.e2;
-          }
-        } else if (this.length3 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 += this.e2;
-          if (this.length3 === ++this.count) {
-            this.e3 /= this.length;
-            this.e4 = this.e3;
-          }
-        } else if (this.length4 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 += this.e3;
-          if (this.length4 === ++this.count) {
-            this.e4 /= this.length;
-            this.e5 = this.e4;
-          }
-        } else if (this.length5 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 = sf * this.e3 + omsf * this.e4;
-          this.e5 += this.e4;
-          if (this.length5 === ++this.count) {
-            this.e5 /= this.length;
-            this.e6 = this.e5;
-          }
-        } else {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 = sf * this.e3 + omsf * this.e4;
-          this.e5 = sf * this.e4 + omsf * this.e5;
-          this.e6 += this.e5;
-          if (this.length6 === ++this.count) {
-            this.primed = true;
-            this.e5 /= this.length;
-            return this.c1 * this.e6 + this.c2 * this.e5 + this.c3 * this.e4 + this.c4 * this.e3;
-          }
+      this.ema1 += (sample - this.ema1) * sf;
+      this.ema2 += (this.ema1 - this.ema2) * sf;
+      this.ema3 += (this.ema2 - this.ema3) * sf;
+      this.ema4 += (this.ema3 - this.ema4) * sf;
+      return this.c1 * this.ema4 + this.c2 * this.ema3 + this.c3 * this.ema2;
+    }
+
+    // Not primed.
+    ++this.count;
+    if (this.firstIsAverage) {
+      if (this.count === 1) {
+        this.sum = sample;
+      } else if (this.length >= this.count) {
+        this.sum += sample;
+        if (this.length === this.count) {
+          this.ema1 = this.sum / this.length;
+          this.sum = this.ema1;
         }
-      } else { // firstIsAverage is false.
-        if (this.length > this.count) {
-          if (1 === ++this.count) {
-            this.e1 = sample;
-          } else {
-            this.e1 = sf * sample + omsf * this.e1;
-            if (this.length === this.count) {
-              this.e2 = this.e1;
-            }
-          }
-        } else if (this.length2 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          if (this.length2 === ++this.count) {
-            this.e3 = this.e2;
-          }
-        } else if (this.length3 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          if (this.length3 === ++this.count) {
-            this.e4 = this.e3;
-          }
-        } else if (this.length4 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 = sf * this.e3 + omsf * this.e4;
-          if (this.length4 === ++this.count) {
-            this.e5 = this.e4;
-          }
-        } else if (this.length5 > this.count) {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 = sf * this.e3 + omsf * this.e4;
-          this.e5 = sf * this.e4 + omsf * this.e5;
-          if (this.length5 === ++this.count) {
-            this.e6 = this.e5;
-          }
-        } else {
-          this.e1 = sf * sample + omsf * this.e1;
-          this.e2 = sf * this.e1 + omsf * this.e2;
-          this.e3 = sf * this.e2 + omsf * this.e3;
-          this.e4 = sf * this.e3 + omsf * this.e4;
-          this.e5 = sf * this.e4 + omsf * this.e5;
-          this.e6 = sf * this.e5 + omsf * this.e6;
-          if (this.length6 === ++this.count) {
-            this.primed = true;
-            return this.c1 * this.e6 + this.c2 * this.e5 + this.c3 * this.e4 + this.c4 * this.e3;
-          }
+      } else if (this.length2 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.sum += this.ema1;
+        if (this.length2 === this.count) {
+          this.ema2 = this.sum / this.length;
+          this.sum = this.ema2;
         }
-      }  
+      } else if (this.length3 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.ema2 += (this.ema1 - this.ema2) * sf;
+        this.sum += this.ema2;
+        if (this.length3 === this.count) {
+          this.ema3 = this.sum / this.length;
+          this.sum = this.ema3;
+        }
+      } else { // if (this.length4 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.ema2 += (this.ema1 - this.ema2) * sf;
+        this.ema3 += (this.ema2 - this.ema3) * sf;
+        this.sum += this.ema3;
+        if (this.length4 === this.count) {
+          this.primed = true;
+          this.ema4 = this.sum / this.length;
+          return this.c1 * this.ema4 + this.c2 * this.ema3 + this.c3 * this.ema2;
+        }
+      }
+    } else { // firstIsAverage is false.
+      if (this.count === 1) {
+        this.ema1 = sample;
+      } else if (this.length >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        if (this.length === this.count) {
+          this.ema2 = this.ema1;
+        }
+      } else if (this.length2 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.ema2 += (this.ema1 - this.ema2) * sf;
+        if (this.length2 === this.count) {
+          this.ema3 = this.ema2;
+        }
+      } else if (this.length3 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.ema2 += (this.ema1 - this.ema2) * sf;
+        this.ema3 += (this.ema2 - this.ema3) * sf;
+        if (this.length3 === this.count) {
+          this.ema4 = this.ema3;
+        }
+      } else { // if (this.length4 >= this.count) {
+        this.ema1 += (sample - this.ema1) * sf;
+        this.ema2 += (this.ema1 - this.ema2) * sf;
+        this.ema3 += (this.ema2 - this.ema3) * sf;
+        this.ema4 += (this.ema3 - this.ema4) * sf;
+        if (this.length4 === this.count) {
+          this.primed = true;
+          return this.c1 * this.ema4 + this.c2 * this.ema3 + this.c3 * this.ema2;
+        }
+      }
     }
 
     return Number.NaN;
