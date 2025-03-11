@@ -105,6 +105,11 @@ export const routes: Routes = [
             .then(m => m.routes)
       },
       {
+        path: 'comp-tra-ind-mark-jurik-jma', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/mark-jurik/jurik-moving-average/sample-jurik-moving-average.routes')
+            .then(m => m.routes)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.routes').then(m => m.routes)
       },

@@ -1,13 +1,18 @@
-import { componentPairMnemonic } from '../indicator/component-pair-mnemonic';
-import { LineIndicator } from '../indicator/line-indicator';
-import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
+import { componentPairMnemonic } from '../../indicator/component-pair-mnemonic';
+import { LineIndicator } from '../../indicator/line-indicator';
+import { JurikMovingAverageParams } from './jurik-moving-average-params.interface';
 
-/** Function to calculate mnemonic of a __SimpleMovingAverage__ indicator. */
-export const simpleMovingAverageMnemonic = (params: SimpleMovingAverageParams): string =>
-  'sma('.concat(params.length.toString(), componentPairMnemonic(params.barComponent, params.quoteComponent), ')');
+/** Function to calculate mnemonic of a __JurikMovingAverage__ indicator. */
+export const jurikMovingAverageMnemonic = (params: JurikMovingAverageParams): string =>
+  'jma('.concat(
+    params.length.toString(),
+    ', ',
+    params.phase.toString(),
+    componentPairMnemonic(params.barComponent, params.quoteComponent),
+    ')');
 
-/** Simple Moving Average line indicator. */
-export class SimpleMovingAverage extends LineIndicator {
+/** Jurik Moving Average line indicator. */
+export class JurikMovingAverage extends LineIndicator {
   private window: Array<number>;
   private windowLength: number;
   private windowSum: number;
@@ -18,14 +23,14 @@ export class SimpleMovingAverage extends LineIndicator {
    * Constructs an instance given a length in samples.
    * The length should be an integer greater than 1.
    **/
-  public constructor(params: SimpleMovingAverageParams){
+  public constructor(params: JurikMovingAverageParams){
     super();
     const length = Math.floor(params.length);
     if (length < 2) {
       throw new Error('length should be greater than 1');
     }
 
-    this.mnemonic = simpleMovingAverageMnemonic(params);
+    this.mnemonic = jurikMovingAverageMnemonic(params);
     this.window = new Array<number>(length);
     this.windowLength = length;
     this.windowSum = 0;

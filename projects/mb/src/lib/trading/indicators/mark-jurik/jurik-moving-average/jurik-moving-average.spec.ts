@@ -1,6 +1,6 @@
 import { } from 'jasmine';
 
-import { SimpleMovingAverage } from './simple-moving-average';
+import { JurikMovingAverage } from './jurik-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
 // ng test mb  --code-coverage --include='**/indicators/*.spec.ts'
@@ -17,16 +17,16 @@ const input = [
   67.96
 ];
 
-describe('SimpleMovingAverage', () => {
-  const epsilon = 10e-2;
+describe('JurikMovingAverage', () => {
+  const epsilon = 1e-3;
 
   it('should return expected mnemonic', () => {
-    const sma = new SimpleMovingAverage({length: 7});
-    expect(sma.getMnemonic()).toBe('sma(7)');
+    const jma = new JurikMovingAverage({length: 7, phase: 0});
+    expect(jma.getMnemonic()).toBe('jma(7, 0)');
   });
 
   it('should throw if length is less than 2', () => {
-    expect(() => { new SimpleMovingAverage({length: 1}); }).toThrow();
+    expect(() => { new JurikMovingAverage({length: 1, phase: 0}); }).toThrow();
   });
 
   it('should calculate expected output and prime state for length 3', () => {
@@ -39,19 +39,19 @@ describe('SimpleMovingAverage', () => {
       67.70,
     ];
     const len = 3;
-    const sma = new SimpleMovingAverage({length: len});
+    const jma = new JurikMovingAverage({length: len, phase: 0});
 
     for (let i = 0; i < len - 1; i++) {
-      expect(sma.update(input[i])).toBeNaN();
-      expect(sma.isPrimed()).toBe(false);
+      expect(jma.update(input[i])).toBeNaN();
+      expect(jma.isPrimed()).toBe(false);
     }
 
     for (let i = len - 1; i < input.length; i++) {
-      expect(sma.update(input[i])).toBeCloseTo(expected[i], epsilon);
-      expect(sma.isPrimed()).toBe(true);
+      expect(jma.update(input[i])).toBeCloseTo(expected[i], epsilon);
+      expect(jma.isPrimed()).toBe(true);
     }
 
-    expect(sma.update(Number.NaN)).toBeNaN();
+    expect(jma.update(Number.NaN)).toBeNaN();
   });
 
   it('should calculate expected output and prime state for length 5', () => {
@@ -64,19 +64,19 @@ describe('SimpleMovingAverage', () => {
       67.59,
     ];
     const len = 5;
-    const sma = new SimpleMovingAverage({length: len});
+    const jma = new JurikMovingAverage({length: len, phase: 0});
 
     for (let i = 0; i < len - 1; i++) {
-      expect(sma.update(input[i])).toBeNaN();
-      expect(sma.isPrimed()).toBe(false);
+      expect(jma.update(input[i])).toBeNaN();
+      expect(jma.isPrimed()).toBe(false);
     }
 
     for (let i = len - 1; i < input.length; i++) {
-      expect(sma.update(input[i])).toBeCloseTo(expected[i], epsilon);
-      expect(sma.isPrimed()).toBe(true);
+      expect(jma.update(input[i])).toBeCloseTo(expected[i], epsilon);
+      expect(jma.isPrimed()).toBe(true);
     }
 
-    expect(sma.update(Number.NaN)).toBeNaN();
+    expect(jma.update(Number.NaN)).toBeNaN();
   });
 
   it('should calculate expected output and prime state for length 10', () => {
@@ -89,18 +89,18 @@ describe('SimpleMovingAverage', () => {
       67.47,
     ];
     const len = 10;
-    const sma = new SimpleMovingAverage({length: len});
+    const jma = new JurikMovingAverage({length: len, phase: 0});
 
     for (let i = 0; i < len - 1; i++) {
-      expect(sma.update(input[i])).toBeNaN();
-      expect(sma.isPrimed()).toBe(false);
+      expect(jma.update(input[i])).toBeNaN();
+      expect(jma.isPrimed()).toBe(false);
     }
 
     for (let i = len - 1; i < input.length; i++) {
-      expect(sma.update(input[i])).toBeCloseTo(expected[i], epsilon);
-      expect(sma.isPrimed()).toBe(true);
+      expect(jma.update(input[i])).toBeCloseTo(expected[i], epsilon);
+      expect(jma.isPrimed()).toBe(true);
     }
 
-    expect(sma.update(Number.NaN)).toBeNaN();
+    expect(jma.update(Number.NaN)).toBeNaN();
   });
 });

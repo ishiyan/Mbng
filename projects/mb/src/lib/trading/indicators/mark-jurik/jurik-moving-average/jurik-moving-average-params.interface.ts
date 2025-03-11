@@ -1,14 +1,38 @@
-import { BarComponent } from '../../../data/entities/bar-component.enum';
-import { QuoteComponent } from '../../../data/entities/quote-component.enum';
+import { BarComponent } from '../../../../data/entities/bar-component.enum';
+import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
 /** Describes parameters to create an instance of the indicator. */
-export interface SimpleMovingAverageParams {
+export interface JurikMovingAverageParams {
     /**
-     * Length is the length (the number of time periods, ℓ) of the moving window to calculate the average.
+     * Length (the number of time periods, ℓ) determines
+     * the degree of smoothness and it can be any positive value.
      *
-     * The value should be greater than 1.
+     * Small values make the moving average respond rapidly to price change
+     * and larger values produce smoother, flatter curves.
+     *
+	 * The value should be greater than _1_. Typical values range from _5_ to _20_.
+	 *
+     * Irrespective from the value, the indicator needs at _30_ first values to be primed.
      */
     length: number;
+
+    /**
+     * Phase affects the amount of lag (delay).
+     *
+     * Lower lag tends to produce larger overshoot during price gaps, so you need
+     * to consider the trade-off between lag and overshoot and select a value for
+     * phase that balances your trading system's needs.
+     *
+     * Small values make the moving average respond rapidly to price change
+     * and larger values produce smoother, flatter curves.
+     * 
+	 * The phase values should be in _[-100, 100]_.
+	 *
+	 * - The value of _-100_ results in maximum lag and no overshoot.
+     * - The value of _0_ results in some lag and some overshoot.
+     * - The value of _100_ results in minimum lag and maximum overshoot.
+     */
+    phase: number;
 
     /**
      * A component of a bar to use when updating the indicator with a bar sample.

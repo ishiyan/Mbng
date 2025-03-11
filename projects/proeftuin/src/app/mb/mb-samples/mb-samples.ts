@@ -216,6 +216,17 @@ export const treeNodes: MbSample[] = [
                     ]
                   }
                 ]
+              },
+              { name: 'Mark Jurik',
+                children: [
+                  { name: 'Jurik Moving Average',
+                    children: [
+                      { name: 'Params', header: 'Jurik Moving Average params', route: 'comp-tra-ind-mark-jurik-jma/s1' },
+                      { name: 'Selector', header: 'Jurik Moving Average selector', route: 'comp-tra-ind-mark-jurik-jma/s2' },
+                      { name: 'Dialog', header: 'Jurik Moving Average dialog', route: 'comp-tra-ind-mark-jurik-jma/s3' }
+                    ]
+                  }
+                ]
               }
             ]
           }
