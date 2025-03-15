@@ -31,7 +31,7 @@
 <div style="width:100%">
   The Double Exponential Moving Average (DEMA) was introduced by Patrick G. Mulloy in
   the Technical Analysis of Stocks &amp; Commodities (Mulloy 1994 12(1), Mulloy 1994 12(2)).
-  He wanted to make the DEMA "faster" (more sensitive to changes in the input data) than the
+  He wanted to make an indicator "faster" (more sensitive to changes in the input data) than the
   <a href="/{{emaNote.route}}">Exponential Moving Average</a> and to have a reduced lag.
   <p></p>
   Details about Mulloy’s personal life remain largely unknown, the only source of information being his
@@ -42,8 +42,13 @@
   Signal Processing, called "twicing" (Oppenheim et al., 2009 p.609), to decrease the lag of
   a Linear Time-Invariant (LTI) filter. If <mb-ki>{{"E"}}</mb-ki> is a low-pass LTI filter
   operator, then
-  <mb-kd>{{"\\tag*{}twice(x)=E(x)+E(x-E(x))"}}</mb-kd>
-  <mb-kd>{{"\\tag*{(1)}=2E(x)-E(E(x))"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}twice(x)=E(x)+E(x-E(x))"}}
+  </mb-kd>
+  which is algebraically equivalent to
+  <mb-kd>
+    {{"\\tag*{(1)}=2E(x)-E(E(x))"}}
+  </mb-kd>
   Here we are adding the smoothed residials to the smoothed values.
   Note that the equation (1) assumes <mb-ki>{{"E"}}</mb-ki> to be an LTI filter, which
   allows us to expand <mb-ki>{{"E(x-E(x))"}}</mb-ki> to <mb-ki>{{"E(x)-E(E(x))"}}</mb-ki>.
@@ -51,34 +56,51 @@
   Patrick Mulloy doesn't mention the "twicing" technique in his articles.
   Instead, he describes a "nonrigorous derivation" (Mulloy 1994 12(1)), assuming the input
   data samples <mb-ki>{{"\\{x_k\\}"}}</mb-ki> to form a linear sequence
-  <mb-kd>{{"\\tag*{}x_{k}=a+bk, \\quad a=const, b=const"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}x_{k}=a+bk, \\quad a=const, b=const"}}
+  </mb-kd>
   The EMA that lags <mb-ki>{{"\\{x_k\\}"}}</mb-ki> by <mb-ki>{{"l"}}</mb-ki> samples
   can be written as
-  <mb-kd>{{"\\tag*{}ema_{k}=a+b(k-l)=a+bk-bl"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}=x_{k}-bl"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}\\begin{array}{lcl}ema_{k}&=&a+b(k-l)\\\\ &=&a+bk-bl\\\\ &=&x_{k}-bl\\end{array}"}}
+  </mb-kd>
   Using the same logic, when applying the EMA over EMA,
-  <mb-kd>{{"\\tag*{}ema2_{k}=ema_{k}-bl"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}ema2_{k}=ema_{k}-bl"}}
+  </mb-kd>
   Subtracting two previous equations gives
-  <mb-kd>{{"\\tag*{}ema_{k}-ema2_{k}=x_{k}-bl-(ema_{k}-bl)"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}=x_{k}-ema_{k}"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}\\begin{array}{lcl}ema_{k}-ema2_{k}&=&a+b(k-l)\\\\ &=&x_{k}-bl-(ema_{k}-bl)\\\\ &=&x_{k}-ema_{k}\\end{array}"}}
+  </mb-kd>
   from which
-  <mb-kd>{{"\\tag*{}x_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
-  Then, he defines DEMA to be the same as <mb-ki>{{"x_k"}}</mb-ki>
-  <mb-kd>{{"\\tag*{}dema_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{}x_{k}=2ema_{k}-ema2_{k}"}}
+  </mb-kd>
+  Then, Patrick Mulloy defines DEMA to be the same as <mb-ki>{{"x_k"}}</mb-ki>
+  <mb-kd>
+    {{"\\tag*{}dema_{k}=2ema_{k}-ema2_{k}"}}
+  </mb-kd>
   This "nonrigorous derivation" seems unclear to me.
   <p></p>
   The calculation of DEMA goes as follows.
-  <mb-kd>{{"\\tag*{}ema_{k}=\\alpha x_{k}+(1-\\alpha)ema_{k-1}"}}</mb-kd>
-  <mb-kd>{{"\\tag*{(2)}=ema_{k-1}+\\alpha(x_{k}-ema_{k-1})"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}ema2_{k}=ema(ema_{k})"}}</mb-kd>
-  <mb-kd>{{"\\tag*{}=\\alpha ema_{k}+(1-\\alpha)ema2_{k-1}"}}</mb-kd>
-  <mb-kd>{{"\\tag*{(3)}=ema2_{k-1}+\\alpha(ema_{k}-ema2_{k-1})"}}</mb-kd>
-  <mb-kd>{{"\\tag*{(4)}dema_{k}=2ema_{k}-ema2_{k}"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{(2)}\\begin{array}{lcl}ema1_{k}&=&\\alpha x_{k}+(1-\\alpha)ema1_{k-1}\\\\ &=&ema_{k-1}+\\alpha(x_{k}-ema1_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(3)}\\begin{array}{lcl}ema2_{k}&=&ema(ema1_{k})\\\\ &=&\\alpha ema1_{k}+(1-\\alpha)ema2_{k-1}\\\\ &=&ema2_{k-1}+\\alpha(ema1_{k}-ema2_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(4)}dema_{k}=2ema1_{k}-ema2_{k}"}}
+  </mb-kd>
+  Here the first EMA smoothes the price and the second EMA smoothes the first EMA.
+  The equation (4) follows from the equation (1).
   <p></p>
   The initial EMA values may be calculated in two different ways.
   The first approach is to use the <a href="/{{smaNote.route}}">Simple Moving Average</a>
   over the first
-  <mb-kd>{{"\\tag*{(5)}L=\\frac{2}{\\alpha}-1"}}</mb-kd>
+  <mb-kd>
+    {{"\\tag*{(5)}L=\\frac{2}{\\alpha}-1"}}
+  </mb-kd>
   input data values, where <mb-ki>{{"L"}}</mb-ki> is an equivalent length of the
   smoothing parameter <mb-ki>{{"\\alpha"}}</mb-ki>. We assume <mb-ki>{{"\\alpha"}}</mb-ki>
   to be the same for both EMAs. This approach is the most widely used one.
@@ -87,7 +109,11 @@
   It is used by the well known (in the past) Metastock tradind software.
   <p></p>
   Regardless of the initialization approach, we always consider DEMA to be primed only
-  after the <mb-ki>{{"2L"}}</mb-ki> input data points have been fed into the indicator.
+  after the <mb-ki>{{"2L-1"}}</mb-ki> input data points have been fed into the indicator.
+  <p></p>
+  From the digital signal processing (DSP) point of view, DEMA is a
+  infinite impulse response (IIR) filter because it is based on EMA which
+  applies exponentially decresing weighting factors to the input samples.
   <p></p>
 </div>
 
@@ -165,21 +191,21 @@
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="40" [data]="[dema2, dema5, dema10, dema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'period'" [maxPeriod]="150" [data]="[dema2, dema5, dema10, dema20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[dema2, dema5, dema10, dema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various DEMA lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="40" [minDeg]="-80" [maxDeg]="20" [data]="[dema2, dema5, dema10, dema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'period'" [maxPeriod]="150" [minDeg]="-80" [maxDeg]="20" [data]="[dema2, dema5, dema10, dema20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-80" [maxDeg]="20" [data]="[dema2, dema5, dema10, dema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various DEMA lengths.</figcaption>
 </figure>
 
@@ -192,21 +218,19 @@
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
   <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
 </div>
-<div class="citation-src"><!-- Article mulloy1994jan -->Mulloy, P. G. (1994).
+<div class="citation-src"><!-- @Article mulloy1994jan -->Mulloy, P. G. (1994).
   Smoothing Data With Faster Moving Averages. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(1), 11–19.
-  <a href="http://traders.com/#Jan1994" target="_blank">traders.com</a>
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1994#Jan" target="_blank">traders.com</a>
 </div>
-<div class="citation-src"><!-- Article mulloy1994feb -->Mulloy, P. G. (1994).
+<div class="citation-src"><!-- @Article mulloy1994feb -->Mulloy, P. G. (1994).
   Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
-  <a href="http://traders.com/#Feb1994" target="_blank">traders.com</a>
-  <!-- https://technical.traders.com/archive/volume-2014.asp?yr=1994#Feb also 1994#Jan -->
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1994#Feb" target="_blank">traders.com</a>
 </div>
-<div class="citation-src"><!-- Article tillson1998jan -->
-  Tillson, Tim (1998). Smoothing Techniques For More Accurate Signals. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>16</em>(1), 33–37.
-  <a href="http://traders.com/#Jan1998" target="_blank">traders.com</a>
-  <!-- https://technical.traders.com/archive/volume-2014.asp?yr=1998#Jan -->
+<div class="citation-src"><!-- @Article tillson1998jan -->Tillson, Tim (1998).
+  Smoothing Techniques For More Accurate Signals. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>16</em>(1), 33–37.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1998#Jan" target="_blank">traders.com</a>
 </div>
-<div class="citation-src"><!-- Website -->
-  Article Archive For Patrick G. Mulloy, <em>Technical Analysis of Stocks &amp; Commodities</em>.
+<div class="citation-src"><!-- Website -->Article Archive For Patrick G. Mulloy.
+  <em>Technical Analysis of Stocks &amp; Commodities</em>.
   <a href="https://technical.traders.com/archive/combo/display5.asp?author=Patrick%20G%20Mulloy" target="_blank">traders.com</a>
 </div>

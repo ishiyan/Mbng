@@ -29,36 +29,111 @@
 </figure>
 
 <div style="width:100%">
-  An exponential moving average (WMA) of length <mb-ki>l \ge 2</mb-ki> is the arithmetic mean of the last
-  <mb-ki>l</mb-ki> observations of a series <mb-ki>{{"x_{1},\\, x_{2},\\, x_{3},\\,\\ldots\\,,\\, x_{k}"}}</mb-ki>,
-  where <mb-ki>{{"x_{k}"}}</mb-ki> is the most recent value and <mb-ki>k \ge l</mb-ki>:
-  <mb-kd>{{"\\tag*{(1)}y_{k}=\\frac{1}{l}\\sum_{m=k-l+1}^{k}x_{m}"}}</mb-kd>
-
-  Close to the <a href="/{{emaNote.route}}">Simple Moving Average</a>, but multiplier coefficients
-  are not constant across the window width but are linearly weighted.
-  <mb-kd>{{"\\tag*{}WMA_N = \\frac{\\sum\\limits_{i=0}^{N-1}{(N-i)P_i}}{\\sum\\limits_{i=0}^{N-1}{(N-i)}}"}}</mb-kd>
-
-  The sum of the data and coefficient products are divided by the sum of coefficients to normalize the averaging process.
-
-  The major advantage of WMA is the reduced lag which results from the most recent data being the most heavily weighted.
-  WMA coefficients form triangle across the width of the filter, resulting a center of gravity being
-  <mb-ki>{{"\\frac{1}{3}"}}</mb-ki> across the window.
-  <p></p>
-
-  From the digital signal processing (DSP) point of view, T2EMA is a
-  finite impulse response (FIR) filter with all <mb-ki>{{"l"}}</mb-ki> weight coefficients equal:
+  The idea of the T2 Exponential Moving Average (T2) was presented by Tim Tillson in his article in
+  the Technical Analysis of Stocks &amp; Commodities (Tillson 1998 16(1)).
+  He reflects on <a href="/{{demaNote.route}}">Double Exponential Moving Average</a>
+  (described by Patrick G. Mulloy in the same journal in 1994, see Mulloy 1994 12(1) and Mulloy 1994 12(2)),
+  noticing that it uses a technique, well known in Digital Signal Processing,
+  called "twicing" (Oppenheim et al., 2009 p.609), to decrease the lag of a Linear Time-Invariant (LTI) filter.
+  If <mb-ki>{{"E"}}</mb-ki> is a low-pass LTI filter operator, then
   <mb-kd>
-    {{"\\tag*{(3)}y_{k}=\\sum_{m=0}^{l-1}c_{m}x_{k-m},\\ k\\ge l,\\ \\forall m\\ c_{m}=\\frac{1}{l}"}}
+    {{"\\tag*{}twice(x)=E(x)+E(x-E(x))"}}
   </mb-kd>
-  The filter is finite because only a finite number of <mb-ki>{{"l"}}</mb-ki> last samples contribute to its value.
+  which is algebraically equivalent to
+  <mb-kd>
+    {{"\\tag*{(1)}twice(x)=2E(x)-E(E(x))"}}
+  </mb-kd>
+  Here we are adding the smoothed residials to the smoothed values.
+  Note that the equation (1) assumes <mb-ki>{{"E"}}</mb-ki> to be an LTI filter, which
+  allows us to expand <mb-ki>{{"E(x-E(x))"}}</mb-ki> to <mb-ki>{{"E(x)-E(E(x))"}}</mb-ki>.
+  <figure class="figleft">
+    <img src="assets/photos/tillson.jpg">
+    <figcaption>Tim Tillson is a software project manager at Hewlett-Packard,
+      with degrees in Mathematics and Computer Science. He has privately
+      traded options and equities for 15 years. See his
+      <a href="https://www.linkedin.com/in/timtillson/" target="_blank">Linked-In</a> profile.
+    </figcaption>
+  </figure>    
+  <p></p>
+  DEMA applies this "twicing" technique to the <a href="/{{emaNote.route}}">Exponential Moving Average</a> (EMA)
+  to make EMA smoother and to reduce its lag. The drawback of DEMA is that it overshoots or undershoots
+  the input price data during fast price movements.
+  <p></p>
+  Looking at the definition of the DEMA in equation (1) and noticing that the second term adds
+  a smoothed derivative to the EMA value, contributing to the overshooting and undershooting,
+  he suggested to "turn down the volume" of the derivative using "volume factor"
+  <mb-ki>{{"v"}}</mb-ki>, <mb-ki>{{"0\\le v\\le 1"}}</mb-ki>:
+  <mb-kd>
+    {{"\\tag*{(2)}gd_v(x)=(1+v)E(x)-vE(E(x))"}}
+  </mb-kd>
+  Here <mb-ki>{{"gd_v(x)"}}</mb-ki> is the "Generalized DEMA" (GD), as Tim Tillson named it.
+  When <mb-ki>{{"v=1"}}</mb-ki>, GD becomes DEMA. When <mb-ki>{{"v=0"}}</mb-ki>, GD becomes a simple EMA.
+  In between, GD is a "cooler" DEMA with reduced overshooting and undershooting.
+  The default value of <mb-ki>{{"v"}}</mb-ki> is <mb-ki>{{"0.7"}}</mb-ki>.
+  <p></p>
+  Tim Tillson defined the T2 Exponential Moving Average as a GD of a GD
+  <mb-kd>
+    {{"\\tag*{(3)}t2_v(x)=gd_v(gd_v(x))"}}
+  </mb-kd>
+  saying it is equivalent to
+  <mb-kd>
+    {{"\\tag*{(4)}t2_v=((1+v)e-ve^2)^2, e \\equiv E(x)"}}
+  </mb-kd>
+  We can simplify this expression recalling a well-known identity (Jeffrey and Dai, 2008, 1.2.1.2)
+  <mb-kd>
+    {{"\\tag*{}(a+b)^2=a^2+2ab+b^2"}}
+  </mb-kd>
+  and denoting <mb-ki>{{"a=(1+v)e"}}</mb-ki> and <mb-ki>{{"b=-ve^2"}}</mb-ki>:
+  <mb-kd>
+    {{"\\tag*{(5)}\\begin{array}{lcl}t2_v&=&(1+v)^2e^2-2v(1+v)e^3+v^2e^4\\\\ &=&v^2e^4-2v(1+v)e^3+(1+v)^2e^2\\\\ &=&c_1e^4+c_2e^3+c_3e^2\\end{array}"}}
+  </mb-kd>
+  where
+  <mb-kd>
+    {{"\\tag*{(6)}\\begin{array}{lcl}c_1&=&v^2\\\\ c_2&=&-2v(1+v)\\\\ c_3&=&(1+v)^2\\end{array}"}}
+  </mb-kd>
+  <p></p>
+  The calculation of the T2 goes as follows:
+  <mb-kd>
+    {{"\\tag*{(7)}\\begin{array}{lcl}ema1_{k}&=&\\alpha x_{k}+(1-\\alpha)ema1_{k-1}\\\\ &=&ema_{k-1}+\\alpha(x_{k}-ema1_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(8)}\\begin{array}{lcl}ema2_{k}&=&ema(ema1_{k})\\\\ &=&\\alpha ema1_{k}+(1-\\alpha)ema2_{k-1}\\\\ &=&ema2_{k-1}+\\alpha(ema1_{k}-ema2_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(9)}\\begin{array}{lcl}ema3_{k}&=&ema(ema2_{k})\\\\ &=&\\alpha ema2_{k}+(1-\\alpha)ema3_{k-1}\\\\ &=&ema3_{k-1}+\\alpha(ema2_{k}-ema3_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(10)}\\begin{array}{lcl}ema4_{k}&=&ema(ema3_{k})\\\\ &=&\\alpha ema3_{k}+(1-\\alpha)ema4_{k-1}\\\\ &=&ema4_{k-1}+\\alpha(ema3_{k}-ema4_{k-1})\\end{array}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(11)}t2_{k}=c_1ema4_{k}+c_2ema3_{k}+c_3ema2_{k}"}}
+  </mb-kd>
+  <p></p>
+  The initial EMA values may be calculated in two different ways.
+  The first approach is to use the <a href="/{{smaNote.route}}">Simple Moving Average</a>
+  over the first
+  <mb-kd>{{"\\tag*{(12)}L=\\frac{2}{\\alpha}-1"}}</mb-kd>
+  input data values, where <mb-ki>{{"L"}}</mb-ki> is an equivalent length of the
+  smoothing parameter <mb-ki>{{"\\alpha"}}</mb-ki>. We assume <mb-ki>{{"\\alpha"}}</mb-ki>
+  to be the same for all EMAs. This approach is the most widely used one.
+  <p></p>
+  The second way to initialize the EMAs is to use the first input data point as the initial value.
+  It is used by the well known (in the past) Metastock tradind software.
+  <p></p>
+  Regardless of the initialization approach, we always consider T2 to be primed only
+  after the <mb-ki>{{"4L-3"}}</mb-ki> input data points have been fed into the indicator.
+  <p></p>
+  From the digital signal processing (DSP) point of view, T2 is a
+  infinite impulse response (IIR) filter because it is based on EMA which
+  applies exponentially decresing weighting factors to the input samples.
   <p></p>
 </div>
 
 <h2>Step response</h2>
-Two figures below demonstrate the response to the step-up and step-down data.
-The transition is clearly not linear.
-The step-up response doesn't overshoot and the step-down response doesn't undershoot the data.
-
+Two figures below demonstrate the response to the step-up and step-down data
+for indicators shown above.
+The transition is clearly not linear and you can see the overshooting and undershooting.
+<p></p>
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
   <figcaption>Step-up response.</figcaption>
@@ -67,10 +142,36 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
   <figcaption>Step-down response.</figcaption>
 </figure>
+<p></p>
+How the length and the volume factor affect the response?
+In four figures below, we compare the step-up and step-down responses
+for different lengths and volume factors.
+<p></p>
+Increasing the volume factor decreases the lag, but increases the overshooting and undershooting.
+Increasing the length increases bothe the lag and the overshooting and undershooting.
+<p></p>
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonUpCofig"></mb-ohlcv-chart>
+  <figcaption>Step-up response for different lengths and equal volume factor.</figcaption>
+</figure>
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonUpCofig"></mb-ohlcv-chart>
+  <figcaption>Step-up response for different volume factor and equal length.</figcaption>
+</figure>
+<p></p>
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonDnCofig"></mb-ohlcv-chart>
+  <figcaption>Step-down response for different lengths and equal volume factor.</figcaption>
+</figure>
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonDnCofig"></mb-ohlcv-chart>
+  <figcaption>Step-down response for different volume factor and equal length.</figcaption>
+</figure>
+<p></p>
 
 <h2>Frequency response</h2>
 <div style="width:100%">
-  The figure below shows an amplitude and a phase lag of the unit sample response of a T2EMA as a function
+  The figure below shows an amplitude and a phase lag of the unit sample response of a T2 as a function
   of a period of various signal frequencies.
   <p></p>
   A period is a duration of a cycle in samples.
@@ -79,7 +180,6 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
   We need at least two samples (peak and through) to represent a cycle.
   <p></p>
-
 </div>
 
 <figure class="figwide">
@@ -89,7 +189,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
   [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
   @if (unlocked) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
@@ -105,9 +205,7 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
       </mat-form-field>
       <app-t2ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-t2ema-list>
     </mat-expansion-panel>
-  }
-
-  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
+  }  
 </figure>
 
 <div style="width:100%">
@@ -115,33 +213,44 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
   (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
   The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
   <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki> which is the highest frequency possible in a signal.
-
+  <p></p>
+  How the length and the volume factor affect the frequency response?
+  In two figures below, we compare the amplitude and phase lag of the unit sample response
+  for different lengths and volume factors.
 </div>
 
 <figure class="figwide">
-  <!--mat-grid-list cols="2" rowHeight="260px">
-  <mat-grid-tile>
-  </mat-grid-tile>
-</mat-grid-list-->
-<mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-  [xmode]="'period'" [maxPeriod]="15" [data]="[t2ema2, t2ema5, t2ema10, t2ema20]"
-[settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-<mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-  [xmode]="'frequency'" [data]="[t2ema2, t2ema5, t2ema10, t2ema20]"
-[settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-<figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a cycle (b) for various T2EMA lengths.</figcaption>
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="140" [data]="[t2ema1l, t2ema2l, t2ema3l]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[t2ema1l, t2ema2l, t2ema3l]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'period'" [maxPeriod]="140" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1l, t2ema2l, t2ema3l]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1l, t2ema2l, t2ema3l]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude (a, b) and a phase (c, d) as a function of a period of a cycle (a, c) and as a function of a normalized frequency of a cycle (b, d) for various T2 lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
-  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'period'" [maxPeriod]="15" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema2, t2ema5, t2ema10, t2ema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema2, t2ema5, t2ema10, t2ema20]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
-  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for various T2EMA lengths.</figcaption>
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="140" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+      [xmode]="'period'" [maxPeriod]="140" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+      [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude (a, b) and a phase (c, d) as a function of a period of a cycle (a, c) and as a function of a normalized frequency of a cycle (b, d) for various T2 volume factors.</figcaption>
 </figure>
-
+  
 <p></p>
 <div style="width:100%">
 </div>
@@ -149,14 +258,29 @@ The step-up response doesn't overshoot and the step-down response doesn't unders
 <h2 class="counter-skip">References</h2>
 <div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank"></a>
-</div>
-<div><!-- @Book Mak2021 -->Mak, D. K. (2021).
-  <em>Trading Tactics in the Financial Market: Mathematical Methods to Improve Performance</em> (p. ix+269).
-  doi:10.1007/978-3-030-70622-7
-  <a href="https://books.google.com/books?id=q9Q6EAAAQBAJ" target="_blank"></a>
+  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank">google books</a>
 </div>
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank"></a>
+  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
+</div>
+<div class="citation-src"><!-- @Article mulloy1994jan -->Mulloy, P. G. (1994).
+  Smoothing Data With Faster Moving Averages. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(1), 11–19.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1994#Jan" target="_blank">traders.com</a>
+</div>
+<div class="citation-src"><!-- @Article mulloy1994feb -->Mulloy, P. G. (1994).
+  Smoothing Data With Less Lag. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>12</em>(2), 72–80.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1994#Feb" target="_blank">traders.com</a>
+</div>
+<div class="citation-src"><!-- @Article tillson1998jan -->Tillson, Tim (1998).
+  Smoothing Techniques For More Accurate Signals. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>16</em>(1), 33–37.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=1998#Jan" target="_blank">traders.com</a>
+</div>
+<div class="citation-src"><!-- @Misc tim_tillson_linkedin -->Tillson, Tim.
+  <em>Tim Tillson - Fort Collins, Colorado, United States | professional profile | linkedin</em>, accessed March 2025.
+  <a href="https://www.linkedin.com/in/timtillson/" target="_blank">linkedin.com</a>
+</div>
+<div class="citation-src"><!-- Website -->Article Archive For Patrick G. Mulloy.
+  <em>Technical Analysis of Stocks &amp; Commodities</em>.
+  <a href="https://technical.traders.com/archive/combo/display5.asp?author=Patrick%20G%20Mulloy" target="_blank">traders.com</a>
 </div>

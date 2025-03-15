@@ -18,8 +18,9 @@ import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentV
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { exponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
-import { doubleExponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
+import { simpleMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { doubleExponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
+import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { TemaLengthInput } from './tema-input.interface';
 import { Tema } from './tema.interface';
 import { TemaListComponent } from './tema-list.component';
@@ -166,6 +167,7 @@ export class TemaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected smaNote = simpleMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
   protected demaNote = doubleExponentialMovingAverageNote;
   protected temaNote = tripleExponentialMovingAverageNote;

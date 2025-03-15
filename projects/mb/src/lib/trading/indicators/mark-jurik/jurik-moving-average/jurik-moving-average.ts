@@ -13,6 +13,8 @@ export const jurikMovingAverageMnemonic = (params: JurikMovingAverageParams): st
 
 /** Jurik Moving Average line indicator. */
 export class JurikMovingAverage extends LineIndicator {
+
+
   private window: Array<number>;
   private windowLength: number;
   private windowSum: number;

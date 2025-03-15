@@ -18,7 +18,9 @@ import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentV
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { exponentialMovingAverageNote, t3ExponentialMovingAverageNote } from '../../../../notes';
+import { simpleMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { doubleExponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
+import { t2ExponentialMovingAverageNote, t3ExponentialMovingAverageNote } from '../../../../notes';
 import { T3emaLengthInput } from './t3ema-input.interface';
 import { T3ema } from './t3ema.interface';
 import { T3emaListComponent } from './t3ema-list.component';
@@ -156,7 +158,11 @@ export class T3emaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected smaNote = simpleMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
+  protected demaNote = doubleExponentialMovingAverageNote;
+  protected temaNote = tripleExponentialMovingAverageNote;
+  protected t2emaNote = t2ExponentialMovingAverageNote;
   protected t3emaNote = t3ExponentialMovingAverageNote;
   protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
@@ -170,9 +176,12 @@ export class T3emaComponent implements AfterViewInit {
   protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
   protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
-  protected t3ema2 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 2, vFactor: 0.7, firstIsAverage: false}), 4);
-  protected t3ema4 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 4, vFactor: 0.7, firstIsAverage: false}), 6);
-  protected t3ema6 = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.7, firstIsAverage: false}), 8);
+  protected t3ema1l = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 2, vFactor: 0.7, firstIsAverage: false}), 2*6);
+  protected t3ema2l = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.7, firstIsAverage: false}), 5*6);
+  protected t3ema3l = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 10, vFactor: 0.7, firstIsAverage: false}), 10*6);
+  protected t3ema1v = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.2, firstIsAverage: false}), 6*6);
+  protected t3ema2v = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.5, firstIsAverage: false}), 6*6);
+  protected t3ema3v = FrequencyResponse.calculate(sl, new T3ExponentialMovingAverage({length: 6, vFactor: 0.9, firstIsAverage: false}), 6*6);
 
   ngAfterViewInit() {
     this.initialized = true;
@@ -206,7 +215,7 @@ export class T3emaComponent implements AfterViewInit {
       if (guardLength(el.params)) {
          const p = el.params as T3ExponentialMovingAverageLengthParams;
          const frr = FrequencyResponse.calculate(sl,
-           new T3ExponentialMovingAverage({length: p.length, vFactor: p.vFactor, firstIsAverage: p.firstIsAverage}), p.length*2);
+           new T3ExponentialMovingAverage({length: p.length, vFactor: p.vFactor, firstIsAverage: p.firstIsAverage}), p.length*6);
          frrs.push(frr);
       } else {
          const p = el.params as T3ExponentialMovingAverageSmoothingFactorParams;
@@ -229,18 +238,22 @@ export class T3emaComponent implements AfterViewInit {
       return;
     }
 
-    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false);
-    this.configurationStepUp = this.prepareConfig('', this.dataStepUp, true);
-    this.configurationStepDn = this.prepareConfig('', this.dataStepDn, true);
+    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicators);
+    this.configurationStepUp = this.prepareConfig('', this.dataStepUp, true, this.indicators);
+    this.configurationStepDn = this.prepareConfig('', this.dataStepDn, true, this.indicators);
+    this.lengthComparisonUpCofig = this.prepareComparisonConfig('', this.dataStepUp, true, this.lengthComparison);
+    this.lengthComparisonDnCofig = this.prepareComparisonConfig('', this.dataStepDn, true, this.lengthComparison);
+    this.volumeFactorComparisonUpCofig = this.prepareComparisonConfig('', this.dataStepUp, true, this.volumeFactorComparison);
+    this.volumeFactorComparisonDnCofig = this.prepareComparisonConfig('', this.dataStepDn, true, this.volumeFactorComparison);
   }
 
-  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean): Configuration {
+  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean, indicators: T3ema[]): Configuration {
     const cloned = getConfigTemplate();
     cloned.menuVisible = this.unlocked;
     cloned.ohlcv.name = mnemonic;
     cloned.ohlcv.data = bars;
 
-    for (const el of this.indicators) {
+    for (const el of indicators) {
       const component = el.params.barComponent ? el.params.barComponent : BarComponent.Close;
       const indicator = new T3ExponentialMovingAverage(el.params);
       const lineData = new LineData();
@@ -252,6 +265,51 @@ export class T3emaComponent implements AfterViewInit {
       lineData.dash = s.dash;
       lineData.interpolation = s.interpolation;
       cloned.pricePane.lines.push(lineData);
+    }
+
+    return cloned;
+  }
+
+  protected lengthComparisonUpCofig!: Configuration;
+  protected lengthComparisonDnCofig!: Configuration;
+  protected volumeFactorComparisonUpCofig!: Configuration;
+  protected volumeFactorComparisonDnCofig!: Configuration;
+  private readonly lengthComparison: T3ExponentialMovingAverageLengthParams[] = [
+    {length: 2, vFactor: 0.7, firstIsAverage: false, barComponent: BarComponent.Close},
+    {length: 4, vFactor: 0.7, firstIsAverage: false, barComponent: BarComponent.Close},
+    {length: 6, vFactor: 0.7, firstIsAverage: false, barComponent: BarComponent.Close},
+  ];
+  private readonly volumeFactorComparison: T3ExponentialMovingAverageLengthParams[] = [
+    {length: 4, vFactor: 0.3, firstIsAverage: false, barComponent: BarComponent.Close},
+    {length: 4, vFactor: 0.6, firstIsAverage: false, barComponent: BarComponent.Close},
+    {length: 4, vFactor: 0.9, firstIsAverage: false, barComponent: BarComponent.Close},
+  ];
+
+  private prepareComparisonConfig(mnemonic: string, bars: Bar[], doStep: boolean, indicators: T3ExponentialMovingAverageLengthParams[]): Configuration {
+    const cloned = getConfigTemplate();
+    cloned.menuVisible = this.unlocked;
+    cloned.ohlcv.name = mnemonic;
+    cloned.ohlcv.data = bars;
+
+    const n = indicators.length > 2 ? indicators.length : 2;
+    let selectedPalette = this.palettes[this.selectedIndex];
+    if (n !== this.selectedPalette.length) {
+      const palettes = predefinedLinePalettes(n);
+      selectedPalette = palettes[this.selectedIndex];
+    }
+
+    let i = 0;
+    for (const el of indicators) {
+      const indicator = new T3ExponentialMovingAverage(el);
+      const lineData = new LineData();
+      lineData.name = indicator.getMnemonic();
+      lineData.data = doStep ? calculateStep(bars, indicator, BarComponent.Close) : calculateT3ema(bars, indicator, BarComponent.Close);
+      lineData.color = selectedPalette[i];
+      lineData.width = 1.5;
+      lineData.dash = '';
+      lineData.interpolation = 'linear';
+      cloned.pricePane.lines.push(lineData);
+      i++;
     }
 
     return cloned;
