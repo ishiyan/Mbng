@@ -61,7 +61,7 @@ export class TrimaListComponent implements AfterViewInit {
 
         for (let i = 0; i < init.length.length; i++) {
           const trima = createTrima(sid + i, init.showStyle, init.length[i], init.barComponent);
-          trima.style.color = this.colorArray[i%this.colorArray.length];    
+          trima.style.color = this.colorArray[i%this.colorArray.length];
           arr.push(trima);
         }
     
@@ -86,7 +86,7 @@ export class TrimaListComponent implements AfterViewInit {
   
         this.trimaArray = arr;
       }
-      });
+    });
   }
 
   /** Event emitted when the indicator has been removed by the user. */
@@ -101,7 +101,7 @@ export class TrimaListComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initialized = true;
-    this.changed.emit(this.trimaArray);
+    this.notify();
   }
 
   protected add(): void {
@@ -170,7 +170,7 @@ export class TrimaListComponent implements AfterViewInit {
   }
 
   private notify() {
-    if ( this.initialized) {
+    if (this.initialized) {
       this.changed.emit(this.trimaArray);
     }
   }

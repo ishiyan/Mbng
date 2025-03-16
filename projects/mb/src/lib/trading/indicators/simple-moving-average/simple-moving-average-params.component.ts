@@ -1,4 +1,4 @@
-import { Component, input, output, effect, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -23,7 +23,8 @@ import { SimpleMovingAverageParams } from './simple-moving-average-params.interf
       QuoteComponentComponent
     ]
 })
-export class SimpleMovingAverageParamsComponent implements OnInit {
+export class SimpleMovingAverageParamsComponent implements AfterContentInit {
+  private initialized = false;
 
   protected params: SimpleMovingAverageParams = {
     length: 6, barComponent: BarComponent.Close
@@ -38,7 +39,7 @@ export class SimpleMovingAverageParamsComponent implements OnInit {
     }
     this.params.length = value;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
   }
 
   protected barComponentVisible = this.params.barComponent !== undefined;
@@ -59,19 +60,26 @@ export class SimpleMovingAverageParamsComponent implements OnInit {
     });  
   }
 
-  ngOnInit() {
-    this.selectionChange.emit(this.params);
+  ngAfterContentInit() {
+    this.initialized = true;
+    this.notify();
   }
 
   protected barComponentChanged(component: BarComponent) {
     this.params.barComponent = component;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
   }
 
   protected quoteComponentChanged(component: QuoteComponent) {
     this.params.quoteComponent = component;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
+  }
+
+  private notify() {
+    if (this.initialized) {
+      this.selectionChange.emit(this.params);
+    }
   }
 }

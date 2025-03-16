@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, OnInit, output } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -23,7 +23,8 @@ import { WeightedMovingAverageParams } from './weighted-moving-average-params.in
       QuoteComponentComponent
     ]
 })
-export class WeightedMovingAverageParamsComponent implements OnInit {
+export class WeightedMovingAverageParamsComponent implements AfterContentInit {
+  private initialized = false;
 
   protected params: WeightedMovingAverageParams = {
     length: 6, barComponent: BarComponent.Close
@@ -38,7 +39,7 @@ export class WeightedMovingAverageParamsComponent implements OnInit {
     }
     this.params.length = value;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
   }
 
   protected barComponentVisible = this.params.barComponent !== undefined;
@@ -59,19 +60,26 @@ export class WeightedMovingAverageParamsComponent implements OnInit {
     });  
   }
 
-  ngOnInit() {
-    this.selectionChange.emit(this.params);
+  ngAfterContentInit() {
+    this.initialized = true;
+    this.notify();
   }
 
   protected barComponentChanged(component: BarComponent) {
     this.params.barComponent = component;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
   }
 
   protected quoteComponentChanged(component: QuoteComponent) {
     this.params.quoteComponent = component;
     this.params = { ...this.params };
-    this.selectionChange.emit(this.params);
+    this.notify();
+  }
+
+  private notify() {
+    if (this.initialized) {
+      this.selectionChange.emit(this.params);
+    }
   }
 }

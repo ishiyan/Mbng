@@ -1,4 +1,4 @@
-import { Component, input, output, effect, ChangeDetectionStrategy, AfterContentInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -60,12 +60,12 @@ export class JurikMovingAverageParamsComponent implements AfterContentInit {
 
   protected barComponentVisible = this.params.barComponent !== undefined;
   protected quoteComponentVisible = this.params.quoteComponent !== undefined;
-
-  /** Specifies an initial value. */
-  initial = input.required<JurikMovingAverageParams>();
   
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<JurikMovingAverageParams>();
+
+  /** Specifies an initial value. */
+  initial = input.required<JurikMovingAverageParams>();
 
   constructor() {
     effect(() => {
@@ -94,7 +94,7 @@ export class JurikMovingAverageParamsComponent implements AfterContentInit {
   }
 
   private notify() {
-    if ( this.initialized) {
+    if (this.initialized) {
       this.selectionChange.emit(this.params);
     }
   }

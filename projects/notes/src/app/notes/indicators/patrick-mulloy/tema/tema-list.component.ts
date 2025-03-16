@@ -80,7 +80,7 @@ export class TemaListComponent implements AfterViewInit {
           tema.style.color = this.colorArray[i%this.colorArray.length];
           arr.push(tema);
         }
-    
+
         this.temaArray = arr;
         this.defaultBarComponent = init.barComponent;
       }
@@ -97,7 +97,7 @@ export class TemaListComponent implements AfterViewInit {
           tema.style.color = this.colorArray[i%this.colorArray.length];    
           arr.push(tema);
         }
-        
+
         this.temaArray = arr;
         this.defaultBarComponent = init.barComponent;
       }
@@ -134,7 +134,7 @@ export class TemaListComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.initialized = true;
-    this.changed.emit(this.temaArray);
+    this.notify();
   }
 
   protected add(): void {
@@ -211,7 +211,7 @@ export class TemaListComponent implements AfterViewInit {
   }
 
   private notify() {
-    if ( this.initialized) {
+    if (this.initialized) {
       this.changed.emit(this.temaArray);
     }
   }

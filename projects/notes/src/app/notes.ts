@@ -32,6 +32,14 @@ export const doubleExponentialMovingAverageNote: Note = {
   tags: ['Trading', 'Indicators', 'Moving averages', 'Mulloy']
 };
 
+export const exponentialMovingAverageNote: Note = {
+  title: 'Exponential moving average',
+  summary: 'Exploring exponential moving average',
+  route: '3',
+  created: '2021-05-07',
+  tags: ['Trading', 'Indicators', 'Moving averages']
+};
+
 export const triangularMovingAverageNote: Note = {
   title: 'Triangular moving average',
   summary: 'Exploring triangular moving average',
@@ -45,14 +53,6 @@ export const weightedMovingAverageNote: Note = {
   summary: 'Exploring weighted moving average',
   route: '4',
   created: '2021-07-08',
-  tags: ['Trading', 'Indicators', 'Moving averages']
-};
-
-export const exponentialMovingAverageNote: Note = {
-  title: 'Exponential moving average',
-  summary: 'Exploring exponential moving average',
-  route: '3',
-  created: '2021-05-07',
   tags: ['Trading', 'Indicators', 'Moving averages']
 };
 
@@ -81,20 +81,20 @@ export const visualisingFinancialDataWithLinearChartNote: Note = {
 };
 
 export const notes: Note[] = [
-  {
+  /*{
     title: 'Comparing triple exponential moving average with SMA',
     summary: 'Comparing triple exponential moving average with the simple moving average',
     route: '2',
     created: '2021-12-04',
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
-  },
+  },*/
   t3ExponentialMovingAverageNote,
   t2ExponentialMovingAverageNote,
   tripleExponentialMovingAverageNote,
   doubleExponentialMovingAverageNote,
+  exponentialMovingAverageNote,
   triangularMovingAverageNote,
   weightedMovingAverageNote,
-  exponentialMovingAverageNote,
   simpleMovingAverageNote,
   frequencyResponseOfAnIndicatorNote,
   visualisingFinancialDataWithLinearChartNote

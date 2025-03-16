@@ -108,10 +108,9 @@ const getConfigTemplate = (): Configuration => ({
   ]
 })
 export class TrimaComponent implements AfterViewInit {
-
   private indicators: Trima[] = [];
   private initialized = false;
-  protected selectedIndex = 0; // 20
+  protected selectedIndex = 0;
 
   protected readonly initialIndicators: TrimaInput = {
     length: [5,10,20], barComponent: BarComponent.Median, showStyle: true
@@ -169,14 +168,12 @@ export class TrimaComponent implements AfterViewInit {
   protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
   protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
-  protected trima2 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 2}), 4);
-  protected trima3 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 3}), 6);
-  protected trima4 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 4}), 8);
-  protected trima5 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 5}), 10);
-  protected trima6 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 6}), 12);
-  protected trima7 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 7}), 14);
-  protected trima10 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 10}), 20, 1);
-  protected trima20 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 20}), 40, 1);
+  protected trima2 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 2}), 2*2);
+  protected trima3 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 3}), 3*2);
+  protected trima4 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 4}), 4*2);
+  protected trima5 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 5}), 5*2);
+  protected trima6 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 6}), 6*2);
+  protected trima7 = FrequencyResponse.calculate(sl, new TriangularMovingAverage({length: 7}), 7*2);
 
   ngAfterViewInit() {
     this.initialized = true;

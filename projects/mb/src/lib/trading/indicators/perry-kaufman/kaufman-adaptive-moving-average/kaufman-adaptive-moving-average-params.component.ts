@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, output, ChangeDetectionStrategy, input, effect } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -170,7 +170,7 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
   }
 
   private notify() {
-    if ( this.initialized) {
+    if (this.initialized) {
       if (this.useAlpha) {
         this.selectionChange.emit(this.paramsAlpha);
       } else {

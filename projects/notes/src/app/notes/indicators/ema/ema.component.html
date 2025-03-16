@@ -46,25 +46,22 @@
   historical samples, giving them the smaller and smaller weighting factors. This becomes obvious
   if we re-write equation (1) as
   <mb-kd>
-    {{"\\tag*{}ema_{k}=\\sum\\limits_{m=0}^{k}{\\alpha(1-\\alpha)^{m}x_{k-m}}"}}
+    {{"\\tag*{(2)}\\begin{array}{lcl}ema_{k}&=&\\sum\\limits_{m=0}^{k}{\\alpha(1-\\alpha)^{m}x_{k-m}}\\\\ &=&\\alpha\\sum\\limits_{m=0}^{k}{(1-\\alpha)^{m}x_{k-m}}\\end{array}"}}
   </mb-kd>
-  <mb-kd>
-    {{"\\tag*{(2)}=\\alpha\\sum\\limits_{m=0}^{k}{(1-\\alpha)^{m}x_{k-m}}"}}
-  </mb-kd>
-
+  <p></p>
   Sometimes, instead of <mb-ki>{{"\\alpha"}}</mb-ki>, it is convenient to use and equivalent length
   <mb-ki>{{"L"}}</mb-ki> of the SMA of the same smoothness,  which is related to <mb-ki>{{"\\alpha"}}</mb-ki> as
   <mb-kd>
     {{"\\tag*{(3)} L=\\frac{2}{\\alpha}-1, \\qquad \\alpha=\\frac{2}{L+1}"}}
   </mb-kd>
-
+  <p></p>
   As <mb-ki>{{"\\alpha \\rightarrow 0"}}</mb-ki>, <mb-ki>{{"L"}}</mb-ki> becomes infinite,
   as <mb-ki>{{"\\alpha \\rightarrow 1"}}</mb-ki>, <mb-ki>{{"L"}}</mb-ki> becomes one.
   The equation (2) can be written in terms of <mb-ki>{{"L"}}</mb-ki> as
   <mb-kd>
     {{"\\tag*{(4)}ema_{k}=\\frac{2}{L+1}\\sum\\limits_{m=0}^{k}{ \\left(\\frac{L-1}{L+1}\\right)^{m}x_{k-m}}"}}
   </mb-kd>
-
+  <p></p>
   From the digital signal processing (DSP) point of view, the EMA is an infinite impulse response (IIR)
   filter wich applies exponentially decresing weighting factors to the input samples.
   <p></p>
