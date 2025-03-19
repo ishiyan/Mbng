@@ -23,11 +23,17 @@ export abstract class LineIndicator implements Indicator {
   protected description!: string;
   protected primed!: boolean;
 
-  protected set barComponent(component: BarComponent) {
+  protected set barComponent(component: BarComponent | undefined) {
+    if (!component) {
+      component = BarComponent.Close;
+    }
     this.barComponentFunc = barComponentValue(component);
   }
 
-  protected set quoteComponent(component: QuoteComponent) {
+  protected set quoteComponent(component: QuoteComponent | undefined) {
+    if (!component) {
+      component = QuoteComponent.Mid;
+    }
     this.quoteComponentFunc = quoteComponentValue(component);
   }
 
