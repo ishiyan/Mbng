@@ -19,7 +19,7 @@ const cEpsilon = 1.0E-10;
 
 /** Jurik Moving Average line indicator. */
 export class JurikMovingAverage extends LineIndicator {
-  private list: Array<number> = new Array(c128);
+  private list: Array<number> = new Array(c128).fill(0);
   private ring: Array<number> = new Array(c128).fill(0);
   private ring2: Array<number> = new Array(11).fill(0);
   private buffer: Array<number> = new Array(62).fill(0);
@@ -89,13 +89,14 @@ export class JurikMovingAverage extends LineIndicator {
     let f80 = length > 1 ? (length - 1) / 2 : cEpsilon;
  
     this.f10 = phase/100 + 1.5;
+
     this.v1 = Math.log(Math.sqrt(f80));
     this.v2 = this.v1;
-    if (this.v1 / Math.log(2.0) + 2 >= 0) {
-      this.v3 = this.v2 / Math.log(2.0) + 2;
-    }
+    this.v3 = Math.max(this.v2 / Math.log(2) + 2, 0)
+
     this.f98 = this.v3;
-    this.f88 = Math.max(this.f98-2, 0.5);
+    this.f88 = Math.max(this.f98 - 2, 0.5);
+
     this.f78 = Math.sqrt(f80) * this.f98;
     this.f90 = this.f78 / (this.f78 + 1);
     f80 *= 0.9;
@@ -128,7 +129,7 @@ export class JurikMovingAverage extends LineIndicator {
 		  this.v5 = 0;
 
 		  for (let i = 1; i < c30; i++) {
-			  if (this.buffer[i+1] != this.buffer[i]) {
+			  if (this.buffer[i+1] !== this.buffer[i]) {
 				  this.v5 = 1;
 			  }
 		  }
@@ -142,12 +143,11 @@ export class JurikMovingAverage extends LineIndicator {
 	  }
 
     for (let i = this.fD8; i >= 0; i--) {
-      const f8 = i != 0 ? this.buffer[31-i] : sample;
+      const f8 = i !== 0 ? this.buffer[31-i] : sample;
       const f28 = f8 - this.f18;
       const f48 = f8 - this.f38;
       const a28 = Math.abs(f28);
       const a48 = Math.abs(f48);
-
       this.v2 = Math.max(a28, a48);
       const fA0 = this.v2;
 		  const v = fA0 + cEpsilon;
@@ -219,7 +219,7 @@ export class JurikMovingAverage extends LineIndicator {
 				  s60 += s68;
 			  }
 
-			  if (s60 == 127 && s20 > this.list[127]) {
+			  if (s60 === 127 && s20 > this.list[127]) {
 				  s60 = c128;
 			  }
 		  }
@@ -274,7 +274,7 @@ export class JurikMovingAverage extends LineIndicator {
         this.list[s60] = s20;
       }
   
-      if (this.s70 <= 127) {
+      if (this.s70 < c128) {
         this.s18 = 0;
         for (let k = this.s40; k <= this.s38; k++) {
           this.s18 += this.list[k];
