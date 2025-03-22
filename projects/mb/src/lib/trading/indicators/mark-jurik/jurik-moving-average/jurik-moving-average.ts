@@ -19,7 +19,7 @@ const cEpsilon = 1.0E-10;
 
 /** Jurik Moving Average line indicator. */
 export class JurikMovingAverage extends LineIndicator {
-  private list: Array<number> = new Array(c128).fill(0);
+  private list: Array<number> = new Array(c128);//.fill(0);
   private ring: Array<number> = new Array(c128).fill(0);
   private ring2: Array<number> = new Array(11).fill(0);
   private buffer: Array<number> = new Array(62).fill(0);
@@ -88,15 +88,12 @@ export class JurikMovingAverage extends LineIndicator {
 
     let f80 = length > 1 ? (length - 1) / 2 : cEpsilon;
  
-    this.f10 = phase/100 + 1.5;
-
+    this.f10 = phase/100 + 1.5;  
     this.v1 = Math.log(Math.sqrt(f80));
     this.v2 = this.v1;
     this.v3 = Math.max(this.v2 / Math.log(2) + 2, 0)
-
     this.f98 = this.v3;
-    this.f88 = Math.max(this.f98 - 2, 0.5);
-
+    this.f88 = Math.max(this.f98 - 2, 0.5);    
     this.f78 = Math.sqrt(f80) * this.f98;
     this.f90 = this.f78 / (this.f78 + 1);
     f80 *= 0.9;
@@ -136,7 +133,7 @@ export class JurikMovingAverage extends LineIndicator {
 
 		  this.fD8 = this.v5 * c30
       this.f38 = this.fD8 === 0 ? sample : this.buffer[1];
-		  this.f18 = this.f38
+      this.f18 = this.f38
 		  if (this.fD8 > 29) {
 			  this.fD8 = 29;
 		  }
@@ -177,7 +174,7 @@ export class JurikMovingAverage extends LineIndicator {
         const s10 = this.ring[this.s48];
         this.ring[this.s48] = s20;
         s68 = c64;
-        s58 = s68;
+        s58 = c64;
   
         while (s68 > 1) {
           if (this.list[s58] < s10) {
@@ -205,7 +202,7 @@ export class JurikMovingAverage extends LineIndicator {
       }
 
       s68 = c64;
-		  let s60 = s68;
+		  let s60 = c64;
 		  while (s68 > 1) {
 			  if (this.list[s60] >= s20) {
 				  if (this.list[s60-1] <= s20) {
@@ -306,24 +303,24 @@ export class JurikMovingAverage extends LineIndicator {
           continue
         }
   
-        let v4 = 1;
         this.fC0 = sample;
+        let v4 = 1;
   
         if (Math.ceil(this.f78) >= 1) {
           v4 = Math.ceil(this.f78);
         }
   
+        const fE8 = v4; // Math.floor(v4);
         let v2 = 1;
-        const fE8 = v4;
   
         if (Math.floor(this.f78) >= 1) {
           v2 = Math.floor(this.f78);
         }
   
+        const fE0 = v2; // Math.floor(v2);
         let f68 = 1;
-        const fE0 = v2;
   
-        if (fE8 != fE0) {
+        if (fE8 !== fE0) {
           v4 = fE8 - fE0;
           f68 = (this.f78 - fE0) / v4;
         }
@@ -334,21 +331,12 @@ export class JurikMovingAverage extends LineIndicator {
           (sample-this.buffer[this.fF0-v6]) * f68 / fE8;
       } else {
         const p = Math.pow(fA0 / f60, this.f88);
-        if (this.f98 >= p) {
-          this.v1 = p;
-        } else {
-          this.v1 = this.f98;
-        }
+        this.v1 = Math.min(this.f98, p);
   
         if (this.v1 < 1) {
-          this.v1 = 1;
+          this.v2 = 1;
         } else {
-          if (this.f98 >= p) {
-            this.v3 = p;
-          } else {
-            this.v3 = this.f98;
-          }
-  
+  				this.v3 = Math.min(this.f98, p);
           this.v2 = this.v3;
         }
   
