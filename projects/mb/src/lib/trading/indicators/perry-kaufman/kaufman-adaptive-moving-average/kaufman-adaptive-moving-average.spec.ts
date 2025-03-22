@@ -3,41 +3,14 @@ import { } from 'jasmine';
 import { KaufmanAdaptiveMovingAverage } from './kaufman-adaptive-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
-// ng test mb  --code-coverage --include='**/indicators/patrick-mulloy/double-exponential-moving-average/*.spec.ts'
+// ng test mb  --code-coverage --include='**/indicators/perry-kaufman/kaufman-adaptive-moving-average/*.spec.ts'
 
 /* eslint-disable max-len */
 // Input data is taken from the TA-Lib (http://ta-lib.org/) tests,
 //    test_data.c, TA_SREF_close_daily_ref_0_PRIV[252].
 //
-// Output data is taken from TA-Lib (http://ta-lib.org/) tests,
-//    test_ma.c.
-//
-//   /*******************************/
-//   /*  DEMA TEST - Metastock      */
-//   /*******************************/
-//
-//   /* No output value. */
-//   { 0, TA_ANY_MA_TEST, 0, 1, 1,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 0, 0, 0, 0},
-//#ifndef TA_FUNC_NO_RANGE_CHECK
-//   { 0, TA_ANY_MA_TEST, 0, 0, 251,  0, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_BAD_PARAM, 0, 0, 0, 0 },
-//#endif
-//
-//   /* Test with period 14 */
-//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  83.785, 26, 252-26 }, /* First Value */
-//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  84.768, 26, 252-26 },
-//   { 0, TA_ANY_MA_TEST, 0, 0, 251, 14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-27, 109.467, 26, 252-26 }, /* Last Value */
-//
-//   /* Test with 1 unstable price bar. Test for period 2, 14 */
-//   { 1, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   0,  93.960, 4, 252-4 }, /* First Value */
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   1,  94.522, 4, 252-4 },
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  2, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-5, 107.94, 4, 252-4 }, /* Last Value */
-//
-//   { 1, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    0,  84.91,  (13*2)+2, 252-((13*2)+2) }, /* First Value */
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    1,  84.97,  (13*2)+2, 252-((13*2)+2) },
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    2,  84.80,  (13*2)+2, 252-((13*2)+2) },
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,    3,  85.14,  (13*2)+2, 252-((13*2)+2) },
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS,   20,  89.83,  (13*2)+2, 252-((13*2)+2) },
-//   { 0, TA_ANY_MA_TEST, 1, 0, 251,  14, TA_MAType_DEMA, TA_COMPATIBILITY_METASTOCK, TA_SUCCESS, 252-((13*2)+2+1), 109.4676, (13*2)+2, 252-((13*2)+2) }, /* Last Value */
+// Expected data is taken from TA-Lib (http://ta-lib.org/) tests, test_KAMA.xsl, KAMA, J5…J256, 252 entries.
+// Efficiency ratio length is 10, fastest length is 2, slowest length is 30.
 
 const input = [
   91.500000,94.815000,94.375000,95.095000,93.780000,94.625000,92.530000,92.750000,90.315000,92.470000,96.125000,
@@ -67,109 +40,111 @@ const input = [
   109.810000,109.000000,108.750000,107.870000
 ];
 
+const expected = [
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  92.6574744421924, 92.7783471257434, 93.0592520064115, 92.9356368995325, 92.9000149644911,
+  92.8990048732289, 92.8229942018608, 92.7516051928620, 92.7414384525517, 92.6960363223993,
+  92.3934372123882, 91.9139380062599, 90.7658162726830, 90.0740111936089, 89.3620815288014,
+  87.6656280861040, 87.4895131032692, 87.4974604839614, 87.4487997113532, 87.4134797590652,
+  87.3586513546248, 87.3571985565411, 87.3428271277309, 87.4342339727455, 87.4790967331831,
+  87.4478089486627, 87.4341052772180, 87.2779545841798, 87.1866387951289, 87.0799098978843,
+  86.9861110535034, 86.9549433796085, 87.0479997922396, 87.0668566957271, 87.2090146571776,
+  87.4600776240503, 87.8014795040326, 87.8826076877600, 88.2803844203263, 88.5454141018648,
+  88.5859031486005, 88.5965040436874, 88.2719621445720, 87.8163354339468, 86.8611444903465,
+  86.6741610056912, 86.5906930013157, 86.5766752991618, 86.6296450514704, 86.6650208354184,
+  86.6783504731998, 86.6895963952268, 87.6981988794437, 88.5095835057360, 89.9508715587081,
+  90.9585930437125, 91.4794679492180, 91.5092409530174, 91.4856744284233, 91.4717808315536,
+  91.4557387469302, 91.1940009725015, 89.4266294004067, 88.8455374050859, 88.3697094609281,
+  88.5930899916723, 89.1316678888979, 90.8601116442358, 93.2091460910382, 94.0581656977510,
+  94.9201636069605, 96.8889752566530, 99.4062425239817, 101.1201449462390, 102.3769237660390,
+  102.6006738368170, 103.3003850710980, 103.6578508957870, 104.0764855627630, 106.4159093020280,
+  112.1346727325330, 113.5057358502340, 114.2548283428500, 115.0085673230990, 115.3491682211620,
+  115.4744042357010, 115.4586954188130, 115.4033778968360, 115.3819703222920, 115.4596680866820,
+  115.4927139908920, 115.5083211482970, 115.3016588863670, 115.2382416224770, 115.1532481002890,
+  115.1580191296150, 115.3257950434630, 115.3602912952500, 115.4272550190370, 115.4236654978450,
+  115.4094918992810, 115.4100431369950, 115.4265778341240, 115.7744740794160, 116.0930627623780,
+  116.3101967717570, 116.6603109196670, 117.3487018143020, 117.8153888221880, 118.4531290804430,
+  119.3499419409230, 119.8086689971510, 120.6175024210070, 122.0458817467430, 123.9704416533650,
+  125.8138480326600, 126.3738969105690, 127.6872486354350, 129.2393432164220, 131.6880947713340,
+  133.5239638088170, 135.0004207395880, 135.6288233403940, 135.7374059656390, 135.8007904215550,
+  135.7583248045180, 135.5543718432480, 135.2569852680960, 133.6204824276490, 131.3192797761920,
+  128.7932379609940, 128.4062405870340, 128.4039316032540, 128.0791656483760, 127.8414201748350,
+  127.1988985844810, 126.5381546649790, 125.6607070438540, 125.6440698902700, 125.6229493897650,
+  125.5972771029140, 125.1856884028260, 125.1156207098550, 124.9914050152240, 124.9677440635400,
+  125.0508437113440, 125.3554407671800, 125.3059272985400, 125.2940386783170, 125.2530757692210,
+  125.2419747210570, 125.1887237516160, 125.1656598262800, 125.1342643444030, 125.1261708430550,
+  125.0293527295390, 125.0082100078360, 125.1058124672220, 125.1321388339230, 125.5284397017590,
+  126.2554117345480, 126.9803557764160, 128.5646940398630, 129.8559054638140, 130.0995104273400,
+  130.5156892070650, 130.6273781337970, 130.6136632314180, 130.5821372483140, 130.5780360175850,
+  130.4619826221790, 130.2592097652620, 129.0901503140520, 128.7592330158310, 128.3218396854650,
+  127.9194919253990, 127.1326782278630, 126.7107330400510, 126.1909025410680, 125.5077119513560,
+  125.3652360592940, 125.0689417277010, 124.6785367307510, 123.1715118076970, 122.3246069304410,
+  120.4996045001390, 118.0226226271800, 116.5389084881180, 115.7700047414230, 114.4762055991300,
+  112.8691910705370, 111.7330463494810, 105.8813879559000, 103.7386265802100, 101.7705073498860,
+  100.9556429673090, 100.0740835866110, 99.5051792798608, 99.4197548401710, 99.2260466472373,
+  98.8377738185378, 98.4351675572326, 98.3887252314702, 98.0891751313173, 98.0708172638065,
+  98.0047820815841, 97.9717872707032, 97.9587393847739, 97.9160266616328, 97.8272391679346,
+  97.8109932013579, 97.7811643727499, 97.7968786191168, 98.8421055702164, 100.3972096134300,
+  101.1278312905150, 101.3486183367770, 101.7632588756100, 101.9699249107700, 102.0803180404650,
+  102.2131955779830, 102.6495717799380, 104.1660350536590, 105.9174582846280, 107.1295132390960,
+  109.3610815395210, 109.7246822740860, 109.7071337912410, 109.7068748325140, 109.6867591775540,
+  109.6319778699710, 109.6221417907160, 109.6271816752350, 109.5930223785590, 109.6314010730650,
+  109.3937985883840, 109.3445353771140, 109.3487688924230, 109.3510517081720, 109.3489501843720,
+  109.3310159853090, 109.2940150671190
+];
+
 describe('KaufmanAdaptiveMovingAverage', () => {
-  const epsilon = 10e-2;
+  const epsilon = 1e-8;
 
   it('should return expected mnemonic', () => {
-    let kama = new KaufmanAdaptiveMovingAverage({length: 7, firstIsAverage: true});
-    expect(kama.getMnemonic()).toBe('kama(7, sma)');
-    kama = new KaufmanAdaptiveMovingAverage({length: 7, firstIsAverage: false});
-    expect(kama.getMnemonic()).toBe('kama(7)');
-    kama = new KaufmanAdaptiveMovingAverage({smoothingFactor: 0.12345});
-    expect(kama.getMnemonic()).toBe('kama(0.123)');
+    let kama = new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30});
+    expect(kama.getMnemonic()).toBe('kama(10, 2, 30)');
+    kama = new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestSmoothingFactor: 2/3, slowestSmoothingFactor: 2/31});
+    expect(kama.getMnemonic()).toBe('kama(10, 0.667, 0.065)');
   });
 
-  it('should throw if length is less than 2', () => {
-    expect(() => { new KaufmanAdaptiveMovingAverage({length: 1, firstIsAverage: true}); }).toThrow();
+  it('should throw if efficiency ratio length is less than 2', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 1, fastestLength: 2, slowestLength: 30}); }).toThrow();
   });
 
-  it('should throw if smoothing factor is less or equal to 0', () => {
-    expect(() => { new KaufmanAdaptiveMovingAverage({smoothingFactor: 0}); }).toThrow();
+  it('should throw if the fastest length is less than 2', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestLength: 1, slowestLength: 30}); }).toThrow();
   });
 
-  it('should throw if smoothing factor is greater or equal to 1', () => {
-    expect(() => { new KaufmanAdaptiveMovingAverage({smoothingFactor: 1}); }).toThrow();
+  it('should throw if the slowest length is less than 2', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 1}); }).toThrow();
   });
 
-  it('should calculate expected output and prime state for length 2, first is SMA', () => {
-    const len = 2;
-    const kama = new KaufmanAdaptiveMovingAverage({length: len, firstIsAverage: true});
+  it('should throw if the fastest smoothing factor is less or equal to 0', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestSmoothingFactor: -0.01, slowestSmoothingFactor: 2/31}); }).toThrow();
+  });
 
-    for (let i = 0; i < 2*len - 1; i++) {
+  it('should throw if the fastest smoothing factor is greater or equal to 1', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestSmoothingFactor: 1.01, slowestSmoothingFactor: 2/31}); }).toThrow();
+  });
+
+  it('should throw if the slowest smoothing factor is less or equal to 0', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestSmoothingFactor: 2/3, slowestSmoothingFactor: -0.01}); }).toThrow();
+  });
+
+  it('should throw if the slowest smoothing factor is greater or equal to 1', () => {
+    expect(() => { new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestSmoothingFactor: 2/3, slowestSmoothingFactor: 1.01}); }).toThrow();
+  });
+
+  it('should calculate expected output and prime state', () => {
+    const len = 10;
+    const kama = new KaufmanAdaptiveMovingAverage({efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30});
+
+    for (let i = 0; i < len; i++) {
       expect(kama.update(input[i])).toBeNaN();
       expect(kama.isPrimed()).toBe(false);
     }
 
-    for (let i = 2*len - 1; i < input.length; i++) {
+    for (let i = len; i < input.length; i++) {
       const act = kama.update(input[i]);
       expect(kama.isPrimed()).toBe(true);
-
-      if (i === 251) {
-        expect(act).toBeCloseTo(107.94, epsilon);
-      }
-    }
-
-    expect(kama.update(Number.NaN)).toBeNaN();
-  });
-
-  it('should calculate expected output and prime state for length 14, first is SMA', () => {
-    const len = 14;
-    const kama = new KaufmanAdaptiveMovingAverage({length: len, firstIsAverage: true});
-
-    for (let i = 0; i < 2*len - 1; i++) {
-      expect(kama.update(input[i])).toBeNaN();
-      expect(kama.isPrimed()).toBe(false);
-    }
-
-    for (let i = 2*len - 1; i < input.length; i++) {
-      const act = kama.update(input[i]);
-      expect(kama.isPrimed()).toBe(true);
-
-      if (i === 251) {
-        expect(act).toBeCloseTo(109.4676, epsilon);
-      }
-    }
-
-    expect(kama.update(Number.NaN)).toBeNaN();
-  });
-
-  it('should calculate expected output and prime state for length 2, first is NOT SMA', () => {
-    const len = 2;
-    const kama = new KaufmanAdaptiveMovingAverage({length: len, firstIsAverage: false});
-
-    for (let i = 0; i < 2*len - 1; i++) {
-      expect(kama.update(input[i])).toBeNaN();
-      expect(kama.isPrimed()).toBe(false);
-    }
-
-    for (let i = 2*len - 1; i < input.length; i++) {
-      const act = kama.update(input[i]);
-      expect(kama.isPrimed()).toBe(true);
-
-      if (i === 251) {
-        expect(act).toBeCloseTo(107.94, epsilon);
-      }
-    }
-
-    expect(kama.update(Number.NaN)).toBeNaN();
-  });
-
-  it('should calculate expected output and prime state for length 14, first is NOT SMA', () => {
-    const len = 14;
-    const kama = new KaufmanAdaptiveMovingAverage({length: len, firstIsAverage: false});
-
-    for (let i = 0; i < 2*len - 1; i++) {
-      expect(kama.update(input[i])).toBeNaN();
-      expect(kama.isPrimed()).toBe(false);
-    }
-
-    for (let i = 2*len - 1; i < input.length; i++) {
-      const act = kama.update(input[i]);
-      expect(kama.isPrimed()).toBe(true);
-
-      if (i === 251) {
-        expect(act).toBeCloseTo(109.4676, epsilon);
-      }
+      expect(act).withContext(`{i}: expected {expected[i]}, actual {act}`).toBeCloseTo(expected[i], epsilon);
     }
 
     expect(kama.update(Number.NaN)).toBeNaN();

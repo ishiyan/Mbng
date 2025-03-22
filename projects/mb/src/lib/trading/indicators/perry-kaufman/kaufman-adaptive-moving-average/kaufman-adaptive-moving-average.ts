@@ -3,61 +3,59 @@ import { LineIndicator } from '../../indicator/line-indicator';
 import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-moving-average-params.interface';
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
 
-const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'length' in object;
+const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'fastestLength' in object;
 
 /** Function to calculate mnemonic of an __KaufmanAdaptiveMovingAverage__ indicator. */
 export const kaufmanAdaptiveMovingAverageMnemonic =
   (params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams): string => {
   if (guardLength(params)) {
     const p = params as KaufmanAdaptiveMovingAverageLengthParams;
-    return 'kama('.concat(Math.floor(p.length).toString(), p.firstIsAverage ? ', sma' : '',
+    return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
+      ', ', Math.floor(p.fastestLength).toString(), ', ', Math.floor(p.slowestLength).toString(),
       componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
   } else {
     const p = params as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
-    return 'kama('.concat(p.smoothingFactor.toFixed(3),
+    return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
+      ', ', p.fastestSmoothingFactor.toFixed(3), ', ', p.slowestSmoothingFactor.toFixed(3),
       componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
   }
 };
 
-// https://store.traders.com/-v12-c01-smoothi-pdf.html
-// https://store.traders.com/-v12-c02-smoothi-pdf.html
-
-/** __Kaufman Adaptive Moving Average__ (_KAMA_) line indicator computes the double exponential, or double exponentially weighted, moving average.
+/** __Kaufman Adaptive Moving Average__ (_KAMA_) is an EMA with the smoothing
+ * factor, α, being changed with each new sample within the fastest and the slowest boundaries:
  *
- * _DEMA_ has a lag less than a straight exponential moving average.
+ * KAMAᵢ = αPᵢ + (1 - α)*KAMAᵢ₋₁,  α = (αs + (αf - αs)ε)²
  *
- * The _DEMA_ was developed by _Patrick G. Mulloy_ and is described in two articles:
+ * where the αf is the α of the fastest (shortest, default 2 samples) period boundary,
+ * the αs is the α of the slowest (longest, default 30 samples) period boundary,
+ * and ε is the efficiency ratio:
  *
- * ❶ Technical Analysis of Stocks & Commodities v.12:1 (11-19), Smoothing Data With Faster Moving Averages.
+ * ε = |P - Pℓ| / ∑|Pᵢ - Pᵢ₊₁|,  i ≤ ℓ-1
  *
- * ❷ Technical Analysis of Stocks &amp; Commodities v.12:2 (72-80), Smoothing Data With Less Lag.
+ * where ℓ is a number of samples used to calculate the ε.
+ * The recommended values of ℓ are in the range of 8 to 10.
  *
- * The calculation is as follows:
+ * The efficiency ratio has the value of 1 when samples move in the same direction for
+ * the full ℓ periods, and a value of 0 when samples are unchanged over the ℓ periods.
+ * When samples move in wide swings within the interval, the sum of the denominator
+ * becomes very large compared with the numerator and the ε approaches 0.
+ * Smaller values of ε result in a smaller smoothing constant and a slower trend.
  *
- * EMA¹ᵢ = EMA(Pᵢ) = αPᵢ + (1-α)EMA¹ᵢ₋₁ = EMA¹ᵢ₋₁ + α(Pᵢ - EMA¹ᵢ₋₁), 0 < α ≤ 1
+ * The indicator is not primed during the first ℓ updates.
  *
- * EMA²ᵢ = EMA(EMA¹ᵢ) = αEMA¹ᵢ + (1-α)EMA²ᵢ₋₁ = EMA²ᵢ₋₁ + α(EMA¹ᵢ - EMA²ᵢ₋₁), 0 < α ≤ 1
- *
- * DEMAᵢ = 2EMA¹ᵢ - EMA²ᵢ
- *
- * The very first _DEMA_ value (the seed for subsequent values) is calculated differently.
- * This implementation allows for two algorithms for this seed.
- *
- * ❶ Use a simple average of the first 'period'. This is the most widely documented approach.
- *
- * ❷ Use first sample value as a seed. This is used in Metastock.
-*/
+ * Reference:
+ * Perry J. Kaufman, Smarter Trading, McGraw-Hill, Ney York, 1995, pp. 129-153.
+ */
 export class KaufmanAdaptiveMovingAverage extends LineIndicator {
-  private readonly smoothingFactor: number;
-  private readonly firstIsAverage: boolean;
-  private readonly length: number;
-  private readonly length2: number;
-  private sum1 = 0;
-  private sum2 = 0;
-  private count1 = 0;
-  private count2 = 0;
-  private value1 = 0;
-  private value2 = 0;
+  private readonly efficiencyRatioLength: number;
+  private readonly alphaFastest: number;
+  private readonly alphaSlowest: number;
+  private readonly alphaDiff: number;
+  private readonly window: Array<number>;
+  private readonly absoluteDelta: Array<number>;
+  private absoluteDeltaSum = 0;
+  private value = 0;
+  private windowCount = 0;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -67,26 +65,46 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
     let len;
     if (guardLength(params)) {
       const p = params as KaufmanAdaptiveMovingAverageLengthParams;
-      len = Math.floor(p.length);
-      if (len < 2) {
-        throw new Error('length should be greater than 1');
+
+      this.efficiencyRatioLength = Math.floor(p.efficiencyRatioLength);
+      if (this.efficiencyRatioLength < 2) {
+        throw new Error('efficiency ratio length should be greater than 1');
       }
 
-      this.length = len;
-      this.smoothingFactor = 2 / (len + 1);
-      this.firstIsAverage = p.firstIsAverage;
+      const fastestLen = Math.floor(p.fastestLength);
+      if (fastestLen < 2) {
+        throw new Error('fastest length should be greater than 1');
+      }
+
+      const slowestLen = Math.floor(p.slowestLength);
+      if (slowestLen < 2) {
+        throw new Error('slowest length should be greater than 1');
+      }
+
+      this.alphaFastest = 2 / (fastestLen + 1);
+      this.alphaSlowest = 2 / (slowestLen + 1);
     } else {
       const p = params as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
-      if (p.smoothingFactor <= 0 || p.smoothingFactor >= 1) {
-        throw new Error('smoothing factor should be in range (0, 1)');
+
+      this.efficiencyRatioLength = Math.floor(p.efficiencyRatioLength);
+      if (this.efficiencyRatioLength < 2) {
+        throw new Error('efficiency ratio length should be greater than 1');
       }
 
-      this.smoothingFactor = p.smoothingFactor;
-      this.length = Math.round(2 / this.smoothingFactor) - 1;
-      this.firstIsAverage = false;
+      this.alphaFastest = p.fastestSmoothingFactor;
+      if (p.fastestSmoothingFactor <= 0 || p.fastestSmoothingFactor >= 1) {
+        throw new Error('fastest smoothing factor should be in range (0, 1)');
+      }
+
+      this.alphaSlowest = p.slowestSmoothingFactor;
+      if (p.slowestSmoothingFactor <= 0 || p.slowestSmoothingFactor >= 1) {
+        throw new Error('slowest smoothing factor should be in range (0, 1)');
+      }
     }
 
-    this.length2 = this.length * 2;
+    this.alphaDiff = this.alphaFastest - this.alphaSlowest;
+    this.window = new Array<number>(this.efficiencyRatioLength+1);
+    this.absoluteDelta = new Array<number>(this.efficiencyRatioLength);
     this.mnemonic = kaufmanAdaptiveMovingAverageMnemonic(params);
     this.primed = false;
   }
@@ -97,47 +115,61 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
       return sample;
     }
 
+    const epsilon = 0.00000001;
+
+    let temp;
+
     if (this.primed) {
-      this.value1 += (sample - this.value1) * this.smoothingFactor;
-      this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
-      return  2 * this.value1 - this.value2;
+      temp = Math.abs(sample - this.window[this.efficiencyRatioLength]);
+      this.absoluteDeltaSum += temp - this.absoluteDelta[1];
+
+      for (let i = 0; i < this.efficiencyRatioLength; i++) {
+        const j = i + 1;
+        this.window[i] = this.window[j];
+        this.absoluteDelta[i] = this.absoluteDelta[j];
+      }
+
+      this.window[this.efficiencyRatioLength] = sample;
+      this.absoluteDelta[this.efficiencyRatioLength] = temp;
+      const delta = Math.abs(sample - this.window[0]);
+
+      if (this.absoluteDeltaSum <= delta || this.absoluteDeltaSum < epsilon) {
+        temp = 1;
+      } else {
+        temp = delta / this.absoluteDeltaSum;
+      }
+
+      temp = this.alphaSlowest + temp * this.alphaDiff;
+      this.value += (sample - this.value) * temp * temp;
+
+      return this.value;
     } else { // Not primed.
-      if (this.firstIsAverage) {
-        if (this.length > this.count1) {
-          this.sum1 += sample;
-          if (this.length === ++this.count1) {
-            this.value1 = this.sum1 / this.length;
-            this.sum2 += this.value1;
-          }
+      this.window[this.windowCount] = sample;
+
+      if (0 < this.windowCount) {
+        temp = Math.abs(sample - this.window[this.windowCount-1]);
+        this.absoluteDelta[this.windowCount] = temp;
+        this.absoluteDeltaSum += temp;
+      }
+
+      if (this.efficiencyRatioLength === this.windowCount) {
+        this.primed = true;
+        const delta = Math.abs(sample - this.window[0]);
+  
+        if (this.absoluteDeltaSum <= delta || this.absoluteDeltaSum < epsilon) {
+          temp = 1;
         } else {
-          this.value1 += (sample - this.value1) * this.smoothingFactor;
-          this.sum2 += this.value1;
-          if (this.length === ++this.count2) {
-            this.primed = true;
-            this.value2 = this.sum2 / this.length;
-            return 2 * this.value1 - this.value2;
-          }
+          temp = delta / this.absoluteDeltaSum;
         }
-      } else { // firstIsAverage is false.
-        if (this.length > this.count1) {
-          if (1 === ++this.count1) {
-            this.value1 = sample;
-          } else {
-            this.value1 += (sample - this.value1) * this.smoothingFactor;
-          }
-        } else {
-          this.value1 += (sample - this.value1) * this.smoothingFactor;
-          if (this.length === this.count1++) {
-            this.value2 = this.value1;
-          } else {
-            this.value2 += (this.value1 - this.value2) * this.smoothingFactor;
-            if (this.length2 == this.count1) {
-              this.primed = true;
-              return 2 * this.value1 - this.value2;
-            }            
-          }
-        }
-      }  
+  
+        temp = this.alphaSlowest + temp * this.alphaDiff;
+        this.value = this.window[this.efficiencyRatioLength-1];
+        this.value += (sample - this.value) * temp * temp;
+  
+        return this.value;
+      } else {
+        this.windowCount++;
+      }
     }
 
     return Number.NaN;

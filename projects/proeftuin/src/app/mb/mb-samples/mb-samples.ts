@@ -227,6 +227,16 @@ export const treeNodes: MbSample[] = [
                     ]
                   }
                 ]
+              },
+              { name: 'Perry Kaufman',
+                children: [
+                  { name: 'Kaufman Adaptive Moving Average',
+                    children: [
+                      { name: 'Params', header: 'Kaufman Adaptive Moving Average params', route: 'comp-tra-ind-perry-kaufman-kama/s1' },
+                      { name: 'Selector', header: 'Kaufman Adaptive Moving Average selector', route: 'comp-tra-ind-perry-kaufman-kama/s2' }
+                    ]
+                  }
+                ]
               }
             ]
           }

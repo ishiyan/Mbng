@@ -3,19 +3,33 @@ import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 
 /** Describes parameters to create an instance of the indicator based on length. */
 export interface KaufmanAdaptiveMovingAverageLengthParams {
-    /**
-     * Length is the length (the number of time periods, ℓ) of the moving window to calculate the average.
-     *
-     * The value should be greater than 1.
-     */
-    length: number;
+	/**
+     * Efficiency ratio length is the number of last samples used to calculate the efficiency ratio.
+	 *
+	 * The value should be greater than 1.
+	 * The default value is 10.
+    */
+	efficiencyRatioLength: number;
 
-    /**
-     * FirstIsAverage indicates whether the very first double exponential moving average value is
-     * a simple average of the first 'period' (the most widely documented approach) or
-     * the first input value (used in Metastock).
-     */
-    firstIsAverage: boolean;
+	/** Fastest length is the fastest boundary length, ℓf.
+	 * The equivalent smoothing factor αf is
+	 *
+	 *   αf = 2/(ℓf + 1), 2 ≤ ℓ
+	 *
+	 * The value should be greater than 1.
+	 * The default value is 2.
+    */
+	fastestLength: number;
+
+	/** Slowest length is the slowest boundary length, ℓs.
+	 * The equivalent smoothing factor αs is
+	 *
+	 *   αs = 2/(ℓs + 1), 2 ≤ ℓ
+	 *
+	 * The value should be greater than 1.
+	 * The default value is 30.
+    */
+	slowestLength: number;
 
     /**
      * A component of a bar to use when updating the indicator with a bar sample.
@@ -35,13 +49,30 @@ export interface KaufmanAdaptiveMovingAverageLengthParams {
 /** Describes parameters to create an instance of the indicator based on smoothing factor. */
 export interface KaufmanAdaptiveMovingAverageSmoothingFactorParams {
     /**
-     * SmoothingFactor is the smoothing factor, α in (0,1), of the exponential moving average.
-     *
-     * The equivalent length ℓ is:
-     *
-     *     ℓ = 2/α - 1, 0<α≤1, 1≤ℓ.
+     * Efficiency ratio length is the number of last samples used to calculate the efficiency ratio.
+	 *
+	 * The value should be greater than 1.
+	 * The default value is 10.
+    */
+	efficiencyRatioLength: number;
+
+	/** Fastest smoothing factor is the fastest boundary smoothing factor, αf in (0,1).
+	 * The equivalent length ℓf is
+	 *
+	 *   ℓf = 2/αf - 1, 0 < αf ≤ 1, 1 ≤ ℓf
+	 *
+	 * The default value is 2/3 (0.6666...).
      */
-    smoothingFactor: number;
+	fastestSmoothingFactor: number;
+
+	/** Slowest smoothing factor is the slowest boundary smoothing factor, αs in (0,1).
+	 * The equivalent length ℓs is
+	 *
+	 *   ℓs = 2/αs - 1, 0 < αs ≤ 1, 1 ≤ ℓs
+	 *
+	 * The default value is 2/31 (0.06451612903225806451612903225806).
+     */
+	slowestSmoothingFactor: number;
 
     /**
      * A component of a bar to use when updating the indicator with a bar sample.

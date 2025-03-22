@@ -1,17 +1,26 @@
+<mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+  <mat-label>Eff ratio len</mat-label>
+  <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="efficiencyRatioLengthParam" />
+</mat-form-field>
 @if (!useAlpha) {
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Length</mat-label>
-    <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="lengthParam" />
+    <mat-label>Fastest len</mat-label>
+    <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="fastestLengthParam" />
   </mat-form-field>
-}
-@if (!useAlpha) {
-  <mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="firstIsAverageParam">First is average</mat-slide-toggle>
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Slowest len</mat-label>
+    <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="slowestLengthParam" />
+  </mat-form-field>
 }
 <mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
 @if (useAlpha) {
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Alpha</mat-label>
-    <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="alphaParam" />
+    <mat-label>Fastest α</mat-label>
+    <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="fastestAlphaParam" />
+  </mat-form-field>
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Slowest α</mat-label>
+    <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="slowestAlphaParam" />
   </mat-form-field>
 }
 @if (barComponentVisible) {

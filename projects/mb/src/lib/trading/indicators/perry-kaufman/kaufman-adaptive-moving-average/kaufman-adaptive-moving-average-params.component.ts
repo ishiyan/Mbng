@@ -11,8 +11,7 @@ import { QuoteComponentComponent } from '../../../../data/entities/quote-compone
 import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-moving-average-params.interface';
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
 
-const firstIsAverageDefault = true;
-const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'length' in object;
+const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'fastestLength' in object;
 
 @Component({
     selector: 'mb-kaufman-adaptive-moving-average-params',
@@ -31,32 +30,70 @@ const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthP
 })
 export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;
-  private firstIsAverage = firstIsAverageDefault;
   private useAlphaInternal = false;
 
   protected paramsLength: KaufmanAdaptiveMovingAverageLengthParams = {
-    length: 6, firstIsAverage: firstIsAverageDefault, barComponent: BarComponent.Close
+    efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30, barComponent: BarComponent.Close
   };
 
   protected paramsAlpha: KaufmanAdaptiveMovingAverageSmoothingFactorParams = {
-    smoothingFactor: 0.285, barComponent: BarComponent.Close
+    efficiencyRatioLength: 10, fastestSmoothingFactor: 2./3., slowestSmoothingFactor: 2./31.,
+    barComponent: BarComponent.Close
   };
 
-  protected get lengthParam(): number {
-    return this.paramsLength.length;
+  protected get efficiencyRatioLengthParam(): number {
+    return this.paramsLength.efficiencyRatioLength;
   }
-  protected set lengthParam(value: number) {
+  protected set efficiencyRatioLengthParam(value: number) {
     if (!value || value < 2) {
       value = 2;
     }
 
-    let a  = 2 / (value + 1);
-    a = a < 0.001 ? 0.001 : a;
-    a = a > 1 ? 1 : a;
-    this.paramsAlpha.smoothingFactor = a;
-
-    this.paramsLength.length = value;
+    this.paramsLength.efficiencyRatioLength = value;
     this.paramsLength = { ...this.paramsLength };
+
+    this.paramsAlpha.efficiencyRatioLength = value;
+    this.paramsAlpha = { ...this.paramsAlpha };
+    this.notify();
+  }
+
+  protected get fastestLengthParam(): number {
+    return this.paramsLength.fastestLength;
+  }
+  protected set fastestLengthParam(value: number) {
+    if (!value || value < 2) {
+      value = 2;
+    }
+
+    let a = 2 / (value + 1);
+    a = a < 0.0001 ? 0.0001 : a;
+    a = a > 1 ? 1 : a;
+    this.paramsAlpha.fastestSmoothingFactor = a;
+    this.paramsAlpha = { ...this.paramsAlpha };
+
+    this.paramsLength.fastestLength = value;
+    this.paramsLength = { ...this.paramsLength };
+
+    this.notify();
+  }
+
+  protected get slowestLengthParam(): number {
+    return this.paramsLength.slowestLength;
+  }
+  protected set slowestLengthParam(value: number) {
+    if (!value || value < 2) {
+      value = 2;
+    }
+
+    let a = 2 / (value + 1);
+    a = a < 0.0001 ? 0.0001 : a;
+    a = a > 1 ? 1 : a;
+    this.paramsAlpha.slowestSmoothingFactor = a;
+    this.paramsAlpha = { ...this.paramsAlpha };
+
+    this.paramsLength.slowestLength = value;
+    this.paramsLength = { ...this.paramsLength };
+
     this.notify();
   }
 
@@ -79,10 +116,10 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
     }
   }
 
-  protected get alphaParam(): number {
-    return this.paramsAlpha.smoothingFactor;
+  protected get fastestAlphaParam(): number {
+    return this.paramsAlpha.fastestSmoothingFactor;
   }
-  protected set alphaParam(value: number) {
+  protected set fastestAlphaParam(value: number) {
     if (!value || value > 1) {
       value = 1;
     }
@@ -90,31 +127,29 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
     let l = 2 / value - 1;
     l = l < 2 ? 2 : l;
     l = l > 1024 ? 1024 : l;
-    this.paramsLength.length = l;
+    this.paramsLength.fastestLength = l;
 
-    this.paramsAlpha.smoothingFactor = value;
+    this.paramsAlpha.fastestSmoothingFactor = value;
     this.paramsAlpha = { ...this.paramsAlpha };
     this.notify();
   }
 
-  protected get firstIsAverageParam(): boolean {
-    return this.firstIsAverage;
+  protected get slowestAlphaParam(): number {
+    return this.paramsAlpha.slowestSmoothingFactor;
   }
-  protected set firstIsAverageParam(value: boolean) {
-    if (this.firstIsAverage === value) {
-      return;
+  protected set slowestAlphaParam(value: number) {
+    if (!value || value > 1) {
+      value = 1;
     }
 
-    this.firstIsAverage = value;
-    this.paramsLength.firstIsAverage = value;
+    let l = 2 / value - 1;
+    l = l < 2 ? 2 : l;
+    l = l > 1024 ? 1024 : l;
+    this.paramsLength.slowestLength = l;
 
-    if (this.useAlpha) {
-      this.paramsAlpha = { ...this.paramsAlpha };
-      this.notify();
-    } else {
-      this.paramsLength = { ...this.paramsLength };
-      this.notify();
-    }
+    this.paramsAlpha.slowestSmoothingFactor = value;
+    this.paramsAlpha = { ...this.paramsAlpha };
+    this.notify();
   }
 
   protected barComponent?: BarComponent;
@@ -133,11 +168,9 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
       const value = this.initial();
       if (guardLength(value)) {
         this.paramsLength = value as KaufmanAdaptiveMovingAverageLengthParams;
-        this.firstIsAverage = value.firstIsAverage;
         this.useAlpha = false;
       } else {
         this.paramsAlpha = value as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
-        this.firstIsAverage = false;
         this.useAlpha = true;
       }
   

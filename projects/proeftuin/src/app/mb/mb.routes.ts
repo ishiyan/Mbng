@@ -110,6 +110,11 @@ export const routes: Routes = [
             .then(m => m.routes)
       },
       {
+        path: 'comp-tra-ind-perry-kaufman-kama', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/sample-kaufman-adaptive-moving-average.routes')
+            .then(m => m.routes)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.routes').then(m => m.routes)
       },
