@@ -37,6 +37,8 @@ const input = [
   109.810000,109.000000,108.750000,107.870000
 ];
 
+/* eslint-disable no-loss-of-precision */
+
 /** Expected data is taken from the modified TA-L:ib (http://ta-lib.org/) test_T3.xls: test_T2.xls.
  *  Length is 5, responce is 0.7.
  */

@@ -621,16 +621,16 @@ describe('JurikMovingAverage', () => {
 
   it('should calculate expected output and prime state is output data generated using original Jurik DLL', () => {
     verify(20, -100, expectedLength20PhaseMin100, 'jma(20,-100)');
-    //verify(20, -30, expectedLength20PhaseMin30, 'jma(20,-30)');
-    //verify(20, 0, expectedLength20Phase0, 'jma(20,0)');
-    //verify(20, 30, expectedLength20Phase30, 'jma(20,30)');
-    //verify(20, 100, expectedLength20Phase100, 'jma(20,100)');
-    //verify(2, 1, expectedLength2Phase1, 'jma(2,1)');
-    //verify(5, 1, expectedLength5Phase1, 'jma(5,1)');
-    //verify(10, 1, expectedLength10Phase1, 'jma(10,1)');
-    //verify(25, 1, expectedLength25Phase1, 'jma(25,1)');
-    //verify(50, 1, expectedLength50Phase1, 'jma(50,1)');
-    //verify(75, 1, expectedLength75Phase1, 'jma(75,1)');
-    //verify(100, 1, expectedLength100Phase1, 'jma(100,1)');
+    verify(20, -30, expectedLength20PhaseMin30, 'jma(20,-30)');
+    verify(20, 0, expectedLength20Phase0, 'jma(20,0)');
+    verify(20, 30, expectedLength20Phase30, 'jma(20,30)');
+    verify(20, 100, expectedLength20Phase100, 'jma(20,100)');
+    verify(2, 1, expectedLength2Phase1, 'jma(2,1)');
+    verify(5, 1, expectedLength5Phase1, 'jma(5,1)');
+    verify(10, 1, expectedLength10Phase1, 'jma(10,1)');
+    verify(25, 1, expectedLength25Phase1, 'jma(25,1)');
+    verify(50, 1, expectedLength50Phase1, 'jma(50,1)');
+    verify(75, 1, expectedLength75Phase1, 'jma(75,1)');
+    verify(100, 1, expectedLength100Phase1, 'jma(100,1)');
   });
 });

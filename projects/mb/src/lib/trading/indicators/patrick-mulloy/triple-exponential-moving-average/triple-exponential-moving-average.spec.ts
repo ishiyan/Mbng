@@ -92,6 +92,8 @@ const inputTasc = [
   700.24, 704.70, 718.08, 718.26, 730.96, 734.07
 ];
 
+/* eslint-disable no-loss-of-precision */
+
 const expectedTasc = [
   447.7532551201420, 443.0945245466050, 439.3127472726470, 435.2518723371600, 432.2710763296830, 429.1642847834070,
   427.2327936092430, 428.0821531817640, 426.5642655329860, 419.0888204711490, 397.0552029730080, 377.5576505182240,
@@ -149,8 +151,6 @@ const expectedTasc = [
 ];
 
 describe('TripleExponentialMovingAverage', () => {
-  const epsilon = 10e-2;
-
   it('should return expected mnemonic', () => {
     let tema = new TripleExponentialMovingAverage({length: 7, firstIsAverage: true});
     expect(tema.getMnemonic()).toBe('tema(7, sma)');

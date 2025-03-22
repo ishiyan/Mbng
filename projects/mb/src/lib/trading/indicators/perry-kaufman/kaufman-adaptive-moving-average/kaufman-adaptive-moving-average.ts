@@ -62,7 +62,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
    **/
   public constructor(params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams){
     super();
-    let len;
+
     if (guardLength(params)) {
       const p = params as KaufmanAdaptiveMovingAverageLengthParams;
 
