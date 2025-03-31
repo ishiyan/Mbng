@@ -32,7 +32,7 @@ export interface HilbertTransformerCycleEstimatorParams {
 
   /** The number of updates before the estimator is primed.
    *
-   * If less than the implementation-specific primed length, it will be overriden
+   * If less than the implementation-specific primed length, it will be overridden
    * by the implementation-specific primed length.
    */
   warmUpPeriod?: number; // integer

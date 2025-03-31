@@ -237,6 +237,22 @@ export const treeNodes: MbSample[] = [
                     ]
                   }
                 ]
+              },
+              { name: 'John Ehlers',
+                children: [
+                  { name: 'Hilbert Transformer Cycle Estimator type',
+                    children: [
+                      { name: 'Selector', header: 'Hilbert Transformer Cycle Estimator type selector', route: 'comp-tra-ind-john-ehlers/htce-t/s1' }
+                    ]
+                  },
+                  { name: 'Hilbert Transformer Cycle Estimator params',
+                    children: [
+                      { name: 'Params', header: 'Kaufman Adaptive Moving Average params', route: 'comp-tra-ind-john-ehlers/htce/s1' },
+                      { name: 'Selector', header: 'Hilbert Transformer Cycle Estimator selector', route: 'comp-tra-ind-john/ehlers-htce/s2' },
+                      { name: 'Dialog', header: 'Hilbert Transformer Cycle Estimator dialog', route: 'comp-tra-ind-john-ehlers/htce/s3' }
+                    ]
+                  }
+                ]
               }
             ]
           }

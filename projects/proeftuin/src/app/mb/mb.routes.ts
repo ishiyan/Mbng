@@ -115,6 +115,11 @@ export const routes: Routes = [
             .then(m => m.routes)
       },
       {
+        path: 'comp-tra-ind-john-ehlers', loadChildren: () =>
+          import('./mb-samples/components/trading/indicators/john-ehlers/john-ehlers.routes')
+            .then(m => m.routes)
+      },
+      {
         path: 'comp-ohlcv-chart-selector', loadChildren: () =>
           import('./mb-samples/components/ohlcv-chart-selector/sample-ohlcv-chart-selector.routes').then(m => m.routes)
       },

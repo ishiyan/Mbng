@@ -1,0 +1,39 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-hilbert-transformer-cycle-estimator-type [initial]="default" (selectionChange)="selected1 = selectionChange(selected1, $event);"></mb-hilbert-transformer-cycle-estimator-type>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected1}}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With initial value</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-hilbert-transformer-cycle-estimator-type [initial]="initial" (selectionChange)="selected2 = selectionChange(selected2, $event);"></mb-hilbert-transformer-cycle-estimator-type>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected2}}
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With label</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-hilbert-transformer-cycle-estimator-type [initial]="default" [label]="'Label'" (selectionChange)="selected3 = selectionChange(selected3, $event);"></mb-hilbert-transformer-cycle-estimator-type>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: {{selected3}}
+    </mat-card-content>
+  </mat-card>
+
+</div>
