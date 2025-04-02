@@ -1,67 +1,9 @@
 ﻿import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
 import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
-
-const defaultMinPeriod = 6;
-const defaultMaxPeriod = 50;
-const htLength = 7;
-const quadratureIndex = htLength / 2;
-
-/** The default value of the WMA (linear-Weighted Moving Average) smoothing length. */
-const defaultSmoothingLength = 4;
-
-/** The default value of α (0 &lt; α ≤ 1) used in EMA to smooth the in-phase and quadrature components. */
-const defaultAlphaEmaQuadratureInPhase = 0.2;
-
-/** The default value of α (0 &lt; α ≤ 1) used in EMA to smooth the instantaneous period. */
-const defaultAlphaEmaPeriod = 0.2;
-
-/** The default value of the number of updates before the indicator is primed (MaxPeriod * 2 = 100). */
-const defaultWarmUpPeriod = defaultMaxPeriod * 2;
-
-/** Shift all elements to the right and place the new value at index zero. */
-function push(array: number[], value: number): void {
-  for (let i = array.length - 1; i > 0; i--) {
-    array[i] = array[i - 1];
-  }
-  array[0] = value;
-}
-
-function correctAmplitude(previousPeriod: number): number {
-  const a = 0.54;
-  const b = 0.075;
-  return a + b * previousPeriod;
-}
-
-function ht(array: number[]): number {
-  const a = 0.0962;
-  const b = 0.5769;
-  let value = 0;
-  value += a * array[0];
-  value += b * array[2];
-  value -= b * array[4];
-  value -= a * array[6];
-  return value;
-}
-
-function adjustPeriod(period: number, periodPrevious: number): number {
-  const minPreviousPeriodFactor = 0.67;
-  const maxPreviousPeriodFactor = 1.5;
-
-  let temp = maxPreviousPeriodFactor * periodPrevious;
-  if (period > temp) {
-    period = temp;
-  } else {
-    temp = minPreviousPeriodFactor * periodPrevious;
-    if (period < temp)
-      period = temp;
-  }
-
-  if (period < defaultMinPeriod)
-    period = defaultMinPeriod;
-  else if (period > defaultMaxPeriod)
-    period = defaultMaxPeriod;
-  return period;
-}
+import {
+  defaultMinPeriod, defaultMaxPeriod, htLength, quadratureIndex,
+  push, correctAmplitude, ht, adjustPeriod, fillWmaFactors, verifyParameters
+} from './hilbert-transformer-common';
 
 /** A Hilbert transformer of WMA-smoothed and detrended data with the Homodyne Discriminator applied.
   *
@@ -70,7 +12,7 @@ function adjustPeriod(period: number, periodPrevious: number): number {
 export class HilbertTransformerHomodyneDiscriminator implements HilbertTransformerCycleEstimator {
 
   /** The underlying linear-Weighted Moving Average (WMA) smoothing length. */
-  public readonly smoothingLength: number = defaultSmoothingLength;
+  public readonly smoothingLength: number;
 
   /** The current WMA-smoothed value used by underlying Hilbert transformer.
    * 
@@ -103,13 +45,13 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
   public readonly maxPeriod: number = defaultMaxPeriod;
 
   /** The value of α (0 < α ≤ 1) used in EMA to smooth the in-phase and quadrature components. */
-  public readonly alphaEmaQuadratureInPhase: number = defaultAlphaEmaQuadratureInPhase;
+  public readonly alphaEmaQuadratureInPhase: number;
 
   /** The value of α (0 < α ≤ 1) used in EMA to smooth the instantaneous period. */
-  public readonly alphaEmaPeriod: number = defaultAlphaEmaPeriod;
+  public readonly alphaEmaPeriod: number;
 
   /** The number of updates before the estimator is primed (MaxPeriod * 2 = 100). */
-  public readonly warmUpPeriod: number = defaultWarmUpPeriod;
+  public readonly warmUpPeriod: number;
 
   private readonly smoothingLengthPlusHtLengthMin1: number;
   private readonly smoothingLengthPlus2HtLengthMin2: number;
@@ -118,8 +60,8 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
   private readonly smoothingLengthPlus3HtLengthMin1: number;
   private readonly smoothingLengthPlus3HtLength: number;
 
-  private readonly oneMinAlphaEmaQuadratureInPhase: number = 1 - defaultAlphaEmaQuadratureInPhase;
-  private readonly oneMinAlphaEmaPeriod: number = 1 - defaultAlphaEmaPeriod;
+  private readonly oneMinAlphaEmaQuadratureInPhase: number;
+  private readonly oneMinAlphaEmaPeriod: number;
 
   private readonly rawValues: Array<number>;
   private readonly wmaFactors: Array<number>;
@@ -143,26 +85,17 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
    * Constructs an instance using given parameters.
    **/
   public constructor(params: HilbertTransformerCycleEstimatorParams) {
+    const err = verifyParameters(params);
+    if (err) {
+      throw new Error(err);
+    }
+
+    this.alphaEmaQuadratureInPhase = params.alphaEmaQuadratureInPhase;
+    this.oneMinAlphaEmaQuadratureInPhase = 1 - params.alphaEmaQuadratureInPhase;
+    this.alphaEmaPeriod = params.alphaEmaPeriod;
+    this.oneMinAlphaEmaPeriod = 1 - params.alphaEmaPeriod;
+
     const length = Math.floor(params.smoothingLength);
-    if (length < 2 || length > 4) {
-      throw new Error('smoothingLength should be in range [2, 4]');
-    }
-
-    const alphaQuad = params.alphaEmaQuadratureInPhase;
-    if (alphaQuad <= 0 || alphaQuad >= 1) {
-      throw new Error('alphaEmaQuadratureInPhase should be in range (0, 1)');
-    }
-
-    const alphaPeriod = params.alphaEmaPeriod;
-    if (alphaPeriod <= 0 || alphaPeriod >= 1) {
-      throw new Error('alphaEmaQuadratureInPhase should be in range (0, 1)');
-    }
-
-    this.alphaEmaQuadratureInPhase = alphaQuad;
-    this.oneMinAlphaEmaQuadratureInPhase = 1 - alphaQuad;
-    this.alphaEmaPeriod = alphaPeriod;
-    this.oneMinAlphaEmaPeriod = 1 - alphaPeriod;
-
     this.smoothingLength = length;
     this.smoothingLengthPlusHtLengthMin1 = length + htLength - 1;
     this.smoothingLengthPlus2HtLengthMin2 = this.smoothingLengthPlusHtLengthMin1 + htLength - 1;
@@ -172,23 +105,10 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
     this.smoothingLengthPlus3HtLength = this.smoothingLengthPlus3HtLengthMin1 + 1;
 
     this.rawValues = new Array(length).fill(0);
-
     this.wmaFactors = new Array(length);
-    if (length === 4) {
-      this.wmaFactors[0] = 4 / 10;
-      this.wmaFactors[1] = 3 / 10;
-      this.wmaFactors[2] = 2 / 10;
-      this.wmaFactors[3] = 1 / 10;
-    } else if (length === 3) {
-      this.wmaFactors[0] = 3 / 6;
-      this.wmaFactors[1] = 2 / 6;
-      this.wmaFactors[2] = 1 / 6;
-    } else { //if (length === 2)
-      this.wmaFactors[0] = 2 / 3;
-      this.wmaFactors[1] = 1 / 3;
-    }
+    fillWmaFactors(length, this.wmaFactors);
 
-    if (params.warmUpPeriod && params.warmUpPeriod < this.smoothingLengthPlus3HtLength) {
+    if (params.warmUpPeriod && params.warmUpPeriod > this.smoothingLengthPlus3HtLength) {
       this.warmUpPeriod = params.warmUpPeriod;
     } else {
       this.warmUpPeriod = this.smoothingLengthPlus3HtLength;
@@ -220,8 +140,11 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
 
     push(this.rawValues, sample);
     if (this.isPrimed) {
-      if (!this.isWarmedUp && this.warmUpPeriod < ++this.count) {
-        this.isWarmedUp = true;
+      if (!this.isWarmedUp) {
+        ++this.count;
+        if (this.warmUpPeriod < this.count) {
+          this.isWarmedUp = true;
+        }
       }
 
       // The WMA is used to remove some high-frequency components before detrending the signal.
@@ -260,8 +183,7 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
       this.imPrevious = im;
 
       const periodPrevious = this.period;
-      // const periodNew = 2 * Math.PI / Math.atan(im / re);
-      const periodNew = Math.atan2(im, re);
+      const periodNew = 2 * Math.PI / Math.atan2(im, re);
       if (!Number.isNaN(periodNew) && Number.isFinite(periodNew)) {
         this.period = periodNew;
       }
@@ -270,42 +192,41 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
 
       // Exponential moving average smoothing of the period.
       this.period = this.emaPeriod(this.period, periodPrevious);
-    } else {
-      ++this.count;
-
+    } else { // Not primed.
       // On (smoothingLength)-th sample we calculate the first WMA smoothed value and begin with the detrender.
-      if (this.smoothingLength > this.count) {
+      ++this.count;
+      if (this.smoothingLength > this.count) { // count < 4
         return;
       }
 
-      push(this.wmaSmoothed, this.wma(this.rawValues));
-      if (this.smoothingLengthPlusHtLengthMin1 > this.count) {
+      push(this.wmaSmoothed, this.wma(this.rawValues)); // count >= 4
+      if (this.smoothingLengthPlusHtLengthMin1 > this.count) { // count < 10
         return;
       }
 
-      const amplitudeCorrectionFactor = correctAmplitude(this.period);
+      const amplitudeCorrectionFactor = correctAmplitude(this.period); // count >= 10
 
       push(this.detrended, ht(this.wmaSmoothed) * amplitudeCorrectionFactor);
-      if (this.smoothingLengthPlus2HtLengthMin2 > this.count) {
+      if (this.smoothingLengthPlus2HtLengthMin2 > this.count) { // count < 16
         return;
       }
 
-      push(this.quadrature, ht(this.detrended) * amplitudeCorrectionFactor);
+      push(this.quadrature, ht(this.detrended) * amplitudeCorrectionFactor); // count >= 16
       push(this.inPhase, this.detrended[quadratureIndex]);
-      if (this.smoothingLengthPlus3HtLengthMin3 > this.count) {
+      if (this.smoothingLengthPlus3HtLengthMin3 > this.count) { // count < 22
         return;
       }
 
-      push(this.jInPhase, ht(this.inPhase) * amplitudeCorrectionFactor);
+      push(this.jInPhase, ht(this.inPhase) * amplitudeCorrectionFactor); // count >= 22
       push(this.jQuadrature, ht(this.quadrature) * amplitudeCorrectionFactor);
 
-      if (this.smoothingLengthPlus3HtLengthMin3 === this.count) {
+      if (this.smoothingLengthPlus3HtLengthMin3 === this.count) { // count == 22
         this.smoothedInPhasePrevious = this.inPhase[0] - this.jQuadrature[0];
         this.smoothedQuadraturePrevious = this.quadrature[0] + this.jInPhase[0];
         return;
       }
 
-      const smoothedInPhase = this.emaQuadratureInPhase(this.inPhase[0] - this.jQuadrature[0], this.smoothedInPhasePrevious);
+      const smoothedInPhase = this.emaQuadratureInPhase(this.inPhase[0] - this.jQuadrature[0], this.smoothedInPhasePrevious); // count >= 23
       const smoothedQuadrature = this.emaQuadratureInPhase(this.quadrature[0] + this.jInPhase[0], this.smoothedQuadraturePrevious);
 
       let re = smoothedInPhase * this.smoothedInPhasePrevious + smoothedQuadrature * this.smoothedQuadraturePrevious;
@@ -313,38 +234,28 @@ export class HilbertTransformerHomodyneDiscriminator implements HilbertTransform
       this.smoothedInPhasePrevious = smoothedInPhase;
       this.smoothedQuadraturePrevious = smoothedQuadrature;
 
-      if (this.smoothingLengthPlus3HtLengthMin2 === this.count) {
+      if (this.smoothingLengthPlus3HtLengthMin2 === this.count) { // count == 23
         this.rePrevious = re;
         this.imPrevious = im;
         return;
       }
 
-      re = this.emaQuadratureInPhase(re, this.rePrevious);
+      re = this.emaQuadratureInPhase(re, this.rePrevious); // count >= 24
       im = this.emaQuadratureInPhase(im, this.imPrevious);
       this.rePrevious = re;
       this.imPrevious = im;
 
       const periodPrevious = this.period;
-      if (this.smoothingLengthPlus3HtLengthMin1 === this.count) {
-        // const periodNew = 2 * Math.PI / Math.atan(im / re);
-        const periodNew = Math.atan2(im, re);
-        if (!Number.isNaN(periodNew) && Number.isFinite(periodNew)) {
-          this.period = periodNew;
-        }
-
-        this.period = adjustPeriod(this.period, periodPrevious);
-        return;
-      }
-
-      // const periodNew = 2 * Math.PI / Math.atan(im / re);
-      const periodNew = Math.atan2(im, re);
+      const periodNew = 2 * Math.PI / Math.atan2(im, re);
       if (!Number.isNaN(periodNew) && Number.isFinite(periodNew)) {
         this.period = periodNew;
       }
 
       this.period = adjustPeriod(this.period, periodPrevious);
-      this.period = this.emaPeriod(this.period, periodPrevious);
-      this.isPrimed = true;
+      if (this.smoothingLengthPlus3HtLengthMin1 < this.count) { // count > 24
+        this.period = this.emaPeriod(this.period, periodPrevious);
+        this.isPrimed = true;
+      }
     }
   }
 }
