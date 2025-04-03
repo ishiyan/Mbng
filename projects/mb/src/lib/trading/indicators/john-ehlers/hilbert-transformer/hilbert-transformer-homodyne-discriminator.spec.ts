@@ -407,7 +407,7 @@ it('should throw if alpha period is 0', () => {
           .toBeCloseTo(exp, epsilon);
       }
 
-      exp = expectedDetrended[i];
+      /*exp = expectedDetrended[i];
       if (Number.isNaN(exp)) {
         expect(hthd.primed).withContext(`detrended ${i} primed: expected false, actual true`)
           .toBe(false);
@@ -417,7 +417,7 @@ it('should throw if alpha period is 0', () => {
           .toBeCloseTo(exp, epsilon);
       }
 
-      /*exp = expectedQuadrature[i];
+      exp = expectedQuadrature[i];
       if (Number.isNaN(exp)) {
         expect(hthd.primed).withContext(`quadrature ${i} primed: expected false, actual true`)
           .toBe(false);
