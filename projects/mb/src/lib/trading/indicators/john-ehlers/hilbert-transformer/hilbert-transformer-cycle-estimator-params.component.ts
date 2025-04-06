@@ -85,7 +85,7 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
     this.params = { ...this.params };
     this.notify();
   }
-  
+
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<HilbertTransformerCycleEstimatorParams>();
 
@@ -96,7 +96,7 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
     effect(() => {
       const value = this.initial();
       this.params = value;
-    });  
+    });
   }
 
   ngAfterContentInit() {

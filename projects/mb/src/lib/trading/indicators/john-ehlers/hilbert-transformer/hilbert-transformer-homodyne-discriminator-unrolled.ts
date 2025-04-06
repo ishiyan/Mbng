@@ -1,7 +1,7 @@
 ﻿import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
 import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
 import { defaultMinPeriod, defaultMaxPeriod, verifyParameters } from './hilbert-transformer-common';
-  
+
 // The TA-Lib implementation uses the following lookback value with hardcoded smoothingLength=4.
 //
 // The fixed lookback is 32 and is establish as follows:
@@ -88,67 +88,67 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
   private isPrimed = false;
   private isWarmedUp = false;
 
-	// WMA smoother private members.
-	private wmaSum: number = 0;
-	private wmaSub: number = 0;
-	private wmaInput1: number = 0;
-	private wmaInput2: number = 0;
-	private wmaInput3: number = 0;
-	private wmaInput4: number = 0;
+  // WMA smoother private members.
+  private wmaSum: number = 0;
+  private wmaSub: number = 0;
+  private wmaInput1: number = 0;
+  private wmaInput2: number = 0;
+  private wmaInput3: number = 0;
+  private wmaInput4: number = 0;
 
-	// Detrender private members.
-	private detrenderOdd0: number = 0;
-	private detrenderOdd1: number = 0;
-	private detrenderOdd2: number = 0;
-	private detrenderPreviousOdd : number = 0;
-	private detrenderPreviousInputOdd : number = 0;
-	private detrenderEven0: number = 0;
-	private detrenderEven1: number = 0;
-	private detrenderEven2: number = 0;
-	private detrenderPreviousEven: number = 0;
-	private detrenderPreviousInputEven: number = 0;
+  // Detrender private members.
+  private detrenderOdd0: number = 0;
+  private detrenderOdd1: number = 0;
+  private detrenderOdd2: number = 0;
+  private detrenderPreviousOdd: number = 0;
+  private detrenderPreviousInputOdd: number = 0;
+  private detrenderEven0: number = 0;
+  private detrenderEven1: number = 0;
+  private detrenderEven2: number = 0;
+  private detrenderPreviousEven: number = 0;
+  private detrenderPreviousInputEven: number = 0;
 
-	// Quadrature (Q1) component private members.
-	private q1Odd0: number = 0;
-	private q1Odd1: number = 0;
-	private q1Odd2: number = 0;
-	private q1PreviousOdd: number = 0;
-	private q1PreviousInputOdd  : number = 0;
-	private q1Even0: number = 0;
-	private q1Even1: number = 0;
-	private q1Even2: number = 0;
-	private q1PreviousEven: number = 0;
-	private q1PreviousInputEven: number = 0;
+  // Quadrature (Q1) component private members.
+  private q1Odd0: number = 0;
+  private q1Odd1: number = 0;
+  private q1Odd2: number = 0;
+  private q1PreviousOdd: number = 0;
+  private q1PreviousInputOdd: number = 0;
+  private q1Even0: number = 0;
+  private q1Even1: number = 0;
+  private q1Even2: number = 0;
+  private q1PreviousEven: number = 0;
+  private q1PreviousInputEven: number = 0;
 
-	// InPhase (I1) private members.
-	private i1Previous1Odd: number = 0;
-	private i1Previous2Odd: number = 0;
-	private i1Previous1Even: number = 0;
-	private i1Previous2Even: number = 0;
+  // InPhase (I1) private members.
+  private i1Previous1Odd: number = 0;
+  private i1Previous2Odd: number = 0;
+  private i1Previous1Even: number = 0;
+  private i1Previous2Even: number = 0;
 
-	// jI private members
-	private jiOdd0: number = 0;
-	private jiOdd1: number = 0;
-	private jiOdd2: number = 0;
-	private jiPreviousOdd: number = 0;
-	private jiPreviousInputOdd: number = 0;
-	private jiEven0: number = 0;
-	private jiEven1: number = 0;
-	private jiEven2: number = 0;
-	private jiPreviousEven: number = 0;
-	private jiPreviousInputEven: number = 0;
+  // jI private members
+  private jiOdd0: number = 0;
+  private jiOdd1: number = 0;
+  private jiOdd2: number = 0;
+  private jiPreviousOdd: number = 0;
+  private jiPreviousInputOdd: number = 0;
+  private jiEven0: number = 0;
+  private jiEven1: number = 0;
+  private jiEven2: number = 0;
+  private jiPreviousEven: number = 0;
+  private jiPreviousInputEven: number = 0;
 
-	// jQ private members.
-	private jqOdd0: number = 0;
-	private jqOdd1: number = 0;
-	private jqOdd2: number = 0;
-	private jqPreviousOdd: number = 0;
-	private jqPreviousInputOdd: number = 0;
-	private jqEven0: number = 0;
-	private jqEven1: number = 0;
-	private jqEven2: number = 0;
-	private jqPreviousEven: number = 0;
-	private jqPreviousInputEven: number = 0;
+  // jQ private members.
+  private jqOdd0: number = 0;
+  private jqOdd1: number = 0;
+  private jqOdd2: number = 0;
+  private jqPreviousOdd: number = 0;
+  private jqPreviousInputOdd: number = 0;
+  private jqEven0: number = 0;
+  private jqEven1: number = 0;
+  private jqEven2: number = 0;
+  private jqPreviousEven: number = 0;
+  private jqPreviousInputEven: number = 0;
 
   /**
    * Constructs an instance using given parameters.
@@ -167,14 +167,14 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
     const length = Math.floor(params.smoothingLength);
     this.smoothingLength = length;
 
-    this.smoothingMultiplier = 1/3;
+    this.smoothingMultiplier = 1 / 3;
     if (length === 4) {
-      this.smoothingMultiplier = 1/10;
+      this.smoothingMultiplier = 1 / 10;
     } else if (length === 3) {
-      this.smoothingMultiplier = 1/6;
+      this.smoothingMultiplier = 1 / 6;
     }
 
-	  this.warmUpPeriod = primedCount;
+    this.warmUpPeriod = primedCount;
     if (params.warmUpPeriod && params.warmUpPeriod > primedCount) {
       this.warmUpPeriod = params.warmUpPeriod;
     }
@@ -200,26 +200,26 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
     // On (smoothingLength)-th bar we calculate the first WMA smoothed value and begin with detrender.
     do {
       if (this.smoothingLength >= ++this.count) {
-          if (1 === this.count) {
-            this.wmaSub = sample; this.wmaInput1 = sample; this.wmaSum = sample;
-          } else if (2 === this.count) {
-            this.wmaSub += sample; this.wmaInput2 = sample; this.wmaSum += sample * 2;
-              if (2 === this.smoothingLength) {
-                  val = this.wmaSum * this.smoothingMultiplier;
-                  break; // DetrendLabel
-              }
-          } else if (3 === this.count) {
-            this.wmaSub += sample; this.wmaInput3 = sample; this.wmaSum += sample * 3;
-              if (3 === this.smoothingLength) {
-                  val = this.wmaSum * this.smoothingMultiplier;
-                  break; // DetrendLabel
-              }
-          } else { //if (4 === count)
-            this.wmaSub += sample; this.wmaInput4 = sample; this.wmaSum += sample * 4;
-              val = this.wmaSum * this.smoothingMultiplier;
-              break; // DetrendLabel
+        if (1 === this.count) {
+          this.wmaSub = sample; this.wmaInput1 = sample; this.wmaSum = sample;
+        } else if (2 === this.count) {
+          this.wmaSub += sample; this.wmaInput2 = sample; this.wmaSum += sample * 2;
+          if (2 === this.smoothingLength) {
+            val = this.wmaSum * this.smoothingMultiplier;
+            break; // DetrendLabel
           }
-          return;
+        } else if (3 === this.count) {
+          this.wmaSub += sample; this.wmaInput3 = sample; this.wmaSum += sample * 3;
+          if (3 === this.smoothingLength) {
+            val = this.wmaSum * this.smoothingMultiplier;
+            break; // DetrendLabel
+          }
+        } else { //if (4 === count)
+          this.wmaSub += sample; this.wmaInput4 = sample; this.wmaSum += sample * 4;
+          val = this.wmaSum * this.smoothingMultiplier;
+          break; // DetrendLabel
+        }
+        return;
       }
 
       this.wmaSum -= this.wmaSub;
@@ -232,7 +232,7 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
       } else if (3 === this.smoothingLength) {
         this.wmaInput2 = this.wmaInput3; this.wmaInput3 = sample;
       } else { //if (2 == smoothingLength)
-        this.wmaInput2 = sample;    
+        this.wmaInput2 = sample;
       }
     } while (0);
     // DetrendLabel:
@@ -378,7 +378,7 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
     this.q2Previous = q2;
     this.i2Previous = i2;
     temp = this.period;
-    const periodNew = 2*Math.PI / Math.atan2(this.im, this.re);
+    const periodNew = 2 * Math.PI / Math.atan2(this.im, this.re);
     if (!Number.isNaN(periodNew) && Number.isFinite(periodNew)) {
       this.period = periodNew;
     }

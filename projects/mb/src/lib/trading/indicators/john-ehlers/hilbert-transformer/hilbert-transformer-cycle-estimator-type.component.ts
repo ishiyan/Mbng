@@ -12,17 +12,17 @@ interface Comp {
 }
 
 @Component({
-    selector: 'mb-hilbert-transformer-cycle-estimator-type',
-    templateUrl: './hilbert-transformer-cycle-estimator-type.component.html',
-    styleUrls: ['./hilbert-transformer-cycle-estimator-type.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      MatOption
-    ]
+  selector: 'mb-hilbert-transformer-cycle-estimator-type',
+  templateUrl: './hilbert-transformer-cycle-estimator-type.component.html',
+  styleUrls: ['./hilbert-transformer-cycle-estimator-type.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption
+  ]
 })
 export class HilbertTransformerCycleEstimatorTypeComponent implements AfterContentInit {
   private initialized = false;
@@ -56,7 +56,7 @@ export class HilbertTransformerCycleEstimatorTypeComponent implements AfterConte
       this.comps[idxOld].selected = false;
       this.comps[idxNew].selected = true;
       this.compSelected = this.comps[idxNew];
-    });  
+    });
   }
 
   ngAfterContentInit() {
