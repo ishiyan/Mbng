@@ -8,18 +8,18 @@ const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthP
 /** Function to calculate mnemonic of an __KaufmanAdaptiveMovingAverage__ indicator. */
 export const kaufmanAdaptiveMovingAverageMnemonic =
   (params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams): string => {
-  if (guardLength(params)) {
-    const p = params as KaufmanAdaptiveMovingAverageLengthParams;
-    return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
-      ', ', Math.floor(p.fastestLength).toString(), ', ', Math.floor(p.slowestLength).toString(),
-      componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
-  } else {
-    const p = params as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
-    return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
-      ', ', p.fastestSmoothingFactor.toFixed(3), ', ', p.slowestSmoothingFactor.toFixed(3),
-      componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
-  }
-};
+    if (guardLength(params)) {
+      const p = params as KaufmanAdaptiveMovingAverageLengthParams;
+      return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
+        ', ', Math.floor(p.fastestLength).toString(), ', ', Math.floor(p.slowestLength).toString(),
+        componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
+    } else {
+      const p = params as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
+      return 'kama('.concat(Math.floor(p.efficiencyRatioLength).toString(),
+        ', ', p.fastestSmoothingFactor.toFixed(3), ', ', p.slowestSmoothingFactor.toFixed(3),
+        componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
+    }
+  };
 
 /** __Kaufman Adaptive Moving Average__ (_KAMA_) is an EMA with the smoothing
  * factor, α, being changed with each new sample within the fastest and the slowest boundaries:
@@ -60,7 +60,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
    **/
-  public constructor(params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams){
+  public constructor(params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams) {
     super();
 
     if (guardLength(params)) {
@@ -103,7 +103,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
     }
 
     this.alphaDiff = this.alphaFastest - this.alphaSlowest;
-    this.window = new Array<number>(this.efficiencyRatioLength+1);
+    this.window = new Array<number>(this.efficiencyRatioLength + 1);
     this.absoluteDelta = new Array<number>(this.efficiencyRatioLength);
     this.mnemonic = kaufmanAdaptiveMovingAverageMnemonic(params);
     this.primed = false;
@@ -147,7 +147,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
       this.window[this.windowCount] = sample;
 
       if (0 < this.windowCount) {
-        temp = Math.abs(sample - this.window[this.windowCount-1]);
+        temp = Math.abs(sample - this.window[this.windowCount - 1]);
         this.absoluteDelta[this.windowCount] = temp;
         this.absoluteDeltaSum += temp;
       }
@@ -155,17 +155,17 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
       if (this.efficiencyRatioLength === this.windowCount) {
         this.primed = true;
         const delta = Math.abs(sample - this.window[0]);
-  
+
         if (this.absoluteDeltaSum <= delta || this.absoluteDeltaSum < epsilon) {
           temp = 1;
         } else {
           temp = delta / this.absoluteDeltaSum;
         }
-  
+
         temp = this.alphaSlowest + temp * this.alphaDiff;
-        this.value = this.window[this.efficiencyRatioLength-1];
+        this.value = this.window[this.efficiencyRatioLength - 1];
         this.value += (sample - this.value) * temp * temp;
-  
+
         return this.value;
       } else {
         this.windowCount++;

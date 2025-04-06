@@ -9,19 +9,19 @@ import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-ada
 import { KaufmanAdaptiveMovingAverageParamsComponent } from './kaufman-adaptive-moving-average-params.component';
 
 @Component({
-    selector: 'mb-kaufman-adaptive-moving-average-params-dialog',
-    templateUrl: './kaufman-adaptive-moving-average-params-dialog.component.html',
-    styleUrls: ['./kaufman-adaptive-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      KaufmanAdaptiveMovingAverageParamsComponent
-    ]
+  selector: 'mb-kaufman-adaptive-moving-average-params-dialog',
+  templateUrl: './kaufman-adaptive-moving-average-params-dialog.component.html',
+  styleUrls: ['./kaufman-adaptive-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    KaufmanAdaptiveMovingAverageParamsComponent
+  ]
 })
 export class KaufmanAdaptiveMovingAverageParamsDialogComponent {
   protected data = inject<KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams>(MAT_DIALOG_DATA);

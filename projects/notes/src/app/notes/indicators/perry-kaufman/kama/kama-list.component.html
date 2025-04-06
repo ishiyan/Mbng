@@ -1,0 +1,11 @@
+@for (kama of kamaArray; track kama.id) {
+  <app-kama-params [initial]="kama"
+    (changed)="updated($event);" (removed)="removed($event);">
+  </app-kama-params>
+}
+
+<div>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

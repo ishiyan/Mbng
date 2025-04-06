@@ -14,19 +14,19 @@ import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-ada
 const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'fastestLength' in object;
 
 @Component({
-    selector: 'mb-kaufman-adaptive-moving-average-params',
-    templateUrl: './kaufman-adaptive-moving-average-params.component.html',
-    styleUrls: ['./kaufman-adaptive-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatSlideToggle,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-kaufman-adaptive-moving-average-params',
+  templateUrl: './kaufman-adaptive-moving-average-params.component.html',
+  styleUrls: ['./kaufman-adaptive-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSlideToggle,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;
@@ -37,7 +37,7 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
   };
 
   protected paramsAlpha: KaufmanAdaptiveMovingAverageSmoothingFactorParams = {
-    efficiencyRatioLength: 10, fastestSmoothingFactor: 2./3., slowestSmoothingFactor: 2./31.,
+    efficiencyRatioLength: 10, fastestSmoothingFactor: 2. / 3., slowestSmoothingFactor: 2. / 31.,
     barComponent: BarComponent.Close
   };
 
@@ -173,12 +173,12 @@ export class KaufmanAdaptiveMovingAverageParamsComponent implements AfterContent
         this.paramsAlpha = value as KaufmanAdaptiveMovingAverageSmoothingFactorParams;
         this.useAlpha = true;
       }
-  
+
       this.barComponent = value.barComponent;
       this.quoteComponent = value.quoteComponent;
       this.barComponentVisible = value.barComponent !== undefined;
       this.quoteComponentVisible = value.quoteComponent !== undefined;
-    });  
+    });
   }
 
   ngAfterContentInit() {
