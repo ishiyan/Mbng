@@ -1,16 +1,25 @@
 import { Note } from './shared/note.interface';
 
+
+export const kaufmanAdaptiveMovingAverageNote: Note = {
+  title: 'Kaufman adaptive moving average',
+  summary: 'Exploring Kaufman adaptive moving average',
+  route: '10',
+  created: '2025-03-27',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Perry', 'Kaufman']
+};
+
 export const t3ExponentialMovingAverageNote: Note = {
-  title: 'T3 Exponential moving average',
-  summary: 'T3 Exploring exponential moving average',
+  title: 'T3 exponential moving average',
+  summary: 'Exploring T3 exponential moving average',
   route: '9',
   created: '2021-07-27',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Tillson']
 };
 
 export const t2ExponentialMovingAverageNote: Note = {
-  title: 'T2 Exponential moving average',
-  summary: 'T2 Exploring exponential moving average',
+  title: 'T2 exponential moving average',
+  summary: 'Exploring T2 exponential moving average',
   route: '8',
   created: '2021-07-25',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Tillson']
@@ -18,7 +27,7 @@ export const t2ExponentialMovingAverageNote: Note = {
 
 export const tripleExponentialMovingAverageNote: Note = {
   title: 'Triple exponential moving average',
-  summary: 'Triple exploring exponential moving average',
+  summary: 'Exploring triple exponential moving average',
   route: '7',
   created: '2021-07-17',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Mulloy']
@@ -26,7 +35,7 @@ export const tripleExponentialMovingAverageNote: Note = {
 
 export const doubleExponentialMovingAverageNote: Note = {
   title: 'Double exponential moving average',
-  summary: 'Double exploring exponential moving average',
+  summary: 'Exploring double exponential moving average',
   route: '6',
   created: '2021-07-15',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Mulloy']
@@ -88,6 +97,7 @@ export const notes: Note[] = [
     created: '2021-12-04',
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
   },*/
+  kaufmanAdaptiveMovingAverageNote,
   t3ExponentialMovingAverageNote,
   t2ExponentialMovingAverageNote,
   tripleExponentialMovingAverageNote,

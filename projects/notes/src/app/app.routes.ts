@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./shared/note-list/note-list.component')
     .then(m => m.NoteListComponent) },
+  { path: '10', loadComponent: () => import('./notes/indicators/perry-kaufman/kama/kama.component')
+    .then(m => m.KamaComponent) },
   { path: '9', loadComponent: () => import('./notes/indicators/tim-tillson/t3ema/t3ema.component')
     .then(m => m.T3emaComponent) },
   { path: '8', loadComponent: () => import('./notes/indicators/tim-tillson/t2ema/t2ema.component')

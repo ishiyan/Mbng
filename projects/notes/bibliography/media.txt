@@ -3,3 +3,7 @@ shannon1.webp, shannon2.webp
 
 nyquist1
 @article{Brittain_2010
+
+kaufman1.jpg
+@Misc{kaufman_bio,
+https://perrykaufman.com/wp-content/uploads/2013/12/PerryKaufman1.300.jpg

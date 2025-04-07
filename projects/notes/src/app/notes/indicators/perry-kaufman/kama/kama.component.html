@@ -1,4 +1,4 @@
-<h1>{{emaNote.title}}</h1>
+<h1>{{kamaNote.title}}</h1>
 
 <mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
   <mat-icon class="icon">tune</mat-icon>
@@ -30,13 +30,99 @@
 <p></p>
 
 <div style="width:100%">
-  A Kaufman Adaptive Moving Average (KAMA), is defined as
+  <p></p>
+  The Kaufman Adaptive Moving Average (KAMA) was introduced by Perry J. Kaufman
+  in his book <em>Smarter Trading</em> (Kaufman 1995, chapter 8, pp.129-153) and later
+  popularized in <em>Trading Systems and Methods</em> (Kaufman 2013, chapter 17, pp. 779-783)
+  and in his article in <em>Technical Analysis of Stocks &amp; Commodities</em> (Kaufman 2020, 38(11)).
+  <p></p>
+  KAMA is actually an
+  <a href="/{{emaNote.route}}">Exponential Moving Average</a> (EMA)
+  with a variable smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki>
+  being changed with each new sample within the minimum and the maximun boundaries.
   <mb-kd>
-    {{"\\tag*{(1)}kama_{k}=\\alpha x_{k} + (1-\\alpha)kama_{k-1}"}}
+    {{"\\tag*{(1)}kama_{k}=\\alpha_{k} x_{k} + (1-\\alpha_{k})kama_{k-1}"}}
   </mb-kd>
   <p></p>
+  The variable smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki> reacts quickly when the market
+  is trending strongly and smoothly, but slows down and filters out noise when the market
+  is choppy or moving sideways.
+  The value of the <mb-ki>{{"\\alpha_k"}}</mb-ki> depends on the "efficiency of price movement"
+  over a specific period, which is an input parameter of the indicator.
+  Perry Kaufman named this efficiency measure <mb-ki>{{"er_k"}}</mb-ki>,
+  the Efficiency Ratio (ER).
+  <p></p>  
+  The ER is a ratio of the absolute value of return (the net directional movement)
+  to the sum of absolute values of the individual returns (Kaufman calls this
+  "volatility or noise") over the certain "efficiency ratio period",
+  <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  <mb-kd>
+    {{"\\tag*{(2)}er_{k}=\\frac{|x_k-x_{k-\\ell_{er}}|}{\\sum_{i=1}^{\\ell_{er}-1}|x_{k-i+1}-x_{k-i}|}"}}
+  </mb-kd>
+  The ER value ranges between <mb-ki>{{"0"}}</mb-ki> and <mb-ki>{{"1"}}</mb-ki>.
+  An ER close to <mb-ki>{{"1"}}</mb-ki> indicates a highly efficient trend
+  (strong directional movement with low noise).
+  An ER close to <mb-ki>{{"0"}}</mb-ki> suggests a lot of noise relative to the
+  net price movement (sideways or choppy market).
+  <p></p>
+  Given the boundaries <mb-ki>{{"[\\alpha_{slow}, \\alpha_{fast}]"}}</mb-ki> of the
+  adaptive smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki>, Kaufman calculates
+  <mb-ki>{{"\\alpha_k"}}</mb-ki> as
+  <mb-kd>
+    {{"\\tag*{(3)}\\alpha_k=(er_{k}(\\alpha_{fast}-\\alpha_{slow})+\\alpha_{slow})^2"}}
+  </mb-kd>
+  When the ER is high, KAMA uses a larger <mb-ki>{{"\\alpha"}}</mb-ki>, making it behave
+  like a faster, more responsive moving average to follow the clear trend.
+  When the ER is low, the <mb-ki>{{"\\alpha"}}</mb-ki> is small, making KAMA behave
+  like a slower moving average, which helps to filter out the noise in choppy markets.
+  <p></p>
+  If we recall that the EMA smoothing factor <mb-ki>{{"\\alpha"}}</mb-ki>
+  can be expressed in terms of the EMA length <mb-ki>{{"\\ell"}}</mb-ki> as
+  <mb-kd>
+    {{"\\tag*{(4)}\\alpha=\\frac{2}{\\ell+1}, \\ell>1"}} 
+  </mb-kd>
+  we can specify the <mb-ki>{{"\\alpha_{slow}"}}</mb-ki> and <mb-ki>{{"\\alpha_{fast}"}}</mb-ki>
+  using the <mb-ki>{{"\\ell_{slow}"}}</mb-ki> and <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.
+  <p></p>
+  <figure class="figright">
+    <img src="assets/photos/kaufman1.jpg">
+    <figcaption>
+      Perry Kaufman began his career in the aerospace industry, working on navigation
+      and control systems for Gemini, and later transitioned his expertise to the financial world.
+      <br/>
+      Image retrieved from <a href="https://perrykaufman.com/bio/" target="_blank" rel="noopener noreferrer">perrykaufman.com</a>.
+    </figcaption>
+  </figure>
+  To summarize all this, the KAMA is calculated as follows.
+  Input parameters are:
+  <ul>
+    <li><mb-ki>{{"\\ell_{er}"}}</mb-ki> - the efficiency ratio period.
+      The default value is <mb-ki>{{"10"}}</mb-ki> samples.
+    </li>
+    <li><mb-ki>{{"\\ell_{fast}"}}</mb-ki> - the fast EMA length.
+      The default value is <mb-ki>{{"2"}}</mb-ki> samples.
+    </li>
+    <li><mb-ki>{{"\\ell_{slow}"}}</mb-ki> - the slow EMA length.
+      The default value is <mb-ki>{{"30"}}</mb-ki> samples.
+    </li>
+  </ul>
+  Given the next sample <mb-ki>{{"x_k"}}</mb-ki> and the previous KAMA value
+  <mb-ki>{{"kama_{k-1}"}}</mb-ki>,
+  <ul>
+    <li>calculate the efficiency ratio using (2),</li>
+    <li>calculate the smoothing factor using (3),</li>
+    <li>calculate the KAMA using (1).</li>
+  </ul>
+  <p></p>
+  The KAMA indicator is not primed during the first <mb-ki>{{"\\ell_{er}"}}</mb-ki> samples.
+  You can see the full implementation of the KAMA in
+  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/kaufman/adaptivemovingaverage.go" target="_blank" rel="noopener noreferrer">Golang</a>
+  and in
+  <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average.ts" target="_blank" rel="noopener noreferrer">Typescript</a>
+  on Github.
+  <p></p>
   From the digital signal processing (DSP) point of view, the KAMA is an infinite impulse response (IIR)
-  filter wich uses all previouse input samples.
+  filter since all previous input samples contribute to its value.
   <p></p>
 </div>
 
@@ -148,16 +234,19 @@
 </div>
 <hr />
 <h2 class="counter-skip">References</h2>
-<div><!-- @Book Jeffrey2008 --> Jeffrey, A., &amp; Dai, H. H. (2008).
-  <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
-  <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank">google books</a>
+<div class="citation"><!-- @Book kaufman1995smarter --> Kaufman, Perry J. (1995).
+  <em>Smarter Trading: Improving Performance in Changing Markets</em>. (p. 252). United Kingdom: McGraw-Hill.
+  <a href="https://books.google.com/books?id=ndq_21wRJjEC" target="_blank" rel="noopener noreferrer">google books</a>
 </div>
-<div><!-- @Book Mak2006 -->Mak, D. K. (2006).
-  <em>Mathematical Techniques in Financial Market Trading</em> (p. 320).
-  doi:10.1142/6055
-  <a href="https://books.google.com/books?id=18fICgAAQBAJ" target="_blank">google books</a>
+<div class="citation"><!-- @Book kaufman2013trading --> Kaufman, Perry J. (2013).
+  <em>Trading Systems and Methods, + Website</em>. (5th ed., p. 1232). United Kingdom: Wiley.
+  <a href="https://books.google.com/books?id=4842MXNn5o4C" target="_blank" rel="noopener noreferrer">google books</a>
 </div>
-<div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
-  <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
-  <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
+<div class="citation"><!-- @Article kaufman2020nov -->Kaufman, Perry J. (2020).
+  Comparing Two Adaptive Trends. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>38</em>(11), 20–24.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=2020#Nov" target="_blank" rel="noopener noreferrer">traders.com</a>
+</div>
+<div class="citation"><!-- @misc{kaufman_bio -->Kaufman, Perry J. (2025).
+  <em>Perry Kaufman's Bio</em>. Retrieved March 10, 2025, from
+  <a href="https://perrykaufman.com/bio/" target="_blank" rel="noopener noreferrer">https://perrykaufman.com/bio/</a>
 </div>

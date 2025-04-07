@@ -18,7 +18,8 @@ import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentV
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { simpleMovingAverageNote, exponentialMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../../notes';
+import { kaufmanAdaptiveMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { KamaLengthInput } from './kama-input.interface';
 import { Kama } from './kama.interface';
 import { KamaListComponent } from './kama-list.component';
@@ -158,7 +159,7 @@ export class KamaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.efficiencyRatioLength.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
-  protected smaNote = simpleMovingAverageNote;
+  protected kamaNote = kaufmanAdaptiveMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
