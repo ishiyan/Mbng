@@ -114,8 +114,71 @@ export class KamaComponent implements AfterViewInit {
 
   private indicators: Kama[] = [];
   private initialized = false;
-  protected selectedIndex = 0; // 20
+  protected selectedIndex = 0;
 
+  private readonly indicatorsEr: Kama[] = [
+    {
+      id: 551,
+      params: { efficiencyRatioLength: 5, fastestLength: 2, slowestLength: 30},
+      style: { color: 'red', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 552,
+      params: { efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30},
+      style: { color: 'green', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 553,
+      params: { efficiencyRatioLength: 15, fastestLength: 2, slowestLength: 30},
+      style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    }
+  ];
+
+  private readonly indicatorsFast: Kama[] = [
+    {
+      id: 561,
+      params: { efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30},
+      style: { color: 'red', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 562,
+      params: { efficiencyRatioLength: 10, fastestLength: 5, slowestLength: 30},
+      style: { color: 'green', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 563,
+      params: { efficiencyRatioLength: 10, fastestLength: 8, slowestLength: 30},
+      style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    }
+  ];
+
+  private readonly indicatorsSlow: Kama[] = [
+    {
+      id: 571,
+      params: { efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 10},
+      style: { color: 'red', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 572,
+      params: { efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30},
+      style: { color: 'green', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 573,
+      params: { efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 300},
+      style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    }
+  ];
+  
   protected readonly initialIndicators: KamaLengthInput = {
     efficiencyRatioLength: [5,10,20], fastestLength: 2, slowestLength: 30,
     barComponent: BarComponent.Median, showStyle: true
@@ -169,20 +232,42 @@ export class KamaComponent implements AfterViewInit {
   protected freqsHeight = 300;
   protected unlocked = true;
 
-  protected configurationStepUp!: Configuration;
-  protected configurationStepDn!: Configuration;
+  protected configurationParamsEr!: Configuration;
+  protected configurationParamsFast!: Configuration;
+  protected configurationParamsSlow!: Configuration;
+
+  protected configurationStepUpEr!: Configuration;
+  protected configurationStepDnEr!: Configuration;
+  protected configurationStepUpFast!: Configuration;
+  protected configurationStepDnFast!: Configuration;
   protected dataStepUp = generateStep(stepMin, stepCount, stepMax, stepCount * 3, stepSpread);
   protected dataStepDn = generateStep(stepMax, stepCount, stepMin, stepCount * 3, stepSpread);
 
-  protected kama2 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+  protected kamaEr2 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
     efficiencyRatioLength: 2, fastestLength: 2, slowestLength: 30}), 4);
-  protected kama5 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+  protected kamaEr5 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
     efficiencyRatioLength: 5, fastestLength: 2, slowestLength: 30}), 10);
-  protected kama10 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+  protected kamaEr10 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
     efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30}), 20);
-  protected kama20 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+  protected kamaEr20 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
     efficiencyRatioLength: 20, fastestLength: 2, slowestLength: 30}), 40);
 
+  protected kamaFast2 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30}), 10*2);
+  protected kamaFast3 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 3, slowestLength: 30}), 10*2);
+  protected kamaFast5 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 5, slowestLength: 30}), 10*2);
+  protected kamaFast10 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 10, slowestLength: 30}), 10*2);
+
+  protected kamaSlow10 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 10}), 10*2);
+  protected kamaSlow30 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30}), 10*2);
+  protected kamaSlow300 = FrequencyResponse.calculate(sl, new KaufmanAdaptiveMovingAverage({
+    efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 300}), 10*2);
+    
   ngAfterViewInit() {
     this.initialized = true;
     this.unlocked = isUnlocked;
@@ -195,7 +280,7 @@ export class KamaComponent implements AfterViewInit {
   }
 
   protected indicatorsChanged(arr: Kama[]) {
-    const n = arr.length > 2 ? arr.length : 2;
+    const n = arr.length > 3 ? arr.length : 3;
     if (n !== this.selectedPalette.length) {
       this.palettes = predefinedLinePalettes(n);
       if (this.selectedIndex >= n) {
@@ -243,18 +328,26 @@ export class KamaComponent implements AfterViewInit {
       return;
     }
 
-    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false);
-    this.configurationStepUp = this.prepareConfig('', this.dataStepUp, true);
-    this.configurationStepDn = this.prepareConfig('', this.dataStepDn, true);
+    this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicators);
+    this.fixColors(this.indicatorsEr);
+    this.fixColors(this.indicatorsFast);
+    this.fixColors(this.indicatorsSlow);
+    this.configurationParamsEr = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsEr);
+    this.configurationParamsFast = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsFast);
+    this.configurationParamsSlow = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsSlow);
+    this.configurationStepUpEr = this.prepareConfig('', this.dataStepUp, true, this.indicatorsEr);
+    this.configurationStepDnEr = this.prepareConfig('', this.dataStepDn, true, this.indicatorsEr);
+    this.configurationStepUpFast = this.prepareConfig('', this.dataStepUp, true, this.indicatorsFast);
+    this.configurationStepDnFast = this.prepareConfig('', this.dataStepDn, true, this.indicatorsFast);
   }
 
-  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean): Configuration {
+  private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean, indicators: Kama[]): Configuration {
     const cloned = getConfigTemplate();
     cloned.menuVisible = this.unlocked;
     cloned.ohlcv.name = mnemonic;
     cloned.ohlcv.data = bars;
 
-    for (const el of this.indicators) {
+    for (const el of indicators) {
       const component = el.params.barComponent ? el.params.barComponent : BarComponent.Close;
       const indicator = new KaufmanAdaptiveMovingAverage(el.params);
       const lineData = new LineData();
@@ -269,5 +362,17 @@ export class KamaComponent implements AfterViewInit {
     }
 
     return cloned;
+  }
+
+  private fixColors(indicators: Kama[]): void {
+    const lenPal = this.selectedPalette.length;
+    const lenInd = indicators.length;
+    const len = Math.min( lenPal, lenInd);
+    for (let i = 0; i < len; i++) {
+      const el = indicators[i];
+      const s = el.style;
+      s.color = this.selectedPalette[i];
+      el.style = s;
+    }
   }
 }
