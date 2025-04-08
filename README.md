@@ -67,11 +67,11 @@ No text: Visualising financial data with linear chart
 
 ```text
 g x x jmark-urik/JurikMovingAverage
-x x x perry-kaufman/KaufmanAdaptiveMovingAverage
-x n l tim-tillson/T2ExponentialMovingAverage        (note text describes WMA, incorrect charts)
-x n l tim-tillson/T3ExponentialMovingAverage        (note text describes WMA, incorrect charts)
-x N l patrick-mullow/DoubleExponentialMovingAverage (note looks good)
-x n l patrick-mullow/TripleExponentialMovingAverage (note text describes WMA)
+g N l perry-kaufman/KaufmanAdaptiveMovingAverage    (looks good)
+g N l tim-tillson/T2ExponentialMovingAverage        (looks good)
+g N l tim-tillson/T3ExponentialMovingAverage        (looks good)
+g N l patrick-mullow/DoubleExponentialMovingAverage (looks good)
+g N l patrick-mullow/TripleExponentialMovingAverage (looks good)
 ```
 
 ## SSR
