@@ -1,5 +1,12 @@
 import { Note } from './shared/note.interface';
 
+export const jurikMovingAverageNote: Note = {
+  title: 'Jurik moving average',
+  summary: 'Exploring Jurik moving average',
+  route: '11',
+  created: '2025-04-10',
+  tags: ['Trading', 'Indicators', 'Moving averages', 'Mark', 'Jurik']
+};
 
 export const kaufmanAdaptiveMovingAverageNote: Note = {
   title: 'Kaufman adaptive moving average',

@@ -1,0 +1,251 @@
+<h1>{{jmaNote.title}}</h1>
+
+<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
+  <mat-icon class="icon">tune</mat-icon>
+</mat-slide-toggle>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)">
+</app-bar-series-select>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+    </mb-swatches-select>
+    <app-jma-list [initial]="initialIndicators" [colors]="selectedPalette"
+      (changed)="indicatorsChanged($event);">
+    </app-jma-list>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+    }
+  </figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  <p></p>
+  The Jurik Moving Average (JMA) was introduced by Mark Jurik.
+  <mb-kd>
+    {{"\\tag*{(1)}\\alpha=\\frac{2}{\\ell+1}, \\ell>1"}}
+  </mb-kd>
+  <p></p>
+  <figure class="figright">
+    <img src="assets/photos/jurik.png">
+    <figcaption>
+      Mark Jurik.
+      <a href="http://jurikres.com/about/company.htm" target="_blank"
+        rel="noopener noreferrer">jurikres.com</a>.
+    </figcaption>
+  </figure>
+  <p></p>
+  <p></p>
+  The JMA indicator is not primed during the first <mb-ki>{{"30"}}</mb-ki> samples.
+  You can see the full implementation of the JMA in
+  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/jurik/movingaverage.go" target="_blank"
+    rel="noopener noreferrer">Golang</a>
+  and in
+  <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/mark-jurik/jurik-moving-average/jurik-moving-average.ts"
+    target="_blank" rel="noopener noreferrer">Typescript</a>
+  on Github.
+  <p></p>
+  From the digital signal processing (DSP) point of view, the JMA is an infinite impulse response (IIR)
+  filter since all previous input samples contribute to its value.
+  <p></p>
+</div>
+
+<h2>Changing parameters</h2>
+<div style="width:100%">
+  The influence of the parameters on the smoothiness and the responsiveness of the JMA
+  is demonstrated on the two following figures.
+  <p></p>
+  The first figure shows different lengths <mb-ki>{{"\\ell"}}</mb-ki> leaving
+  the phase to be default value.
+  <p></p>
+  The second figure shows different phases <mb-ki>{{"\\phi"}}</mb-ki> leaving
+  the length to be default value.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLe"></mb-ohlcv-chart>
+  <figcaption>Varying the length.
+  </figcaption>
+</figure>
+<p></p>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsPh"></mb-ohlcv-chart>
+  <figcaption>Varying the phase.
+  </figcaption>
+</figure>
+<p></p>
+<p></p>
+
+<h2>Step response</h2>
+<div style="width:100%">
+  <p></p>
+  The step responses are.
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLe"></mb-ohlcv-chart>
+    <figcaption>Step-up response dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnLe"></mb-ohlcv-chart>
+    <figcaption>Step-down response dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpPh"></mb-ohlcv-chart>
+    <figcaption>Step-up response dependency on <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnPh"></mb-ohlcv-chart>
+    <figcaption>Step-down response dependency on <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+</div>
+
+<h2>Frequency response</h2>
+<div style="width:100%">
+  The figures below show an amplitude and a phase lag of the unit sample response of the JMA as a function
+  of a period of various signal frequencies.
+  We cannot derive its frequency response analytically because of the unknown algorythm of the JMA.
+  <p></p>
+  A period is a duration of a cycle in samples.
+  The smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
+  To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
+  continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
+  We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-150" [maxDeg]="150" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="fill">
+      <mat-label>Max period to display</mat-label>
+      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Height</mat-label>
+      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+    </mat-form-field>
+    <app-jma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-jma-list>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
+  The following charts show the frequency responses of the JMA with different lengths
+  <mb-ki>{{"\\ell}"}}</mb-ki>.
+  The phase parameter is set to default value.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various JMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various JMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The following charts show the frequency responses of the JMA with different phases
+  <mb-ki>{{"\\phi"}}</mb-ki>.
+  The length parameter are set to default value.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+</div>
+<hr />
+<h2 class="counter-skip">References</h2>
+<div class="citation"><!-- @Book kaufman1995smarter --> Kaufman, Perry J. (1995).
+  <em>Smarter Trading: Improving Performance in Changing Markets</em>. (p. 252). United Kingdom: McGraw-Hill.
+  <a href="https://books.google.com/books?id=ndq_21wRJjEC" target="_blank" rel="noopener noreferrer">google books</a>
+</div>
+<div class="citation"><!-- @Book kaufman2013trading --> Kaufman, Perry J. (2013).
+  <em>Trading Systems and Methods, + Website</em>. (5th ed., p. 1232). United Kingdom: Wiley.
+  <a href="https://books.google.com/books?id=4842MXNn5o4C" target="_blank" rel="noopener noreferrer">google books</a>
+</div>
+<div class="citation"><!-- @Article kaufman2020nov -->Kaufman, Perry J. (2020).
+  Comparing Two Adaptive Trends. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>38</em>(11), 20–24.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=2020#Nov" target="_blank"
+    rel="noopener noreferrer">traders.com</a>
+</div>
+<div class="citation"><!-- @misc{kaufman_bio -->Kaufman, Perry J. (2025).
+  <em>Perry Kaufman's Bio</em>. Retrieved March 10, 2025, from
+  <a href="https://perrykaufman.com/bio/" target="_blank" rel="noopener noreferrer">https://perrykaufman.com/bio/</a>
+</div>

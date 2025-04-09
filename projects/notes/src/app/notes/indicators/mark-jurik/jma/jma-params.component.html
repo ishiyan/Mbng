@@ -1,0 +1,11 @@
+<div>
+  <button mat-icon-button color="warn" (click)="remove()">
+    <mat-icon>delete</mat-icon>
+  </button>
+  <mb-jurik-moving-average-params [initial]="current.params" (selectionChange)="updateParams($event);">
+  </mb-jurik-moving-average-params>
+  @if (current.showStyle) {
+    <mb-line-style-selector [initial]="current.style" [label]="'Line'" (selectionChange)="updateStyle($event);">
+    </mb-line-style-selector>
+  }
+</div>
