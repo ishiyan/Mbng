@@ -4,7 +4,6 @@ import { MatMiniFabButton } from '@angular/material/button';
 
 import { BarComponent } from 'mb';
 import { LineStyle } from 'mb';
-import { JurikMovingAverageParams } from 'mb';
 
 import { JmaInput } from './jma-input.interface';
 import { Jma } from './jma.interface';
@@ -67,7 +66,7 @@ export class JmaListComponent implements AfterViewInit {
         const arr: Jma[] = [];
 
         for (let i = 0; i < init.length.length; i++) {
-          for (let j = 0; i < init.phase.length; j++) {
+          for (let j = 0; j < init.phase.length; j++) {
             const jma = createJma(sid + i, init.showStyle,
               init.length[i], init.phase[j], init.barComponent);
             jma.style.color = this.colorArray[i%this.colorArray.length];

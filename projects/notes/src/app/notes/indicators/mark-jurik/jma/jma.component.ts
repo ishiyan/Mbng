@@ -44,7 +44,7 @@ const calculateJma = (bars: Bar[], jma: JurikMovingAverage, barComponent: BarCom
 const calculateStep = (bars: Bar[], jma: JurikMovingAverage, barComponent: BarComponent): Scalar[]  => {
   const f = barComponentValue(barComponent);
   const val = f(bars[0]);
-  while (!jma.isPrimed) {
+  for (let i = 1; i < 2*30; i++) {
     jma.update(val);
   }
 
@@ -123,13 +123,13 @@ export class JmaComponent implements AfterViewInit {
     },
     {
       id: 552,
-      params: { length: 10, phase: 0},
+      params: { length: 20, phase: 0},
       style: { color: 'green', width: 1, dash: 'solid', interpolation: 'linear' },
       showStyle: true
     },
     {
       id: 553,
-      params: { length: 15, phase: 0},
+      params: { length: 40, phase: 0},
       style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
       showStyle: true
     }
@@ -138,7 +138,7 @@ export class JmaComponent implements AfterViewInit {
   private readonly indicatorsPh: Jma[] = [
     {
       id: 561,
-      params: { length: 10, phase: -50},
+      params: { length: 10, phase: -100},
       style: { color: 'red', width: 1, dash: 'solid', interpolation: 'linear' },
       showStyle: true
     },
@@ -150,19 +150,19 @@ export class JmaComponent implements AfterViewInit {
     },
     {
       id: 563,
-      params: { length: 10, phase: 50},
+      params: { length: 10, phase: 100},
       style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
       showStyle: true
     }
   ];
   
   protected readonly initialIndicators: JmaInput = {
-    length: [5,10,20], phase: [0],
+    length: [5,20,40], phase: [0],
     barComponent: BarComponent.Median, showStyle: true
   };
 
   protected readonly initialFreqs: JmaInput = {
-    length: [5,10,20], phase: [0],
+    length: [5,20,40], phase: [0],
     showStyle: false
   };
 
@@ -220,13 +220,15 @@ export class JmaComponent implements AfterViewInit {
 
   protected jmaLe2 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 2, phase: 0}), 2*30);
   protected jmaLe5 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 5, phase: 0}), 2*30);
-  protected jmaLe10 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 20}), 2*30);
+  protected jmaLe10 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 0}), 2*30);
   protected jmaLe20 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 20, phase: 0}), 2*30);
+  protected jmaLe40 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 40, phase: 0}), 2*30);
 
+  protected jmaPhMin100 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: -100}), 2*30);
   protected jmaPhMin50 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: -50}), 2*30);
   protected jmaPh0 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 0}), 2*30);
-  protected jmaPh10 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 10}), 2*30);
   protected jmaPh50 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 50}), 2*30);
+  protected jmaPh100 = FrequencyResponse.calculate(sl, new JurikMovingAverage({ length: 10, phase: 100}), 2*30);
     
   ngAfterViewInit() {
     this.initialized = true;

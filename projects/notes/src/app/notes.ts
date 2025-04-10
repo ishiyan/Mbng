@@ -104,6 +104,7 @@ export const notes: Note[] = [
     created: '2021-12-04',
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
   },*/
+  jurikMovingAverageNote,
   kaufmanAdaptiveMovingAverageNote,
   t3ExponentialMovingAverageNote,
   t2ExponentialMovingAverageNote,

@@ -32,7 +32,33 @@
 
 <div style="width:100%">
   <p></p>
-  The Jurik Moving Average (JMA) was introduced by Mark Jurik.
+  The Jurik Moving Average (JMA) is one of the proprietary indicators developed by Mark Jurik.
+  His company <a href="http://jurikres.com/" target="_blank" rel="noopener noreferrer">Jurik Research</a>
+  was founded in 1988, applying signal processing techniques originally intended for military
+  projects to the financial arena. Now, the company is "winded down" and does not sell
+  its products anymore.
+  The suite of technical indicators selled by Jurik Research was closed source and distributed
+  in binary form. There were no open specifications of the algorithms.
+  <p></p>
+  The JMA was extremely popular 
+  <!--
+  https://usethinkscript.com/threads/jurik-moving-average.9817/
+  https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
+  https://regtrading.com/the-real-jurik-moving-average-jma/
+  http://jurikres.com/down__/why_jma.pdf
+  http://jurikres.com/down__/overview.pdf
+  http://jurikres.com/down__/ma_evolv.pdf
+  http://jurikres.com/faq1/reports.htm#top
+  http://jurikres.com/faq1/faq_ama.htm#how_work
+  Декомпиляция индикаторов от M.Jurik
+  https://web.archive.org/web/20121008001307/http://forex.kbpauk.ru:80/categories.php/Cat/
+  https://github.com/empenoso/SilverFir-TradingBot
+  https://habr.com/ru/articles/846938/
+  https://opserver.de/ubb7/ubbthreads.php?ubb=showflat&Number=480080
+  https://www.mql5.com/en/forum/179011
+  https://www.forexfactory.com/thread/1081292-6-less-lagging-moving-averages-2-new
+  https://forum.tslab.ru/ubb/ubbthreads.php?ubb=showflat&Number=64576&page=4
+  -->
   <mb-kd>
     {{"\\tag*{(1)}\\alpha=\\frac{2}{\\ell+1}, \\ell>1"}}
   </mb-kd>
@@ -47,7 +73,7 @@
   </figure>
   <p></p>
   <p></p>
-  The JMA indicator is not primed during the first <mb-ki>{{"30"}}</mb-ki> samples.
+  Irrespective from the parameters values, the JMA indicator is not primed during the first <mb-ki>{{"30"}}</mb-ki> samples.
   You can see the full implementation of the JMA in
   <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/jurik/movingaverage.go" target="_blank"
     rel="noopener noreferrer">Golang</a>
@@ -170,7 +196,7 @@
   <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
   <p></p>
   The following charts show the frequency responses of the JMA with different lengths
-  <mb-ki>{{"\\ell}"}}</mb-ki>.
+  <mb-ki>{{"\\ell"}}</mb-ki>.
   The phase parameter is set to default value.
   <p></p>
 </div>
@@ -207,10 +233,10 @@
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="40" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [xmode]="'frequency'" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
@@ -218,16 +244,15 @@
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
-    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin50, jmaPh0, jmaPh10, jmaPh50]"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
 </figure>
 <p></p>
-
 <div style="width:100%">
 </div>
 <hr />
