@@ -7,7 +7,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, generateStep, OhlcvChartComponent, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
-import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
+import { KatexInlineComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -18,7 +18,10 @@ import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentV
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { jurikMovingAverageNote } from '../../../../notes';
+import { simpleMovingAverageNote, weightedMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { doubleExponentialMovingAverageNote, tripleExponentialMovingAverageNote } from '../../../../notes';
+import { t2ExponentialMovingAverageNote, t3ExponentialMovingAverageNote } from '../../../../notes';
+import { jurikMovingAverageNote, kaufmanAdaptiveMovingAverageNote } from '../../../../notes';
 import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { JmaInput } from './jma-input.interface';
 import { Jma } from './jma.interface';
@@ -103,7 +106,6 @@ const getConfigTemplate = (): Configuration => ({
     OhlcvChartComponent,
     SwatchesSelectComponent,
     KatexInlineComponent,
-    KatexDisplayComponent,
     FrequencyResponseChartComponent,
     JmaListComponent
   ]
@@ -199,6 +201,14 @@ export class JmaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
+  protected smaNote = simpleMovingAverageNote;
+  protected wmaNote = weightedMovingAverageNote;
+  protected emaNote = exponentialMovingAverageNote;
+  protected demaNote = doubleExponentialMovingAverageNote;
+  protected temaNote = tripleExponentialMovingAverageNote;
+  protected t2emaNote = t2ExponentialMovingAverageNote;
+  protected t3emaNote = t3ExponentialMovingAverageNote;
+  protected kamaNote = kaufmanAdaptiveMovingAverageNote;
   protected jmaNote = jurikMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;

@@ -32,58 +32,99 @@
 
 <div style="width:100%">
   <p></p>
-  The Jurik Moving Average (JMA) is one of the proprietary indicators developed by Mark Jurik.
-  His company <a href="http://jurikres.com/" target="_blank" rel="noopener noreferrer">Jurik Research</a>
+  The Jurik Moving Average (JMA) is one of the proprietary indicators developed by Mark Jurik
+  around 1998. His company
+  <a href="http://jurikres.com/" target="_blank" rel="noopener noreferrer">Jurik Research</a>
   was founded in 1988, applying signal processing techniques originally intended for military
-  projects to the financial arena. Now, the company is "winded down" and does not sell
-  its products anymore.
-  The suite of technical indicators selled by Jurik Research was closed source and distributed
-  in binary form. There were no open specifications of the algorithms.
-  <p></p>
-  The JMA was extremely popular 
-  <!--
-  https://usethinkscript.com/threads/jurik-moving-average.9817/
-  https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
-  https://regtrading.com/the-real-jurik-moving-average-jma/
-  http://jurikres.com/down__/why_jma.pdf
-  http://jurikres.com/down__/overview.pdf
-  http://jurikres.com/down__/ma_evolv.pdf
-  http://jurikres.com/faq1/reports.htm#top
-  http://jurikres.com/faq1/faq_ama.htm#how_work
-  Декомпиляция индикаторов от M.Jurik
-  https://web.archive.org/web/20121008001307/http://forex.kbpauk.ru:80/categories.php/Cat/
-  https://github.com/empenoso/SilverFir-TradingBot
-  https://habr.com/ru/articles/846938/
-  https://opserver.de/ubb7/ubbthreads.php?ubb=showflat&Number=480080
-  https://www.mql5.com/en/forum/179011
-  https://www.forexfactory.com/thread/1081292-6-less-lagging-moving-averages-2-new
-  https://forum.tslab.ru/ubb/ubbthreads.php?ubb=showflat&Number=64576&page=4
-  -->
-  <mb-kd>
-    {{"\\tag*{(1)}\\alpha=\\frac{2}{\\ell+1}, \\ell>1"}}
-  </mb-kd>
+  projects to trading. Now, the company is "winded down" and does not sell its products anymore.
   <p></p>
   <figure class="figright">
     <img src="assets/photos/jurik.png">
     <figcaption>
       Mark Jurik.
       <a href="http://jurikres.com/about/company.htm" target="_blank"
-        rel="noopener noreferrer">jurikres.com</a>.
+        rel="noopener noreferrer">jurikres.com</a>
     </figcaption>
   </figure>
+  The suite of technical indicators selled by Jurik Research was closed source and distributed
+  in binary form. There only sources of information are several documents available on the
+  Jurik Research website.
   <p></p>
+  JMA represents a step forward from classic moving averages
+    (<a href="/{{smaNote.route}}">SMA</a>,
+    <a href="/{{emaNote.route}}">EMA</a>,
+    <a href="/{{wmaNote.route}}">WMA</a>) and other
+  advanced or adaptive ones
+    (<a href="/{{demaNote.route}}">DEMA</a>,
+    <a href="/{{temaNote.route}}">TEMA</a>,
+    <a href="/{{t2emaNote.route}}">T2</a>,
+    <a href="/{{t3emaNote.route}}">T3</a>,
+    <a href="/{{kamaNote.route}}">KAMA</a>) available around the late 1990s
+  (jurik1999evolution).
   <p></p>
-  Irrespective from the parameters values, the JMA indicator is not primed during the first <mb-ki>{{"30"}}</mb-ki> samples.
-  You can see the full implementation of the JMA in
+  It is designed (jurik1999why) as a low-lag, nonlinear adaptive filter to remove noise from
+  price series data while accurately tracking the underlying price movement and momentum.
+  The design aims for an optimal balance of four features: (1) minimum lag, (2) minimum overshoot,
+  (3) minimum undershoot, i.e. quick convergence after gaps, and (4) maximum smoothness.
+  <p></p>
+  Unlike non-adaptive filters, JMA can distinguish between random background noise and
+  significant price gaps. It filters out the noise but adapts quickly to gaps, converging
+  to new price levels faster than many other moving averages. 
+  <p></p>
+  JMA moves beyond traditional linear, frequency-based filtering, using techniques,
+  described as adaptive non-linear filtering and information theory, "analogous to
+  military technology for tracking moving targets through noise" (jurik1999how).
+  It views the price series as a noisy image of the "true" underlying smooth price and
+  attempts to estimate that smooth price's location.
+  <p></p>
+  JMA has two parameters (jurik1999how) allowing to fine-tune JMA's responsiveness
+  for different strategies, such as optimizing crossover timing.
+  <ul>
+    <li><mb-ki>{{"\\ell"}}</mb-ki> - length of the JMA, which is a number of samples
+      used to calculate the JMA value. Typical values range from <mb-ki>{{"2"}}</mb-ki>
+      up to <mb-ki>{{"80"}}</mb-ki>. This parameter primarily controls the smoothness
+      and speed of the JMA line. Increasing the <mb-ki>{{"\\ell"}}</mb-ki> makes JMA
+      move slower, which increases smoothness and reduces noise, but at the cost of
+      adding more lag.
+    </li>
+    <li><mb-ki>{{"\\phi"}}</mb-ki> - phase of the JMA. Ranges from <mb-ki>{{"-100"}}</mb-ki>
+      to <mb-ki>{{"+100"}}</mb-ki>. This parameter controls the
+      JMA's "inertia," essentially managing the trade-off between lag and overshoot.
+      The highest value <mb-ki>{{"\\phi=100"}}</mb-ki> (low interia) minimises
+      the lag (allowing the filter to turn more quickly), but maximizes the tendency
+      to overshoot price reversals.
+      The lowest value <mb-ki>{{"\\phi=-100"}}</mb-ki> (high interia) maximises
+      the lag (making the filter slower to change direction and reducing noise),
+      but minimises potential overshoot.
+      The default value <mb-ki>{{"\\phi=0"}}</mb-ki> provides a balance between
+      lag and overshoot. 
+    </li>
+  </ul>
+  Irrespective from the parameters values, the JMA indicator is not primed
+  during the first <mb-ki>{{"30"}}</mb-ki> samples.
+  <p></p>
+  From the digital signal processing (DSP) point of view, the JMA is an infinite impulse response (IIR)
+  filter since all previous input samples contribute to its value.
+  <p></p>
+  In early 2000s, on the various trading forums there were numerious posts
+  about reverse engineering and re-implementing the JMA algorithm (
+  <a href="https://www.mql5.com/en/forum/173010" target="_blank" rel="noopener noreferrer">mql5</a>,
+  <a href="https://regtrading.com/the-real-jurik-moving-average-jma/" target="_blank" rel="noopener noreferrer">regtrading</a>,
+  <a href="https://usethinkscript.com/threads/jurik-moving-average.9817/" target="_blank" rel="noopener noreferrer">useThinkScript</a>,
+  <a href="https://www.tradingview.com/script/W1DjDb8h-Jurik-Moving-Average-JMA/" target="_blank" rel="noopener noreferrer">tradingView</a>,
+  <a href="https://www.forexfactory.com/thread/696822-jurik-indicators" target="_blank" rel="noopener noreferrer">forexFactory</a>).
+  The decompiled Delphi (Pascal) code of the original Jurik's DLL for Wealth-Lab
+  became a root source of the JMA imitations in MQL4, EasyLang, and others.
+  <p></p>
+  This implementation is also based on the decompiled code
+  (<a href="https://forum.tslab.ru/ubb/ubbthreads.php?ubb=showflat&Number=5796#Post5796" target="_blank" rel="noopener noreferrer">tslab.com, 2010</a>).
+  You can see the full source in
   <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/jurik/movingaverage.go" target="_blank"
     rel="noopener noreferrer">Golang</a>
   and in
   <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/mark-jurik/jurik-moving-average/jurik-moving-average.ts"
     target="_blank" rel="noopener noreferrer">Typescript</a>
   on Github.
-  <p></p>
-  From the digital signal processing (DSP) point of view, the JMA is an infinite impulse response (IIR)
-  filter since all previous input samples contribute to its value.
   <p></p>
 </div>
 
@@ -93,10 +134,10 @@
   is demonstrated on the two following figures.
   <p></p>
   The first figure shows different lengths <mb-ki>{{"\\ell"}}</mb-ki> leaving
-  the phase to be default value.
+  the phase to be <mb-ki>{{"0"}}</mb-ki>.
   <p></p>
   The second figure shows different phases <mb-ki>{{"\\phi"}}</mb-ki> leaving
-  the length to be default value.
+  the length to be <mb-ki>{{"10"}}</mb-ki>.
   <p></p>
 </div>
 
@@ -106,19 +147,22 @@
   </figcaption>
 </figure>
 <p></p>
-
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsPh"></mb-ohlcv-chart>
   <figcaption>Varying the phase.
   </figcaption>
 </figure>
 <p></p>
-<p></p>
 
 <h2>Step response</h2>
 <div style="width:100%">
+  The first two figures below show the step responces of the JMA with the different
+  length parameter <mb-ki>{{"\\ell"}}</mb-ki>. Increasing the length increases the lag
+  and the overshoot, but gives the indicator line more "inertiia".
   <p></p>
-  The step responses are.
+  The two next figures show the step responces of the JMA with the different phase
+  parameter <mb-ki>{{"\\phi"}}</mb-ki>. Increasing the phase increases the overshoot.
+  <p></p>
   <p></p>
   <figure class="figwide">
     <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLe"></mb-ohlcv-chart>
@@ -144,7 +188,7 @@
 <div style="width:100%">
   The figures below show an amplitude and a phase lag of the unit sample response of the JMA as a function
   of a period of various signal frequencies.
-  We cannot derive its frequency response analytically because of the unknown algorythm of the JMA.
+  We cannot derive its frequency response analytically because of the adaptive nature of the JMA.
   <p></p>
   A period is a duration of a cycle in samples.
   The smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
@@ -257,20 +301,57 @@
 </div>
 <hr />
 <h2 class="counter-skip">References</h2>
-<div class="citation"><!-- @Book kaufman1995smarter --> Kaufman, Perry J. (1995).
-  <em>Smarter Trading: Improving Performance in Changing Markets</em>. (p. 252). United Kingdom: McGraw-Hill.
-  <a href="https://books.google.com/books?id=ndq_21wRJjEC" target="_blank" rel="noopener noreferrer">google books</a>
+<div class="citation">Mark Jurik (1999).
+  <em>Overview</em>. Retrieved April 12, 2025, from
+  <a href="http://jurikres.com/down__/overview.pdf" target="_blank" rel="noopener noreferrer">jurikres.com</a>
 </div>
-<div class="citation"><!-- @Book kaufman2013trading --> Kaufman, Perry J. (2013).
-  <em>Trading Systems and Methods, + Website</em>. (5th ed., p. 1232). United Kingdom: Wiley.
-  <a href="https://books.google.com/books?id=4842MXNn5o4C" target="_blank" rel="noopener noreferrer">google books</a>
+<div class="citation">Mark Jurik (1999).
+  <em>Evolution of Moving Averages</em>. Retrieved April 12, 2025, from
+  <a href="http://jurikres.com/down__/ma_evolv.pdf" target="_blank" rel="noopener noreferrer">jurikres.com</a>
 </div>
-<div class="citation"><!-- @Article kaufman2020nov -->Kaufman, Perry J. (2020).
-  Comparing Two Adaptive Trends. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>38</em>(11), 20–24.
-  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=2020#Nov" target="_blank"
-    rel="noopener noreferrer">traders.com</a>
+<div class="citation">Mark Jurik (1999).
+  <em>Why Use JMA ?</em>. Retrieved April 12, 2025, from
+  <a href="http://jurikres.com/down__/why_jma.pdf" target="_blank" rel="noopener noreferrer">jurikres.com</a>
 </div>
-<div class="citation"><!-- @misc{kaufman_bio -->Kaufman, Perry J. (2025).
-  <em>Perry Kaufman's Bio</em>. Retrieved March 10, 2025, from
-  <a href="https://perrykaufman.com/bio/" target="_blank" rel="noopener noreferrer">https://perrykaufman.com/bio/</a>
+<div class="citation">Mark Jurik (1999).
+  <em>How it works</em>. Retrieved April 12, 2025, from
+  <a href="http://jurikres.com/faq1/faq_ama.htm#how_work" target="_blank" rel="noopener noreferrer">jurikres.com</a>
 </div>
+<div class="citation">MQL5 forum (2005).
+  <em>Jurik</em>. Retrieved April 12, 2025, from
+  <a href="https://www.mql5.com/en/forum/173010" target="_blank" rel="noopener noreferrer">mql5.com</a>
+</div>
+<div class="citation">MQL5 forum (2008).
+  <em>Good news - JMA's algorithm revealed!</em>. Retrieved April 12, 2025, from
+  <a href="https://www.mql5.com/en/forum/179011" target="_blank" rel="noopener noreferrer">mql5.com</a>
+</div>
+<div class="citation">MQL5 forum (2008).
+  <em>Good news for all of you - JMA's algorihm revealed! (pdf)</em>. Retrieved April 12, 2025, from
+  <a href="https://c.mql5.com/forextsd/forum/164/jurik_1.pdf" target="_blank" rel="noopener noreferrer">mql5.com</a>
+</div>
+<div class="citation">Regtrading (2018).
+  <em>The Real Jurik Moving Average (JMA)</em>. Retrieved April 12, 2025, from
+  <a href="https://regtrading.com/the-real-jurik-moving-average-jma/" target="_blank" rel="noopener noreferrer">regtrading.com</a>
+</div>
+<div class="citation">useThinkScript (2022).
+  <em>Jurik Moving Average ?</em>. Retrieved April 12, 2025, from
+  <a href="https://usethinkscript.com/threads/jurik-moving-average.9817/" target="_blank" rel="noopener noreferrer">usethinkscript.com</a>
+</div>
+<div class="citation">useThinkScript (2022).
+  <em>Jurik Moving Average Crossover For ThinkOrSwim</em>. Retrieved April 12, 2025, from
+  <a href="https://usethinkscript.com/threads/jurik-moving-average-crossover-for-thinkorswim.12527/" target="_blank" rel="noopener noreferrer">usethinkscript.com</a>
+</div>
+<div class="citation">TradingView (2025).
+  <em>Jurik Moving Average (JMA)</em>. Retrieved April 12, 2025, from
+  <a href="https://www.tradingview.com/script/W1DjDb8h-Jurik-Moving-Average-JMA/" target="_blank" rel="noopener noreferrer">tradingview.com</a>
+</div>
+<div class="citation">ForexFactory (2017).
+  <em>Jurik indicators</em>. Retrieved April 12, 2025, from
+  <a href="https://www.forexfactory.com/thread/696822-jurik-indicators" target="_blank" rel="noopener noreferrer">forexfactory.com</a>
+</div>
+<div class="citation">tsLab (2010).
+  <em>JMA code</em>. Retrieved April 12, 2025, from
+  <a href="https://forum.tslab.ru/ubb/ubbthreads.php?ubb=showflat&Number=5796#Post5796" target="_blank" rel="noopener noreferrer">tslab.com</a>
+</div>
+
+
