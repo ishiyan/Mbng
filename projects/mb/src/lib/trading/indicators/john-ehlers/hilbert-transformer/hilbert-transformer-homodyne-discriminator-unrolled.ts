@@ -234,7 +234,8 @@ export class HilbertTransformerHomodyneDiscriminatorUnrolled implements HilbertT
       } else { //if (2 == smoothingLength)
         this.wmaInput2 = sample;
       }
-    } while (0);
+      // eslint-disable-next-line no-constant-condition
+    } while (false);
     // DetrendLabel:
     // Detrender.
     this.smoothed = val;

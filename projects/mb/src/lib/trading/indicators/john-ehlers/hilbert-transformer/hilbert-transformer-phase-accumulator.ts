@@ -236,7 +236,7 @@ export class HilbertTransformerPhaseAccumulator implements HilbertTransformerCyc
       this.smoothedQuadraturePrevious = smoothedQuadrature;
 
       // Compute an instantaneous phase.
-      let phase = instantaneousPhase(smoothedInPhase, smoothedQuadrature, this.phasePrevious);
+      const phase = instantaneousPhase(smoothedInPhase, smoothedQuadrature, this.phasePrevious);
 
       // Compute a differential phase.
       push(this.deltaPhase, calculateDifferentialPhase(phase, this.phasePrevious));

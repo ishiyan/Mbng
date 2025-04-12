@@ -52,10 +52,10 @@ export function adjustPeriod(period: number, periodPrevious: number): number {
 
 export function fillWmaFactors(length: number, factors: number[]): void {
   if (length === 4) {
-    factors[0] = 4. / 10.;
-    factors[1] = 3. / 10.;
-    factors[2] = 2. / 10.;
-    factors[3] = 1. / 10.;
+    factors[0] = 0.4;
+    factors[1] = 0.3;
+    factors[2] = 0.2;
+    factors[3] = 0.1;
   } else if (length === 3) {
     factors[0] = 3. / 6.;
     factors[1] = 2. / 6.;
