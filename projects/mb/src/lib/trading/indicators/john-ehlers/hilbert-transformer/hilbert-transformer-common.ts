@@ -1,4 +1,10 @@
 ﻿import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
+import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
+import { HilbertTransformerCycleEstimatorType } from './hilbert-transformer-cycle-estimator-type.enum';
+import { HilbertTransformerHomodyneDiscriminator } from './hilbert-transformer-homodyne-discriminator';
+import { HilbertTransformerHomodyneDiscriminatorUnrolled } from './hilbert-transformer-homodyne-discriminator-unrolled';
+import { HilbertTransformerPhaseAccumulator } from './hilbert-transformer-phase-accumulator';
+import { HilbertTransformerDualDifferentiator } from './hilbert-transformer-dual-differentiator';
 
 export const defaultMinPeriod = 6;
 export const defaultMaxPeriod = 50;
@@ -87,4 +93,54 @@ export function verifyParameters(params: HilbertTransformerCycleEstimatorParams)
   }
 
   return undefined;
+}
+
+export function createEstimator(
+  estimatorType?: HilbertTransformerCycleEstimatorType,
+  estimatorParams?: HilbertTransformerCycleEstimatorParams): HilbertTransformerCycleEstimator {
+
+  if (estimatorType === undefined) {
+    estimatorType = HilbertTransformerCycleEstimatorType.HomodyneDiscriminator;
+  }
+
+  switch (estimatorType) {
+    case HilbertTransformerCycleEstimatorType.HomodyneDiscriminator:
+      if (estimatorParams === undefined) {
+        estimatorParams = {
+          smoothingLength: 4,
+          alphaEmaQuadratureInPhase: 0.2,
+          alphaEmaPeriod: 0.2
+        };
+      }
+      return new HilbertTransformerHomodyneDiscriminator(estimatorParams);
+    case HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled:
+      if (estimatorParams === undefined) {
+        estimatorParams = {
+          smoothingLength: 4,
+          alphaEmaQuadratureInPhase: 0.2,
+          alphaEmaPeriod: 0.2
+        };
+      }
+      return new HilbertTransformerHomodyneDiscriminatorUnrolled(estimatorParams);
+    case HilbertTransformerCycleEstimatorType.PhaseAccumulator:
+      if (estimatorParams === undefined) {
+        estimatorParams = {
+          smoothingLength: 4,
+          alphaEmaQuadratureInPhase: 0.15,
+          alphaEmaPeriod: 0.25
+        };
+      }
+      return new HilbertTransformerPhaseAccumulator(estimatorParams);
+    case HilbertTransformerCycleEstimatorType.DualDifferentiator:
+      if (estimatorParams === undefined) {
+        estimatorParams = {
+          smoothingLength: 4,
+          alphaEmaQuadratureInPhase: 0.15,
+          alphaEmaPeriod: 0.25
+        };
+      }
+      return new HilbertTransformerDualDifferentiator(estimatorParams);
+    default:
+      throw new Error("Invalid cycle estimator type: " + estimatorType);
+  }
 }

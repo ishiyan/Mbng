@@ -1,0 +1,29 @@
+@if (!useAlpha) {
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Fast len</mat-label>
+    <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="fastLengthParam" />
+  </mat-form-field>
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Slow len</mat-label>
+    <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="slowLengthParam" />
+  </mat-form-field>
+}
+<mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
+@if (useAlpha) {
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Fastest α</mat-label>
+    <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="fastAlphaParam" />
+  </mat-form-field>
+  <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
+    <mat-label>Slowest α</mat-label>
+    <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="slowAlphaParam" />
+  </mat-form-field>
+}
+@if (barComponentVisible) {
+  <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
+  </mb-bar-component>
+}
+@if (quoteComponentVisible) {
+  <mb-quote-component [initial]="quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
+  </mb-quote-component>
+}
