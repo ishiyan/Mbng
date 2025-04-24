@@ -43,7 +43,7 @@ export class QuoteComponentComponent implements OnInit {
   readonly selectionChange = output<QuoteComponent>();
 
   /** A label to display above the selector. */
-  readonly label = input('Quote component');
+  readonly label = input('Quote price');
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value.enumeration);

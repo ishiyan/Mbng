@@ -81,7 +81,11 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
     if (value === this.params.warmUpPeriod) {
       return;
     }
-    this.params.warmUpPeriod = value;
+    if (value === 0) {
+      this.params.warmUpPeriod = undefined
+    } else {
+      this.params.warmUpPeriod = value;
+    }
     this.params = { ...this.params };
     this.notify();
   }

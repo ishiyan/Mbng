@@ -1,5 +1,13 @@
+import { Bar } from '../../../../data/entities/bar';
+import { Quote } from '../../../../data/entities/quote';
+import { Scalar } from '../../../../data/entities/scalar';
+import { Trade } from '../../../../data/entities/trade';
 import { componentPairMnemonic } from '../../indicator/component-pair-mnemonic';
 import { LineIndicator } from '../../indicator/line-indicator';
+import { IndicatorMetadata } from '../../indicator/indicator-metadata.interface';
+import { IndicatorOutput } from '../../indicator/indicator-output';
+import { IndicatorOutputType } from '../../indicator/indicator-output-type.enum';
+import { IndicatorType } from '../../indicator/indicator-type.enum';
 import { HilbertTransformerCycleEstimatorType } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-type.enum';
 import { HilbertTransformerCycleEstimatorParams } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-params.interface';
 import { HilbertTransformerCycleEstimator } from '../hilbert-transformer/hilbert-transformer-cycle-estimator.interface';
@@ -7,7 +15,7 @@ import { createEstimator } from '../hilbert-transformer/hilbert-transformer-comm
 import { MesaAdaptiveMovingAverageLengthParams } from './mesa-adaptive-moving-average-params.interface';
 import { MesaAdaptiveMovingAverageSmoothingFactorParams } from './mesa-adaptive-moving-average-params.interface';
  
-const guardLength = (object: any): object is MesaAdaptiveMovingAverageLengthParams => 'fastestLength' in object;
+const guardLength = (object: any): object is MesaAdaptiveMovingAverageLengthParams => 'fastLimitLength' in object;
 
 const estimatorMnemonic = (
   estimatorType?: HilbertTransformerCycleEstimatorType,
@@ -28,33 +36,33 @@ const estimatorMnemonic = (
         estimatorParams.alphaEmaPeriod === 0.2) {
         return "";
       }
-      mnem = "hd";
+      mnem = ", hd";
       break;
     case HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled:
-      mnem = "hdu";
+      mnem = ", hdu";
       if (estimatorParams &&
         estimatorParams.smoothingLength === 4 &&
         estimatorParams.alphaEmaQuadratureInPhase === 0.2 &&
         estimatorParams.alphaEmaPeriod === 0.2) {
-        return mnem + ", ";
+        return mnem;
       }
       break;
     case HilbertTransformerCycleEstimatorType.PhaseAccumulator:
-      mnem = "pa";
+      mnem = ", pa";
       if (estimatorParams &&
         estimatorParams.smoothingLength === 4 &&
         estimatorParams.alphaEmaQuadratureInPhase === 0.15 &&
         estimatorParams.alphaEmaPeriod === 0.25) {
-        return mnem + ", ";
+        return mnem;
       }
       break;
     case HilbertTransformerCycleEstimatorType.DualDifferentiator:
-      mnem = "dd";
+      mnem = ", dd";
       if (estimatorParams &&
         estimatorParams.smoothingLength === 4 &&
         estimatorParams.alphaEmaQuadratureInPhase === 0.15 &&
         estimatorParams.alphaEmaPeriod === 0.15) {
-        return mnem + ", ";
+        return mnem;
       }
       break;
     default:
@@ -68,7 +76,7 @@ const estimatorMnemonic = (
       estimatorParams.alphaEmaPeriod.toFixed(3), ")");
   }
 
-  return mnem + ", ";
+  return mnem;
 };
 
 /** Function to calculate mnemonic of an __MesaAdaptiveMovingAverage__ indicator. */
@@ -77,13 +85,13 @@ export const mesaAdaptiveMovingAverageMnemonic =
     if (guardLength(params)) {
       const p = params as MesaAdaptiveMovingAverageLengthParams;
       return 'mama('.concat(Math.floor(p.fastLimitLength).toString(),
-        ', ', Math.floor(p.slowLimitLength).toString(), ', ',
+        ', ', Math.floor(p.slowLimitLength).toString(),
         estimatorMnemonic(p.estimatorType, p.estimatorParams),
         componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
     } else {
       const p = params as MesaAdaptiveMovingAverageSmoothingFactorParams;
       return 'mama('.concat(p.fastLimitSmoothingFactor.toFixed(3),
-        ', ', p.slowLimitSmoothingFactor.toFixed(3), ', ',
+        ', ', p.slowLimitSmoothingFactor.toFixed(3),
         estimatorMnemonic(p.estimatorType, p.estimatorParams),
         componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
     }
@@ -125,11 +133,12 @@ export class MesaAdaptiveMovingAverage extends LineIndicator {
   private readonly htce: HilbertTransformerCycleEstimator;
   private readonly alphaFastLimit: number;
   private readonly alphaSlowLimit: number;
-  private previousPhase: number;
-  private mama: number;
-  private fama: number;
-  private isPhaseCached: boolean;
-  mnemonicFama: string;
+  private previousPhase: number = 0;
+  private mama: number = Number.NaN;
+  private fama: number = Number.NaN;
+  private isPhaseCached: boolean = false;
+  private mnemonicFama: string;
+  private descriptionFama: string;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -170,10 +179,81 @@ export class MesaAdaptiveMovingAverage extends LineIndicator {
     this.mnemonic = mesaAdaptiveMovingAverageMnemonic(params);
     this.mnemonicFama = this.mnemonic.replace('mama', 'fama');
     this.primed = false;
-    this.isPhaseCached = false;
-    this.previousPhase = 0;
-    this.mama = 0;
-    this.fama = 0;
+
+    const descr = "Mesa adaptive moving average ";
+    this.description =  descr + this.mnemonic;
+    this.descriptionFama =  descr + this.mnemonicFama;
+  }
+
+  /** The value of the FAMA component of the indicator. */
+  public getMama(): number { return this.primed ? this.mama : Number.NaN; }
+
+  /** The value of the FAMA component of the indicator. */
+  public getFama(): number { return this.primed ? this.fama : Number.NaN; }
+
+  /** The mnemonic of the FAMA component of the indicator. */
+  public getMnemonicFama(): string { return this.mnemonicFama; }
+
+  /** The description of the FAMA component of the indicator. */
+  public getDescriptionFama(): string { return this.descriptionFama; }
+
+  /** Describes a requested output data of an indicator. */
+  public override metadata(): IndicatorMetadata {
+    return {
+      type: IndicatorType.MesaAdaptiveMovingAverage,
+      outputs: [
+        {kind: 0, type: IndicatorOutputType.Scalar, mnemonic: this.mnemonic, description: this.description },
+        {kind: 1, type: IndicatorOutputType.Scalar, mnemonic: this.mnemonicFama, description: this.descriptionFama }
+      ]
+    };
+  }
+
+  /** Updates an indicator given the next scalar sample. */
+  public override updateScalar(sample: Scalar): IndicatorOutput {
+    const scalarMama = new Scalar();
+    scalarMama.time = sample.time;
+    scalarMama.value = this.update(sample.value);
+
+    const scalarFama = new Scalar();
+    scalarFama.time = sample.time;
+    scalarFama.value = this.fama;
+    return [scalarMama, scalarFama];
+  }
+
+  /** Updates an indicator given the next bar sample. */
+  public override updateBar(sample: Bar): IndicatorOutput {
+    const scalarMama = new Scalar();
+    scalarMama.time = sample.time;
+    scalarMama.value = this.update(this.barComponentFunc(sample));
+
+    const scalarFama = new Scalar();
+    scalarFama.time = sample.time;
+    scalarFama.value = this.fama;
+    return [scalarMama, scalarFama];
+  }
+
+  /** Updates an indicator given the next quote sample. */
+  public override updateQuote(sample: Quote): IndicatorOutput {
+    const scalarMama = new Scalar();
+    scalarMama.time = sample.time;
+    scalarMama.value = this.update(this.quoteComponentFunc(sample));
+
+    const scalarFama = new Scalar();
+    scalarFama.time = sample.time;
+    scalarFama.value = this.fama;
+    return [scalarMama, scalarFama];
+  }
+
+  /** Updates an indicator given the next trade sample. */
+  public override updateTrade(sample: Trade): IndicatorOutput {
+    const scalarMama = new Scalar();
+    scalarMama.time = sample.time;
+    scalarMama.value = this.update(sample.price);
+
+    const scalarFama = new Scalar();
+    scalarFama.time = sample.time;
+    scalarFama.value = this.fama;
+    return [scalarMama, scalarFama];
   }
 
   /** Updates the value of the indicator given the next sample. */
@@ -182,63 +262,82 @@ export class MesaAdaptiveMovingAverage extends LineIndicator {
       return sample;
     }
 
-    const epsilon = 0.00000001;
-
-    let temp;
+    this.htce.update(sample);
 
     if (this.primed) {
-      temp = Math.abs(sample - this.window[this.efficiencyRatioLength]);
-      this.absoluteDeltaSum += temp - this.absoluteDelta[1];
+      return this.calculate(sample);
+    }
 
-      for (let i = 0; i < this.efficiencyRatioLength; i++) {
-        const j = i + 1;
-        this.window[i] = this.window[j];
-        this.absoluteDelta[i] = this.absoluteDelta[j];
-      }
-
-      this.window[this.efficiencyRatioLength] = sample;
-      this.absoluteDelta[this.efficiencyRatioLength] = temp;
-      const delta = Math.abs(sample - this.window[0]);
-
-      if (this.absoluteDeltaSum <= delta || this.absoluteDeltaSum < epsilon) {
-        temp = 1;
-      } else {
-        temp = delta / this.absoluteDeltaSum;
-      }
-
-      temp = this.alphaSlowest + temp * this.alphaDiff;
-      this.value += (sample - this.value) * temp * temp;
-
-      return this.value;
-    } else { // Not primed.
-      this.window[this.windowCount] = sample;
-
-      if (0 < this.windowCount) {
-        temp = Math.abs(sample - this.window[this.windowCount - 1]);
-        this.absoluteDelta[this.windowCount] = temp;
-        this.absoluteDeltaSum += temp;
-      }
-
-      if (this.efficiencyRatioLength === this.windowCount) {
+    if (this.htce.primed) {
+      if (this.isPhaseCached) {
         this.primed = true;
-        const delta = Math.abs(sample - this.window[0]);
-
-        if (this.absoluteDeltaSum <= delta || this.absoluteDeltaSum < epsilon) {
-          temp = 1;
-        } else {
-          temp = delta / this.absoluteDeltaSum;
-        }
-
-        temp = this.alphaSlowest + temp * this.alphaDiff;
-        this.value = this.window[this.efficiencyRatioLength - 1];
-        this.value += (sample - this.value) * temp * temp;
-
-        return this.value;
-      } else {
-        this.windowCount++;
+        return this.calculate(sample);
       }
+
+      this.isPhaseCached = true;
+      this.previousPhase = this.calculatePhase();
+      this.mama = sample;
+      this.fama = sample;
     }
 
     return Number.NaN;
+  }
+
+  private calculatePhase(): number {
+    if (this.htce.inPhaseValue === 0) {
+      return this.previousPhase;
+    }
+
+    const rad2deg = 180 / Math.PI;
+
+    // The cycle phase is computed from the arctangent of the ratio
+    // of the Quadrature component to the InPhase component.
+    // const phase = Math.atan2(this.htce.inPhaseValue, this.htce.quadratureValue) * rad2deg
+    const phase = Math.atan(this.htce.quadratureValue/this.htce.inPhaseValue) * rad2deg
+    if (!Number.isNaN(phase) && Number.isFinite(phase)) {
+      return phase;
+    }
+
+    return this.previousPhase;
+  }
+
+  private calculateMama(sample: number): number {
+    const phase = this.calculatePhase();
+
+    // The phase rate of change is obtained by taking the
+    // difference of successive previousPhase measurements.
+    let phaseRateOfChange = this.previousPhase - phase;
+    this.previousPhase = phase;
+
+    // Any negative rate change is theoretically impossible
+    // because phase must advance as the time increases.
+    // We therefore limit all rate changes of phase to be
+    // no less than unity.
+    if (phaseRateOfChange < 1) {
+      phaseRateOfChange = 1;
+    }
+
+    // The α is computed as the fast limit divided
+    // by the phase rate of change.
+    let alpha = this.alphaFastLimit / phaseRateOfChange;
+    if (alpha < this.alphaSlowLimit) {
+      alpha = this.alphaSlowLimit;
+    }
+
+    if (alpha > this.alphaFastLimit) {
+      alpha = this.alphaFastLimit;
+    }
+
+    this.mama = alpha*sample + (1.0-alpha)*this.mama;
+
+    return alpha;
+  }
+
+  private calculate(sample: number): number {
+    const alpha = this.calculateMama(sample) / 2;
+
+    this.fama = alpha*this.mama + (1.0-alpha)*this.fama;
+
+    return this.mama;
   }
 }

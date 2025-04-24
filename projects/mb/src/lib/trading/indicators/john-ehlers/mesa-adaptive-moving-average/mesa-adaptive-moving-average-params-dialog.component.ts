@@ -31,7 +31,6 @@ export class MesaAdaptiveMovingAverageParamsDialogComponent {
   readonly selectionChange = output<MesaAdaptiveMovingAverageLengthParams | MesaAdaptiveMovingAverageSmoothingFactorParams>();
 
   protected changed(param: MesaAdaptiveMovingAverageLengthParams | MesaAdaptiveMovingAverageSmoothingFactorParams) {
-    this.params = param;
-    this.selectionChange.emit(this.params);
+    this.selectionChange.emit(param);
   }
 }

@@ -15,8 +15,8 @@ import { Indicator } from './indicator.interface';
 /** Implements Instrument interface for a line indicator. */
 export abstract class LineIndicator implements Indicator {
 
-  private barComponentFunc!: ((bar: Bar) => number);
-  private quoteComponentFunc!: ((quote: Quote) => number);
+  protected barComponentFunc!: ((bar: Bar) => number);
+  protected quoteComponentFunc!: ((quote: Quote) => number);
 
   protected type!: IndicatorType;
   protected mnemonic!: string;

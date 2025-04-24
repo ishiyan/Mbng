@@ -1,21 +1,28 @@
+<mb-hilbert-transformer-cycle-estimator-type class="mr"
+  [initial]="estimatorTypeParam" [label]="'Estimator'" (selectionChange)="estimatorTypeChanged($event);">
+</mb-hilbert-transformer-cycle-estimator-type>
+@if (estimatorParamsVisible) {
+  <mb-hilbert-transformer-cycle-estimator-params [initial]="estimatorParamsParam" (selectionChange)="estimatorParamsParam = $event;">
+  </mb-hilbert-transformer-cycle-estimator-params>
+}
+<mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
 @if (!useAlpha) {
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Fast len</mat-label>
+    <mat-label>Fast ℓ</mat-label>
     <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="fastLengthParam" />
   </mat-form-field>
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Slow len</mat-label>
+    <mat-label>Slow ℓ</mat-label>
     <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="slowLengthParam" />
   </mat-form-field>
 }
-<mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
 @if (useAlpha) {
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Fastest α</mat-label>
+    <mat-label>Fast α</mat-label>
     <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="fastAlphaParam" />
   </mat-form-field>
   <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-    <mat-label>Slowest α</mat-label>
+    <mat-label>Slow α</mat-label>
     <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="slowAlphaParam" />
   </mat-form-field>
 }

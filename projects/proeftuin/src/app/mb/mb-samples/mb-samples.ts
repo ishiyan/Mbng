@@ -247,9 +247,16 @@ export const treeNodes: MbSample[] = [
                   },
                   { name: 'Hilbert Transformer Cycle Estimator params',
                     children: [
-                      { name: 'Params', header: 'Kaufman Adaptive Moving Average params', route: 'comp-tra-ind-john-ehlers/htce/s1' },
-                      { name: 'Selector', header: 'Hilbert Transformer Cycle Estimator selector', route: 'comp-tra-ind-john/ehlers-htce/s2' },
+                      { name: 'Params', header: 'Hilbert Transformer Cycle Estimator params', route: 'comp-tra-ind-john-ehlers/htce/s1' },
+                      { name: 'Selector', header: 'Hilbert Transformer Cycle Estimator selector', route: 'comp-tra-ind-john-ehlers/htce/s2' },
                       { name: 'Dialog', header: 'Hilbert Transformer Cycle Estimator dialog', route: 'comp-tra-ind-john-ehlers/htce/s3' }
+                    ]
+                  },
+                  { name: 'Mesa Adaptive Moving Average params',
+                    children: [
+                      { name: 'Params', header: 'Mesa Adaptive Moving Average params', route: 'comp-tra-ind-john-ehlers/mama/s1' },
+                      { name: 'Selector', header: 'Mesa Adaptive Moving Average selector', route: 'comp-tra-ind-john-ehlers/mama/s2' },
+                      { name: 'Dialog', header: 'Mesa Adaptive Moving Average dialog', route: 'comp-tra-ind-john-ehlers/mama/s3' }
                     ]
                   }
                 ]

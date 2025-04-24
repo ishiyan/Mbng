@@ -9,7 +9,9 @@ import { QuoteComponent } from '../../../../data/entities/quote-component.enum';
 import { BarComponentComponent } from '../../../../data/entities/bar-component.component';
 import { QuoteComponentComponent } from '../../../../data/entities/quote-component.component';
 import { HilbertTransformerCycleEstimatorType } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-type.enum';
+import { HilbertTransformerCycleEstimatorTypeComponent } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-type.component';
 import { HilbertTransformerCycleEstimatorParams } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-params.interface';
+import { HilbertTransformerCycleEstimatorParamsComponent } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-params.component';
 import { MesaAdaptiveMovingAverageLengthParams } from './mesa-adaptive-moving-average-params.interface';
 import { MesaAdaptiveMovingAverageSmoothingFactorParams } from './mesa-adaptive-moving-average-params.interface';
 
@@ -26,6 +28,8 @@ const guardLength = (object: any): object is MesaAdaptiveMovingAverageLengthPara
     MatLabel,
     MatInput,
     MatSlideToggle,
+    HilbertTransformerCycleEstimatorTypeComponent,
+    HilbertTransformerCycleEstimatorParamsComponent,
     BarComponentComponent,
     QuoteComponentComponent
   ]
@@ -35,13 +39,46 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
   private useAlphaInternal = false;
 
   protected paramsLength: MesaAdaptiveMovingAverageLengthParams = {
-    fastLimitLength: 2, slowLimitLength: 39, barComponent: BarComponent.Close
+    fastLimitLength: 3, slowLimitLength: 39,
+    estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+    barComponent: BarComponent.Close
   };
 
   protected paramsAlpha: MesaAdaptiveMovingAverageSmoothingFactorParams = {
     fastLimitSmoothingFactor: .5, slowLimitSmoothingFactor: .05,
+    estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
     barComponent: BarComponent.Close
   };
+
+  protected get estimatorTypeParam(): HilbertTransformerCycleEstimatorType {
+    return this.paramsLength.estimatorType || HilbertTransformerCycleEstimatorType.HomodyneDiscriminator;
+  }
+  protected set estimatorTypeParam(value: HilbertTransformerCycleEstimatorType) {
+    this.paramsAlpha.estimatorType = value;
+    this.paramsAlpha = { ...this.paramsAlpha };
+
+    this.paramsLength.estimatorType = value;
+    this.paramsLength = { ...this.paramsLength };
+
+    this.notify();
+  }
+  protected estimatorTypeChanged(value: HilbertTransformerCycleEstimatorType) {
+    this.estimatorTypeParam = value;
+  }
+
+  protected get estimatorParamsParam(): HilbertTransformerCycleEstimatorParams {
+    return this.estimatorParams;
+  }
+  protected set estimatorParamsParam(value: HilbertTransformerCycleEstimatorParams) {
+    this.paramsAlpha.estimatorParams = value;
+    this.paramsAlpha = { ...this.paramsAlpha };
+
+    this.paramsLength.estimatorParams = value;
+    this.paramsLength = { ...this.paramsLength };
+
+    this.estimatorParams = value;
+    this.notify();
+  }
 
   protected get fastLengthParam(): number {
     return this.paramsLength.fastLimitLength;
@@ -123,7 +160,7 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
   protected get slowAlphaParam(): number {
     return this.paramsAlpha.slowLimitSmoothingFactor;
   }
-  protected set slowLimitAlphaParam(value: number) {
+  protected set slowAlphaParam(value: number) {
     if (!value || value > 1) {
       value = 1;
     }
@@ -142,6 +179,11 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
   protected quoteComponent?: QuoteComponent;
   protected barComponentVisible = this.barComponent !== undefined;
   protected quoteComponentVisible = this.quoteComponent !== undefined;
+  
+  private estimatorParams: HilbertTransformerCycleEstimatorParams = {
+    smoothingLength: 3, alphaEmaQuadratureInPhase: 0.3, alphaEmaPeriod: 0.3
+  };
+  protected estimatorParamsVisible = false;
 
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<MesaAdaptiveMovingAverageLengthParams | MesaAdaptiveMovingAverageSmoothingFactorParams>();
@@ -153,14 +195,29 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     effect(() => {
       const value = this.initial();
       if (guardLength(value)) {
-        this.paramsLength = value as MesaAdaptiveMovingAverageLengthParams;
         this.useAlpha = false;
+        this.paramsLength = value as MesaAdaptiveMovingAverageLengthParams;
+        this.slowLengthParam = value.slowLimitLength;
+        this.fastLengthParam = value.fastLimitLength;
       } else {
-        this.paramsAlpha = value as MesaAdaptiveMovingAverageSmoothingFactorParams;
         this.useAlpha = true;
+        this.paramsAlpha = value as MesaAdaptiveMovingAverageSmoothingFactorParams;
+        this.slowAlphaParam = value.slowLimitSmoothingFactor;
+        this.fastAlphaParam = value.fastLimitSmoothingFactor;
       }
 
+      this.estimatorTypeParam = value.estimatorType || HilbertTransformerCycleEstimatorType.HomodyneDiscriminator;
+      if (value.estimatorParams) {
+        this.estimatorParams = value.estimatorParams;
+        this.estimatorParamsVisible = true;
+        this.estimatorParamsParam = value.estimatorParams;
+      }
+
+      this.paramsLength.barComponent = value.barComponent;
+      this.paramsAlpha.barComponent = value.barComponent;      
       this.barComponent = value.barComponent;
+      this.paramsLength.quoteComponent = value.quoteComponent;
+      this.paramsAlpha.quoteComponent = value.quoteComponent;
       this.quoteComponent = value.quoteComponent;
       this.barComponentVisible = value.barComponent !== undefined;
       this.quoteComponentVisible = value.quoteComponent !== undefined;

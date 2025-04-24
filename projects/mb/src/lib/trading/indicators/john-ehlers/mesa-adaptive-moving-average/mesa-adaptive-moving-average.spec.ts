@@ -1,152 +1,396 @@
 import { } from 'jasmine';
 
+import { HilbertTransformerCycleEstimatorType } from '../hilbert-transformer/hilbert-transformer-cycle-estimator-type.enum';
 import { MesaAdaptiveMovingAverage } from './mesa-adaptive-moving-average';
 
 // ng test mb  --code-coverage --include='**/indicators/**/*.spec.ts'
 // ng test mb  --code-coverage --include='**/indicators/john-ehlers/mesa-adaptive-moving-average/*.spec.ts'
 
 /* eslint-disable max-len */
-// Input data is taken from the TA-Lib (http://ta-lib.org/) tests,
-//    test_data.c, TA_SREF_close_daily_ref_0_PRIV[252].
+// Input data taken from TA-Lib (http://ta-lib.org/) tests, test_MAMA.xsl, Price, D5…D256, 252 entries.
 //
-// Expected data is taken from TA-Lib (http://ta-lib.org/) tests, test_KAMA.xsl, KAMA, J5…J256, 252 entries.
-// Efficiency ratio length is 10, fastest length is 2, slowest length is 30.
+// Expected data taken from TA-Lib (http://ta-lib.org/) tests, test_MAMA_new.xsl,
+// MAMA, L5…L256, 252 entries,
+// FAMA, M5…M256, 252 entries.
+//
+// All parameters have default values.
 
 const input = [
-  91.500000, 94.815000, 94.375000, 95.095000, 93.780000, 94.625000, 92.530000, 92.750000, 90.315000, 92.470000, 96.125000,
-  97.250000, 98.500000, 89.875000, 91.000000, 92.815000, 89.155000, 89.345000, 91.625000, 89.875000, 88.375000, 87.625000,
-  84.780000, 83.000000, 83.500000, 81.375000, 84.440000, 89.250000, 86.375000, 86.250000, 85.250000, 87.125000, 85.815000,
-  88.970000, 88.470000, 86.875000, 86.815000, 84.875000, 84.190000, 83.875000, 83.375000, 85.500000, 89.190000, 89.440000,
-  91.095000, 90.750000, 91.440000, 89.000000, 91.000000, 90.500000, 89.030000, 88.815000, 84.280000, 83.500000, 82.690000,
-  84.750000, 85.655000, 86.190000, 88.940000, 89.280000, 88.625000, 88.500000, 91.970000, 91.500000, 93.250000, 93.500000,
-  93.155000, 91.720000, 90.000000, 89.690000, 88.875000, 85.190000, 83.375000, 84.875000, 85.940000, 97.250000, 99.875000,
-  104.940000, 106.000000, 102.500000, 102.405000, 104.595000, 106.125000, 106.000000, 106.065000, 104.625000, 108.625000,
-  109.315000, 110.500000, 112.750000, 123.000000, 119.625000, 118.750000, 119.250000, 117.940000, 116.440000, 115.190000,
-  111.875000, 110.595000, 118.125000, 116.000000, 116.000000, 112.000000, 113.750000, 112.940000, 116.000000, 120.500000,
-  116.620000, 117.000000, 115.250000, 114.310000, 115.500000, 115.870000, 120.690000, 120.190000, 120.750000, 124.750000,
-  123.370000, 122.940000, 122.560000, 123.120000, 122.560000, 124.620000, 129.250000, 131.000000, 132.250000, 131.000000,
-  132.810000, 134.000000, 137.380000, 137.810000, 137.880000, 137.250000, 136.310000, 136.250000, 134.630000, 128.250000,
-  129.000000, 123.870000, 124.810000, 123.000000, 126.250000, 128.380000, 125.370000, 125.690000, 122.250000, 119.370000,
-  118.500000, 123.190000, 123.500000, 122.190000, 119.310000, 123.310000, 121.120000, 123.370000, 127.370000, 128.500000,
-  123.870000, 122.940000, 121.750000, 124.440000, 122.000000, 122.370000, 122.940000, 124.000000, 123.190000, 124.560000,
-  127.250000, 125.870000, 128.860000, 132.000000, 130.750000, 134.750000, 135.000000, 132.380000, 133.310000, 131.940000,
-  130.000000, 125.370000, 130.130000, 127.120000, 125.190000, 122.000000, 125.000000, 123.000000, 123.500000, 120.060000,
-  121.000000, 117.750000, 119.870000, 122.000000, 119.190000, 116.370000, 113.500000, 114.250000, 110.000000, 105.060000,
-  107.000000, 107.870000, 107.000000, 107.120000, 107.000000, 91.000000, 93.940000, 93.870000, 95.500000, 93.000000,
-  94.940000, 98.250000, 96.750000, 94.810000, 94.370000, 91.560000, 90.250000, 93.940000, 93.620000, 97.000000, 95.000000,
-  95.870000, 94.060000, 94.620000, 93.750000, 98.000000, 103.940000, 107.870000, 106.060000, 104.500000, 105.000000,
-  104.190000, 103.060000, 103.420000, 105.270000, 111.870000, 116.000000, 116.620000, 118.280000, 113.370000, 109.000000,
-  109.700000, 109.250000, 107.000000, 109.190000, 110.000000, 109.200000, 110.120000, 108.000000, 108.620000, 109.750000,
-  109.810000, 109.000000, 108.750000, 107.870000
+  92.0000, 93.1725, 95.3125, 94.8450, 94.4075, 94.1100, 93.5000, 91.7350, 90.9550, 91.6875,
+  94.5000, 97.9700, 97.5775, 90.7825, 89.0325, 92.0950, 91.1550, 89.7175, 90.6100, 91.0000,
+  88.9225, 87.5150, 86.4375, 83.8900, 83.0025, 82.8125, 82.8450, 86.7350, 86.8600, 87.5475,
+  85.7800, 86.1725, 86.4375, 87.2500, 88.9375, 88.2050, 85.8125, 84.5950, 83.6575, 84.4550,
+  83.5000, 86.7825, 88.1725, 89.2650, 90.8600, 90.7825, 91.8600, 90.3600, 89.8600, 90.9225,
+  89.5000, 87.6725, 86.5000, 84.2825, 82.9075, 84.2500, 85.6875, 86.6100, 88.2825, 89.5325,
+  89.5000, 88.0950, 90.6250, 92.2350, 91.6725, 92.5925, 93.0150, 91.1725, 90.9850, 90.3775,
+  88.2500, 86.9075, 84.0925, 83.1875, 84.2525, 97.8600, 99.8750, 103.2650, 105.9375, 103.5000,
+  103.1100, 103.6100, 104.6400, 106.8150, 104.9525, 105.5000, 107.1400, 109.7350, 109.8450, 110.9850,
+  120.0000, 119.8750, 117.9075, 119.4075, 117.9525, 117.2200, 115.6425, 113.1100, 111.7500, 114.5175,
+  114.7450, 115.4700, 112.5300, 112.0300, 113.4350, 114.2200, 119.5950, 117.9650, 118.7150, 115.0300,
+  114.5300, 115.0000, 116.5300, 120.1850, 120.5000, 120.5950, 124.1850, 125.3750, 122.9700, 123.0000,
+  124.4350, 123.4400, 124.0300, 128.1850, 129.6550, 130.8750, 132.3450, 132.0650, 133.8150, 135.6600,
+  137.0350, 137.4700, 137.3450, 136.3150, 136.4400, 136.2850, 129.0950, 128.3100, 126.0000, 124.0300,
+  123.9350, 125.0300, 127.2500, 125.6200, 125.5300, 123.9050, 120.6550, 119.9650, 120.7800, 124.0000,
+  122.7800, 120.7200, 121.7800, 122.4050, 123.2500, 126.1850, 127.5600, 126.5650, 123.0600, 122.7150,
+  123.5900, 122.3100, 122.4650, 123.9650, 123.9700, 124.1550, 124.4350, 127.0000, 125.5000, 128.8750,
+  130.5350, 132.3150, 134.0650, 136.0350, 133.7800, 132.7500, 133.4700, 130.9700, 127.5950, 128.4400,
+  127.9400, 125.8100, 124.6250, 122.7200, 124.0900, 123.2200, 121.4050, 120.9350, 118.2800, 118.3750,
+  121.1550, 120.9050, 117.1250, 113.0600, 114.9050, 112.4350, 107.9350, 105.9700, 106.3700, 106.8450,
+  106.9700, 110.0300, 91.0000, 93.5600, 93.6200, 95.3100, 94.1850, 94.7800, 97.6250, 97.5900,
+  95.2500, 94.7200, 92.2200, 91.5650, 92.2200, 93.8100, 95.5900, 96.1850, 94.6250, 95.1200,
+  94.0000, 93.7450, 95.9050, 101.7450, 106.4400, 107.9350, 103.4050, 105.0600, 104.1550, 103.3100,
+  103.3450, 104.8400, 110.4050, 114.5000, 117.3150, 118.2500, 117.1850, 109.7500, 109.6550, 108.5300,
+  106.2200, 107.7200, 109.8400, 109.0950, 109.0900, 109.1550, 109.3150, 109.0600, 109.9050, 109.6250,
+  109.5300, 108.0600
 ];
 
-const expected = [
+const expectedMama = [
   Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
   Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
-  92.6574744421924, 92.7783471257434, 93.0592520064115, 92.9356368995325, 92.9000149644911,
-  92.8990048732289, 92.8229942018608, 92.7516051928620, 92.7414384525517, 92.6960363223993,
-  92.3934372123882, 91.9139380062599, 90.7658162726830, 90.0740111936089, 89.3620815288014,
-  87.6656280861040, 87.4895131032692, 87.4974604839614, 87.4487997113532, 87.4134797590652,
-  87.3586513546248, 87.3571985565411, 87.3428271277309, 87.4342339727455, 87.4790967331831,
-  87.4478089486627, 87.4341052772180, 87.2779545841798, 87.1866387951289, 87.0799098978843,
-  86.9861110535034, 86.9549433796085, 87.0479997922396, 87.0668566957271, 87.2090146571776,
-  87.4600776240503, 87.8014795040326, 87.8826076877600, 88.2803844203263, 88.5454141018648,
-  88.5859031486005, 88.5965040436874, 88.2719621445720, 87.8163354339468, 86.8611444903465,
-  86.6741610056912, 86.5906930013157, 86.5766752991618, 86.6296450514704, 86.6650208354184,
-  86.6783504731998, 86.6895963952268, 87.6981988794437, 88.5095835057360, 89.9508715587081,
-  90.9585930437125, 91.4794679492180, 91.5092409530174, 91.4856744284233, 91.4717808315536,
-  91.4557387469302, 91.1940009725015, 89.4266294004067, 88.8455374050859, 88.3697094609281,
-  88.5930899916723, 89.1316678888979, 90.8601116442358, 93.2091460910382, 94.0581656977510,
-  94.9201636069605, 96.8889752566530, 99.4062425239817, 101.1201449462390, 102.3769237660390,
-  102.6006738368170, 103.3003850710980, 103.6578508957870, 104.0764855627630, 106.4159093020280,
-  112.1346727325330, 113.5057358502340, 114.2548283428500, 115.0085673230990, 115.3491682211620,
-  115.4744042357010, 115.4586954188130, 115.4033778968360, 115.3819703222920, 115.4596680866820,
-  115.4927139908920, 115.5083211482970, 115.3016588863670, 115.2382416224770, 115.1532481002890,
-  115.1580191296150, 115.3257950434630, 115.3602912952500, 115.4272550190370, 115.4236654978450,
-  115.4094918992810, 115.4100431369950, 115.4265778341240, 115.7744740794160, 116.0930627623780,
-  116.3101967717570, 116.6603109196670, 117.3487018143020, 117.8153888221880, 118.4531290804430,
-  119.3499419409230, 119.8086689971510, 120.6175024210070, 122.0458817467430, 123.9704416533650,
-  125.8138480326600, 126.3738969105690, 127.6872486354350, 129.2393432164220, 131.6880947713340,
-  133.5239638088170, 135.0004207395880, 135.6288233403940, 135.7374059656390, 135.8007904215550,
-  135.7583248045180, 135.5543718432480, 135.2569852680960, 133.6204824276490, 131.3192797761920,
-  128.7932379609940, 128.4062405870340, 128.4039316032540, 128.0791656483760, 127.8414201748350,
-  127.1988985844810, 126.5381546649790, 125.6607070438540, 125.6440698902700, 125.6229493897650,
-  125.5972771029140, 125.1856884028260, 125.1156207098550, 124.9914050152240, 124.9677440635400,
-  125.0508437113440, 125.3554407671800, 125.3059272985400, 125.2940386783170, 125.2530757692210,
-  125.2419747210570, 125.1887237516160, 125.1656598262800, 125.1342643444030, 125.1261708430550,
-  125.0293527295390, 125.0082100078360, 125.1058124672220, 125.1321388339230, 125.5284397017590,
-  126.2554117345480, 126.9803557764160, 128.5646940398630, 129.8559054638140, 130.0995104273400,
-  130.5156892070650, 130.6273781337970, 130.6136632314180, 130.5821372483140, 130.5780360175850,
-  130.4619826221790, 130.2592097652620, 129.0901503140520, 128.7592330158310, 128.3218396854650,
-  127.9194919253990, 127.1326782278630, 126.7107330400510, 126.1909025410680, 125.5077119513560,
-  125.3652360592940, 125.0689417277010, 124.6785367307510, 123.1715118076970, 122.3246069304410,
-  120.4996045001390, 118.0226226271800, 116.5389084881180, 115.7700047414230, 114.4762055991300,
-  112.8691910705370, 111.7330463494810, 105.8813879559000, 103.7386265802100, 101.7705073498860,
-  100.9556429673090, 100.0740835866110, 99.5051792798608, 99.4197548401710, 99.2260466472373,
-  98.8377738185378, 98.4351675572326, 98.3887252314702, 98.0891751313173, 98.0708172638065,
-  98.0047820815841, 97.9717872707032, 97.9587393847739, 97.9160266616328, 97.8272391679346,
-  97.8109932013579, 97.7811643727499, 97.7968786191168, 98.8421055702164, 100.3972096134300,
-  101.1278312905150, 101.3486183367770, 101.7632588756100, 101.9699249107700, 102.0803180404650,
-  102.2131955779830, 102.6495717799380, 104.1660350536590, 105.9174582846280, 107.1295132390960,
-  109.3610815395210, 109.7246822740860, 109.7071337912410, 109.7068748325140, 109.6867591775540,
-  109.6319778699710, 109.6221417907160, 109.6271816752350, 109.5930223785590, 109.6314010730650,
-  109.3937985883840, 109.3445353771140, 109.3487688924230, 109.3510517081720, 109.3489501843720,
-  109.3310159853090, 109.2940150671190
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, 82.8141250000000, 83.0101687500000, 83.2026603125000, 83.4199022968750,
+  83.5379071820312, 83.6696368229297, 85.0535684114648, 85.1633899908916, 85.3520954913470,
+  85.4947407167797, 85.5106286809407, 85.0528143404703, 84.9830486234468, 84.9566461922745,
+  84.8838138826607, 85.8331569413304, 85.9501240942639, 86.1158678895507, 86.3530744950731,
+  86.5745457703195, 89.2172728851597, 89.2744092409017, 89.3036887788567, 89.3846293399138,
+  89.3903978729181, 89.3045029792722, 89.1642778303086, 86.7233889151543, 86.5325944693966,
+  85.3912972346983, 85.4061073729634, 85.4663020043152, 85.6071119040994, 85.8033813088944,
+  85.9882122434497, 86.0935516312772, 88.3592758156386, 88.5530620248567, 88.7090339236138,
+  88.9032072274331, 89.1087968660615, 90.1406484330307, 90.1828660113792, 90.1925977108102,
+  90.0954678252697, 89.9360694340062, 89.6438909623059, 86.4156954811530, 86.2446021188251,
+  86.8253720128838, 87.4778534122396, 88.2672107416277, 89.1507252045463, 89.8681889443189,
+  96.4890944721595, 96.8451397485515, 97.2348827611239, 97.7138886230677, 98.0758191919143,
+  98.4470282323186, 101.8250440834490, 105.7800220417250, 107.8125110208620, 107.9711354698190,
+  113.9855677349100, 116.9302838674550, 117.0475622035170, 117.1655590933420, 117.5590295466710,
+  117.5404616523790, 117.4455635697600, 117.2287853912720, 116.9548461217090, 116.8329788156230,
+  115.7889894078120, 115.7730399374210, 115.6108879405500, 115.4318435435220, 115.3320013663460,
+  115.2764012980290, 117.4357006490150, 117.4621656165640, 118.0885828082820, 117.9356536678680,
+  116.2328268339340, 116.1711854922370, 116.1891262176250, 116.3889199067440, 116.5944739114070,
+  118.5947369557030, 118.8742501079180, 119.1992876025220, 121.0846438012610, 121.1804116111980,
+  121.3431410306380, 122.3915705153190, 122.4734919895530, 122.7590673900750, 123.1038640205720,
+  126.9894320102860, 129.6672160051430, 130.8661080025710, 131.0135526024430, 131.2458749723210,
+  131.5353312237050, 131.8320646625190, 132.1077114293930, 134.2113557146970, 135.3256778573480,
+  135.3736439644810, 135.0597117662570, 134.7222261779440, 134.2861148690470, 129.1580574345230,
+  127.6079647084670, 127.4790664730440, 127.4676131493920, 127.3752324919220, 127.2829708673260,
+  127.1140723239600, 126.7911187077620, 123.3780593538810, 123.2481563861870, 123.6240781930930,
+  123.5818742834390, 123.4387805692670, 123.3558415408030, 123.3082994637630, 123.3053844905750,
+  124.7451922452880, 124.8859326330230, 125.7254663165120, 124.3927331582560, 124.2939523455320,
+  124.2587547282550, 124.1613169918420, 124.0765011422500, 124.0207505711250, 124.0182130425690,
+  124.0250523904400, 124.0455497709180, 124.1932722823720, 124.8466361411860, 125.0480543341270,
+  125.3224016174210, 128.8187008087100, 129.0810157682750, 129.4287149798610, 131.6043574899310,
+  131.6616396154340, 131.7520576346620, 131.7129547529290, 131.5070570152830, 131.3537041645190,
+  131.1830189562930, 128.4965094781460, 128.3029340042390, 128.0237873040270, 127.8270979388260,
+  126.8972774956690, 124.1511387478340, 123.0563880258110, 122.6897993885170, 122.4740594190910,
+  121.8145297095460, 121.3597648547730, 120.9105197717010, 119.9913167237650, 119.7370008875760,
+  119.3719008431980, 118.4965356358960, 112.2332678179480, 111.9401044270510, 111.6853492056980,
+  109.3276746028490, 109.3627908727070, 108.4446513290710, 107.7004187626180, 106.7428119832590,
+  101.0264059916300, 97.6057029958149, 97.4644178460241, 97.4724469537229, 97.4783246060368,
+  97.3669083757349, 97.2345629569482, 94.7272814784741, 94.5691674045504, 94.4517090343228,
+  94.4196235826067, 95.0048117913034, 95.0638212017382, 95.0418801416513, 95.0457861345687,
+  94.9934968278403, 94.3692484139201, 94.4460359932241, 94.8109841935629, 95.3924349838848,
+  101.6637174919420, 101.7507816173450, 103.4053908086730, 103.4428712682390, 103.4362277048270,
+  103.4316663195860, 103.5020830036060, 103.8472288534260, 109.1736144267130, 109.5806837053770,
+  110.0141495201090, 113.5995747600540, 113.4070960220520, 113.2194912209490, 112.9850166599020,
+  112.6467658269060, 112.4004275355610, 111.1202137677810, 111.0189530793920, 110.9225054254220,
+  110.8341301541510, 110.7581736464430, 110.6732649641210, 110.2891324820610, 110.2559258579580,
+  110.2196295650600, 110.1116480868070
+];
+
+const expectedFama = [
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, Number.NaN, Number.NaN, Number.NaN, Number.NaN,
+  Number.NaN, 82.8125406250000, 82.8174813281250, 82.8271108027344, 82.8419305900879,
+  82.8593300048865, 82.8795876753376, 83.4230828593694, 83.4665905376574, 83.5137281614997,
+  83.5632534753817, 83.6119378555206, 83.9721569767581, 83.9974292679253, 84.0214096910340,
+  84.0429697958247, 84.4905165822011, 84.5270067700027, 84.5667282979914, 84.6113869529184,
+  84.6604659233535, 85.7996676638050, 85.8865362032324, 85.9719650176230, 86.0572816256803,
+  86.1406095318612, 86.2197068680465, 86.2933211421031, 86.4008380853659, 86.4041319949666,
+  86.1509233048996, 86.1323029066012, 86.1156528840440, 86.1029393595454, 86.0954504082791,
+  86.0927694541584, 86.0927890085864, 86.6594107103494, 86.7067519932121, 86.7568090414721,
+  86.8104689961212, 86.8679271928697, 87.6861075029099, 87.7485264656217, 87.8096282467514,
+  87.8667742362143, 87.9185066161591, 87.9616412248128, 87.5751547888978, 87.5225361670348,
+  87.5051070631811, 87.5044257219075, 87.5234953474005, 87.5641760938292, 87.6217764150914,
+  89.8386059293584, 90.0137692748382, 90.1942971119954, 90.3822868997722, 90.5746252070757,
+  90.7714352827068, 92.9191050749822, 96.1343343166678, 99.0538784927164, 99.2768099171440,
+  102.9539993715850, 106.4480704955530, 107.0841072479250, 107.3361435440610, 109.8918650447130,
+  110.1013133578250, 110.2849196131230, 110.4585162575770, 110.6209245041800, 110.7762258619660,
+  112.0294167484270, 112.1230073281520, 112.2102043434620, 112.2907453234640, 112.3667767245360,
+  112.4395173388730, 113.6885631664080, 113.7829032276620, 114.8593231228170, 114.9362313864430,
+  115.2603802483160, 115.2831503794140, 115.3057997753690, 115.3328777786540, 115.3644176819730,
+  116.1719975004050, 116.2395538155930, 116.3135471602660, 117.5063213205150, 117.5981735777820,
+  117.6917977641040, 118.8667409519070, 118.9569097278490, 119.0519636694040, 119.1532611781830,
+  121.1123038862090, 123.2510319159420, 125.1548009376000, 125.3012697292210, 125.4498848602980,
+  125.6020210193830, 125.7577721104620, 125.9165205934350, 127.9902293737510, 129.8240914946500,
+  129.9628303063960, 130.0902523428920, 130.2060516887690, 130.3080532682760, 130.0205543098380,
+  129.6625515845250, 129.6079644567380, 129.5544556740550, 129.4999750945010, 129.4445499888220,
+  129.3862880472000, 129.3214088137140, 127.8355714487560, 127.7208860721920, 126.6966841024170,
+  126.6188138569430, 126.5393130247510, 126.4597262376520, 126.3809405683050, 126.3040516663620,
+  125.9143368110930, 125.8886267066410, 125.8478366091090, 125.4840607463960, 125.4490254147970,
+  125.4192686476330, 125.3878198562390, 125.3550368883890, 125.0214653090730, 124.9963840024100,
+  124.9721007121110, 124.9489369385810, 124.9300453221760, 124.9091930269290, 124.9126645596090,
+  124.9229079860540, 125.8968561917180, 125.9764601811320, 126.0627665511000, 127.4481642858080,
+  127.5535011690480, 127.6584650806890, 127.7598273224950, 127.8535080648140, 127.9410129673070,
+  128.0220631170320, 128.1406747073100, 128.1447311897340, 128.1417075925910, 128.1338423512470,
+  128.0090584528720, 127.0445785266120, 126.3658027068100, 126.2247357499530, 126.1309688416810,
+  125.0518590586470, 124.1288355076790, 123.9581279749420, 123.7258946261500, 123.6261722826860,
+  123.5198154966990, 123.3275779107930, 120.5540003875810, 120.3386529885680, 120.1223203939960,
+  117.4236589462100, 117.2221372443720, 117.0027000964890, 116.7701430631430, 116.4291645602000,
+  112.5784749180570, 108.8352819374970, 108.5510103352100, 108.2740462506730, 108.0041532095570,
+  107.7382220887110, 107.4756306104170, 104.2885433274310, 104.0455589293590, 103.8057126819840,
+  103.5710604544990, 101.4294982887000, 101.2703563615260, 101.1146444560290, 100.9629229979930,
+  100.8136873437390, 99.2025776112842, 99.0836640708327, 98.9768470739010, 98.8872367716506,
+  99.5813569517235, 99.6355925683640, 100.5780421284410, 100.6496628569360, 100.7193269781330,
+  100.7871354616700, 100.8550091502180, 100.9298146427980, 102.9907645887770, 103.1555125666920,
+  103.3269784905270, 105.8951275579090, 106.0829267695130, 106.2613408807990, 106.4294327752760,
+  106.5848661015670, 106.7302551374170, 107.8277447950080, 107.9075250021170, 107.9828995127000,
+  108.0541802787360, 108.1217801129290, 108.1855672342090, 108.7114585461720, 108.7500702289660,
+  108.7868092123690, 108.81993018423000
 ];
 
 describe('MesaAdaptiveMovingAverage', () => {
-  const epsilon = 1e-8;
+  const epsilon = 1e-14;
 
   it('should return expected mnemonic', () => {
-    let mama = new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30 });
-    expect(mama.getMnemonic()).toBe('mama(10, 2, 30)');
-    mama = new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestSmoothingFactor: 2 / 3, slowestSmoothingFactor: 2 / 31 });
-    expect(mama.getMnemonic()).toBe('mama(10, 0.667, 0.065)');
+    let mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 3, slowLimitLength: 39 });
+    expect(mama.getMnemonic()).toBe('mama(3, 39)');
+    expect(mama.getMnemonicFama()).toBe('fama(3, 39)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 0.05 });
+    expect(mama.getMnemonic()).toBe('mama(0.500, 0.050)');
+    expect(mama.getMnemonicFama()).toBe('fama(0.500, 0.050)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator });
+    expect(mama.getMnemonic()).toBe('mama(2, 40)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hdu)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hdu)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, pa)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, pa)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, dd)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, dd)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 0.05,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator });
+    expect(mama.getMnemonic()).toBe('mama(0.500, 0.050)');
+    expect(mama.getMnemonicFama()).toBe('fama(0.500, 0.050)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 0.05,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled });
+    expect(mama.getMnemonic()).toBe('mama(0.500, 0.050, hdu)');
+    expect(mama.getMnemonicFama()).toBe('fama(0.500, 0.050, hdu)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 0.05,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator });
+    expect(mama.getMnemonic()).toBe('mama(0.500, 0.050, pa)');
+    expect(mama.getMnemonicFama()).toBe('fama(0.500, 0.050, pa)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 0.05,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator });
+    expect(mama.getMnemonic()).toBe('mama(0.500, 0.050, dd)');
+    expect(mama.getMnemonicFama()).toBe('fama(0.500, 0.050, dd)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+        estimatorParams: {smoothingLength: 3, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hd(3, 0.200, 0.200))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hd(3, 0.200, 0.200))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.3, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hd(4, 0.300, 0.200))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hd(4, 0.300, 0.200))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.3} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hd(4, 0.200, 0.300))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hd(4, 0.200, 0.300))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hdu)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hdu)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled,
+        estimatorParams: {smoothingLength: 3, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hdu(3, 0.200, 0.200))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hdu(3, 0.200, 0.200))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.3, alphaEmaPeriod: 0.2} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hdu(4, 0.300, 0.200))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hdu(4, 0.300, 0.200))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.3} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, hdu(4, 0.200, 0.300))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, hdu(4, 0.200, 0.300))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.25} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, pa)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, pa)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator,
+        estimatorParams: {smoothingLength: 3, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.25} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, pa(3, 0.150, 0.250))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, pa(3, 0.150, 0.250))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.13, alphaEmaPeriod: 0.25} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, pa(4, 0.130, 0.250))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, pa(4, 0.130, 0.250))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.23} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, pa(4, 0.150, 0.230))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, pa(4, 0.150, 0.230))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.15} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, dd)');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, dd)');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator,
+        estimatorParams: {smoothingLength: 3, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.15} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, dd(3, 0.150, 0.150))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, dd(3, 0.150, 0.150))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.13, alphaEmaPeriod: 0.15} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, dd(4, 0.130, 0.150))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, dd(4, 0.130, 0.150))');
+
+    mama = new MesaAdaptiveMovingAverage(
+      { fastLimitLength: 2, slowLimitLength: 40,
+        estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator,
+        estimatorParams: {smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.13} });
+    expect(mama.getMnemonic()).toBe('mama(2, 40, dd(4, 0.150, 0.130))');
+    expect(mama.getMnemonicFama()).toBe('fama(2, 40, dd(4, 0.150, 0.130))');
   });
 
-  it('should throw if efficiency ratio length is less than 2', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 1, fastestLength: 2, slowestLength: 30 }); }).toThrow();
+  it('should throw if the fast limit length is less than 2', () => {
+    expect(() => { new MesaAdaptiveMovingAverage({fastLimitLength: 1, slowLimitLength: 39 }); }).toThrow();
   });
 
-  it('should throw if the fastest length is less than 2', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestLength: 1, slowestLength: 30 }); }).toThrow();
+  it('should throw if the slow limit length is less than 2', () => {
+    expect(() => { new MesaAdaptiveMovingAverage({fastLimitLength: 3, slowLimitLength: 1 }); }).toThrow();
   });
 
-  it('should throw if the slowest length is less than 2', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 1 }); }).toThrow();
+  it('should throw if the fast limit smoothing factor is less or equal to 0', () => {
+    expect(() => { new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: -0.01, slowLimitSmoothingFactor: 0.05 }); }).toThrow();
   });
 
-  it('should throw if the fastest smoothing factor is less or equal to 0', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestSmoothingFactor: -0.01, slowestSmoothingFactor: 2 / 31 }); }).toThrow();
+  it('should throw if the fast limit smoothing factor is greater or equal to 1', () => {
+    expect(() => { new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 1.01, slowLimitSmoothingFactor: 0.05 }); }).toThrow();
   });
 
-  it('should throw if the fastest smoothing factor is greater or equal to 1', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestSmoothingFactor: 1.01, slowestSmoothingFactor: 2 / 31 }); }).toThrow();
+  it('should throw if the slow limit smoothing factor is less or equal to 0', () => {
+    expect(() => { new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: -0.01 }); }).toThrow();
   });
 
-  it('should throw if the slowest smoothing factor is less or equal to 0', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestSmoothingFactor: 2 / 3, slowestSmoothingFactor: -0.01 }); }).toThrow();
+  it('should throw if the slow limit smoothing factor is greater or equal to 1', () => {
+    expect(() => { new MesaAdaptiveMovingAverage(
+      { fastLimitSmoothingFactor: 0.5, slowLimitSmoothingFactor: 1.01 }); }).toThrow();
   });
 
-  it('should throw if the slowest smoothing factor is greater or equal to 1', () => {
-    expect(() => { new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestSmoothingFactor: 2 / 3, slowestSmoothingFactor: 1.01 }); }).toThrow();
-  });
+  it('should calculate expected update values and prime state', () => {
+    const lprimed = 26;
+    const mama = new MesaAdaptiveMovingAverage({ fastLimitLength: 3, slowLimitLength: 39 });
 
-  it('should calculate expected output and prime state', () => {
-    const len = 10;
-    const mama = new MesaAdaptiveMovingAverage({ efficiencyRatioLength: 10, fastestLength: 2, slowestLength: 30 });
-
-    for (let i = 0; i < len; i++) {
+    for (let i = 0; i < lprimed; i++) {
       expect(mama.update(input[i])).toBeNaN();
       expect(mama.isPrimed()).toBe(false);
     }
 
-    for (let i = len; i < input.length; i++) {
+    for (let i = lprimed; i < input.length; i++) {
       const act = mama.update(input[i]);
       expect(mama.isPrimed()).toBe(true);
-      expect(act).withContext(`{i}: expected {expected[i]}, actual {act}`).toBeCloseTo(expected[i], epsilon);
+      expect(act).withContext(`{i}: expected {expectedMama[i]}, actual {act}`).toBeCloseTo(expectedMama[i], epsilon);
     }
 
     expect(mama.update(Number.NaN)).toBeNaN();
+  });
+
+  it('should calculate expected MAMA/FAMA values and prime state', () => {
+    const lprimed = 26;
+    const mama = new MesaAdaptiveMovingAverage({ fastLimitLength: 3, slowLimitLength: 39 });
+
+    for (let i = 0; i < lprimed; i++) {
+      mama.update(input[i]);
+      expect(mama.getMama()).toBeNaN();
+      expect(mama.getFama()).toBeNaN();
+      expect(mama.isPrimed()).toBe(false);
+    }
+
+    for (let i = lprimed; i < input.length; i++) {
+      mama.update(input[i]);
+      const actMama = mama.getMama();
+      const actFama = mama.getFama();
+      expect(mama.isPrimed()).toBe(true);
+      expect(actMama).withContext(`MAMA {i}: expected {expectedMama[i]}, actual {actMama}`).toBeCloseTo(expectedMama[i], epsilon);
+      expect(actFama).withContext(`FAMA {i}: expected {expectedFama[i]}, actual {actFama}`).toBeCloseTo(expectedFama[i], epsilon);
+    }
   });
 });

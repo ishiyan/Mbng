@@ -1,16 +1,16 @@
 <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-  <mat-label>Smoothing length</mat-label>
-  <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="smoothingLengthParam" />
+  <mat-label>Smooth ℓ</mat-label>
+  <input type="number" matInput min="2" max="4" step="1" [(ngModel)]="smoothingLengthParam" />
 </mat-form-field>
 <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-  <mat-label>α quadrature</mat-label>
+  <mat-label>Quad α</mat-label>
   <input type="number" matInput min="0" max="1" step="0.01" [(ngModel)]="alphaQuadParam" />
 </mat-form-field>
 <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-  <mat-label>α period</mat-label>
+  <mat-label>Period α</mat-label>
   <input type="number" matInput min="0" max="1" step="0.01" [(ngModel)]="alphaPeriodParam" />
 </mat-form-field>
 <mat-form-field style="width:6em" appearance="fill" floatLabel="always" class="mr">
-  <mat-label>Warm-up period</mat-label>
-  <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="warmUpParam" />
+  <mat-label>Warm-up</mat-label>
+  <input type="number" matInput min="0" max="1024" step="1" [(ngModel)]="warmUpParam" />
 </mat-form-field>

@@ -28,10 +28,10 @@ export class HilbertTransformerCycleEstimatorTypeComponent implements AfterConte
   private initialized = false;
 
   protected comps: Comp[] = [
-    { enumeration: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator, name: 'Homodyne discriminator', selected: false },
-    { enumeration: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled, name: 'Homodyne discriminator unrolled', selected: false },
-    { enumeration: HilbertTransformerCycleEstimatorType.PhaseAccumulator, name: 'Phase accumulator', selected: false },
-    { enumeration: HilbertTransformerCycleEstimatorType.DualDifferentiator, name: 'Dual differentiator', selected: false }
+    { enumeration: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator, name: 'Hom disc', selected: false },
+    { enumeration: HilbertTransformerCycleEstimatorType.HomodyneDiscriminatorUnrolled, name: 'Hom disc un', selected: false },
+    { enumeration: HilbertTransformerCycleEstimatorType.PhaseAccumulator, name: 'Phase accu', selected: false },
+    { enumeration: HilbertTransformerCycleEstimatorType.DualDifferentiator, name: 'Dual diff', selected: false }
   ];
 
   protected compSelected = this.comps[HilbertTransformerCycleEstimatorType.HomodyneDiscriminator.valueOf()];

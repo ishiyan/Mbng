@@ -45,7 +45,7 @@ export class BarComponentComponent implements OnInit {
   readonly selectionChange = output<BarComponent>();
 
   /** A label to display above the selector. */
-  readonly label = input('Bar component');
+  readonly label = input('Bar price');
 
   protected selectionChanged(selection: MatSelectChange) {
     this.selectionChange.emit(selection.value.enumeration);

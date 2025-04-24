@@ -25,6 +25,12 @@ export enum IndicatorType {
   /** Identifies the __Kaufman Adaptive Moving Average__ (KAMA) indicator. */
   KaufmanAdaptiveMovingAverage,
 
+	/** Identifies the __Jurik Moving Average__ (JMA) indicator. */
+	JurikMovingAverage,
+
+	/** Identifies the Ehler's __MESA Adaptive Moving Average__ (MAMA) indicator. */
+	MesaAdaptiveMovingAverage,
+
   /** Identifies the __Bollinger Bands__ (BB) indicator. */
   BollingerBands,
 
