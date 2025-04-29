@@ -1,5 +1,13 @@
+import { Bar } from '../../../../data/entities/bar';
+import { Quote } from '../../../../data/entities/quote';
+import { Scalar } from '../../../../data/entities/scalar';
+import { Trade } from '../../../../data/entities/trade';
 import { componentPairMnemonic } from '../../indicator/component-pair-mnemonic';
 import { LineIndicator } from '../../indicator/line-indicator';
+import { IndicatorMetadata } from '../../indicator/indicator-metadata.interface';
+import { IndicatorOutput } from '../../indicator/indicator-output';
+import { IndicatorOutputType } from '../../indicator/indicator-output-type.enum';
+import { IndicatorType } from '../../indicator/indicator-type.enum';
 import { KaufmanAdaptiveMovingAverageLengthParams } from './kaufman-adaptive-moving-average-params.interface';
 import { KaufmanAdaptiveMovingAverageSmoothingFactorParams } from './kaufman-adaptive-moving-average-params.interface';
 
@@ -19,6 +27,13 @@ export const kaufmanAdaptiveMovingAverageMnemonic =
         ', ', p.fastestSmoothingFactor.toFixed(3), ', ', p.slowestSmoothingFactor.toFixed(3),
         componentPairMnemonic(p.barComponent, p.quoteComponent), ')');
     }
+  };
+
+/** Function to calculate mnemonic of an efficiency ratio. */
+export const kaufmanAdaptiveMovingAverageErMnemonic =
+  (params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams): string => {
+    return 'kama('.concat(Math.floor(params.efficiencyRatioLength).toString(),
+      componentPairMnemonic(params.barComponent, params.quoteComponent), ')');
   };
 
 /** __Kaufman Adaptive Moving Average__ (_KAMA_) is an EMA with the smoothing
@@ -55,7 +70,10 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
   private readonly absoluteDelta: Array<number>;
   private absoluteDeltaSum = 0;
   private value = 0;
+  private efficiencyRatio = 0;
   private windowCount = 0;
+  private mnemonicEr: string;
+  private descriptionEr: string;
 
   /**
    * Constructs an instance given a length in samples or a smoothing factor in (0, 1).
@@ -106,7 +124,84 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
     this.window = new Array<number>(this.efficiencyRatioLength + 1);
     this.absoluteDelta = new Array<number>(this.efficiencyRatioLength);
     this.mnemonic = kaufmanAdaptiveMovingAverageMnemonic(params);
+    this.mnemonicEr = kaufmanAdaptiveMovingAverageErMnemonic(params);
+
+    const descr = "Kaufman adaptive moving average ";
+    this.description =  descr + this.mnemonic;
+    this.descriptionEr =  descr + "efficiency ratio " + this.mnemonicEr;
+
     this.primed = false;
+  }
+
+  /** The value of the KAMA component of the indicator. */
+  public getKama(): number { return this.primed ? this.value : Number.NaN; }
+
+  /** The value of the efficiency ratio component of the indicator. */
+  public getEfficiencyRatio(): number { return this.primed ? this.efficiencyRatio : Number.NaN; }
+
+  /** The mnemonic of the efficiency ratio component of the indicator. */
+  public getMnemonicEfficiencyRatio(): string { return this.mnemonicEr; }
+
+  /** The description of the efficiency ratio component of the indicator. */
+  public getDescriptionEfficiencyRatio(): string { return this.descriptionEr; }
+
+  /** Describes a requested output data of an indicator. */
+  public override metadata(): IndicatorMetadata {
+    return {
+      type: IndicatorType.KaufmanAdaptiveMovingAverage,
+      outputs: [
+        {kind: 0, type: IndicatorOutputType.Scalar, mnemonic: this.mnemonic, description: this.description },
+        {kind: 1, type: IndicatorOutputType.Scalar, mnemonic: this.mnemonicEr, description: this.descriptionEr }
+      ]
+    };
+  }
+
+  /** Updates an indicator given the next scalar sample. */
+  public override updateScalar(sample: Scalar): IndicatorOutput {
+    const scalarKama = new Scalar();
+    scalarKama.time = sample.time;
+    scalarKama.value = this.update(sample.value);
+
+    const scalarEr = new Scalar();
+    scalarEr.time = sample.time;
+    scalarEr.value = this.efficiencyRatio;
+    return [scalarKama, scalarEr];
+  }
+
+  /** Updates an indicator given the next bar sample. */
+  public override updateBar(sample: Bar): IndicatorOutput {
+    const scalarKama = new Scalar();
+    scalarKama.time = sample.time;
+    scalarKama.value = this.update(this.barComponentFunc(sample));
+
+    const scalarEr = new Scalar();
+    scalarEr.time = sample.time;
+    scalarEr.value = this.efficiencyRatio;
+    return [scalarKama, scalarEr];
+  }
+
+  /** Updates an indicator given the next quote sample. */
+  public override updateQuote(sample: Quote): IndicatorOutput {
+    const scalarKama = new Scalar();
+    scalarKama.time = sample.time;
+    scalarKama.value = this.update(this.quoteComponentFunc(sample));
+
+    const scalarEr = new Scalar();
+    scalarEr.time = sample.time;
+    scalarEr.value = this.efficiencyRatio;
+    return [scalarKama, scalarEr];
+  }
+
+  /** Updates an indicator given the next trade sample. */
+  public override updateTrade(sample: Trade): IndicatorOutput {
+    const scalarKama = new Scalar();
+    scalarKama.time = sample.time;
+    scalarKama.value = this.update(sample.price);
+
+    const scalarEr = new Scalar();
+    scalarEr.time = sample.time;
+    scalarEr.value = this.efficiencyRatio;
+    return [scalarKama, scalarEr];
   }
 
   /** Updates the value of the indicator given the next sample. */
@@ -139,6 +234,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
         temp = delta / this.absoluteDeltaSum;
       }
 
+      this.efficiencyRatio = temp;
       temp = this.alphaSlowest + temp * this.alphaDiff;
       this.value += (sample - this.value) * temp * temp;
 
@@ -162,6 +258,7 @@ export class KaufmanAdaptiveMovingAverage extends LineIndicator {
           temp = delta / this.absoluteDeltaSum;
         }
 
+        this.efficiencyRatio = temp;
         temp = this.alphaSlowest + temp * this.alphaDiff;
         this.value = this.window[this.efficiencyRatioLength - 1];
         this.value += (sample - this.value) * temp * temp;
