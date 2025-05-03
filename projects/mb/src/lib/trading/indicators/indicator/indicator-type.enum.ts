@@ -31,6 +31,9 @@ export enum IndicatorType {
 	/** Identifies the Ehler's __MESA Adaptive Moving Average__ (MAMA) indicator. */
 	MesaAdaptiveMovingAverage,
 
+	/** Identifies the Ehler's __Fractal Adaptive Moving Average__ (FRAMA) indicator. */
+	FractalAdaptiveMovingAverage,
+
   /** Identifies the __Bollinger Bands__ (BB) indicator. */
   BollingerBands,
 
