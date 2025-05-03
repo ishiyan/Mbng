@@ -258,6 +258,13 @@ export const treeNodes: MbSample[] = [
                       { name: 'Selector', header: 'Mesa Adaptive Moving Average selector', route: 'comp-tra-ind-john-ehlers/mama/s2' },
                       { name: 'Dialog', header: 'Mesa Adaptive Moving Average dialog', route: 'comp-tra-ind-john-ehlers/mama/s3' }
                     ]
+                  },
+                  { name: 'Fractal Adaptive Moving Average params',
+                    children: [
+                      { name: 'Params', header: 'Fractal Adaptive Moving Average params', route: 'comp-tra-ind-john-ehlers/frama/s1' },
+                      { name: 'Selector', header: 'Fractal Adaptive Moving Average selector', route: 'comp-tra-ind-john-ehlers/frama/s2' },
+                      { name: 'Dialog', header: 'Fractal Adaptive Moving Average dialog', route: 'comp-tra-ind-john-ehlers/frama/s3' }
+                    ]
                   }
                 ]
               }

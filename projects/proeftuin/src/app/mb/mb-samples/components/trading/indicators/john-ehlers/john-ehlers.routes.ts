@@ -6,5 +6,7 @@ export const routes: Routes = [
   { path: 'htce', loadChildren: () => import('./hilbert-transformer-cycle-estimator-params/sample-hilbert-transformer-cycle-estimator-params.routes')
     .then(m => m.routes) },
   { path: 'mama', loadChildren: () => import('./mesa-adaptive-moving-average-params/sample-mesa-adaptive-moving-average-params.routes')
+    .then(m => m.routes) },
+  { path: 'frama', loadChildren: () => import('./fractal-adaptive-moving-average-params/sample-fractal-adaptive-moving-average-params.routes')
     .then(m => m.routes) }
 ];
