@@ -1,0 +1,11 @@
+@for (frama of framaArray; track frama.id) {
+  <app-frama-params [initial]="frama"
+    (changed)="updated($event);" (removed)="removed($event);">
+  </app-frama-params>
+}
+
+<div>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

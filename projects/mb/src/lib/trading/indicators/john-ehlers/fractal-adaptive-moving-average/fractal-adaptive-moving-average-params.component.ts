@@ -39,9 +39,12 @@ export class FractalAdaptiveMovingAverageParamsComponent implements AfterContent
       value = 2;
     }
 
+    if (this.params.length === value) {
+      return;
+    }
+
     this.params.length = value;
     this.params = { ...this.params };
-
     this.notify();
   }
 
@@ -49,7 +52,13 @@ export class FractalAdaptiveMovingAverageParamsComponent implements AfterContent
     return this.params.slowestSmoothingFactor ? this.params.slowestSmoothingFactor : 0.01;
   }
   protected set alphaParam(value: number) {
-    if (!value || value > 1) {
+    if (value === undefined) {
+      value = 0.01;
+    }
+    if (value < 0) {
+      value = 0;
+    }
+    if (value > 1) {
       value = 1;
     }
 

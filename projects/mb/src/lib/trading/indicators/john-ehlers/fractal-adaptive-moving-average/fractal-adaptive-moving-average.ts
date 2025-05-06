@@ -29,12 +29,12 @@ export const fractalAdaptiveMovingAverageDimMnemonic =
  *
  * Here the αs is the slowest α (default suggested value is 0.01 or equivalent length of 199 samples).
  *
- * The concept of _FRAMA_ is to relate the fractal dimension FDᵢ, calculated on a window
+ * The concept of _FRAMA_ is to relate the fractal dimension FDᵢ, calculated on window
  * samples, to the EMA smoothing factor αᵢ, thus making the EMA adaptive.
  *
- *This dependency is defined as follows:
+ * This dependency is defined as follows:
  *
- *	αᵢ = exp(-w(FDᵢ - 1)),  1 ≤ FDᵢ ≤ 2,
+ *	αᵢ = exp(w(FDᵢ - 1)),  1 ≤ FDᵢ ≤ 2,
  *
  *	w = ln(αs)
  *
@@ -48,10 +48,10 @@ export const fractalAdaptiveMovingAverageDimMnemonic =
  * αᵢ = 1, and the output of the exponential moving average is equal to the input.
  *
  * When FDᵢ = 2 (series fills all plane, excibiting extreme volatility), the exponent
- * is -w, which means that αᵢ = αs, and the output of the exponential moving average
+ * is w, which means that αᵢ = αs, and the output of the exponential moving average
  * is equal to the output of the slowest moving average with αs.
  *
- * The fractal dimension is estimated by using a "box count" method.
+ * The fractal dimension is estimated by using a "box count" method (Falconer 2014 chapter 2).
  * Since price samples are typically uniformly spaced, the box count is approximated
  * by the average slope of the price curve. This is calculated as the highest price
  * minus the lowest price within an interval, divided by the length of that interval.
@@ -79,7 +79,7 @@ export const fractalAdaptiveMovingAverageDimMnemonic =
  *  3. Repeat steps 1 and 2 using grids with progressively smaller box sizes (s).
  *  4. Calculate dimension by examining the relationship between N(s) and s,
  *     typically as s approaches zero. Mathematically, it's defined as the limit:
- *     FD = lim(s→0) [ln(N(s)) / ln(1/s)]
+ *     FD = lim(s→0) [ln(N(s)) / -ln(1/s)]
  * 
  * Reference:
  *
@@ -250,9 +250,9 @@ export class FractalAdaptiveMovingAverage extends LineIndicator {
     this.windowHigh[this.windowCount] = sampleHigh;
     this.windowLow[this.windowCount] = sampleLow;
     this.windowCount++;
-    if (this.windowCount == this.lengthMinOne) {
+    if (this.windowCount === this.lengthMinOne) {
       this.value = sample;
-    } else if (this.windowCount == this.length) {
+    } else if (this.windowCount === this.length) {
       this.fractalDimension = this.estimateFractalDimension();
 
       const alpha = this.estimateAlpha();
@@ -267,7 +267,7 @@ export class FractalAdaptiveMovingAverage extends LineIndicator {
 
   private estimateFractalDimension(): number {
     let minLowHalf = Number.MAX_VALUE;
-    let maxHighHalf = Number.MIN_VALUE;
+    let maxHighHalf = -Number.MIN_VALUE;
 
     for (let i = 0; i < this.halfLength; i++) {
       const l = this.windowLow[i];
@@ -285,7 +285,7 @@ export class FractalAdaptiveMovingAverage extends LineIndicator {
     let minLowFull = minLowHalf;
     let maxHighFull = maxHighHalf;
     minLowHalf = Number.MAX_VALUE;
-    maxHighHalf = Number.MIN_VALUE;
+    maxHighHalf = -Number.MIN_VALUE;
 
     for (let i = this.halfLength; i < this.length; i++) {
       const l = this.windowLow[i];
@@ -309,7 +309,11 @@ export class FractalAdaptiveMovingAverage extends LineIndicator {
     const rangeN3 = maxHighFull - minLowFull;
 
     const fdim = (Math.log((rangeN1 + rangeN2)/this.halfLength) -
-      Math.log(rangeN3/this.length)) * Math.LOG2E;
+      Math.log(rangeN3/this.length)) * Math.LOG2E; // / Math.log(2);
+
+    if (Number.isNaN(fdim)) {
+      return 1;
+    }
 
     return Math.min(Math.max(fdim, 1), 2);
   }

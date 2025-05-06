@@ -1,7 +1,8 @@
 import { Bar } from '../entities/bar';
 
 /** Function to generate a step data as an array of _Bar_s. */
-export const generateStep = (value1 : number, length1 : number, value2 : number, length2 : number, spread : number): Bar[] => {
+export const generateStep = (value1: number, length1: number, value2: number, length2: number,
+  spread: number): Bar[] => {
   const bars: Bar[] = [];
   const d = new Date(2019, 11, 31);
 
@@ -11,6 +12,28 @@ export const generateStep = (value1 : number, length1 : number, value2 : number,
 
   for (let i = 0; i < length2; ++i) {
     bars.push(nextBar(d, value2, spread));
+  }
+
+  return bars;
+};
+
+/** Function to generate a noisy step data as an array of _Bar_s. */
+export const generateStepWithNoise = (value1: number, noiseRatio1: number, length1: number,
+  value2: number, noiseRatio2: number, length2: number, spread: number): Bar[] => {
+  const bars: Bar[] = [];
+  const d = new Date(2019, 11, 31);
+
+  const delta1 = value1*noiseRatio1;
+  const delta2 = value2*noiseRatio2;
+
+  for (let i = 0; i < length1; ++i) {
+    const val = delta1*(Math.random()*2 - 1);
+    bars.push(nextBar(d, value1 + val, spread));
+  }
+
+  for (let i = 0; i < length2; ++i) {
+    const val = delta2*(Math.random()*2 - 1);
+    bars.push(nextBar(d, value2 + val, spread));
   }
 
   return bars;

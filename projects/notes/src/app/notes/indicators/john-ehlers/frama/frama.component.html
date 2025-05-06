@@ -1,0 +1,411 @@
+<h1>{{framaNote.title}}</h1>
+
+<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
+  <mat-icon class="icon">tune</mat-icon>
+</mat-slide-toggle>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)">
+</app-bar-series-select>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+    </mb-swatches-select>
+    <app-frama-list [initial]="initialIndicators" [colors]="selectedPalette"
+      (changed)="indicatorsChanged($event)"/>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+    }
+    The FRAMA lines are plotted in the price pane.
+    The lower pane shows the related box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
+  </figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  <p></p>
+  The Fractal Adaptive Moving Average (FRAMA) was introduced by John F. Ehlers
+  in his article in  <em>Technical Analysis of Stocks &amp; Commodities</em> (Ehlers 2005),
+  later available in free access on his MESA website (Ehlers 2006).
+  <p></p>
+  FRAMA is actually an
+  <a href="/{{emaNote.route}}">Exponential Moving Average</a> (EMA)
+  with a variable smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki>
+  being changed with each new sample within the minimum and the maximun boundaries.
+  <mb-kd>
+    {{"\\tag*{(1)}frama_{k}=\\alpha_{k} x_{k} + (1-\\alpha_{k})frama_{k-1}"}}
+  </mb-kd>
+  where <mb-ki>{{"\\alpha_{k}\\in\\left[\\alpha_{slow}, 1\\right]"}}</mb-ki>.
+  Here <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>, the slowest smoothing factor, is the parameter of the indicator.
+  <p></p>
+  The concept of FRAMA is to relate the fractal dimension <mb-ki>{{"\\mathcal{D}_{k}"}}</mb-ki>,
+  calculated on a moving window of <mb-ki>{{"\\ell"}}</mb-ki> samples, to the EMA smoothing factor
+  <mb-ki>{{"\\alpha_k"}}</mb-ki>, thus making the EMA adaptive.
+  <mb-kd>
+    {{"\\tag*{(2)}\\alpha_k=e^{\\omega(\\mathcal{D}_{k}-1)}, \\mathcal{D}_{k}\\in\\left[1,2\\right]"}}
+  </mb-kd>
+  where
+  <mb-kd>
+    {{"\\tag*{(3)}\\omega=\\ln(\\alpha_{slow}), \\alpha_{slow}\\in\\left(0,1\\right)"}}
+  </mb-kd>
+  The default value of <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>, recommended by Ehlers, is
+  <mb-ki>{{"0.01"}}</mb-ki>. This corresponds to an equivalent smoothing length of
+  <mb-ki>{{"\\ell_{slow} = \\frac{2}{\\alpha_{slow}}-1=199"}}</mb-ki> samples.
+  <p></p>
+  <figure class="figleft">
+    <img src="assets/photos/ehlers1.jpg">
+    <figcaption>
+      John F. Ehlers (1933 -).
+      President at <a href="https://mesasoftware.com/" target="_blank" rel="noopener noreferrer">MESA Software</a>;
+      chief scientist at <a href="https://stockspotter.co" target="_blank" rel="noopener noreferrer">StockSpotter</a>;
+      contributing Editor for <a href="https://traders.com/" target="_blank" rel="noopener noreferrer">S&C Magazine</a>.
+    </figcaption>
+  </figure>
+  To explain why he chose the exponential function (2), Ehlers says:
+  <blockquote>
+    "Since the prices are log-normal, it seems reasonable to use an exponential function
+    to relate the fractal dimension to alpha." (Ehlers 2005, p82)
+  </blockquote>
+  This is not entirely correct (prices follow a log-normal distribution if returns are normally
+  distributed), but is a good practical simplification.
+  <p></p>
+  The equation (2) maps the bounded range of <mb-ki>{{"\\mathcal{D}_{k}\\in\\left[1,2\\right]"}}</mb-ki>
+  into a convenient and interpretable range of <mb-ki>{{"\\alpha_{k}\\in\\left[\\alpha{slow},1\\right]"}}</mb-ki>.
+  <p></p>
+  When <mb-ki>{{"\\mathcal{D}_{k}=1"}}</mb-ki>, representing a smooth trending market,
+  <mb-ki>{{"\\alpha_{k}=\\exp(0)=1"}}</mb-ki> and the filter reacts instantly, making the
+  FRAMA follow price exactly: <mb-ki>{{"frama_{k}=x_{k}"}}</mb-ki>.
+  <p></p>
+  When <mb-ki>{{"\\mathcal{D}_{k}=2"}}</mb-ki>, representing chaotic noisy market behavior,
+  <mb-ki>{{"\\alpha_{k}=\\exp(\\omega)=\\alpha_{slow}"}}</mb-ki> and the FRAMA is very slow,
+  suppressing noise: <mb-ki>{{"frama_{k}=\\alpha_{slow} x_{k} + (1-\\alpha_{slow})frama_{k-1}"}}</mb-ki>.
+  <p></p>
+  The fractal dimension is estimated by using a "box counting" method (Falconer 2014, chapter 2).
+  The box-counting dimension is also known as the Minkowski–Bouligand dimension, named after
+  Hermann Minkowski and Georges Bouligand.
+  <p></p>
+  We could measure the fractal dimension of prices by covering the curve with a series of
+  small boxes, but this is burdensome task.
+  Since price samples are typically uniformly spaced, the box count can be approximated
+  by the average slope of the price curve. This is calculated as the highest price
+  minus the lowest price within an interval, divided by the length of that interval.
+  The equation for the number of boxes is:
+  <mb-kd>
+    {{"\\tag*{}N=\\frac{\\max(P_{1...\\ell}) - \\min(P_{1...\\ell})}{\\ell}"}}
+  </mb-kd>
+  where <mb-ki>{{"P_{1...\\ell}"}}</mb-ki> are <mb-ki>{{"\\ell"}}</mb-ki> prices in the interval.
+  <p></p>
+  <figure class="figright" style="max-width: 400px">
+    <mb-svg-viewer src="assets/indicators/frama-box-counting.svg" [scaleToContainer]="true">
+    </mb-svg-viewer>
+    <figcaption>Three box-counting intervals used to calculate the fractal dimension.</figcaption>
+  </figure>
+  We can divide the lookback window of length <mb-ki>{{"\\ell"}}</mb-ki> into two half-intervals
+  of length <mb-ki>{{"\\ell/2"}}</mb-ki> and calculate two box counts <mb-ki>{{"N_{1}"}}</mb-ki>
+  and <mb-ki>{{"N_{2}"}}</mb-ki>. Next, we can calculate the box count <mb-ki>{{"N_{3}"}}</mb-ki>
+  for the whole interval <mb-ki>{{"\\ell"}}</mb-ki> and calculate the fractal box-counting
+  dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
+  <mb-kd>
+    {{"\\tag*{}N_{1}=\\frac{\\max(P_{1...\\ell/2}) - \\min(P_{1...\\ell/2})}{\\ell/2}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}N_{2}=\\frac{\\max(P_{\\ell/2+1...\\ell}) - \\min(P_{\\ell/2+1...\\ell})}{\\ell/2}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}N_{3}=\\frac{\\max(P_{1...\\ell}) - \\min(P_{1...\\ell})}{\\ell}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}\\mathcal{D}=\\frac{\\log(N_{1}+N_{2})-\\log N_{3}}{\\log 2}"}}
+  </mb-kd>
+  How Ehlers came up with this formula for <mb-ki>{{"\\mathcal{D}"}}</mb-ki>?
+  <p></p>
+  According to (Falconer 2014, p. 28, equation 2.4), the box counting dimension
+  <mb-kd>
+    {{"\\tag*{}\\mathcal{D}_{P}=\\lim_{\\delta\\to 0}\\frac{\\log N_{\\delta}(P)}{-\\log(\\delta)}"}}
+  </mb-kd>
+  where <mb-ki>{{"N_{\\delta}(P)"}}</mb-ki> is the number of boxes of size <mb-ki>{{"\\delta"}}</mb-ki>
+  needed to cover the price set <mb-ki>{{"P"}}</mb-ki>. As <mb-ki>{{"\\delta\\to 0"}}</mb-ki>,
+  we are zooming in infinitely, seeing more and more details of true fractals (like the Mandelbrot set,
+  coastline of Britain, etc.), which exhibit self-similarity at all scales.
+  <p></p>
+  In parctice, we only have finite-resolution data (fixed-length lookback window in this case),
+  so we cannot directly use the limit formula above. Instead of computing the limit,
+  we do a discrete aapproximation of the limit using two scales, full window range
+  <mb-ki>{{"\\ell"}}</mb-ki> and half window range <mb-ki>{{"\\ell/2"}}</mb-ki>. That gives
+  <mb-kd>
+    {{"\\tag*{}\\mathcal{D}\\approx\\frac{\\log N\\left(\\ell/2\\right) - \\log N\\left(\\ell\\right)}{\\log\\left(1/\\left(\\ell/2\\right)\\right) - \\log\\left(1/\\ell\\right)}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{\\log\\left(\\frac{N\\left(\\ell/2\\right)}{N\\left(\\ell\\right)}\\right)}{\\log\\left(2/\\ell\\right) - \\log\\left(1/\\ell\\right)}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{}=\\frac{\\log\\left(\\frac{N\\left(\\ell/2\\right)}{N\\left(\\ell\\right)}\\right)}{\\log 2}"}}
+  </mb-kd>
+  Recalling that <mb-ki>{{"N\\left(\\ell/2\\right) = N_{1}+N_{2}"}}</mb-ki> and
+  <mb-ki>{{"N\\left(\\ell\\right) = N_{3}"}}</mb-ki>, we get
+  <mb-kd>
+    {{"\\tag*{}\\mathcal{D}\\approx\\frac{\\log\\left(\\frac{N_{1}+N_{2}}{N_{3}}\\right)}{\\log 2}"}}
+  </mb-kd>
+  <mb-kd>
+    {{"\\tag*{(4)}=\\frac{\\log\\left(N_{1}+N_{2}\\right)-\\log N_{3}}{\\log 2}"}}
+  </mb-kd>
+  which is the formula Ehlers uses to calculate the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
+  <p></p>
+  To summarize all this, the FRAMA is calculated as follows.
+  The input parameters are:
+  <ul>
+    <li><mb-ki>{{"\\ell"}}</mb-ki> - the box-counting fractal dimension period.
+      It should be an even integre, since we have to divide the period into two half-intervals.
+      The default value is <mb-ki>{{"16"}}</mb-ki> samples.
+    </li>
+    <li><mb-ki>{{"\\alpha_{slow}"}}</mb-ki> - the lowest value to limit
+      <mb-ki>{{"\\alpha"}}</mb-ki> calculated from the box-counting fractal dimension.
+      The default value of <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>, recommended by Ehlers, is
+      <mb-ki>{{"0.01"}}</mb-ki>. This corresponds to an equivalent smoothing length of
+      <mb-ki>{{"\\ell_{slow} = \\frac{2}{\\alpha_{slow}}-1=199"}}</mb-ki> samples.
+    </li>
+  </ul>
+  Given the next sample <mb-ki>{{"x_k"}}</mb-ki> and the previous FRAMA value
+  <mb-ki>{{"frama_{k-1}"}}</mb-ki>,
+  <ul>
+    <li>update the lookback window of <mb-ki>{{"\\ell"}}</mb-ki> samples.</li>
+    <li>calculate the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki> using (4),</li>
+    <li>calculate the smoothing factor <mb-ki>{{"\\alpha"}}</mb-ki> using (3) and (2),</li>
+    <li>calculate the next <mb-ki>{{"frama_{k}"}}</mb-ki> value using (1).</li>
+  </ul>
+  <p></p>
+  The FRAMA indicator is not primed during the first <mb-ki>{{"\\ell-1"}}</mb-ki> samples.
+  You can see the full implementation of the FRAMA in
+  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/ehlers/fractaladaptivemovingaverage.go" target="_blank"
+    rel="noopener noreferrer">Golang</a>
+  and in
+  <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average.ts"
+    target="_blank" rel="noopener noreferrer">Typescript</a>
+  on Github.
+  <p></p>
+  From the digital signal processing (DSP) point of view, the FRAMA is an infinite impulse response (IIR)
+  filter since all previous input samples contribute to its value.
+  <p></p>
+</div>
+
+<h2>Changing parameters</h2>
+<div style="width:100%">
+  The influence of the parameters on the smoothiness and the responsiveness of the FRAMA
+  is demonstrated on the two following figures.
+  <p></p>
+  The first figure shows different window lengths <mb-ki>{{"\\ell"}}</mb-ki> leaving
+  the slowest smoothing factor to be the default value.
+  <p></p>
+  The second figure shows different slowest smoothing factors <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki> leaving
+  the window lengths to be the default value.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen"></mb-ohlcv-chart>
+  <figcaption>Varying the window length <mb-ki>{{"\\ell"}}</mb-ki>.
+    The lower pane shows the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
+  </figcaption>
+</figure>
+<p></p>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlpha"></mb-ohlcv-chart>
+  <figcaption>Varying the slowest smoothing factor <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.
+    The lower pane shows the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
+  </figcaption>
+</figure>
+<p></p>
+<p></p>
+
+<h2>Step response</h2>
+<div style="width:100%">
+  Since FRAMA is an <a href="/{{emaNote.route}}">exponential moving average</a>,
+  its step response should be similar to the step response of the EMA.
+  <p></p>
+  The first two figures show the step responces of the FRAMA with the different
+  lengths <mb-ki>{{"\\ell"}}</mb-ki>. We can see that the responses almost overlap,
+  showing no dependency on <mb-ki>{{"\\ell"}}</mb-ki>.
+  <p></p>
+  This is intuitively clear because the generated step data has the constant (not random) high
+  and low values, so the fractal dimension (volatility) remains almost the same regardless
+  of the length <mb-ki>{{"\\ell"}}</mb-ki> when the indicator window moves over the step.
+  <p></p>
+  The two next figures show the step responces of the FRAMA with the different
+  slowest smoothing factors <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.
+  <p></p>
+  Since the <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki> truncates the smoothing factor of the EMA
+  from the lowest (slowest) side, the step response is more responsive to the step data
+  when the <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki> is smaller, which is the same behavior
+  the EMA has.
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLen"></mb-ohlcv-chart>
+    <figcaption>Step-up response shows almost no dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnLen"></mb-ohlcv-chart>
+    <figcaption>Step-down response shows almost no dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpAlpha"></mb-ohlcv-chart>
+    <figcaption>Step-up response dependency on <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnAlpha"></mb-ohlcv-chart>
+    <figcaption>Step-down response dependency on <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+</div>
+
+<h2>Frequency response</h2>
+<div style="width:100%">
+  The figures below show an amplitude and a phase lag of the unit sample response of the FRAMA as a function
+  of a period of various signal frequencies.
+  We cannot derive its frequency response analytically because of the adaptive nature of the FRAMA.
+  <p></p>
+  A period is a duration of a cycle in samples.
+  The smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
+  To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
+  continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
+  We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-150" [maxDeg]="150" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="fill">
+      <mat-label>Max period to display</mat-label>
+      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Height</mat-label>
+      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+    </mat-form-field>
+    <app-frama-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-frama-list>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
+</figure>
+<p></p>
+<div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
+  The following charts show the frequency responses of the KAMA with different ER lengths
+  <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  The other indicator parameters are set to default values.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various FRAMA lengths <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various FRAMA lengths <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The following charts show the frequency responses of the KAMA with different fast lengths
+  <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.
+  The other indicator parameters are set to default values.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various FRAMA slowest dmoothing factors <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various FRAMA slowest dmoothing factors <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+<div style="width:100%">
+</div>
+<hr />
+<h2 class="counter-skip">References</h2>
+<div class="citation"><!-- @Book falconer2014 --> Falconer, Kenneth (2014).
+  <em>Fractal Geometry: Mathematical Foundations and Applications</em>. (3 ed, p. 400). Wiley.
+  <a href="https://books.google.com/books?id=CaSsAQAAQBAJ" target="_blank" rel="noopener noreferrer">google books</a>
+</div>
+<div class="citation"><!-- @Article ehlers2005oct -->Ehlers, John F (2005).
+  Fractal Adaptive Moving Average. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>23</em>(10), 81–82.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=2005#Oct" target="_blank"
+    rel="noopener noreferrer">traders.com</a>
+</div>
+<div class="citation"><!-- @misc{ehlers_2006 -->Ehlers, John F (2006).
+  <em>FRAMA – Fractal Adaptive Moving Average</em>. Retrieved April 10, 2025, from
+  <a href="https://www.mesasoftware.com/papers/FRAMA.pdf" target="_blank" rel="noopener noreferrer">mesasoftware.com/papers/FRAMA.pdf</a>
+</div>
+<div class="citation"><!-- @misc{ehlers_mesa -->MESA Software (2025).
+  <em>Left-brained concepts for traders in theit right minds</em>. Retrieved April 10, 2025, from
+  <a href="https://mesasoftware.com/" target="_blank" rel="noopener noreferrer">mesasoftware.com</a>
+</div>
+<div class="citation"><!-- @misc{ehlers_spot --> Stockspotter (2025).
+  <em>Cycle, Vigor & Trend</em>. Retrieved April 10, 2025, from
+  <a href="https://stockspotter.co" target="_blank" rel="noopener noreferrer">stockspotter.co</a>
+</div>
+<div class="citation-src"><!-- @Misc ehlers_linkedin -->Ehlers, John F.
+  <em>Professional profile | linkedin</em>, accessed April 10 2025.
+  <a href="https://www.linkedin.com/in/john-ehlers-8017874/" target="_blank">linkedin.com</a>
+</div>

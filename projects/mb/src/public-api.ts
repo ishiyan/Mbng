@@ -223,6 +223,23 @@ export * from './lib/trading/indicators/mark-jurik/jurik-moving-average/jurik-mo
 export * from './lib/trading/indicators/mark-jurik/jurik-moving-average/jurik-moving-average-params.component';
 export * from './lib/trading/indicators/mark-jurik/jurik-moving-average/jurik-moving-average-params-dialog.component';
 
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator.interface';
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-type.enum';
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-type.component';
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params.interface';
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params.component';
+export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params-dialog.component';
+
+export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average';
+export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average-params.interface';
+export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average-params.component';
+export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average-params-dialog.component';
+
+export * from './lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average';
+export * from './lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average-params.interface';
+export * from './lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average-params.component';
+export * from './lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average-params-dialog.component';
+
 export * from './lib/charts/line-configuration.interface';
 export * from './lib/charts/downloader';
 export * from './lib/charts/entities/band';
