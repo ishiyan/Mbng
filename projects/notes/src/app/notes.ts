@@ -1,16 +1,16 @@
 import { Note } from './shared/note.interface';
 
-export const ehlersFractalMovingAverageNote: Note = {
-  title: 'Fractal moving average',
-  summary: 'Exploring fractal moving average',
+export const ehlersFractalAdaptiveMovingAverageNote: Note = {
+  title: 'Fractal adaptive moving average',
+  summary: 'Exploring fractal adaptive moving average',
   route: '13',
   created: '2025-05-02',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Ehlers', 'Fractal']
 };
 
-export const ehlersMesaMovingAverageNote: Note = {
-  title: 'MESA moving average',
-  summary: 'Exploring MESA moving average',
+export const ehlersMesaAdaptiveMovingAverageNote: Note = {
+  title: 'MESA adaptive moving average',
+  summary: 'Exploring MESA adaptive moving average',
   route: '12',
   created: '2025-04-27',
   tags: ['Trading', 'Indicators', 'Moving averages', 'Ehlers', 'MESA']
@@ -120,8 +120,8 @@ export const notes: Note[] = [
     created: '2021-12-04',
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
   },*/
-  ehlersFractalMovingAverageNote,
-  //ehlersMesaMovingAverageNote,
+  ehlersFractalAdaptiveMovingAverageNote,
+  //ehlersMesaAdaptiveMovingAverageNote,
   jurikMovingAverageNote,
   kaufmanAdaptiveMovingAverageNote,
   t3ExponentialMovingAverageNote,

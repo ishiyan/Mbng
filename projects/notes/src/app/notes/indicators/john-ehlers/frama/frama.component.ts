@@ -17,7 +17,7 @@ import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentV
 
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
-import { ehlersFractalMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
+import { ehlersFractalAdaptiveMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
 import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { FramaInput } from './frama-input.interface';
 import { Frama } from './frama.interface';
@@ -212,7 +212,7 @@ export class FramaComponent implements AfterViewInit {
 
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
-  protected framaNote = ehlersFractalMovingAverageNote;
+  protected framaNote = ehlersFractalAdaptiveMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected dataSelection!: BarSeries;
