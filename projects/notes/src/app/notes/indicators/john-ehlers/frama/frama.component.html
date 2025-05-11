@@ -17,8 +17,7 @@
     <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
       (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
     </mb-swatches-select>
-    <app-frama-list [initial]="initialIndicators" [colors]="selectedPalette"
-      (changed)="indicatorsChanged($event)"/>
+    <app-frama-list [initial]="initialIndicators" [colors]="selectedPalette" (changed)="indicatorsChanged($event)" />
   </mat-expansion-panel>
   }
 
@@ -144,10 +143,12 @@
   two scales: the full window range <mb-ki>{{"\\ell"}}</mb-ki> and half window range
   <mb-ki>{{"\\ell/2"}}</mb-ki>. Hence,
   <mb-kd>
-    {{"\\tag*{}\\mathcal{D}\\approx\\frac{\\log N\\left(\\ell/2\\right) - \\log N\\left(\\ell\\right)}{\\log\\left(1/\\left(\\ell/2\\right)\\right) - \\log\\left(1/\\ell\\right)}"}}
+    {{"\\tag*{}\\mathcal{D}\\approx\\frac{\\log N\\left(\\ell/2\\right) - \\log
+    N\\left(\\ell\\right)}{\\log\\left(1/\\left(\\ell/2\\right)\\right) - \\log\\left(1/\\ell\\right)}"}}
   </mb-kd>
   <mb-kd>
-    {{"\\tag*{}=\\frac{\\log\\left(\\frac{N\\left(\\ell/2\\right)}{N\\left(\\ell\\right)}\\right)}{\\log\\left(2/\\ell\\right) - \\log\\left(1/\\ell\\right)}"}}
+    {{"\\tag*{}=\\frac{\\log\\left(\\frac{N\\left(\\ell/2\\right)}{N\\left(\\ell\\right)}\\right)}{\\log\\left(2/\\ell\\right)
+    - \\log\\left(1/\\ell\\right)}"}}
   </mb-kd>
   <mb-kd>
     {{"\\tag*{}=\\frac{\\log\\left(\\frac{N\\left(\\ell/2\\right)}{N\\left(\\ell\\right)}\\right)}{\\log 2}"}}
@@ -171,7 +172,7 @@
     </li>
     <li><mb-ki>{{"\\alpha_{slow}"}}</mb-ki> - the lower bound on
       <mb-ki>{{"\\alpha"}}</mb-ki>, calculated from the box-counting fractal dimension.
-      The default  Ehlers value is <mb-ki>{{"0.01"}}</mb-ki>, corresponding to
+      The default Ehlers value is <mb-ki>{{"0.01"}}</mb-ki>, corresponding to
       an equivalent smoothing length of
       <mb-ki>{{"\\ell_{slow} = \\frac{2}{\\alpha_{slow}}-1=199"}}</mb-ki> samples.
     </li>
@@ -187,8 +188,8 @@
   <p></p>
   The FRAMA indicator is not primed during the first <mb-ki>{{"\\ell-1"}}</mb-ki> samples.
   You can find its full implementation in
-  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/ehlers/fractaladaptivemovingaverage.go" target="_blank"
-    rel="noopener noreferrer">Golang</a>
+  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/ehlers/fractaladaptivemovingaverage.go"
+    target="_blank" rel="noopener noreferrer">Golang</a>
   and in
   <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/john-ehlers/fractal-adaptive-moving-average/fractal-adaptive-moving-average.ts"
     target="_blank" rel="noopener noreferrer">Typescript</a>
@@ -277,8 +278,8 @@
 <h2>Frequency response</h2>
 <div style="width:100%">
   The figures below show the amplitude and a phase lag of the FRAMA’s unit sample response as a function
-  of a period of various signal frequencies.
-  Its frequency response cannot be derived analytically due to FRAMA’s adaptive nature.
+  of a period of various signal frequencies. Because FRAMA is essentially an exponential moving average,
+  its amplitude and phase lag closely resemble those of an <a href="/{{emaNote.route}}">EMA</a>.
   <p></p>
   A period is the duration of one cycle, measured in samples.
   The smallest possible period for a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
@@ -287,14 +288,20 @@
   At least two samples (peak and trough) are required to capture one complete cycle.
   For more details, see <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
   <p></p>
+  We can see from both charts that the amplitude and phase lag remain nearly constant at
+  <mb-ki>{{"100"}}</mb-ki>% and <mb-ki>{{"0"}}</mb-ki> degrees, indicating that the
+  <mb-ki>{{"\\delta"}}</mb-ki>-signal passes through the FRAMA with almost no change.
+  At the smallest period of <mb-ki>{{"2"}}</mb-ki> samples, the amplitude is only
+  <mb-ki>{{"99.97"}}</mb-ki>%, and at the period of <mb-ki>{{"4"}}</mb-ki> samples,
+  the phase lag is only <mb-ki>{{"0.07"}}</mb-ki> degrees.
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs" [minPct]="99.97" [maxPct]="100.01"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
-    [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-150" [maxDeg]="150" [data]="freqs"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-0.02" [maxDeg]="0.02" [data]="freqs"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
 
   @if (unlocked) {
@@ -328,18 +335,42 @@
   Thus, <mb-ki>{{"0"}}</mb-ki> corresponds to an infinite <mb-ki>{{"\\tau"}}</mb-ki>,
   while <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
   <p></p>
-  The following charts show the frequency responses of the FRAMA with different window lengths
-  <mb-ki>{{"\\ell"}}</mb-ki>.
-  The other indicator parameters remain at their default values.
+  The following charts illustrate the frequency responses of the FRAMA with different
+  window lengths <mb-ki>{{"\\ell"}}</mb-ki>.
+  The slowest smoothing factor parameter <mb-ki>{{"\\alpha_{slow}"}}</mb-ki> remains
+  at its default value.
   <p></p>
+  We can see that the amplitude and phase lag do not depend on the window length
+  parameter <mb-ki>{{"\\ell"}}</mb-ki>. This is intuitively clear because of the
+  way we approximate the discrete <mb-ki>{{"\\delta"}}</mb-ki>-signal data.
+  <p></p>
+  Indeed, before the <mb-ki>{{"\\delta"}}</mb-ki>-spike, we feed FRAMA zero sample values
+  together with a small constant value as the “highest” sample value and zero as the
+  “lowest” sample value. This makes FRAMA assume the “price curve” fills the entire area
+  between the highest and lowest horizontal sample lines. Hence, the box-counting fractal
+  dimension <mb-ki>{{"\\mathcal{D}=2"}}</mb-ki> and <mb-ki>{{"\\alpha=\\alpha_{slow}"}}</mb-ki>.
+  Because the sample values are zero, the FRAMA output is also zero.
+  <p></p>
+  The <mb-ki>{{"\\delta"}}</mb-ki>-spike is represented by a single high-value sample,
+  for example, 1000. This sets the distance between the highest and lowest sample lines
+  to the spike’s value. The box-counting fractal dimension <mb-ki>{{"\\mathcal{D}=1"}}</mb-ki>
+  and <mb-ki>{{"\\alpha=1"}}</mb-ki>, so FRAMA outputs the spike’s value.
+  <p></p>
+  Next, we feed FRAMA the same zero samples as before.
+  Until the <mb-ki>{{"\\delta"}}</mb-ki>-sample leaves the moving average window,
+  <mb-ki>{{"\\mathcal{D}=1"}}</mb-ki> and <mb-ki>{{"\\alpha=1"}}</mb-ki>, causing FRAMA
+  to output zero for the current sample. Once the <mb-ki>{{"\\delta"}}</mb-ki>-sample is
+  out of the window, we revert to the initial scenario:
+  <mb-ki>{{"\\mathcal{D}=2"}}</mb-ki>, <mb-ki>{{"\\alpha=\\alpha_{slow}"}}</mb-ki>,
+  and FRAMA again outputs zero.
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'period'" [maxPeriod]="40" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'period'" [maxPeriod]="40" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]" [minPct]="99.97"
+    [maxPct]="100.01" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [xmode]="'frequency'" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]" [minPct]="99.97" [maxPct]="100.01"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various FRAMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
@@ -347,10 +378,10 @@
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
-    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [maxPeriod]="40" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
+    [xmode]="'frequency'" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various FRAMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
@@ -360,27 +391,31 @@
 <div style="width:100%">
   The following charts show the frequency responses of the FRAMA with different
   slowest smoothing factors <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.
-  The other indicator parameters remain at their default values.
+  The length parameter <mb-ki>{{"\\ell"}}</mb-ki> remains at its default value.
   <p></p>
+  There is a subtle difference in amplitude and phase lag among FRAMA versions
+  with different <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.
+  These charts align with those of an <a href="/{{emaNote.route}}">EMA</a>.
 </div>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [minPct]="99.97" [maxPct]="100.01" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
-    [xmode]="'frequency'" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'frequency'" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]" [minPct]="99.97"
+    [maxPct]="100.01" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various FRAMA slowest smoothing factors <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
-    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [maxPeriod]="40" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
+    [xmode]="'frequency'" [minDeg]="-0.02" [maxDeg]="0.02"
+    [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
     [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various FRAMA slowest smoothing factors <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.</figcaption>
@@ -401,7 +436,8 @@
 </div>
 <div class="citation"><!-- @misc{ehlers_2006 -->Ehlers, John F (2006).
   <em>FRAMA – Fractal Adaptive Moving Average</em>. Retrieved April 10, 2025, from
-  <a href="https://www.mesasoftware.com/papers/FRAMA.pdf" target="_blank" rel="noopener noreferrer">mesasoftware.com/papers/FRAMA.pdf</a>
+  <a href="https://www.mesasoftware.com/papers/FRAMA.pdf" target="_blank"
+    rel="noopener noreferrer">mesasoftware.com/papers/FRAMA.pdf</a>
 </div>
 <div class="citation"><!-- @misc{ehlers_mesa -->MESA Software (2025).
   <em>Left-brained concepts for traders in theit right minds</em>. Retrieved April 10, 2025, from

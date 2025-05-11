@@ -37,8 +37,8 @@ const calculateFrama = (bars: Bar[], frama: FractalAdaptiveMovingAverage, barCom
   const scalarsFdim: Scalar[] = [];
   const f = barComponentValue(barComponent);
   for (const bar of bars) {
-    scalarsFrama.push({time: bar.time, value: frama.updateWithHighLow(f(bar), bar.high, bar.low)});
-    scalarsFdim.push({time: bar.time, value: frama.getFdim()});
+    scalarsFrama.push({ time: bar.time, value: frama.updateWithHighLow(f(bar), bar.high, bar.low) });
+    scalarsFdim.push({ time: bar.time, value: frama.getFdim() });
   }
 
   return [scalarsFrama, scalarsFdim];
@@ -47,18 +47,64 @@ const calculateFrama = (bars: Bar[], frama: FractalAdaptiveMovingAverage, barCom
 const calculateStep = (bars: Bar[], frama: FractalAdaptiveMovingAverage, barComponent: BarComponent): [Scalar[], Scalar[]] => {
   const f = barComponentValue(barComponent);
   const val = f(bars[0]);
-  for (const bar of bars) {
-    frama.updateWithHighLow(val, bars[0].high, bars[0].low);
+  const high = bars[0].high;
+  const low = bars[0].low;
+  for (let i = 0; i < bars.length; i++) {
+    frama.updateWithHighLow(val, high, low);
   }
 
   const scalarsFrama: Scalar[] = [];
   const scalarsFdim: Scalar[] = [];
   for (const bar of bars) {
-    scalarsFrama.push({time: bar.time, value: frama.updateWithHighLow(f(bar), bar.high, bar.low)});
-    scalarsFdim.push({time: bar.time, value: frama.getFdim()});
+    scalarsFrama.push({ time: bar.time, value: frama.updateWithHighLow(f(bar), bar.high, bar.low) });
+    scalarsFdim.push({ time: bar.time, value: frama.getFdim() });
   }
 
   return [scalarsFrama, scalarsFdim];
+};
+
+const prepareFilteredSignal = (len: number, filter: FractalAdaptiveMovingAverage,
+  warmup: number, random: boolean): number[] => {
+  const zero = 0.01;
+  const zeroDelta = 0.01;
+  const peak = 1000;
+  const peakDelta = 0.1;
+
+  if (random) {
+    for (let i = 0; i < warmup; ++i) {
+      const z = Math.random() * zero;
+      filter.updateWithHighLow(z, z + zeroDelta, 0);
+    }
+  } else {
+    for (let i = 0; i < warmup; ++i) {
+      filter.updateWithHighLow(zero, zero + zeroDelta, 0);
+    }
+  }
+
+  const signal = new Array<number>(len);
+  signal[0] = filter.updateWithHighLow(peak, peak + peakDelta, peak - peakDelta);
+
+  if (random) {
+    for (let i = 1; i < len; ++i) {
+      const z = Math.random() * zero;
+      signal[i] = filter.updateWithHighLow(z, z + zeroDelta, 0);
+    }
+  } else {
+    for (let i = 1; i < len; ++i) {
+      signal[i] = filter.updateWithHighLow(zero, zero + zeroDelta, 0);
+    }
+  }
+
+  return signal;
+}
+
+const calculateFfr = (len: number, alpha: number): FrequencyResponseResult => {
+  const flt = new FractalAdaptiveMovingAverage({
+    length: len, slowestSmoothingFactor: alpha
+  });
+
+  return FrequencyResponse.calculate(sl, flt, len * 2, 179,
+    prepareFilteredSignal(sl, flt, len * 2, false));
 };
 
 const getConfigTemplate = (): Configuration => ({
@@ -168,14 +214,14 @@ export class FramaComponent implements AfterViewInit {
       showStyle: true
     }
   ];
-  
+
   protected readonly initialIndicators: FramaInput = {
-    length: [8,16,32], slowestSmoothingFactor: 0.01,
+    length: [8, 16, 32], slowestSmoothingFactor: 0.01,
     barComponent: BarComponent.Median, showStyle: true
   };
 
   protected readonly initialFreqs: FramaInput = {
-    length: [8,16,32], slowestSmoothingFactor: 0.01,
+    length: [8, 16, 32], slowestSmoothingFactor: 0.01,
     showStyle: false
   };
 
@@ -236,42 +282,21 @@ export class FramaComponent implements AfterViewInit {
     stepMax, stepMaxNoise, stepCount * 3, stepSpread);
   protected dataStepDn = generateStepWithNoise(stepMax, stepMaxNoise, stepCount,
     stepMin, stepMinNoise, stepCount * 3, stepSpread);*/
-  
-  protected framaLen4 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 4, slowestSmoothingFactor: 0.01 }), 4*2);
-  protected framaLen8 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 8, slowestSmoothingFactor: 0.01 }), 8*2);
-  protected framaLen16 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 16, slowestSmoothingFactor: 0.01 }), 16*2);
-  protected framaLen32 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 32, slowestSmoothingFactor: 0.01 }), 32*2);
 
-  protected framaAlpha005 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 16, slowestSmoothingFactor: 0.005}), 16*2);
-  protected framaAlpha01 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 16, slowestSmoothingFactor: 0.01}), 16*2);
-  protected framaAlpha05 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 16, slowestSmoothingFactor: 0.05}), 16*2);
-  protected framaAlpha1 = FrequencyResponse.calculate(sl, new FractalAdaptiveMovingAverage({
-    length: 16, slowestSmoothingFactor: 0.1}), 16*2);
-        
+  protected framaLen4 = calculateFfr(4, 0.01);
+  protected framaLen8 = calculateFfr(8, 0.01);
+  protected framaLen16 = calculateFfr(16, 0.01);
+  protected framaLen32 = calculateFfr(32, 0.01);
+
+  protected framaAlpha005 = calculateFfr(16, 0.005);
+  protected framaAlpha01 = calculateFfr(16, 0.01);
+  protected framaAlpha05 = calculateFfr(16, 0.05);
+  protected framaAlpha1 = calculateFfr(16, 0.1);
+
   ngAfterViewInit() {
     this.initialized = true;
     this.unlocked = isUnlocked;
     this.render();
-
-    /*const frama = new FractalAdaptiveMovingAverage({length: 16, slowestSmoothingFactor: 0.01});
-    let count = 0;
-    //while (!frama.isPrimed) {
-    for (let i = 0; i < 20; i++) {
-      const v = frama.updateWithHighLow(10, 10, 10);
-      console.log('before', count++, v, frama.getFrama(), frama.getFdim(), frama.isPrimed());
-    }
-
-    for (let i = 0; i < 20; i++) {
-      const v = frama.updateWithHighLow(90, 90, 90);
-      console.log('after', count++, v, frama.getFrama(), frama.getFdim(), frama.isPrimed());
-    }*/ 
   }
 
   protected indicatorPaletteChanged(palette: string[]) {
@@ -298,10 +323,12 @@ export class FramaComponent implements AfterViewInit {
     const frrs: FrequencyResponseResult[] = [];
     for (const el of arr) {
       const p = el.params;
+      const warmup = p.length * 2;
+      const filter = new FractalAdaptiveMovingAverage({
+        length: p.length, slowestSmoothingFactor: p.slowestSmoothingFactor
+      })
       const frr = FrequencyResponse.calculate(sl,
-        new FractalAdaptiveMovingAverage({
-          length: p.length, slowestSmoothingFactor: p.slowestSmoothingFactor
-        }), p.length*2);
+        filter, warmup, 179, prepareFilteredSignal(sl, filter, warmup, false));
       frrs.push(frr);
     }
 
@@ -321,7 +348,7 @@ export class FramaComponent implements AfterViewInit {
     this.configuration = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicators);
     this.fixColors(this.indicatorsLen);
     this.fixColors(this.indicatorsAlpha);
-    this.configurationParamsLen= this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsLen);
+    this.configurationParamsLen = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsLen);
     this.configurationParamsAlpha = this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, false, this.indicatorsAlpha);
     this.configurationStepUpLen = this.prepareConfig('', this.dataStepUp, true, this.indicatorsLen);
     this.configurationStepDnLen = this.prepareConfig('', this.dataStepDn, true, this.indicatorsLen);
@@ -364,7 +391,7 @@ export class FramaComponent implements AfterViewInit {
   private fixColors(indicators: Frama[]): void {
     const lenPal = this.selectedPalette.length;
     const lenInd = indicators.length;
-    const len = Math.min( lenPal, lenInd);
+    const len = Math.min(lenPal, lenInd);
     for (let i = 0; i < len; i++) {
       const el = indicators[i];
       const s = el.style;
@@ -382,9 +409,9 @@ export class FramaComponent implements AfterViewInit {
       const el = arr[i];
       const ind = this.indicators[i];
       if (el.params.length !== ind.params.length ||
-          el.params.slowestSmoothingFactor !== ind.params.slowestSmoothingFactor ||
-          el.params.barComponent !== ind.params.barComponent ||
-          el.params.quoteComponent !== ind.params.quoteComponent) {
+        el.params.slowestSmoothingFactor !== ind.params.slowestSmoothingFactor ||
+        el.params.barComponent !== ind.params.barComponent ||
+        el.params.quoteComponent !== ind.params.quoteComponent) {
         return true;
       }
     }

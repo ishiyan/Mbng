@@ -3,7 +3,7 @@ import { Filter, FrequencyResponseResult, FrequencyResponseComponent } from './f
 export class FrequencyResponse {
 
     public static calculate(signalLength: number, filter: Filter, warmup: number,
-        phaseDegreesUnwrappingLimit = 179): FrequencyResponseResult {
+        phaseDegreesUnwrappingLimit = 179, filteredSignal: number[] = []): FrequencyResponseResult {
         if (!FrequencyResponse.isValidSignalLength(signalLength)) {
             throw new Error('signal length should be power of 2 and not less than 4');
         }
@@ -20,7 +20,8 @@ export class FrequencyResponse {
             phaseDegreesUnwrapped: FrequencyResponse.createFrequencyResponseComponent(spectrumLength)
         };
 
-        const signal = FrequencyResponse.prepareFilteredSignal(signalLength, filter, warmup);
+        const signal = filteredSignal.length === signalLength ?
+            filteredSignal : FrequencyResponse.prepareFilteredSignal(signalLength, filter, warmup);
         FrequencyResponse.directRealFastFourierTransform(signal);
         FrequencyResponse.parseSpectrum(spectrumLength, signal, fr.powerPercent, fr.amplitudePercent,
             fr.phaseDegrees, fr.phaseDegreesUnwrapped, phaseDegreesUnwrappingLimit);
