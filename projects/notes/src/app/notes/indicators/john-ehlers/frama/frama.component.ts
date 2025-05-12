@@ -399,23 +399,4 @@ export class FramaComponent implements AfterViewInit {
       el.style = s;
     }
   }
-
-  protected hasIndicatorsChanged(arr: Frama[]): boolean {
-    if (arr.length !== this.indicators.length) {
-      return true;
-    }
-
-    for (let i = 0; i < arr.length; ++i) {
-      const el = arr[i];
-      const ind = this.indicators[i];
-      if (el.params.length !== ind.params.length ||
-        el.params.slowestSmoothingFactor !== ind.params.slowestSmoothingFactor ||
-        el.params.barComponent !== ind.params.barComponent ||
-        el.params.quoteComponent !== ind.params.quoteComponent) {
-        return true;
-      }
-    }
-
-    return false;
-  }
 }

@@ -32,7 +32,7 @@ export const kaufmanAdaptiveMovingAverageMnemonic =
 /** Function to calculate mnemonic of an efficiency ratio. */
 export const kaufmanAdaptiveMovingAverageErMnemonic =
   (params: KaufmanAdaptiveMovingAverageLengthParams | KaufmanAdaptiveMovingAverageSmoothingFactorParams): string => {
-    return 'kama('.concat(Math.floor(params.efficiencyRatioLength).toString(),
+    return 'er('.concat(Math.floor(params.efficiencyRatioLength).toString(),
       componentPairMnemonic(params.barComponent, params.quoteComponent), ')');
   };
 

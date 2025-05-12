@@ -33,29 +33,33 @@ const stepCount = 32;
 
 const guardLength = (object: any): object is KaufmanAdaptiveMovingAverageLengthParams => 'fastestLength' in object;
 
-const calculateKama = (bars: Bar[], kama: KaufmanAdaptiveMovingAverage, barComponent: BarComponent): Scalar[]  => {
-  const scalars: Scalar[] = [];
+const calculateKama = (bars: Bar[], kama: KaufmanAdaptiveMovingAverage, barComponent: BarComponent): [Scalar[], Scalar[]]  => {
+  const scalarsKama: Scalar[] = [];
+  const scalarsEr: Scalar[] = [];
   const f = barComponentValue(barComponent);
   for (const bar of bars) {
-    scalars.push({time: bar.time, value: kama.update(f(bar))});
+    scalarsKama.push({time: bar.time, value: kama.update(f(bar))});
+    scalarsEr.push({ time: bar.time, value: kama.getEfficiencyRatio() });
   }
 
-  return scalars;
+  return [scalarsKama, scalarsEr];
 };
 
-const calculateStep = (bars: Bar[], kama: KaufmanAdaptiveMovingAverage, barComponent: BarComponent): Scalar[]  => {
+const calculateStep = (bars: Bar[], kama: KaufmanAdaptiveMovingAverage, barComponent: BarComponent): [Scalar[], Scalar[]]  => {
   const f = barComponentValue(barComponent);
   const val = f(bars[0]);
   while (!kama.isPrimed) {
     kama.update(val);
   }
 
-  const scalars: Scalar[] = [];
+  const scalarsKama: Scalar[] = [];
+  const scalarsEr: Scalar[] = [];
   for (const bar of bars) {
-    scalars.push({time: bar.time, value: kama.update(f(bar))});
+    scalarsKama.push({time: bar.time, value: kama.update(f(bar))});
+    scalarsEr.push({ time: bar.time, value: kama.getEfficiencyRatio() });
   }
 
-  return scalars;
+  return [scalarsKama, scalarsEr];
 };
 
 const getConfigTemplate = (): Configuration => ({
@@ -80,7 +84,14 @@ const getConfigTemplate = (): Configuration => ({
     arrows: [],
     lines: []
   },
-  indicatorPanes: [],
+  indicatorPanes: [
+    {
+      height: '120', valueFormat: ',.2f', /*valueTicks: 5,*/ valueMarginPercentageFactor: 0.01,
+      bands: [], lineAreas: [], horizontals: [
+        { value: 0.5, color: 'red', width: 0.5, dash: '' }
+      ], lines: [], arrows: []
+    }
+  ],
   crosshair: false,
   volumeInPricePane: false,
   menuVisible: true, downloadSvgVisible: true
@@ -351,14 +362,23 @@ export class KamaComponent implements AfterViewInit {
       const component = el.params.barComponent ? el.params.barComponent : BarComponent.Close;
       const indicator = new KaufmanAdaptiveMovingAverage(el.params);
       const lineData = new LineData();
+      const lineData1 = new LineData();
       lineData.name = indicator.getMnemonic();
-      lineData.data = doStep ? calculateStep(bars, indicator, component) : calculateKama(bars, indicator, component);
+      lineData1.name = indicator.getMnemonicEfficiencyRatio();
+      const output = doStep ? calculateStep(bars, indicator, component) : calculateKama(bars, indicator, component);
+      lineData.data = output[0];
+      lineData1.data = output[1];
       const s = el.style;
       lineData.color = s.color;
       lineData.width = s.width;
       lineData.dash = s.dash;
       lineData.interpolation = s.interpolation;
+      lineData1.color = s.color;
+      lineData1.width = s.width;
+      lineData1.dash = s.dash;
+      lineData1.interpolation = s.interpolation;
       cloned.pricePane.lines.push(lineData);
+      cloned.indicatorPanes[0].lines.push(lineData1);
     }
 
     return cloned;
