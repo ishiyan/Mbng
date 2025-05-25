@@ -1,0 +1,11 @@
+@for (mama of mamaArray; track mama.id) {
+  <app-mama-params [initial]="mama"
+    (changed)="updated($event);" (removed)="removed($event);">
+  </app-mama-params>
+}
+
+<div>
+  <button mat-mini-fab color="primary" (click)="add();">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

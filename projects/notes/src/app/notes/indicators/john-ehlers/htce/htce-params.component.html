@@ -1,0 +1,17 @@
+<div>
+  <button mat-icon-button color="warn" (click)="remove()">
+    <mat-icon>delete</mat-icon>
+  </button>
+  <mb-hilbert-transformer-cycle-estimator-type [initial]="current.estimatorType" (selectionChange)="updateType($event);">
+  </mb-hilbert-transformer-cycle-estimator-type>
+  <mb-hilbert-transformer-cycle-estimator-params [initial]="current.params" (selectionChange)="updateParams($event);">
+  </mb-hilbert-transformer-cycle-estimator-params>
+  @if (barComponentVisible) {
+    <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
+    </mb-bar-component>
+  }
+  @if (current.showStyle) {
+    <mb-line-style-selector [initial]="current.style" [label]="'Line'" (selectionChange)="updateStyle($event);">
+    </mb-line-style-selector>
+  }
+</div>

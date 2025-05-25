@@ -1,5 +1,13 @@
 import { Note } from './shared/note.interface';
 
+export const ehlersHilbertTransformerCycleEstimatorNote: Note = {
+  title: 'Hilbert transformer cycle estimator',
+  summary: 'Exploring Hilbert transformer cycle estimator',
+  route: '14',
+  created: '2025-04-25',
+  tags: ['Trading', 'Indicators', 'Hilbert transformer', 'cycle estimator', 'Ehlers', 'MESA']
+};
+
 export const ehlersFractalAdaptiveMovingAverageNote: Note = {
   title: 'Fractal adaptive moving average',
   summary: 'Exploring fractal adaptive moving average',
@@ -121,7 +129,8 @@ export const notes: Note[] = [
     tags: ['Trading', 'Indicators', 'Moving averages', 'Comparisons']
   },*/
   ehlersFractalAdaptiveMovingAverageNote,
-  //ehlersMesaAdaptiveMovingAverageNote,
+  ehlersMesaAdaptiveMovingAverageNote,
+  ehlersHilbertTransformerCycleEstimatorNote,
   jurikMovingAverageNote,
   kaufmanAdaptiveMovingAverageNote,
   t3ExponentialMovingAverageNote,

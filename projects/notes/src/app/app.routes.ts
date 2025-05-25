@@ -3,8 +3,12 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./shared/note-list/note-list.component')
     .then(m => m.NoteListComponent) },
+  { path: '14', loadComponent: () => import('./notes/indicators/john-ehlers/htce/htce.component')
+    .then(m => m.HtceComponent) },
   { path: '13', loadComponent: () => import('./notes/indicators/john-ehlers/frama/frama.component')
     .then(m => m.FramaComponent) },
+  { path: '12', loadComponent: () => import('./notes/indicators/john-ehlers/mama/mama.component')
+    .then(m => m.MamaComponent) },
   { path: '11', loadComponent: () => import('./notes/indicators/mark-jurik/jma/jma.component')
     .then(m => m.JmaComponent) },
   { path: '10', loadComponent: () => import('./notes/indicators/perry-kaufman/kama/kama.component')

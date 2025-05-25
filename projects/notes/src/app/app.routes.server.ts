@@ -2,6 +2,11 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   { path: '', renderMode: RenderMode.Prerender },
+  { path: '14', renderMode: RenderMode.Prerender },
+  { path: '13', renderMode: RenderMode.Prerender },
+  { path: '12', renderMode: RenderMode.Prerender },
+  { path: '11', renderMode: RenderMode.Prerender },
+  { path: '10', renderMode: RenderMode.Prerender },
   { path: '9', renderMode: RenderMode.Prerender },
   { path: '8', renderMode: RenderMode.Prerender },
   { path: '7', renderMode: RenderMode.Prerender },

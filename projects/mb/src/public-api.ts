@@ -229,6 +229,7 @@ export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-
 export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params.interface';
 export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params.component';
 export * from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-cycle-estimator-params-dialog.component';
+export { createEstimator } from './lib/trading/indicators/john-ehlers/hilbert-transformer/hilbert-transformer-common';
 
 export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average';
 export * from './lib/trading/indicators/john-ehlers/mesa-adaptive-moving-average/mesa-adaptive-moving-average-params.interface';

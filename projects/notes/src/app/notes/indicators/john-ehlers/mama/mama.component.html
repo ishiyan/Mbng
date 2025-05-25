@@ -1,0 +1,389 @@
+<h1>{{mamaNote.title}}</h1>
+
+<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
+  <mat-icon class="icon">tune</mat-icon>
+</mat-slide-toggle>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)">
+</app-bar-series-select>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
+      (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
+    </mb-swatches-select>
+    <app-mama-list [initialLength]="initialIndicators" [colors]="selectedPalette"
+      (changed)="indicatorsChanged($event);">
+    </app-mama-list>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>{{dataSelection.description}}. @if (dataSelection.url) {
+    <span><a href="{{dataSelection.url}}" target="_blank">{{dataSelection.urlName}}</a></span>
+    }
+    The MAMA lines are plotted in the price pane.
+    The lower pane shows the related efficiency ratios.
+  </figcaption>
+</figure>
+<p></p>
+
+<h2>How it works</h2>
+<div style="width:100%">
+  <p></p>
+  The Mesa Adaptive Moving Average (MAMA) was introduced by John Ehlers
+  in his book <em>Smarter Trading</em> (Kaufman 1995, chapter 8, pp.129-153) and later
+  popularized in <em>Trading Systems and Methods</em> (Kaufman 2013, chapter 17, pp. 779-783)
+  and in his article in <em>Technical Analysis of Stocks &amp; Commodities</em> (Kaufman 2020, 38(11)).
+  <p></p>
+  KAMA is actually an
+  <a href="/{{emaNote.route}}">Exponential Moving Average</a> (EMA)
+  with a variable smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki>
+  being changed with each new sample within the minimum and the maximun boundaries.
+  <mb-kd>
+    {{"\\tag*{(1)}kama_{k}=\\alpha_{k} x_{k} + (1-\\alpha_{k})kama_{k-1}"}}
+  </mb-kd>
+  where
+  <mb-kd>
+    {{"\\tag*{(2)}\\alpha_k=(er_{k}(\\alpha_{fast}-\\alpha_{slow})+\\alpha_{slow})^2"}}
+  </mb-kd>
+  and
+  <mb-kd>
+    {{"\\tag*{(3)}er_{k}=\\frac{|x_k-x_{k-\\ell_{er}}|}{\\sum_{i=1}^{\\ell_{er}-1}|x_{k-i+1}-x_{k-i}|}"}}
+  </mb-kd>
+  If we recall that the EMA smoothing factor <mb-ki>{{"\\alpha"}}</mb-ki>
+  can be expressed in terms of the EMA length <mb-ki>{{"\\ell"}}</mb-ki> as
+  (see <a href="/{{emaNote.route}}">Exponential Moving Average</a>)
+  <mb-kd>
+    {{"\\tag*{(4)}\\alpha=\\frac{2}{\\ell+1}, \\ell>1"}}
+  </mb-kd>
+  we can specify the <mb-ki>{{"\\alpha_{slow}"}}</mb-ki> and <mb-ki>{{"\\alpha_{fast}"}}</mb-ki>
+  using the <mb-ki>{{"\\ell_{slow}"}}</mb-ki> and <mb-ki>{{"\\ell_{fast}"}}</mb-ki>,
+  which are the input parameters of the indicator.
+  <p></p>
+  <figure class="figright">
+    <img src="assets/photos/ehlers2.jpg">
+    <figcaption>
+      John F. Ehlers (1933 -).
+      President at <a href="https://mesasoftware.com/" target="_blank" rel="noopener noreferrer">MESA Software</a>;
+      chief scientist at <a href="https://stockspotter.co" target="_blank" rel="noopener noreferrer">StockSpotter</a>;
+      contributing editor for <a href="https://traders.com/" target="_blank" rel="noopener noreferrer">S&C Magazine</a>.
+    </figcaption>
+  </figure>
+  The variable smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki> reacts quickly when the market
+  is trending strongly and smoothly, but slows down and filters out noise when the market
+  is choppy or moving sideways.
+  The value of the <mb-ki>{{"\\alpha_k"}}</mb-ki> is limited within the boundaries
+  <mb-ki>{{"[\\alpha_{slow}, \\alpha_{fast}]"}}</mb-ki>.
+  <p></p>
+  The smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki> depends on the
+  "efficiency of price movement" over a specific period, which is also
+  an input parameter of the indicator.
+  Perry Kaufman named this efficiency measure <mb-ki>{{"er_k"}}</mb-ki>
+  the Efficiency Ratio (ER).
+  <p></p>
+  The ER is a ratio of the absolute value of return (the net directional movement)
+  to the sum of absolute values of the individual returns (Kaufman calls it
+  "volatility or noise") over the certain "efficiency ratio period",
+  <mb-ki>{{"\\ell_{er}"}}</mb-ki>, as shown in (3).
+  The ER value ranges between <mb-ki>{{"0"}}</mb-ki> and <mb-ki>{{"1"}}</mb-ki>.
+  <p></p>
+  An ER close to <mb-ki>{{"1"}}</mb-ki> indicates a highly efficient trend
+  (strong directional movement with low noise).
+  In this case, KAMA uses a larger <mb-ki>{{"\\alpha"}}</mb-ki>, making it behave
+  like a faster, more responsive moving average to follow the clear trend.
+  <p></p>
+  An ER close to <mb-ki>{{"0"}}</mb-ki> suggests a lot of noise relative to the
+  net price movement (sideways or choppy market).
+  The <mb-ki>{{"\\alpha"}}</mb-ki> is small, making KAMA behave
+  like a slower moving average, which helps to filter out the noise in choppy markets.
+  <p></p>
+  To summarize all this, the KAMA is calculated as follows.
+  The input parameters are:
+  <ul>
+    <li><mb-ki>{{"\\ell_{er}"}}</mb-ki> - the efficiency ratio period.
+      The default value is <mb-ki>{{"10"}}</mb-ki> samples.
+    </li>
+    <li><mb-ki>{{"\\ell_{fast}"}}</mb-ki> - the fast EMA length.
+      The default value is <mb-ki>{{"2"}}</mb-ki> samples.
+      Calculate the <mb-ki>{{"\\alpha_{fast}"}}</mb-ki> using (4).
+    </li>
+    <li><mb-ki>{{"\\ell_{slow}"}}</mb-ki> - the slow EMA length.
+      The default value is <mb-ki>{{"30"}}</mb-ki> samples.
+      Calculate the <mb-ki>{{"\\alpha_{fslow}"}}</mb-ki> using (4).
+    </li>
+  </ul>
+  Given the next sample <mb-ki>{{"x_k"}}</mb-ki> and the previous KAMA value
+  <mb-ki>{{"kama_{k-1}"}}</mb-ki>,
+  <ul>
+    <li>calculate the efficiency ratio using (3),</li>
+    <li>calculate the smoothing factor using (2),</li>
+    <li>calculate the KAMA using (1).</li>
+  </ul>
+  <p></p>
+  The KAMA indicator is not primed during the first <mb-ki>{{"\\ell_{er}"}}</mb-ki> samples.
+  You can see the full implementation of the KAMA in
+  <a href="https://github.com/ishiyan/Mbg/blob/main/trading/indicators/kaufman/adaptivemovingaverage.go" target="_blank"
+    rel="noopener noreferrer">Golang</a>
+  and in
+  <a href="https://github.com/ishiyan/Mbng/blob/main/projects/mb/src/lib/trading/indicators/perry-kaufman/kaufman-adaptive-moving-average/kaufman-adaptive-moving-average.ts"
+    target="_blank" rel="noopener noreferrer">Typescript</a>
+  on Github.
+  <p></p>
+  From the digital signal processing (DSP) point of view, the KAMA is an infinite impulse response (IIR)
+  filter since all previous input samples contribute to its value.
+  <p></p>
+</div>
+
+<h2>Changing parameters</h2>
+<div style="width:100%">
+  The influence of the parameters on the smoothiness and the responsiveness of the KAMA
+  is demonstrated on the three following figures.
+  <p></p>
+  The first figure shows different efficiency ratio lengths <mb-ki>{{"\\ell_{er}"}}</mb-ki> leaving
+  the fast and slow lengths to be default values.
+  <p></p>
+  The second figure shows different fast lengths <mb-ki>{{"\\ell_{fast}"}}</mb-ki> leaving
+  the efficiency ratio and slow lengths to be default values.
+  <p></p>
+  The third one shows different slow lengths <mb-ki>{{"\\ell_{slow}"}}</mb-ki> leaving
+  the fast and efficiency ratio lengths to be default values.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen"></mb-ohlcv-chart>
+  <figcaption>Varying the estimator length.
+  </figcaption>
+</figure>
+<p></p>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsFast"></mb-ohlcv-chart>
+  <figcaption>Varying the fast limit length.
+  </figcaption>
+</figure>
+<p></p>
+
+<figure class="figwide">
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsSlow"></mb-ohlcv-chart>
+  <figcaption>Varying the slow limit length.
+  </figcaption>
+</figure>
+<p></p>
+
+<h2>Step response</h2>
+<div style="width:100%">
+  It is easy to see that the step-up and step-down responses of the KAMA do not depend on
+  the efficiency ratio length <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  <p></p>
+  Indeed, when the step is outside of the window of samples,
+  all the samples have the same value.
+  The ER value is <mb-ki>{{"0"}}</mb-ki>, and, according to (2), the smoothing factor
+  <mb-ki>{{"\\alpha_k"}}</mb-ki> is equal to the <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.
+  The value of the KAMA is a constant.
+  <p></p>
+  When the step is inside the window of samples, the numerator and the denominator
+  of the (3) are equal, and the ER value is <mb-ki>{{"1"}}</mb-ki> (meaning the perfect "one-sample trend").
+  According to (2), the smoothing factor <mb-ki>{{"\\alpha_k"}}</mb-ki> is equal to
+  <mb-ki>{{"\\alpha_{fast}"}}</mb-ki> and doesn't depend on the <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  <p></p>
+  The first two figures below show that step responce doesn't depend on the
+  efficiency ratio length <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  <p></p>
+  The two next figures show the step responces of the KAMA with the different
+  <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.
+  <p></p>
+  The step responses are the same as the step responses of the EMA.
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLen"></mb-ohlcv-chart>
+    <figcaption>Step-up response does not depend on <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnLen"></mb-ohlcv-chart>
+    <figcaption>Step-down response does not depend on <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpFast"></mb-ohlcv-chart>
+    <figcaption>Step-up response dependency on <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+  </figure>
+  <figure class="figwide">
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnFast"></mb-ohlcv-chart>
+    <figcaption>Step-down response dependency on <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+  </figure>
+  <p></p>
+</div>
+
+<h2>Frequency response</h2>
+<div style="width:100%">
+  The figures below show an amplitude and a phase lag of the unit sample response of the KAMA as a function
+  of a period of various signal frequencies.
+  We cannot derive its frequency response analytically because of the adaptive nature of the KAMA.
+  <p></p>
+  A period is a duration of a cycle in samples.
+  The smallest possible period of a cycle is <mb-ki>{{"2"}}</mb-ki> samples.
+  To understand this, imagine a cycle of a sinusoid which starts at zero, goes up and peaks at <mb-ki>{{"1"}}</mb-ki>,
+  continues down and bottoms at <mb-ki>{{"-1"}}</mb-ki>, and then returns back to zero.
+  We need at least two samples (peak and through) to represent a cycle.
+  See more details in the <a href="/{{froaiNote.route}}">{{froaiNote.title}}</a>.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
+    [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-150" [maxDeg]="150" [data]="freqs"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+
+  @if (unlocked) {
+  <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field appearance="fill">
+      <mat-label>Max period to display</mat-label>
+      <input matInput type="number" min="8" max="1024" step="1" [(ngModel)]="maxPeriod">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Height</mat-label>
+      <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
+    </mat-form-field>
+    <app-mama-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-mama-list>
+  </mat-expansion-panel>
+  }
+
+  <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The same charts can be represented as a function of a cycle's frequency.
+  A period (<mb-ki>{{"\\tau"}}</mb-ki>) is an inverse of the cycle's frequency
+  (<mb-ki>{{"\\nu"}}</mb-ki>): <mb-ki>{{"\\tau = \\frac{1}{\\nu}"}}</mb-ki>.
+  The smallest period <mb-ki>{{"\\tau = 2"}}</mb-ki> corresponds to the Nyquist frequency
+  <mb-ki>{{"\\nu = \\frac{1}{\\tau} = \\frac{1}{2}"}}</mb-ki>which is the highest frequency
+  possible in a signal. Below we use the normalized frequency which has the value of <mb-ki>{{"1"}}</mb-ki>
+  at the Nyquist frequency.
+  That is, <mb-ki>{{"0"}}</mb-ki> corresponds to the infinite <mb-ki>{{"\\tau"}}</mb-ki>,
+  <mb-ki>{{"1"}}</mb-ki> corresponds to the <mb-ki>{{"\\tau = 2"}}</mb-ki>.
+  <p></p>
+  The following charts show the frequency responses of the KAMA with different ER lengths
+  <mb-ki>{{"\\ell_{er}"}}</mb-ki>.
+  The other indicator parameters are set to default values.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[mamaLen2, mamaLen5, mamaLen10, mamaLen20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[mamaLen2, mamaLen5, mamaLen10, mamaLen20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various KAMA ER lengths <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[mamaLen2, mamaLen5, mamaLen10, mamaLen20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[mamaLen2, mamaLen5, mamaLen10, mamaLen20]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various KAMA ER lengths <mb-ki>{{"\\ell_{er}"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The following charts show the frequency responses of the KAMA with different fast lengths
+  <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.
+  The other indicator parameters are set to default values.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[mamaFast2, mamaFast3, mamaFast5, mamaFast10]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[mamaFast2, mamaFast3, mamaFast5, mamaFast10]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various KAMA fast lengths <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[mamaFast2, mamaFast3, mamaFast5, mamaFast10]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[mamaFast2, mamaFast3, mamaFast5, mamaFast10]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various KAMA fast lengths <mb-ki>{{"\\ell_{fast}"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+  The following charts show the frequency responses of the KAMA with differetn slow lengths
+  <mb-ki>{{"\\ell_{slow}"}}</mb-ki>.
+  The other indicator parameters are set to default values.
+  There is almost no difference between the frequency responses of the KAMA with slow lengths
+  <mb-ki>{{"\\ell_{slow} = 30"}}</mb-ki> and <mb-ki>{{"\\ell_{slow} = 300"}}</mb-ki>.
+  <p></p>
+</div>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'period'" [maxPeriod]="40" [data]="[mamaSlow10, mamaSlow30, mamaSlow300]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
+    [xmode]="'frequency'" [data]="[mamaSlow10, mamaSlow30, mamaSlow300]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
+    cycle (b) for various KAMA slow lengths <mb-ki>{{"\\ell_{slow}"}}</mb-ki>.</figcaption>
+</figure>
+
+<figure class="figwide">
+  <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
+    [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[mamaSlow10, mamaSlow30, mamaSlow300]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
+    [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[mamaSlow10, mamaSlow30, mamaSlow300]"
+    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+  <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
+    various KAMA slow lengths <mb-ki>{{"\\ell_{slow}"}}</mb-ki>.</figcaption>
+</figure>
+<p></p>
+
+<div style="width:100%">
+</div>
+<hr />
+<h2 class="counter-skip">References</h2>
+<div class="citation"><!-- @Book kaufman1995smarter --> Kaufman, Perry J. (1995).
+  <em>Smarter Trading: Improving Performance in Changing Markets</em>. (p. 252). United Kingdom: McGraw-Hill.
+  <a href="https://books.google.com/books?id=ndq_21wRJjEC" target="_blank" rel="noopener noreferrer">google books</a>
+</div>
+<div class="citation"><!-- @Book kaufman2013trading --> Kaufman, Perry J. (2013).
+  <em>Trading Systems and Methods, + Website</em>. (5th ed., p. 1232). United Kingdom: Wiley.
+  <a href="https://books.google.com/books?id=4842MXNn5o4C" target="_blank" rel="noopener noreferrer">google books</a>
+</div>
+<div class="citation"><!-- @Article kaufman2020nov -->Kaufman, Perry J. (2020).
+  Comparing Two Adaptive Trends. <em>Technical Analysis of Stocks &amp; Commodities</em>, <em>38</em>(11), 20–24.
+  <a href="https://technical.traders.com/archive/volume-2014.asp?yr=2020#Nov" target="_blank"
+    rel="noopener noreferrer">traders.com</a>
+</div>
+<div class="citation"><!-- @misc{kaufman_bio -->Kaufman, Perry J. (2025).
+  <em>Perry Kaufman's Bio</em>. Retrieved March 10, 2025, from
+  <a href="https://perrykaufman.com/bio/" target="_blank" rel="noopener noreferrer">https://perrykaufman.com/bio/</a>
+</div>

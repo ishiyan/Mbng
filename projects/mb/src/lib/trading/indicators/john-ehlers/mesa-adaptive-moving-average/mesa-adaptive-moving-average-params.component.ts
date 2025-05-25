@@ -54,6 +54,10 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     return this.paramsLength.estimatorType || HilbertTransformerCycleEstimatorType.HomodyneDiscriminator;
   }
   protected set estimatorTypeParam(value: HilbertTransformerCycleEstimatorType) {
+    if (this.paramsAlpha.estimatorType === value && this.paramsLength.estimatorType === value) {
+      return;
+    }
+
     this.paramsAlpha.estimatorType = value;
     this.paramsAlpha = { ...this.paramsAlpha };
 
@@ -91,6 +95,11 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     let a = 2 / (value + 1);
     a = a < 0.0001 ? 0.0001 : a;
     a = a > 1 ? 1 : a;
+
+    if (this.paramsAlpha.fastLimitSmoothingFactor === a && this.paramsLength.fastLimitLength === value) {
+      return;
+    }
+
     this.paramsAlpha.fastLimitSmoothingFactor = a;
     this.paramsAlpha = { ...this.paramsAlpha };
 
@@ -111,6 +120,12 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     let a = 2 / (value + 1);
     a = a < 0.0001 ? 0.0001 : a;
     a = a > 1 ? 1 : a;
+
+
+    if (this.paramsAlpha.slowLimitSmoothingFactor === a && this.paramsLength.slowLimitLength === value) {
+      return;
+    }
+
     this.paramsAlpha.slowLimitSmoothingFactor = a;
     this.paramsAlpha = { ...this.paramsAlpha };
 
@@ -150,6 +165,12 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     let l = 2 / value - 1;
     l = l < 2 ? 2 : l;
     l = l > 1024 ? 1024 : l;
+
+
+    if (this.paramsAlpha.fastLimitSmoothingFactor === value && this.paramsLength.fastLimitLength === l) {
+      return;
+    }
+
     this.paramsLength.fastLimitLength = l;
 
     this.paramsAlpha.fastLimitSmoothingFactor = value;
@@ -168,6 +189,11 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
     let l = 2 / value - 1;
     l = l < 2 ? 2 : l;
     l = l > 1024 ? 1024 : l;
+
+    if (this.paramsAlpha.slowLimitSmoothingFactor === value && this.paramsLength.slowLimitLength === l) {
+      return;
+    }
+
     this.paramsLength.slowLimitLength = l;
 
     this.paramsAlpha.slowLimitSmoothingFactor = value;

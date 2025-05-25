@@ -34,6 +34,9 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
     if (value > 4) {
       value = 4;
     }
+    if (this.params.smoothingLength === value) {
+      return;
+    }
     this.params.smoothingLength = value;
     this.params = { ...this.params };
     this.notify();
@@ -49,6 +52,9 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
       value = 0;
     } else if (value > 1) {
       value = 1;
+    }
+    if (this.params.alphaEmaQuadratureInPhase === value) {
+      return;
     }
     this.params.alphaEmaQuadratureInPhase = value;
     this.params = { ...this.params };
@@ -66,6 +72,9 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
     } else if (value > 1) {
       value = 1;
     }
+    if (this.params.alphaEmaPeriod === value) {
+      return;
+    }
     this.params.alphaEmaPeriod = value;
     this.params = { ...this.params };
     this.notify();
@@ -82,8 +91,14 @@ export class HilbertTransformerCycleEstimatorParamsComponent implements AfterCon
       return;
     }
     if (value === 0) {
+      if (this.params.warmUpPeriod === undefined) {
+        return;
+      }
       this.params.warmUpPeriod = undefined
     } else {
+      if (this.params.warmUpPeriod === value) {
+        return;
+      }
       this.params.warmUpPeriod = value;
     }
     this.params = { ...this.params };

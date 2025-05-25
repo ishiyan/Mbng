@@ -73,7 +73,7 @@ export function fillWmaFactors(length: number, factors: number[]): void {
 }
 
 export function verifyParameters(params: HilbertTransformerCycleEstimatorParams): string | undefined {
-  const invalid = "invalid cycle estimator parameters";
+  const invalid = "invalid cycle estimator parameters: ";
   const minLen = 2;
   const maxLen = 4;
 
@@ -136,7 +136,7 @@ export function createEstimator(
         estimatorParams = {
           smoothingLength: 4,
           alphaEmaQuadratureInPhase: 0.15,
-          alphaEmaPeriod: 0.25
+          alphaEmaPeriod: 0.15
         };
       }
       return new HilbertTransformerDualDifferentiator(estimatorParams);
