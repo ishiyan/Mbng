@@ -5,7 +5,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, OhlcvChartComponent, SwatchesSelectComponent } from 'mb';
-import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
+import { KatexInlineComponent, KatexDisplayComponent, SvgViewerComponent } from 'mb';
 import { Scalar } from 'mb';
 import { Configuration } from 'mb';
 import { LineData } from 'mb';
@@ -112,6 +112,7 @@ const getConfigTemplate = (): Configuration => ({
     SwatchesSelectComponent,
     KatexInlineComponent,
     KatexDisplayComponent,
+    SvgViewerComponent,
     HtceListComponent
   ]
 })

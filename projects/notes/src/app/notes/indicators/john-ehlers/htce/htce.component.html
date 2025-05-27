@@ -47,7 +47,8 @@
   and extract instant dominant cycle periods.
   <p></p>
 </div>
-<h2>Hilbert transform</h2>
+
+<h3>Hilbert transform</h3>
 <div style="width:100%">
   The Hilbert transform produces a version of a signal (price data) with all frequency components
   phase-shifted by <mb-ki>{{"-90^\\circ"}}</mb-ki> (or <mb-ki>{{"-\\pi /2"}}</mb-ki> radians).
@@ -66,9 +67,9 @@
   <mb-ki>{{"t=\\tau"}}</mb-ki>.
   The equation above is a convolution of <mb-ki>{{"x(t)"}}</mb-ki> with <mb-ki>{{"\\frac{1}{\\pi t}"}}</mb-ki>.
   In the frequency domain, it corresponds to multiplying the signal’s Fourier transform by
-  <mb-ki>{{"-j \\cdot \\text{sgn}(f)"}}</mb-ki>:
+  <mb-ki>{{"-j \\cdot \\text{sgn}(\\omega)"}}</mb-ki>:
   <mb-kd>
-    {{"\\tag*{}\\mathcal{F}\\{\\hat{x}(t)\\} = -j \\cdot \\text{sgn}(f) \\cdot \\mathcal{F}\\{x(t)\\}"}}
+    {{"\\tag*{}\\mathcal{F}\\{\\hat{x}(t)\\} = -j \\cdot \\text{sgn}(\\omega) \\cdot \\mathcal{F}\\{x(t)\\}"}}
   </mb-kd>
   This means that the positive frequencies are rotated by <mb-ki>{{"-90^\\circ"}}</mb-ki>
   (multiplied by <mb-ki>{{"-j"}}</mb-ki>), and the negative frequencies by are rotated by
@@ -83,7 +84,7 @@
   (because it's phase is shifted by 1/4 of the full circle, or <mb-ki>{{"+90^\\circ"}}</mb-ki>).
   <p></p>
   This complex-valued signal allows us to extract the instantaneous amplitude <mb-ki>{{"A(t)"}}</mb-ki>,
-  phase <mb-ki>{{"\\phi(t)"}}</mb-ki>, and frequency <mb-ki>{{"f(t)"}}</mb-ki>.
+  phase <mb-ki>{{"\\phi(t)"}}</mb-ki>, and frequency <mb-ki>{{"\\omega(t)"}}</mb-ki>.
   Note that for nonstationary signals like price data, amplitude, phase and frequency vary over time.
   <mb-kd>
     {{"\\tag*{} A(t) = |z(t)| = \\sqrt{x(t)^2 + \\hat{x}(t)^2}"}}
@@ -99,8 +100,19 @@
   Oppenheim et al. (Oppenheim2009, chapter 12), the Hilbert transform <mb-ki>{{"\\hat{x}[n]"}}</mb-ki>
   is usually approximated using a finite impulse response filter with odd symmetry.
   <mb-kd>
+    {{"\\tag*{}h[n] = \\begin{cases} \\frac{2}{\\pi}\\frac{\\sin^2(\\pi n/2)}{n} & n \\ne 0 \\\\ 0 & n=0\\end{cases}"}}
+  </mb-kd>
+  <mb-kd>
     {{"\\tag*{}h[n] = \\begin{cases} 0 & \\text{for } n \\text{ even} \\\\ \\frac{2}{\\pi n} & \\text{for } n \\text{ odd}\\end{cases}"}}
   </mb-kd>
+  <p></p>
+  <figure class="figleft" style="width:50%;max-width:400px;">
+    <mb-svg-viewer src="assets/indicators/htce-coeff.svg" [scaleToContainer]="true"></mb-svg-viewer>
+    <figcaption>
+      Impulse response of the ideal Hilbert transformer.
+    </figcaption>
+  </figure>
+  <p></p>
   The ideal Hilbert Transform is non-causal and infinite in duration, making it impractical
   for real-time applications like trading. For computing both the in-phase (I) and quadrature (Q)
   components, Ehlers approximates the Hilbert transform using a 7-tap FIR filter with
