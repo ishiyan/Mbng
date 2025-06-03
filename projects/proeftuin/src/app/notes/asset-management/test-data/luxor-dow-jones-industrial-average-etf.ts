@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: Lyxor ETF Dow Jones Ind Avg
 // ticker: DJE

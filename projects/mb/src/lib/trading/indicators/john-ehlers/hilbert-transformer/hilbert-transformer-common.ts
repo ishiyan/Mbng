@@ -1,4 +1,4 @@
-﻿import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
+import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
 import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
 import { HilbertTransformerCycleEstimatorType } from './hilbert-transformer-cycle-estimator-type.enum';
 import { HilbertTransformerHomodyneDiscriminator } from './hilbert-transformer-homodyne-discriminator';

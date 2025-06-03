@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, PLATFORM_ID, effect, inject, input, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, PLATFORM_ID, effect, inject, input, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
     selector: 'mb-dash-svg',

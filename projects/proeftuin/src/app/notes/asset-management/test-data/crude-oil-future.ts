@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: Crude Oil Future
 // ticker: OIL

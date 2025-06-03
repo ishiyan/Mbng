@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: DJ EURO STOXX Total Market (Total Ret)
 // ticker: BKXT

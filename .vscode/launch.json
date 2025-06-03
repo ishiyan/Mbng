@@ -1,0 +1,41 @@
+{
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "serve notes",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: serve_notes",
+      "url": "http://localhost:4200/"
+    },
+    {
+      "name": "serve proeftuin",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: serve_proeftuin",
+      "url": "http://localhost:4200/"
+    },
+    {
+      "name": "test mb",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: test_mb",
+      "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "name": "test notes",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: test_notes",
+      "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "name": "test proeftuin",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: test_proeftuin",
+      "url": "http://localhost:9876/debug.html"
+    }
+  ]
+}

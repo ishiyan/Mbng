@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: S&P 500 mini future
 // ticker: SP5

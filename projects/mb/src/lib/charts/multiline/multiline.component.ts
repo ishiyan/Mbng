@@ -1,5 +1,5 @@
-import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 import { Bar } from '../../data/entities/bar';

@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: Barclays 1-5 Year Euro Corp Bond IDX
 // ticker: B15YECB

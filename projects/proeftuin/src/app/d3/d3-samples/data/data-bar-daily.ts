@@ -1,4 +1,4 @@
-﻿import { Bar } from 'projects/mb/src/lib/data/entities/bar';
+import { Bar } from 'projects/mb/src/lib/data/entities/bar';
 
 export const dataOhlcvDaily: Bar[] = [
   { time: new Date(2013, 12, 2), open: 24.6, high: 24.66, low: 24.455, close: 24.57, volume: 2731765 },

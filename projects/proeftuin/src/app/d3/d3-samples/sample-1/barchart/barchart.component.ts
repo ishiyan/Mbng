@@ -1,5 +1,5 @@
-import { Component, ElementRef, input, viewChild, ChangeDetectionStrategy, PLATFORM_ID, HostListener, inject, effect, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, input, viewChild, ChangeDetectionStrategy, PLATFORM_ID, HostListener, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 @Component({

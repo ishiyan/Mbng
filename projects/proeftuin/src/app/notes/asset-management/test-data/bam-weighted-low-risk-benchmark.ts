@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: BAM Weighted Low Risk Benchmark IDX
 // ticker: AMBECONF

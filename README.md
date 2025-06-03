@@ -112,6 +112,11 @@ Add the following to `angular.json` before `scripts`:
             "scripts": []
 ```
 
+### Hydration in dev tools
+
+- [guide](https://www.angulararchitects.io/blog/guide-for-ssr/)
+- [Install the extension](https://chromewebstore.google.com/detail/angular-devtools/ienfalfjdbdpebioblfackkekamfmbnh?pli=1)
+
 ### Deploy SSG-built notes to GitHub Pages
 
 ```bash

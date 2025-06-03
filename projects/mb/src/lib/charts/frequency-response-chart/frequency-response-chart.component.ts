@@ -1,5 +1,5 @@
-import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, ElementRef, input, inject,effect, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, ElementRef, input, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { MatMiniFabButton } from '@angular/material/button';

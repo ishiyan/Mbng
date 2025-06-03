@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: Binck Gl Dev Markets Eq Fund Sicav NL
 // ticker: 27079

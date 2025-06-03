@@ -1,5 +1,5 @@
-import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, inject, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, inject, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { KatexOptions } from 'katex';
 
 import { KatexDirective } from './katex.directive';

@@ -1,5 +1,5 @@
-import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, afterNextRender, effect } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, afterNextRender, effect, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

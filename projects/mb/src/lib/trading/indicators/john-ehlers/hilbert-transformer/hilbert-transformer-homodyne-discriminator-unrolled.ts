@@ -1,4 +1,4 @@
-﻿import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
+import { HilbertTransformerCycleEstimator } from './hilbert-transformer-cycle-estimator.interface';
 import { HilbertTransformerCycleEstimatorParams } from './hilbert-transformer-cycle-estimator-params.interface';
 import { defaultMinPeriod, defaultMaxPeriod, verifyParameters } from './hilbert-transformer-common';
 

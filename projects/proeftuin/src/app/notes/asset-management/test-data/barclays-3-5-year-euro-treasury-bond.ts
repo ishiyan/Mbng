@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: Barclays 3-5 Year Euro Treasury Bond IDX
 // ticker: B35YETB

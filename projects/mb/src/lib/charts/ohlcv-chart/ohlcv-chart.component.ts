@@ -1,5 +1,5 @@
-import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, inject, input, effect, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, HostListener, ChangeDetectionStrategy, PLATFORM_ID, inject, input, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';

@@ -1,5 +1,5 @@
-import { Directive, ElementRef, PLATFORM_ID, input, output, inject, effect, afterNextRender } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Directive, ElementRef, PLATFORM_ID, input, output, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { KatexOptions } from 'katex';
 
 import { KatexService } from './katex.service';

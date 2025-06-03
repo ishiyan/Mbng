@@ -1,4 +1,4 @@
-﻿import { TestInstrument } from './test-instrument.interface';
+import { TestInstrument } from './test-instrument.interface';
 
 // name: STOXX Global 1800 ex Asia/Pacific NR
 // ticker: SXW9R

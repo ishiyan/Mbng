@@ -1,5 +1,5 @@
-import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender, HostListener } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender, HostListener, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import * as d3 from 'd3';
 

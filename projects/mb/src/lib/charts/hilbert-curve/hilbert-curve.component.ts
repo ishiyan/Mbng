@@ -1,5 +1,5 @@
-import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, HostListener, input, inject, computed, effect } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, HostListener, input, inject, computed, effect, DOCUMENT } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
 import { computeDimensions } from '../compute-dimensions';
