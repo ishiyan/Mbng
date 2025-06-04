@@ -1,7 +1,6 @@
 @for (tema of temaArray; track tema.id) {
   <app-tema-params [initial]="tema"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-tema-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

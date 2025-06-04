@@ -1,7 +1,6 @@
 @for (t3ema of t3emaArray; track t3ema.id) {
   <app-t3ema-params [initial]="t3ema"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-t3ema-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

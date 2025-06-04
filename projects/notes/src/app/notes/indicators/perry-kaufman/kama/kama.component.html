@@ -3,8 +3,7 @@
 <mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
   <mat-icon class="icon">tune</mat-icon>
 </mat-slide-toggle>
-<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)">
-</app-bar-series-select>
+<app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
   <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>

@@ -4,12 +4,11 @@
   }
   <mat-select style="margin-top: 8px;" [(value)]="selected" (selectionChange)="changed(selected)">
     <mat-select-trigger>
-      <mb-sparkline [width]="160" [height]="24" [data]="selected.data" [configuration]="configFill">
-      </mb-sparkline> {{selected.mnemonic}}
+      <mb-sparkline [width]="160" [height]="24" [data]="selected.data" [configuration]="configFill" /> {{selected.mnemonic}}
     </mat-select-trigger>
     @for (series of seriesArray; track series.data) {
       <mat-option [value]="series">
-        <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill"></mb-sparkline>
+        <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill" />
         {{series.mnemonic}}
       </mat-option>
     }

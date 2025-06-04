@@ -7,10 +7,8 @@
   <input type="number" matInput min="-100" max="1000" step="1" [(ngModel)]="phaseParam" />
 </mat-form-field>
 @if (barComponentVisible) {
-  <mb-bar-component [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
-  </mb-bar-component>
+  <mb-bar-component [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr" />
 }
 @if (quoteComponentVisible) {
-  <mb-quote-component [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
-  </mb-quote-component>
+  <mb-quote-component [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr" />
 }

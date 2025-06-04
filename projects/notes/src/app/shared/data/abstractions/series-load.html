@@ -13,7 +13,7 @@
     <div class="selected-file-size">{{fileBytes|filesize}}, {{fileType}}</div>
   }
   @if (progressVisible) {
-    <mat-progress-bar color="accent" mode="indeterminate" [value]="progressPercentage" class="mtop"></mat-progress-bar>
+    <mat-progress-bar color="accent" mode="indeterminate" [value]="progressPercentage" class="mtop" />
   }
   @if (errorText.length > 0) {
     <div class="warn mtop limitwidth">{{errorText}}</div>
@@ -28,8 +28,7 @@
     </div>
     <div class="mtop"></div>
     <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[data]" [min]="0"
-      [timeAxis]="['bottom']" [valueAxis]="['grid']">
-    </mb-multiline>
+      [timeAxis]="['bottom']" [valueAxis]="['grid']" />
     <div class="mtop">
       <mat-form-field>
         <input matInput type="text" minlength="1" maxlength="16" size="16" placeholder="mnemonic"

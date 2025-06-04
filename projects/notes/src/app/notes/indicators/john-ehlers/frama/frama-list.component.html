@@ -1,7 +1,6 @@
 @for (frama of framaArray; track frama.id) {
   <app-frama-params [initial]="frama"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-frama-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

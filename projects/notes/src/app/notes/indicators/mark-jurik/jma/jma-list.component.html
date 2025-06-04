@@ -1,7 +1,6 @@
 @for (jma of jmaArray; track jma.id) {
   <app-jma-params [initial]="jma"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-jma-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

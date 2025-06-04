@@ -1,7 +1,6 @@
 @for (htce of htceArray; track htce.id) {
   <app-htce-params [initial]="htce"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-htce-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

@@ -1,7 +1,6 @@
 @for (mama of mamaArray; track mama.id) {
   <app-mama-params [initial]="mama"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-mama-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

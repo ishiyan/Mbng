@@ -1,7 +1,6 @@
 @for (kama of kamaArray; track kama.id) {
   <app-kama-params [initial]="kama"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-kama-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

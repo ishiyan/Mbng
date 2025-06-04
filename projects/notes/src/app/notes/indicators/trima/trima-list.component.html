@@ -1,7 +1,6 @@
 @for (trima of trimaArray; track trima.id) {
   <app-trima-params [initial]="trima"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-trima-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

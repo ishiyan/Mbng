@@ -15,8 +15,8 @@
       <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="First data sample date" [(ngModel)]="params.startDate"
           name="startDate" #startDate="ngModel" required>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="picker" />
+          <mat-datepicker #picker />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Time granularity</mat-label>

@@ -1,8 +1,7 @@
 <mat-expansion-panel expanded="false">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      <mb-sparkline [width]="220" [height]="32" [configuration]="configSparkline" [data]="series().data">
-      </mb-sparkline>
+      <mb-sparkline [width]="220" [height]="32" [configuration]="configSparkline" [data]="series().data" />
     </mat-panel-title>
     <mat-panel-description>
       {{series().mnemonic}}
@@ -27,6 +26,5 @@
     <mat-divider></mat-divider>
   </div>
   <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[series().data]"
-    [timeAxis]="['bottom']" [valueAxis]="['grid']">
-  </mb-multiline>
+    [timeAxis]="['bottom']" [valueAxis]="['grid']" />
 </mat-expansion-panel>

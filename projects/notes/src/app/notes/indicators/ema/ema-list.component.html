@@ -1,7 +1,6 @@
 @for (ema of emaArray; track ema.id) {
   <app-ema-params [initial]="ema"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-ema-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

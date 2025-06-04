@@ -15,8 +15,7 @@
   <mat-step>
     <ng-template matStepLabel><span class="multiline-label">Pa&#8203;r&#8203;a&#8203;ms</span></ng-template>
     <mb-data-generators-synthetic-data-parameters [syntheticDataParameters]="syntheticDataParameters"
-      class="mat-step-wide">
-    </mb-data-generators-synthetic-data-parameters>
+      class="mat-step-wide" />
   </mat-step>
   <mat-step>
     <ng-template matStepLabel><span class="multiline-label">Ge&#8203;ne&#8203;ra&#8203;te</span></ng-template>
@@ -25,12 +24,11 @@
       <div class="name">{{historicalDataName}}</div>
     }
     @if (historicalData) {
-      <mb-historical-data-chart [svgheight]=400 [historicalData]="historicalData">
-      </mb-historical-data-chart>
+      <mb-historical-data-chart [svgheight]=400 [historicalData]="historicalData" />
     }
     @if (historicalData) {
       <mb-historical-data-table [historicalData]="historicalData" [enableDownload]="true"
-      ></mb-historical-data-table>
+       />
     }
   </mat-step>
 </mat-horizontal-stepper>

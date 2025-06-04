@@ -1,9 +1,7 @@
 <mb-hilbert-transformer-cycle-estimator-type class="mr"
-  [initial]="estimatorTypeParam" [label]="'Estimator'" (selectionChange)="estimatorTypeChanged($event);">
-</mb-hilbert-transformer-cycle-estimator-type>
+  [initial]="estimatorTypeParam" [label]="'Estimator'" (selectionChange)="estimatorTypeChanged($event);" />
 @if (estimatorParamsVisible) {
-  <mb-hilbert-transformer-cycle-estimator-params [initial]="estimatorParamsParam" (selectionChange)="estimatorParamsParam = $event;">
-  </mb-hilbert-transformer-cycle-estimator-params>
+  <mb-hilbert-transformer-cycle-estimator-params [initial]="estimatorParamsParam" (selectionChange)="estimatorParamsParam = $event;" />
 }
 <mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="useAlpha">Alpha</mat-slide-toggle>
 @if (!useAlpha) {
@@ -27,10 +25,8 @@
   </mat-form-field>
 }
 @if (barComponentVisible) {
-  <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
-  </mb-bar-component>
+  <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr" />
 }
 @if (quoteComponentVisible) {
-  <mb-quote-component [initial]="quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
-  </mb-quote-component>
+  <mb-quote-component [initial]="quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr" />
 }

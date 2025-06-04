@@ -1,7 +1,6 @@
 @for (sma of smaArray; track sma.id) {
   <app-sma-params [initial]="sma"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-sma-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

@@ -4,11 +4,11 @@
   }
   <mat-select [(value)]="elemSelected" (selectionChange)="selectionChanged($event);">
     <mat-select-trigger>
-      <mb-width-svg [value]="elemSelected"></mb-width-svg>
+      <mb-width-svg [value]="elemSelected" />
     </mat-select-trigger>
     @for (elem of elems; track elem.value) {
       <mat-option [value]="elem.value" selected="elem.selected">
-        <mb-width-svg [value]="elem.value"></mb-width-svg>
+        <mb-width-svg [value]="elem.value" />
       </mat-option>
     }
   </mat-select>

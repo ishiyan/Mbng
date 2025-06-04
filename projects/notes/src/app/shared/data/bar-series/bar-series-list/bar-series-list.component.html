@@ -1,7 +1,6 @@
 @for (series of seriesArray; track series.data) {
   <app-series-card [series]="series" [removable]="series.removable"
-    (removed)="removed($event);">
-  </app-series-card>
+    (removed)="removed($event);" />
 }
 
 <div class="loader">

@@ -2,11 +2,11 @@
   <mat-label>{{label()}}</mat-label>
   <mat-select [(value)]="selectedPalette" (selectionChange)="selectionChanged($event);">
     <mat-select-trigger>
-      <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette.palette"></mb-swatches>
+      <mb-swatches [width]="triggerWidthPixels" [height]="triggerHeightPixels" [colors]="selectedPalette.palette" />
     </mat-select-trigger>
     @for (p of palettes.palettes; track p.id) {
       <mat-option [value]="p">
-        <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p.palette"></mb-swatches>
+        <mb-swatches [width]="optionWidthPixels" [height]="optionHeightPixels" [colors]="p.palette" />
       </mat-option>
     }
   </mat-select>

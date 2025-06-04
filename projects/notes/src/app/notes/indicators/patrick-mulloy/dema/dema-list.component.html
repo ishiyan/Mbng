@@ -1,7 +1,6 @@
 @for (dema of demaArray; track dema.id) {
   <app-dema-params [initial]="dema"
-    (changed)="updated($event);" (removed)="removed($event);">
-  </app-dema-params>
+    (changed)="updated($event);" (removed)="removed($event);" />
 }
 
 <div>

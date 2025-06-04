@@ -4,10 +4,8 @@
 </mat-form-field>
 <mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="unbiasedParam">Unbiased</mat-slide-toggle>
 @if (barComponentVisible) {
-  <mb-bar-component [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
-  </mb-bar-component>
+  <mb-bar-component [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr" />
 }
 @if (quoteComponentVisible) {
-  <mb-quote-component [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr">
-  </mb-quote-component>
+  <mb-quote-component [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr" />
 }

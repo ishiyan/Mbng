@@ -19,6 +19,6 @@
   <mat-sidenav-content>
     <mat-slide-toggle class="slide-toggle" [(ngModel)]="renderMathJax">MathJax</mat-slide-toggle>
     <mat-slide-toggle class="slide-toggle" [(ngModel)]="renderKatex">KaTeX</mat-slide-toggle>
-    <app-tex-sample-list [samples]="category.samples" [showMathJax]="renderMathJax" [showKatex]="renderKatex"></app-tex-sample-list>
+    <app-tex-sample-list [samples]="category.samples" [showMathJax]="renderMathJax" [showKatex]="renderKatex" />
   </mat-sidenav-content>
 </mat-sidenav-container>
