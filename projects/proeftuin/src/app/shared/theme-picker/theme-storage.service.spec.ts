@@ -1,6 +1,8 @@
 import {Theme} from './theme';
 import {ThemeStorageService} from './theme-storage.service';
 
+// ng test mb  --code-coverage --include='**/theme-picker/*.spec.ts'
+
 const testStorageKey = ThemeStorageService.storageKey;
 const testTheme: Theme = {
   primary: '#000000',

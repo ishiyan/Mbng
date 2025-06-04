@@ -1,15 +1,25 @@
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { ThemeManagerService } from './theme-manager.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+
+import { ThemeManagerService } from './theme-manager.service';
+
+// ng test mb  --code-coverage --include='**/theme-picker/*.spec.ts'
 
 describe('ThemeManagerService', () => {
   let themeManagerService: ThemeManagerService;
 
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [],
-    providers: [ThemeManagerService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-}));
+    beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ]
+    }).compileComponents();
+  });
 
   beforeEach(inject([ThemeManagerService], (tms: ThemeManagerService) => {
     themeManagerService = tms;

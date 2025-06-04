@@ -99,10 +99,6 @@ export abstract class SeriesLoad {
       };
       reader.onloadend = (event: ProgressEvent<FileReader>) => {
         const content = event?.target?.result as string ?? empty;
-        if (reader.removeAllListeners != null) {
-          reader.removeAllListeners();
-        }
-
         resolve(content);
       };
       reader.onerror = (error: ProgressEvent<FileReader>) => {
