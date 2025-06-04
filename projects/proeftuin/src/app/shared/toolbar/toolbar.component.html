@@ -4,14 +4,20 @@
       <mat-icon>{{ secondRowOpen ? 'menu_open' : 'menu' }}</mat-icon>
     </button>
     <mat-icon svgIcon="mbrane-top" class="logo" />
-    <a mat-button class="hide-small" *ngFor="let key of itemKeys" [routerLink]="key">{{items[key]}}</a>
+    @for (key of itemKeys; track key) {
+      <a mat-button class="hide-small" [routerLink]="key">{{items[key]}}</a>
+    }
     <span class="fill-remaining-space"></span>
     <app-theme-picker />
     <a mat-button routerLink="/">
       <mat-icon>fingerprint</mat-icon>
     </a>
   </mat-toolbar-row>
-  <mat-toolbar-row class="show-small second-row" *ngIf="secondRowOpen">
-    <a mat-button *ngFor="let key of itemKeys" [routerLink]="key">{{items[key]}}</a>
-  </mat-toolbar-row>
+  @if (secondRowOpen) {
+    <mat-toolbar-row class="show-small second-row">
+      @for (key of itemKeys; track key) {
+        <a mat-button [routerLink]="key">{{items[key]}}</a>
+      }
+    </mat-toolbar-row>
+  }
 </mat-toolbar>
