@@ -6,14 +6,15 @@
 }
 
 mat-form-field {
+  margin-top: 16px;
   margin-right: 16px;
   margin-bottom: 16px;
   padding-bottom: 16px;
+  width:16em;
 }
 
 mb-katex {
   margin: 0px;
-  // display: block; // comment out  this to show equations in single sequence wrapping over multiple lines
 }
 
 div {
