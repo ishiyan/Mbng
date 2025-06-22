@@ -48,6 +48,9 @@ export class SvgViewerComponent {
   }
 
   private fetchAndInlineSvgContent(path: string): void {
+    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+      return;
+    }
     this.httpClient.get(path, { responseType: 'text' }).subscribe(svgResponse => {
       this.inlineSvgContent(svgResponse);
     });
