@@ -139,6 +139,15 @@ for http://ng-localhost/notes/assets/mb/mb-candlesticks.svg
 
 ## Updating
 
+Install `n` to update `npm`-
+
+```bash
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+node -v
+```
+
 Install latest tools, run `ng update`, run `ncu`, run `npm install`.
 
 ```bash
