@@ -4,36 +4,41 @@ import {
   objectName
 } from '../constants';
 
+const defaultAmplitude: number = 100;
+const defaultMinimalValue: number = 10;
+const defaultInitialPeriod: number = 128;
+const defaultFinalPeriod: number = 16;
+const defaultPhaseInPi: number = 0;
+const defaultIsBiDirectional: boolean = false;
+const defaultChirpSweep: ChirpSweep = ChirpSweep.LinearPeriod;
+const defaultChirpSweepSamples: number = 128;
+
 /** The input parameters for the chirp generator. */
 export class ChirpParameters {
-  private static readonly defaultAmplitude: number = 100;
-  private static readonly defaultMinimalValue: number = 10;
-  private static readonly defaultInitialPeriod: number = 128;
-  private static readonly defaultFinalPeriod: number = 16;
-  private static readonly defaultPhaseInPi: number = 0;
-  private static readonly defaultIsBiDirectional: boolean = false;
-  private static readonly defaultChirpSweep: ChirpSweep = ChirpSweep.LinearPeriod;
 
   /** The amplitude of the chirp, should be positive. */
-  amplitude: number = ChirpParameters.defaultAmplitude;
+  amplitude: number = defaultAmplitude;
 
   /** The minimum of the chirp, should be positive. */
-  minimalValue: number = ChirpParameters.defaultMinimalValue;
+  minimalValue: number = defaultMinimalValue;
 
   /** The instantaneous initial period of the chirp in samples, should be ≥ 2. */
-  initialPeriod: number = ChirpParameters.defaultInitialPeriod;
+  initialPeriod: number = defaultInitialPeriod;
 
   /** The instantaneous final period of the chirp in samples, should be ≥ 2. */
-  finalPeriod: number = ChirpParameters.defaultFinalPeriod;
+  finalPeriod: number = defaultFinalPeriod;
 
   /** The initial phase, φ, of the chirp in ratios of π; if φ∈[-1, 1], then the phase ∈[-π, π]. */
-  phaseInPi: number = ChirpParameters.defaultPhaseInPi;
+  phaseInPi: number = defaultPhaseInPi;
 
   /** If the period of even chirps descends from the final period to the initial one, to form a symmetrical shape with odd chirps. */
-  isBiDirectional: boolean = ChirpParameters.defaultIsBiDirectional;
+  isBiDirectional: boolean = defaultIsBiDirectional;
 
   /** The chirp sweep. */
-  chirpSweep: ChirpSweep = ChirpParameters.defaultChirpSweep;
+  chirpSweep: ChirpSweep = defaultChirpSweep;
+
+  /** The number of data points in the chirp sweep. */
+  chirpSweepSamples: number = defaultChirpSweepSamples;
 
   constructor(data?: ChirpParameters) {
     if (data) {
