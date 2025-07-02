@@ -1,0 +1,15 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{scalarsMoniker}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-multiline [data]="scalars" [configuration]="configLine" [valueAxis]="['grid']" [width]="'90%'" [height]="300" class="multiline"/>
+    </mat-card-content>
+    <mat-card-content>
+      {{scalarsMoniker}}
+    </mat-card-content>
+  </mat-card>
+
+</div>

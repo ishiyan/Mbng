@@ -55,6 +55,10 @@ export const routes: Routes = [
           import('./mb-samples/components/data-entities/sample-data-entities.routes').then(m => m.routes)
       },
       {
+        path: 'comp-data-generators', loadChildren: () =>
+          import('./mb-samples/components/data-generators/sample-data-generators.routes').then(m => m.routes)
+      },
+      {
         path: 'comp-tra-ind-sma', loadChildren: () =>
           import('./mb-samples/components/trading/indicators/simple-moving-average/sample-simple-moving-average.routes')
             .then(m => m.routes)

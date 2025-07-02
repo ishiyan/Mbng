@@ -130,6 +130,13 @@ export const treeNodes: MbSample[] = [
         ]
       },
       {
+        name: 'Data generators',
+        children: [
+          { name: 'Chirp generator', header: 'Chirp generator', route: 'comp-data-generators/s1' },
+          { name: 'Chirp generator 2', header: 'Chirp generator 2', route: 'comp-data-generators/s2' }
+        ]
+      },
+      {
         name: 'Ohlcv chart selectors',
         children: [
           { name: 'Line width', header: 'Line width', route: 'comp-ohlcv-chart-selector/s1' },
