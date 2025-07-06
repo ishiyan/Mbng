@@ -49,7 +49,7 @@ export class ChirpGeneratorParameters {
     data[sampleCountName] = this.sampleCount;
     data[timeParametersName] = this.timeParameters ? this.timeParameters.toJSON() : undefined as any;
     data[waveformParametersName] = this.waveformParameters ? this.waveformParameters.toJSON() : undefined as any;
-    data[chirpParametersName] = this.chirpParameters ? this.chirpParameters.toJSON() : undefined as any;
+    //data[chirpParametersName] = this.chirpParameters ? this.chirpParameters.toJSON() : undefined as any;
     data[ohlcvParametersName] = this.ohlcvParameters ? this.ohlcvParameters.toJSON() : undefined as any;
     data[quoteParametersName] = this.quoteParameters ? this.quoteParameters.toJSON() : undefined as any;
     data[tradeParametersName] = this.tradeParameters ? this.tradeParameters.toJSON() : undefined as any;

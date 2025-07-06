@@ -109,7 +109,7 @@ describe('ChirpGenerator', () => {
 
       gen.reset();
 
-      expect((gen as any).currentSampleIndex).toBe(0);
+      expect((gen as any).currentSample).toBe(0);
       expect((gen as any).directionForward).toBe(true);
       expect((gen as any).angle).toBe((gen as any).phase);
       expect((gen as any).instantFrequency).toBe((gen as any).initialFrequency);
@@ -284,8 +284,8 @@ describe('ChirpGenerator', () => {
       const gen = new ChirpGenerator(
         ChirpSweep.LinearFrequency,
         4,
-        2, // Very small period to cause rapid angle changes
-        1,
+        3, // Very small period to cause rapid angle changes
+        2,
         0.0,
         1.0,
         0.0,

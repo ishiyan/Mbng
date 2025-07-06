@@ -1,8 +1,4 @@
 import { ChirpSweep } from './chirp-sweep.enum';
-import {
-  amplitudeName, minimalValueName, initialPeriodName, finalPeriodName, phaseInPiName, isBiDirectionalName, chirpSweepName,
-  objectName
-} from '../constants';
 
 const defaultAmplitude: number = 100;
 const defaultMinimalValue: number = 10;
@@ -12,6 +8,7 @@ const defaultPhaseInPi: number = 0;
 const defaultIsBiDirectional: boolean = false;
 const defaultChirpSweep: ChirpSweep = ChirpSweep.LinearPeriod;
 const defaultChirpSweepSamples: number = 128;
+const defaultNoiseAmplitudeFraction: number = 0;
 
 /** The input parameters for the chirp generator. */
 export class ChirpParameters {
@@ -34,31 +31,14 @@ export class ChirpParameters {
   /** If the period of even chirps descends from the final period to the initial one, to form a symmetrical shape with odd chirps. */
   isBiDirectional: boolean = defaultIsBiDirectional;
 
-  /** The chirp sweep. */
+  /** The chirp sweep shape. */
   chirpSweep: ChirpSweep = defaultChirpSweep;
 
   /** The number of data points in the chirp sweep. */
   chirpSweepSamples: number = defaultChirpSweepSamples;
 
-  constructor(data?: ChirpParameters) {
-    if (data) {
-      for (const property in data) {
-        if (Object.prototype.hasOwnProperty.call(data, property)) {
-          (this as any)[property] = (data as any)[property];
-        }
-      }
-    }
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === objectName ? data : {};
-    data[amplitudeName] = this.amplitude;
-    data[minimalValueName] = this.minimalValue;
-    data[initialPeriodName] = this.initialPeriod;
-    data[finalPeriodName] = this.finalPeriod;
-    data[phaseInPiName] = this.phaseInPi;
-    data[isBiDirectionalName] = this.isBiDirectional;
-    data[chirpSweepName] = this.chirpSweep;
-    return data;
-  }
+  /** The amplitude of the noise as a fraction of the generated sample value, should be in the range [0, 1].
+   * If zero, no noise will be produced.
+   */
+  noiseAmplitudeFraction: number = defaultNoiseAmplitudeFraction;
 }

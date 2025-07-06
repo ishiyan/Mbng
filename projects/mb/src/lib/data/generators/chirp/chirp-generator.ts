@@ -1,3 +1,4 @@
+import { ChirpParameters } from './chirp-parameters';
 import { ChirpSweep } from './chirp-sweep.enum';
 
 const PI = Math.PI;
@@ -22,8 +23,18 @@ function sweepName(chirpSweep: ChirpSweep): string {
   }
 }
 
-export interface WaveformParameters {
-  noiseAmplitudeFraction: number;
+export function createChirpGenerator(params: ChirpParameters): ChirpGenerator {
+  return new ChirpGenerator(
+    params.chirpSweep,
+    params.chirpSweepSamples,
+    params.initialPeriod,
+    params.finalPeriod,
+    params.phaseInPi,
+    params.amplitude,
+    params.minimalValue,
+    params.isBiDirectional,
+    params.noiseAmplitudeFraction
+  );
 }
 
 /**
@@ -54,7 +65,7 @@ export class ChirpGenerator {
   private instantPeriod: number;
   private instantFrequency: number;
   private directionForward: boolean = true;
-  private currentSampleIndex: number = 0;
+  private currentSample: number = 0;
 
   public readonly sweepSamples: number;
   public readonly sampleAmplitude: number;
@@ -71,7 +82,7 @@ export class ChirpGenerator {
    * Initializes a new instance of the ChirpGenerator class.
    *
    * @param sweep The type of chirp sweep (linear, quadratic, logarithmic).
-   * @param sweepSamples The number of samples in the single chirp sweep.
+   * @param sweepSamples The number of samples in the single chirp sweep, should be ≥ 2.
    * @param initialPeriod The initial period of the chirp in samples, should be ≥ 2.
    * @param finalPeriod The final period of the chirp in samples, should be ≥ 2.
    * @param phaseInPi The initial phase of the chirp in ratios of π; if φ∈[-1, 1], then the phase ∈[-π, π].
@@ -91,6 +102,15 @@ export class ChirpGenerator {
     biDirectional: boolean = true,
     noiseAmplitudeFraction: number = 0.0
   ) {
+    if (sweepSamples < 2) {
+      throw new Error(`The number of samples ${sweepSamples} in chirp sweep should be ≥ 2`);
+    }
+    if (initialPeriod < 2) {
+      throw new Error(`The initial period ${initialPeriod} in chirp sweep should be ≥ 2`);
+    }
+    if (finalPeriod < 2) {
+      throw new Error(`The final period ${finalPeriod} in chirp sweep should be ≥ 2`);
+    }
     this.sweepSamples = sweepSamples;
     this.sweepSamplesMinusOne = sweepSamples - 1;
     this.sampleAmplitude = amplitude;
@@ -139,27 +159,27 @@ export class ChirpGenerator {
     }
   }
 
-  /**
-   * Resets the generator to its initial state.
-   */
+  /** Resets the generator to its initial state. */
   public reset(): void {
     this.angle = this.phase;
     this.instantFrequency = this.initialFrequency;
     this.instantPeriod = this.initialPeriod;
     this.directionForward = true;
-    this.currentSampleIndex = 0;
+    this.currentSample = 0;
   }
 
-  /**
-   * Generates the next sample in the chirp waveform.
-   */
+  /** Generates the next sample in the chirp waveform. */
   public nextSample(): number {
-    if (this.isBiDirectional) {
-      this.instantFrequency = this.directionForward ? this.nextFrequencyForward() : this.nextFrequencyBackward();
-      if (this.currentSampleIndex === this.sweepSamples) {
+    this.currentSample++;
+    if (this.currentSample > this.sweepSamples) {
+      this.currentSample = 1;
+      if (this.isBiDirectional) {
         this.directionForward = !this.directionForward;
-        this.currentSampleIndex = 0;
       }
+    }
+    if (this.isBiDirectional) {
+      this.instantFrequency = this.directionForward ?
+        this.nextFrequencyForward() : this.nextFrequencyBackward();
     } else {
       this.instantFrequency = this.nextFrequencyForward();
     }
@@ -194,7 +214,9 @@ export class ChirpGenerator {
   }
 
   private nextFrequencyForward(): number {
-    if (this.currentSampleIndex === 1) {
+    if (this.currentSample === 1) {
+      this.instantPeriod = this.initialPeriod;
+      this.instantFrequency = this.initialFrequency;
       return this.initialFrequency;
     }
 
@@ -206,24 +228,26 @@ export class ChirpGenerator {
       case ChirpSweep.LinearFrequency:
         return this.instantFrequency + this.ratio;
       case ChirpSweep.QuadraticPeriod:
-        n = this.currentSampleIndex - 1;
+        n = this.currentSample - 1;
         this.instantPeriod = this.initialPeriod + this.ratio * n * n;
         return TWO_PI / this.instantPeriod;
       case ChirpSweep.QuadraticFrequency:
-        n = this.currentSampleIndex - 1;
+        n = this.currentSample - 1;
         return this.initialFrequency + this.ratio * n * n;
       case ChirpSweep.LogarithmicPeriod:
-        this.instantPeriod = this.initialPeriod * Math.pow(this.ratio, (this.currentSampleIndex - 1) / this.sweepSamplesMinusOne);
+        this.instantPeriod = this.initialPeriod * Math.pow(this.ratio, (this.currentSample - 1) / this.sweepSamplesMinusOne);
         return TWO_PI / this.instantPeriod;
       case ChirpSweep.LogarithmicFrequency:
-        return this.initialFrequency * Math.pow(this.ratio, (this.currentSampleIndex - 1) / this.sweepSamplesMinusOne);
+        return this.initialFrequency * Math.pow(this.ratio, (this.currentSample - 1) / this.sweepSamplesMinusOne);
     }
 
     return this.initialFrequency;
   }
 
   private nextFrequencyBackward(): number {
-    if (this.currentSampleIndex === 1) {
+    if (this.currentSample === 1) {
+      this.instantPeriod = this.finalPeriod;
+      this.instantFrequency = this.finalFrequency;
       return this.finalFrequency;
     }
 
@@ -235,17 +259,17 @@ export class ChirpGenerator {
       case ChirpSweep.LinearFrequency:
         return this.instantFrequency - this.ratio;
       case ChirpSweep.QuadraticPeriod:
-        n = this.sweepSamples - this.currentSampleIndex + 1;
+        n = this.sweepSamples - this.currentSample + 1;
         this.instantPeriod = this.initialPeriod + this.ratio * n * n;
         return TWO_PI / this.instantPeriod;
       case ChirpSweep.QuadraticFrequency:
-        n = this.sweepSamples - this.currentSampleIndex + 1;
+        n = this.sweepSamples - this.currentSample + 1;
         return this.initialFrequency + this.ratio * n * n;
       case ChirpSweep.LogarithmicPeriod:
-        this.instantPeriod = this.initialPeriod * Math.pow(this.ratio, (this.sweepSamples - this.currentSampleIndex + 1) / this.sweepSamplesMinusOne);
+        this.instantPeriod = this.initialPeriod * Math.pow(this.ratio, (this.sweepSamples - this.currentSample + 1) / this.sweepSamplesMinusOne);
         return TWO_PI / this.instantPeriod;
       case ChirpSweep.LogarithmicFrequency:
-        return this.initialFrequency * Math.pow(this.ratio, (this.sweepSamples - this.currentSampleIndex + 1) / this.sweepSamplesMinusOne);
+        return this.initialFrequency * Math.pow(this.ratio, (this.sweepSamples - this.currentSample + 1) / this.sweepSamplesMinusOne);
     }
 
     return this.finalFrequency;

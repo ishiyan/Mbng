@@ -82,7 +82,7 @@ export class SyntheticDataParameters {
     data[syntheticDataKindName] = this.syntheticDataKind;
     switch (this.syntheticDataKind) {
       case SyntheticDataKind.Chirp: {
-        data[chirpParametersName] = this.chirpParameters ? this.chirpParameters.toJSON() : new ChirpParameters();
+        data[chirpParametersName] = /* this.chirpParameters ? this.chirpParameters.toJSON() :*/ new ChirpParameters();
         break;
       }
       case SyntheticDataKind.FractionalBrownianMotion: {

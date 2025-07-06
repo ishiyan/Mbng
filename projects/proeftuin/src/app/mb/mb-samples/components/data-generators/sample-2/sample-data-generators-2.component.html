@@ -2,13 +2,21 @@
 
   <mat-card appearance="raised" class="example-card">
     <mat-card-header>
-      <mat-card-title>Default</mat-card-title>
+      <mat-card-title>Chirp parameters</mat-card-title>
     </mat-card-header>
+    <br/>
     <mat-card-content>
-      <mb-data-generators-chirp-parameters [chirpParameters]="default" (selectionChange)="selected1 = selectionChange(selected1, $event);" />
+      <mb-data-generators-chirp-parameters [chirpParameters]="initial" (parametersChange)="paramsChanged($event)" />
     </mat-card-content>
     <mat-card-content>
-      Selected: {{selected1}}
+      Current parameters: <pre>{{current | json}}</pre>
+    </mat-card-content>
+    <br/>
+    <mat-card-content>
+      <mb-multiline [data]="[data]" [configuration]="configLine" [valueAxis]="['grid']" [width]="'90%'" [height]="300" class="multiline"/>
+    </mat-card-content>
+    <mat-card-content>
+      {{moniker}}
     </mat-card-content>
   </mat-card>
 
