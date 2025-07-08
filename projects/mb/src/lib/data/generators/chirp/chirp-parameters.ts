@@ -8,7 +8,7 @@ const defaultPhaseInPi: number = 0;
 const defaultIsBiDirectional: boolean = false;
 const defaultChirpSweep: ChirpSweep = ChirpSweep.LinearPeriod;
 const defaultChirpSweepSamples: number = 128;
-const defaultNoiseAmplitudeFraction: number = 0;
+const defaultNoiseRatio: number = 0;
 
 /** The input parameters for the chirp generator. */
 export class ChirpParameters {
@@ -40,5 +40,5 @@ export class ChirpParameters {
   /** The amplitude of the noise as a fraction of the generated sample value, should be in the range [0, 1].
    * If zero, no noise will be produced.
    */
-  noiseAmplitudeFraction: number = defaultNoiseAmplitudeFraction;
+  noiseRatio: number = defaultNoiseRatio;
 }

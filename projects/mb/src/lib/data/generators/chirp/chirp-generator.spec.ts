@@ -21,7 +21,7 @@ describe('ChirpGenerator', () => {
       expect(gen.phaseInPi).toBe(0.0);
       expect(gen.chirpSweep).toBe(ChirpSweep.LinearPeriod);
       expect(gen.isBiDirectional).toBe(true);
-      expect(gen.noiseAmplitudeFraction).toBe(0.0);
+      expect(gen.noiseRatio).toBe(0.0);
     });
 
     it('should create with custom parameters', () => {
@@ -45,7 +45,7 @@ describe('ChirpGenerator', () => {
       expect(gen.phaseInPi).toBe(0.5);
       expect(gen.chirpSweep).toBe(ChirpSweep.LinearFrequency);
       expect(gen.isBiDirectional).toBe(false);
-      expect(gen.noiseAmplitudeFraction).toBe(0.1);
+      expect(gen.noiseRatio).toBe(0.1);
     });
 
     it('should generate correct moniker for default parameters', () => {

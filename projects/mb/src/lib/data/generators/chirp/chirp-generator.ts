@@ -33,7 +33,7 @@ export function createChirpGenerator(params: ChirpParameters): ChirpGenerator {
     params.amplitude,
     params.minimalValue,
     params.isBiDirectional,
-    params.noiseAmplitudeFraction
+    params.noiseRatio
   );
 }
 
@@ -75,7 +75,7 @@ export class ChirpGenerator {
   public readonly phaseInPi: number;
   public readonly chirpSweep: ChirpSweep;
   public readonly isBiDirectional: boolean;
-  public readonly noiseAmplitudeFraction: number;
+  public readonly noiseRatio: number;
   public readonly moniker: string = '';
 
   /**
@@ -89,7 +89,7 @@ export class ChirpGenerator {
    * @param amplitude The amplitude of the chirp, should be positive.
    * @param minimum The minimum value of the chirp, should be positive.
    * @param biDirectional If true, the chirp waveform is bi-directional, going forward and backward.
-   * @param noiseAmplitudeFraction The fraction of the amplitude to be used for noise, should be in [0, 1].
+   * @param noiseRatio The fraction of the value of a sample to be used for noise, should be in [0, 1].
    */
   constructor(
     sweep: ChirpSweep = ChirpSweep.LinearPeriod,
@@ -100,7 +100,7 @@ export class ChirpGenerator {
     amplitude: number = 100.0,
     minimum: number = 10.0,
     biDirectional: boolean = true,
-    noiseAmplitudeFraction: number = 0.0
+    noiseRatio: number = 0.0
   ) {
     if (sweepSamples < 2) {
       throw new Error(`The number of samples ${sweepSamples} in chirp sweep should be ≥ 2`);
@@ -127,7 +127,7 @@ export class ChirpGenerator {
     this.phaseInPi = phaseInPi;
     this.phase = PI * phaseInPi;
     this.angle = this.phase;
-    this.noiseAmplitudeFraction = noiseAmplitudeFraction;
+    this.noiseRatio = noiseRatio;
     this.ratio = this.calculateRatio(sweep);
 
     const cAmplitude = this.sampleAmplitude.toFixed(0);
@@ -154,8 +154,8 @@ export class ChirpGenerator {
       this.moniker = `${cMinimum} + ${this.moniker}`;
     }
 
-    if (this.noiseAmplitudeFraction > delta) {
-      this.moniker = `${this.moniker} + noise(${this.noiseAmplitudeFraction.toFixed(2)})`;
+    if (this.noiseRatio > delta) {
+      this.moniker = `${this.moniker} + noise(${this.noiseRatio.toFixed(2)})`;
     }
   }
 

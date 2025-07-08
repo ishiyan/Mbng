@@ -58,7 +58,7 @@ export class ChirpParametersComponent {
     amplitude: 100.0, // amplitude
     minimalValue: 10.0, // minimal value
     isBiDirectional: false, // is bi-directional
-    noiseAmplitudeFraction: 0.0 // noise amplitude fraction
+    noiseRatio: 0.0 // noise ratio
   };
 
   constructor() {
@@ -66,15 +66,6 @@ export class ChirpParametersComponent {
       const p = this.chirpParameters();
       if (p) {
         this.params = p;
-        /*this.chirpSweepParam = p.chirpSweep;
-        this.chirpSweepSamplesParam = p.chirpSweepSamples;
-        this.initialPeriodParam = p.initialPeriod;
-        this.finalPeriodParam = p.finalPeriod;
-        this.phaseInPiParam = p.phaseInPi;
-        this.amplitudeParam = p.amplitude;
-        this.minimalValueParam = p.minimalValue;
-        this.isBiDirectionalParam = p.isBiDirectional;
-        this.noiseAmplitudeFractionParam = p.noiseAmplitudeFraction;*/
       }
     });
   }
@@ -97,9 +88,6 @@ export class ChirpParametersComponent {
 
     this.notify();
   }
-  protected chirpSweepChanged(value: ChirpSweep) {
-    this.chirpSweepParam = value;
-  }
 
   protected get chirpSweepSamplesParam(): number {
     return this.params.chirpSweepSamples;
@@ -116,9 +104,6 @@ export class ChirpParametersComponent {
     this.params = { ...this.params };
 
     this.notify();
-  }
-  protected chirpSweepSamplesChanged(value: number) {
-    this.chirpSweepSamplesParam = value;
   }
 
   protected get initialPeriodParam(): number {
@@ -137,9 +122,6 @@ export class ChirpParametersComponent {
 
     this.notify();
   }
-  protected initialPeriodChanged(value: number) {
-    this.initialPeriodParam = value;
-  }
 
   protected get finalPeriodParam(): number {
     return this.params.finalPeriod;
@@ -156,9 +138,6 @@ export class ChirpParametersComponent {
     this.params = { ...this.params };
 
     this.notify();
-  }
-  protected finalPeriodChanged(value: number) {
-    this.finalPeriodParam = value;
   }
 
   protected get phaseInPiParam(): number {
@@ -180,9 +159,6 @@ export class ChirpParametersComponent {
 
     this.notify();
   }
-  protected phaseInPiChanged(value: number) {
-    this.phaseInPiParam = value;
-  }
 
   protected get amplitudeParam(): number {
     return this.params.amplitude;
@@ -196,9 +172,6 @@ export class ChirpParametersComponent {
     this.params = { ...this.params };
 
     this.notify();
-  }
-  protected amplitudeChanged(value: number) {
-    this.amplitudeParam = value;
   }
 
   protected get minimalValueParam(): number {
@@ -214,9 +187,6 @@ export class ChirpParametersComponent {
 
     this.notify();
   }
-  protected minimalValueChanged(value: number) {
-    this.minimalValueParam = value;
-  }
 
   protected get isBiDirectionalParam(): boolean {
     return this.params.isBiDirectional;
@@ -231,25 +201,19 @@ export class ChirpParametersComponent {
 
     this.notify();
   }
-  protected isBiDirectionalChanged(value: boolean) {
-    this.isBiDirectionalParam = value;
-  }
 
-  protected get noiseAmplitudeFractionParam(): number {
-    return this.params.noiseAmplitudeFraction;
+  protected get noiseRatioParam(): number {
+    return this.params.noiseRatio;
   }
-  protected set noiseAmplitudeFractionParam(value: number) {
-    if (this.params.noiseAmplitudeFraction === value) {
+  protected set noiseRatioParam(value: number) {
+    if (this.params.noiseRatio === value) {
       return;
     }
 
-    this.params.noiseAmplitudeFraction = value;
+    this.params.noiseRatio = value;
     this.params = { ...this.params };
 
     this.notify();
-  }
-  protected noiseAmplitudeFractionChanged(value: number) {
-    this.noiseAmplitudeFractionParam = value;
   }
 
   private notify() {
