@@ -77,11 +77,7 @@ export * from './lib/data/generators/sawtooth/sawtooth-scalar-generator-paramete
 export * from './lib/data/generators/chirp/chirp-sweep.enum';
 export * from './lib/data/generators/chirp/chirp-parameters';
 export * from './lib/data/generators/chirp/chirp-parameters.component';
-export * from './lib/data/generators/chirp/chirp-generator-parameters';
-export * from './lib/data/generators/chirp/chirp-ohlcv-generator-parameters';
-export * from './lib/data/generators/chirp/chirp-quote-generator-parameters';
-export * from './lib/data/generators/chirp/chirp-trade-generator-parameters';
-export * from './lib/data/generators/chirp/chirp-scalar-generator-parameters';
+export * from './lib/data/generators/chirp/chirp-generator';
 
 export * from './lib/data/generators/sinusoidal/sinusoidal-parameters';
 export * from './lib/data/generators/sinusoidal/sinusoidal-parameters.component';
