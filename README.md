@@ -38,6 +38,146 @@ Temporary, can be disabled in `angular.json` by inserting a snippet before `"sty
             ],
 ```
 
+### Self-hosting Roboto font
+
+Install `roboto-fontface` package.
+
+```bash
+npm install roboto-fontface
+```
+
+This will add `roboto-fontface` to the `packege.json`.
+
+```json
+  "dependencies": {
+    "roboto-fontface": "^0.10.0",
+  },
+```
+
+In `angular.json`, update the `styles` array to include `css`.
+
+```json
+  "styles": [
+    "src/styles.scss", 
+    "node_modules/roboto-fontface/css/roboto/roboto-fontface.css"
+  },
+```
+
+Delete the lines from the `index.html` which download the font.
+
+```html
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+```
+
+### Material icons
+
+Install `roboto-fontface` package.
+
+```bash
+npm install material-icons
+```
+
+This will add `material-icons` to the `packege.json`.
+
+```json
+  "dependencies": {
+    "material-icons": "^1.13.14",
+  },
+```
+
+In `angular.json`, update the `styles` array to include `css`.
+
+```json
+  "styles": [
+    "src/styles.scss", 
+    "node_modules/material-icons/iconfont/material-icons.css"
+  },
+```
+
+If you place an icon in, for instance, `h1` element, apply the following style to it.
+This will size the icon appropriatelly. If you omti `fontSet` the icon will be filled.
+
+```html
+<h1>
+  This is a header
+  <mat-icon fontSet="material-icons-outlined">home</mat-icon>
+</h1>
+```
+
+```css
+mat-icon {
+  font-size: inherit;
+  width: auto;
+  height: auto;
+}
+```
+
+### Material symbols
+
+Install `material-symbols` package.
+
+```bash
+npm install material-symbols
+```
+
+This will add `material-icons` to the `packege.json`.
+
+```json
+  "dependencies": {
+    "material-symbols": "^0.29.2",
+  },
+```
+
+In `angular.json`, update the `styles` array to include `css`.
+
+```json
+  "styles": [
+    "src/styles.scss", 
+    "node_modules/material-symbols/index.scss"
+  },
+```
+
+Use the font as follows
+
+```html
+  <mat-icon fontSet="material-symbols-outlined">home</mat-icon>
+  <mat-icon fontSet="material-symbols-sharp">home</mat-icon>
+  <mat-icon fontSet="material-symbols-rounded">home</mat-icon>
+```
+
+To customize symbols use `css`
+
+```css
+mat-icon {
+  font-size: inherit;
+  width: auto;
+  height: auto;
+
+  &:nth-of-type(1) {
+    font-variation-settings: 
+      "FILL" 0, 
+      "wght" 100, 
+      "GRAD" 200, 
+      "opsz" 24;
+  }
+
+  &:nth-of-type(2) {
+    font-variation-settings: 
+      "FILL" 1, 
+      "wght" 400, 
+      "GRAD" 200, 
+      "opsz" 24;
+  }
+  &:nth-of-type(3) {
+    font-variation-settings: 
+      "FILL" 0, 
+      "wght" 700, 
+      "GRAD" 200, 
+      "opsz" 24;
+  }
+}
+
 ### SEO
 
 [SEO](https://moz.com/blog/meta-data-templates-123)
