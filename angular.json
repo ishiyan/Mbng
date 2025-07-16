@@ -41,7 +41,8 @@
               }
             },
             "styles": [
-              "projects/notes/src/styles.scss"
+              "projects/notes/src/styles.scss",
+              "node_modules/@fontsource/roboto/index.css"
             ],
             "server": "projects/notes/src/main.server.ts",
             "ssr": false,
@@ -157,7 +158,8 @@
               }
             ],
             "styles": [
-              "projects/proeftuin/src/styles.scss"
+              "projects/proeftuin/src/styles.scss",
+              "node_modules/@fontsource/roboto/index.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -228,7 +230,8 @@
               "projects/proeftuin/src/assets"
             ],
             "styles": [
-              "projects/proeftuin/src/styles.scss"
+              "projects/proeftuin/src/styles.scss",
+              "node_modules/@fontsource/roboto/index.css"
             ],
             "scripts": []
           }

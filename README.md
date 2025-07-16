@@ -70,6 +70,38 @@ Delete the lines from the `index.html` which download the font.
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
 
+```scss
+// for npm roboto-fontface package (to load local files)
+@use 'roboto-fontface/css/roboto/sass/roboto-fontface' with (
+  $roboto-font-path: 'roboto-fontface/fonts'
+);
+
+// for npm material-icons package (to load local files)
+@use 'material-icons/iconfont/material-icons.scss' with (
+  $material-icons-font-path: 'material-icons/iconfont/'
+);
+```
+
+## Self-hosting @ffontsouce Roboto font
+
+[@fontsource/roboto](https://fontsource.org/fonts/roboto)
+
+Install `@fontsource-variable/roboto` package.
+
+```bash
+npm install @fontsource/roboto
+npm install @fontsource-variable/roboto
+npm install @fontsource-variable/roboto-mono
+```
+
+This will add `roboto-fontface` to the `packege.json`.
+
+```json
+  "dependencies": {
+    "@fontsource-variable/roboto": "^5.2.6",
+  },
+```
+
 ### Material icons
 
 Install `roboto-fontface` package.
