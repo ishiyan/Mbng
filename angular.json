@@ -228,8 +228,7 @@
               "projects/proeftuin/src/assets"
             ],
             "styles": [
-              "projects/proeftuin/src/styles.scss",
-              "node_modules/@fontsource/roboto/index.css"
+              "projects/proeftuin/src/styles.scss"
             ],
             "scripts": []
           }

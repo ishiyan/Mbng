@@ -8,6 +8,14 @@
   $material-symbols-font-path: 'material-symbols/'
 );
 
+/*@use 'roboto-fontface/css/roboto/sass/roboto-fontface' with (
+  $roboto-font-path: 'roboto-fontface/fonts'
+);*/
+
+@use "pkg:@fontsource-utils/scss" as fontsource;
+@use "pkg:@fontsource/roboto/scss" as Roboto;
+@include fontsource.faces($metadata: Roboto.$metadata);
+
 // Include material core styles.
 // +v15: As of v15 mat.legacy-core no longer includes default typography styles.
 //  The following line adds:
@@ -30,7 +38,7 @@ $theme: mat.m2-define-light-theme($primary, $accent);
 @include app-components-theme($theme);
 
 body {
-  font-family: Roboto;
+  font-family: 'Roboto';
   margin: 0;
   padding: 0;
 }

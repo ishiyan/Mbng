@@ -87,12 +87,13 @@ Delete the lines from the `index.html` which download the font.
 
 [@fontsource/roboto](https://fontsource.org/fonts/roboto)
 
-Install `@fontsource-variable/roboto` package.
+Install `@fontsource-variable/roboto` package to `devDependencies`.
 
 ```bash
+npm install @fontsource-utils/scss
 npm install @fontsource/roboto
-npm install @fontsource-variable/roboto
-npm install @fontsource-variable/roboto-mono
+#npm install @fontsource-variable/roboto
+#npm install @fontsource-variable/roboto-mono
 ```
 
 This will add `roboto-fontface` to the `packege.json`.
@@ -101,6 +102,52 @@ This will add `roboto-fontface` to the `packege.json`.
   "dependencies": {
     "@fontsource-variable/roboto": "^5.2.6",
   },
+```
+
+Update `styles.scss`
+
+```scss
+@use "pkg:@fontsource-utils/scss" as fontsource;
+
+//@use "pkg:@fontsource/material-icons/scss" as MaterialIcons;
+//@use "pkg:@fontsource/material-symbols-outlined/scss" as MaterialSymbolsOutlined;
+@use "pkg:@fontsource/roboto/scss" as Roboto;
+
+//@include fontsource.faces($metadata: MaterialIcons.$metadata);
+//@include fontsource.faces($metadata: MaterialSymbolsOutlined.$metadata);
+@include fontsource.faces($metadata: Roboto.$metadata);
+
+/*.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: "liga";
+  -moz-osx-font-smoothing: grayscale;
+}*/
 ```
 
 ### Material icons
