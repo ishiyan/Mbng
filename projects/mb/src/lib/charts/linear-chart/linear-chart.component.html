@@ -62,15 +62,15 @@
     }
     @if (!isScalar) {
       <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
-        <mat-icon>leaderboard</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">leaderboard</mat-icon>
       </mat-slide-toggle>
     }
     <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
-      <mat-icon>add</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
     </mat-slide-toggle>
     @if (saveSvgVisible()) {
       <button mat-mini-fab color="accent" (click)="saveToSvg()" class="download">
-        <mat-icon>download</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">download</mat-icon>
       </button>
     }
   </mat-expansion-panel>

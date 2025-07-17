@@ -3,7 +3,7 @@
   accept=".csv, .csv.gz" />
   <div>
     <button color="primary" mat-mini-fab (click)="fileInput.click()">
-      <mat-icon>add</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
     </button>
     @if (filePath.length > 0) {
       <span class="selected-file-name">{{filePath}}</span>
@@ -18,7 +18,7 @@
   @if (errorText.length > 0) {
     <div class="warn mtop limitwidth">{{errorText}}</div>
     <button mat-raised-button color="warn" class="mtop" (click)="clear()">
-      <mat-icon>backspace</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">backspace</mat-icon>
     </button>
   }
   @if (data().length > 0) {
@@ -41,9 +41,9 @@
         </mat-form-field>
       </div>
       <button mat-mini-fab color="primary" (click)="add()">
-        <mat-icon>done</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
       </button>
       <button mat-mini-fab color="warn" class="mleft" (click)="clear()">
-        <mat-icon>close</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
       </button>
   }

@@ -3,12 +3,10 @@
 
 @use "./app-components-theme" as *;
 
-// Include material icons fonts.
-// @import '~material-design-icons/iconfont/material-icons.css';
-// Original distribution is outdated, we use the following one which has many newer icons.
-// It is only regular. If you need outline, switch to the original distribution.
-$material-design-icons-font-directory-path: "material-design-icons-iconfont/dist/fonts/";
-@import "material-design-icons-iconfont/src/material-design-icons";
+// Include material symbols fonts.
+@use 'material-symbols' with (
+  $material-symbols-font-path: 'material-symbols/'
+);
 
 // Include material core styles.
 // +v15: As of v15 mat.legacy-core no longer includes default typography styles.

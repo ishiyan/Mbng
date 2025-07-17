@@ -3,7 +3,7 @@
 @if (viewMenu) {
   <mat-expansion-panel expanded="false">
     <mat-expansion-panel-header>
-      <mat-panel-title><mat-icon>tune</mat-icon>&nbsp;{{chartTitle}}</mat-panel-title>
+      <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon>&nbsp;{{chartTitle}}</mat-panel-title>
     </mat-expansion-panel-header>
     <mat-button-toggle-group #group1="matButtonToggleGroup" class="button-toggle-group" [value]="ohlcvViewType"
       (change)="ohlcvViewType = group1.value">
@@ -15,14 +15,14 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
     <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
-      <mat-icon>leaderboard</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">leaderboard</mat-icon>
     </mat-slide-toggle>
     <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewCrosshair">
-      <mat-icon>add</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
     </mat-slide-toggle>
     @if (viewDownloadSvg) {
       <button mat-mini-fab color="accent" (click)="downloadSvg()" class="download">
-        <mat-icon>download</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">download</mat-icon>
       </button>
     }
   </mat-expansion-panel>

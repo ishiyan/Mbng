@@ -41,8 +41,7 @@
               }
             },
             "styles": [
-              "projects/notes/src/styles.scss",
-              "node_modules/@fontsource/roboto/index.css"
+              "projects/notes/src/styles.scss"
             ],
             "server": "projects/notes/src/main.server.ts",
             "ssr": false,
@@ -158,8 +157,7 @@
               }
             ],
             "styles": [
-              "projects/proeftuin/src/styles.scss",
-              "node_modules/@fontsource/roboto/index.css"
+              "projects/proeftuin/src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

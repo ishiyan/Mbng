@@ -1,5 +1,5 @@
 <button mat-icon-button [mat-menu-trigger-for]="themeMenu" matTooltip="Select a theme" tabindex="-1">
-  <mat-icon>palette</mat-icon>
+  <mat-icon fontSet="material-symbols-outlined">colors</mat-icon>
 </button>
 
 <!-- TODO: replace use of `mat-menu` here with a custom overlay -->
@@ -10,7 +10,7 @@
         <div mat-menu-item (click)="installTheme(theme.name)">
           <div class="theme-picker-swatch">
             @if (currentTheme === theme) {
-              <mat-icon class="theme-chosen-icon" [style.color]="theme.accent">check_circle
+              <mat-icon fontSet="material-symbols-outlined" class="theme-chosen-icon" [style.color]="theme.accent">check_circle
               </mat-icon>
             }
             <div class="theme-picker-primary" [style.background]="theme.primary"></div>

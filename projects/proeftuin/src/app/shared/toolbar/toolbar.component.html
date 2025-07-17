@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="mat-elevation-z8 mb-toolbar">
   <mat-toolbar-row>
     <button mat-icon-button id="menu" (click)="secondRowOpen = !secondRowOpen" class="show-small">
-      <mat-icon>{{ secondRowOpen ? 'menu_open' : 'menu' }}</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">{{ secondRowOpen ? 'menu_open' : 'menu' }}</mat-icon>
     </button>
     <mat-icon svgIcon="mbrane-top" class="logo" />
     @for (key of itemKeys; track key) {
@@ -10,7 +10,7 @@
     <span class="fill-remaining-space"></span>
     <app-theme-picker />
     <a mat-button routerLink="/">
-      <mat-icon>fingerprint</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">fingerprint</mat-icon>
     </a>
   </mat-toolbar-row>
   @if (secondRowOpen) {

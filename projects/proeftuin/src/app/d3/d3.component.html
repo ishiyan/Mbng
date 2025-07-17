@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="header">
   <button mat-button class="sidenav-toggle" (click)="d3Sidenav.toggle()">
-    <mat-icon>{{ d3Sidenav.opened ? 'menu_open' : 'menu' }}</mat-icon>
+    <mat-icon fontSet="material-symbols-outlined">{{ d3Sidenav.opened ? 'menu_open' : 'menu' }}</mat-icon>
   </button>
   <span>D3: {{sample.name}}</span>
 </mat-toolbar>
@@ -20,8 +20,8 @@
         <li>
           <span class="mat-tree-node tree-node">
             <button mat-button matTreeNodeToggle onclick="this.blur()">
-              <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              <mat-icon fontSet="material-symbols-outlined" class="mat-icon-rtl-mirror">
+                {{treeControl.isExpanded(node) ? 'expand_dircle_down' : 'expand_circle_right'}}
               </mat-icon>
               {{node.name}}
             </button>

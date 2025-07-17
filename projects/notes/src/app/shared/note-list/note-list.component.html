@@ -1,16 +1,16 @@
 <mat-toolbar class="toolbar">
   <button mat-icon-button (click)="toggleTagsVisibility()" class="tags">
-    <mat-icon>discount</mat-icon>
+    <mat-icon fontSet="material-symbols-outlined">shoppingmode</mat-icon>
   </button>
   &nbsp;
   <div>
     <mat-form-field appearance="fill" class="search">
-      <mat-icon matPrefix>search</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined" matPrefix>search</mat-icon>
       <!-- mat-label>search</mat-label -->
       <input matInput #search type="text" (keyup)="searchChanged($event.target.value)">
       @if (search.value.length > 0) {
         <button matSuffix mat-icon-button (click)="search.value=''; searchChanged('')">
-          <mat-icon>clear</mat-icon>
+          <mat-icon fontSet="material-symbols-outlined">clear</mat-icon>
         </button>
       }
     </mat-form-field>

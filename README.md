@@ -40,6 +40,8 @@ Temporary, can be disabled in `angular.json` by inserting a snippet before `"sty
 
 ### Self-hosting Roboto font
 
+[npm package](https://www.npmjs.com/package/roboto-fontface)
+
 Install `roboto-fontface` package.
 
 ```bash
@@ -67,7 +69,6 @@ Delete the lines from the `index.html` which download the font.
 
 ```html
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
 
 ```scss
@@ -82,7 +83,7 @@ Delete the lines from the `index.html` which download the font.
 );
 ```
 
-## Self-hosting @ffontsouce Roboto font
+### Self-hosting @fontsouce Roboto font
 
 [@fontsource/roboto](https://fontsource.org/fonts/roboto)
 
@@ -147,27 +148,29 @@ mat-icon {
 
 ### Material symbols
 
+[google fonts page](https://developers.google.com/fonts/docs/material_symbols),
+[npm package](https://www.npmjs.com/package/material-symbols)
+
 Install `material-symbols` package.
 
 ```bash
-npm install material-symbols
+npm install material-symbols@latest
 ```
 
-This will add `material-icons` to the `packege.json`.
+This will add `material-symbols` to the `packege.json`.
 
 ```json
   "dependencies": {
-    "material-symbols": "^0.29.2",
+    "material-symbols": "^0.33.0",
   },
 ```
 
-In `angular.json`, update the `styles` array to include `css`.
+In `styles.scss`
 
-```json
-  "styles": [
-    "src/styles.scss", 
-    "node_modules/material-symbols/index.scss"
-  },
+```scss
+// Include material symbols fonts.
+$material-symbols-font-path: 'material-symbols/';
+@import 'material-symbols';
 ```
 
 Use the font as follows

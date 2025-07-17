@@ -1,7 +1,7 @@
 <h1>{{temaNote.title}}</h1>
 
 <mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon class="icon">tune</mat-icon>
+  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
 </mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
@@ -11,7 +11,7 @@
   @if (unlocked) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
-        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+        <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
       </mat-expansion-panel-header>
       <mb-swatches-select style="vertical-align: bottom;" [selected]="selectedIndex" [colors]="palettes"
         (selectionChange)="indicatorPaletteChanged($event);" [label]="'Palette'">
@@ -117,7 +117,7 @@ The step-up response overshoot and the step-down response undershoot the data.
   @if (unlocked) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
-        <mat-panel-title><mat-icon>tune</mat-icon></mat-panel-title>
+        <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
       </mat-expansion-panel-header>
       <mat-form-field appearance="fill">
         <mat-label>Max period to display</mat-label>

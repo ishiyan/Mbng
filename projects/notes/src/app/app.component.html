@@ -1,14 +1,14 @@
 <div fxLayout="column" fxFill>
   <mat-toolbar color="primary" class="toolbar">
     <button mat-icon-button [routerLink]='[""]'>
-      <mat-icon>dashboard</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">note_stack</mat-icon>
     </button>
     <span class="fill-remaining-space"></span>
     <button mat-icon-button (click)="toggleTheme()">
-      <mat-icon>{{ isDarkTheme() ? 'light_mode' : 'bedtime' }}</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">{{ isDarkTheme() ? 'light_mode' : 'dark_mode' }}</mat-icon>
     </button>
     <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>settings</mat-icon>
+      <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
     </button>
   </mat-toolbar>
   <mat-sidenav-container class="sidenav-container">
