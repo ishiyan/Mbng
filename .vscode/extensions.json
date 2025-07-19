@@ -1,0 +1,27 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    // Themes
+    "catppuccin.catppuccin-vsc",
+    "impasse52.catppuccin-mocha-darker",
+    "ccy.ayu-adaptive",
+    "chocolatemoles.theme-azathoth-vscode",
+    "hamadalmarri.chocolate-ice-cream-theme",
+    "eggman.chogori",
+    "moondevaa.darkpluschocolate",
+    "chookith.coffee-theme-dark",
+    "onulu.mint-chocolate",
+    "shieldsworks.mocha-mousse-theme",
+    // Nordic
+    "arcticicestudio.nord-visual-studio-code",
+    "madprops.nordico",
+    // Zenburn    
+    "ryanolsonx.zenburn",
+    "gerane.theme-zenburn",
+    "ludwigkr.vscode-zenburn-theme",
+    "nicola-granata.zenburn-in-grays",
+  ],
+}
