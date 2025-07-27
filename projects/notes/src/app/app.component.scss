@@ -1,36 +1,95 @@
-.toolbar {
-  height: 42px;
-  padding: 0px;
-  padding-left: 0px;
-  vertical-align: middle;
-}
+@use '@angular/material' as mat;
 
-// This fills the remaining space, by using flexbox.
-// Every toolbar row uses a flexbox row layout.
-.fill-remaining-space {
-  flex-grow: 1;
-  // or: flex: 1 1 auto;
-}
+:host {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-primary-container),
+    container-text-color: var(--mat-sys-on-primary-container),
+    //standard-height: 42px,
+    //mobile-height: 42px,
+  ));
 
-.sidenav-container {
-  flex: 1;
-}
+  @include mat.icon-button-overrides((
+    icon-color: var(--mat-sys-on-primary-container),
+  ));
 
-.sidenav-header {
-  margin: 0px;
-  padding-left: 22px;
-}
+  /*.toolbar {
+    // Use in combination with height: 42px; otherwise it is not needed
+    padding: 0px;
+  }*/
 
-.katex-settings {
-  padding-left: 22px;
-}
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  .fill-remaining-space {
+    flex-grow: 1;
+    // or: flex: 1 1 auto;
+  }
 
-.outlet {
-  margin: 16px;
+  .sidenav-container {
+    flex: 1;
+    width: auto;
+  }
+
+  @include mat.sidenav-overrides((
+    //container-background-color: orange,
+    //container-text-color: red,
+    //scrim-color: var(--mat-sys-neutral-variant20),
+    container-width: auto,
+    container-shape: 0px,
+  ));
+
+  .sidenav-header {
+    // margin: 0px;
+    padding-left: 22px;
+  }
+
+  .katex-settings {
+    padding-left: 22px;
+  }
+
+  .outlet {
+    margin: 0px;//16px;
+  }
 }
 
 @media print {
-  .mat-drawer-container , .mat-drawer-content {
+  .mat-drawer-container,
+  .mat-drawer-content {
     overflow: visible !important;
+  }
+}
+
+// Color selectors for dynamic theming.
+:host {
+  .theme-controls {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    margin: auto;
+
+    .color-picker-wrapper {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: relative;
+
+      .color-picker-overflow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 50%;
+
+        #color-input {
+          cursor: pointer;
+          border: none;
+          background: none;
+          min-width: 150%;
+          min-height: 150%;
+        }
+      }
+    }
   }
 }

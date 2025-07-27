@@ -1,15 +1,27 @@
-.wrapper {
-  display: inline-flex;
-}
+@use '@angular/material' as mat;
 
-.note-card {
-  margin: 8px;
-  width: fit-content;
-  cursor: pointer;
-}
+:host {
+  .wrapper {
+    display: inline-flex;
+  }
 
-.chip-list {
-  font-size: xx-small;
-  // width:100%;
-  // margin-bottom: 10px;
+  mat-card {
+    margin: 8px;
+    width: fit-content;
+    cursor: pointer;
+    mat-card-header {
+      padding: 8px;
+    }
+  }
+  
+  @include mat.card-overrides((
+    title-text-font: var(--mat-sys-body-large),
+    title-text-line-height: var(--mat-sys-body-large-line-height),
+    title-text-size: var(--mat-sys-body-large-size),
+    title-text-weight: var(--mat-sys-body-large-weight),
+    subtitle-text-font: var(--mat-sys-body-small),
+    subtitle-text-line-height: var(--mat-sys-body-small-line-height),
+    subtitle-text-size: var(--mat-sys-body-small-size),
+    subtitle-text-weight: var(--mat-sys-body-small-weight),
+  ));
 }

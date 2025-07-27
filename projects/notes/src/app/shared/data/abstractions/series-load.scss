@@ -1,40 +1,59 @@
-@import '../../../../styles.scss';
+@use "@angular/material" as mat;
 
-/*
-.primary {
-    color: $primary;
-}
+:host {
+  .primary-fab {
+    @include mat.fab-overrides(
+      (
+        small-container-color: var(--mat-sys-primary-container),
+        small-foreground-color: var(--mat-sys-on-primary-container),
+      )
+    )
+  }
+  .alert-fab {
+    @include mat.fab-overrides(
+      (
+        small-container-color: var(--mat-sys-error-container),
+        small-foreground-color: var(--mat-sys-on-error-container),
+      )
+    )
+  }
+  .alert-button {
+    @include mat.button-overrides(
+      (
+        filled-container-color: var(--mat-sys-error-container),
+        filled-label-text-color: var(--mat-sys-on-error-container),
+        tonal-container-color: var(--mat-sys-error-container),
+        tonal-label-text-color: var(--mat-sys-on-error-container),
+      )
+    )
+  }
 
-.accent {
-    color: $accent;
-}
-*/
+  .alert {
+    color: var(--mat-sys-error);
+  }
 
-.warn {
-    color: $warn;
-}
-
-.selected-file-name {
+  .selected-file-name {
     margin-left: 8px;
-}
+  }
 
-.selected-file-size {
+  .selected-file-size {
     margin-left: 48px;
-}
+  }
 
-.mtop {
+  .mtop {
     margin-top: 4px;
-}
+  }
 
-.limitwidth {
+  .limitwidth {
     max-width: 360px;
     overflow-wrap: break-word;
-}
+  }
 
-.fullwidth {
+  .fullwidth {
     width: 100%;
-}
+  }
 
-.mleft {
+  .mleft {
     margin-left: 8px;
+  }
 }

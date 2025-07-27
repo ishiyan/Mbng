@@ -1,10 +1,24 @@
-mat-slide-toggle {
-  margin: 0 ;
-  margin-left: 16px;
-  margin-right: 4px;
-  margin-top: 4px;
-}
+@use "@angular/material" as mat;
 
-mat-slide-toggle .mat-icon {
-  vertical-align: bottom;
+:host {
+  mat-slide-toggle {
+    margin: 4px;
+    margin-left: 8px;
+    mat-icon {
+      vertical-align: bottom;
+    }
+  }
+
+  mat-slide-toggle:not(.mat-mdc-slide-toggle-disabled) mat-icon {
+    @include mat.icon-overrides((
+      color: var(--mat-sys-primary),
+      //color: var(--mat-slide-toggle-selected-track-color),
+    ));
+  }
+  mat-slide-toggle:not(.mat-mdc-slide-toggle-checked):not(.mat-mdc-slide-toggle-disabled) mat-icon {
+    @include mat.icon-overrides((
+      // color: var(--mat-sys-on-surface-variant),
+      color: var(--mat-sidenav-container-text-color),
+    ));
+  }
 }

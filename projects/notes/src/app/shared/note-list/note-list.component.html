@@ -1,15 +1,13 @@
 <mat-toolbar class="toolbar">
-  <button mat-icon-button (click)="toggleTagsVisibility()" class="tags">
+  <button mat-icon-button (click)="toggleTagsVisibility()" class="tags" aria-label="Show or hide tags">
     <mat-icon fontSet="material-symbols-outlined">shoppingmode</mat-icon>
   </button>
-  &nbsp;
   <div>
-    <mat-form-field appearance="fill" class="search">
+    <mat-form-field appearance="fill">
       <mat-icon fontSet="material-symbols-outlined" matPrefix>search</mat-icon>
-      <!-- mat-label>search</mat-label -->
-      <input matInput #search type="text" (keyup)="searchChanged($event.target.value)">
+      <input matInput #search type="text" (keyup)="searchChanged($event.target.value)" aria-label="Enter text to search">
       @if (search.value.length > 0) {
-        <button matSuffix mat-icon-button (click)="search.value=''; searchChanged('')">
+        <button matSuffix mat-icon-button (click)="search.value=''; searchChanged('')" aria-label="Clear search">
           <mat-icon fontSet="material-symbols-outlined">clear</mat-icon>
         </button>
       }
@@ -18,17 +16,19 @@
 </mat-toolbar>
 @if (tagsVisible) {
   <div class="fullwidth">
-    <mat-chip-listbox [selectable]="true" [multiple]="true">
-      @for (tag of tags; track tag.title) {
-        <mat-chip-option [selectable]="true" [selected]="tag.enabled"
-          (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
-          {{tag.title}}
-        </mat-chip-option>
-      }
-    </mat-chip-listbox>
+    <div class="tagarea">
+      <mat-chip-listbox [selectable]="true" [multiple]="true" aria-label="Select tags to search">
+        @for (tag of tags; track tag.title) {
+          <mat-chip-option [selectable]="true" [selected]="tag.enabled"
+            (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
+            {{tag.title}}
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </div>
   </div>
 }
-<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center">
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center" class="cardarea">
   @for (note of currentNotes; track note.title; let i = $index) {
     <app-note-card [note]="note"></app-note-card>
   }

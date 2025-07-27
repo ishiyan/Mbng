@@ -7,23 +7,19 @@
 @use "../../mb/src/lib/charts/ohlcv-chart/selector/width-svg-theme" as *;
 @use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as *;
 
-@use "./app/shared/katex-settings/katex-settings-theme" as *;
-
 @mixin app-components-theme($theme) {
-  $primary: map-get($theme, primary);
+ /* $primary: map-get($theme, primary);
   $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
-  $next-theme: mat.m2-define-palette(mat.$m2-red-palette);
+  $next-theme: mat.m2-define-palette(mat.$m2-red-palette);*/
 
-  @include svg-viewer-theme($theme);
-  @include historical-data-chart-theme($theme);
-  @include linear-chart-theme($theme);
-  @include ohlcv-chart-theme($theme);
-  @include dash-svg-theme($theme);
-  @include width-svg-theme($theme);
-  @include frequency-response-chart-theme($theme);
-
-  @include katex-settings-theme($theme);
+  //@include svg-viewer-theme($theme);
+  //@include historical-data-chart-theme($theme);
+  //@include linear-chart-theme($theme);
+  //@include ohlcv-chart-theme($theme);
+  //@include dash-svg-theme($theme);
+  //@include width-svg-theme($theme);
+  //@include frequency-response-chart-theme($theme);
 }

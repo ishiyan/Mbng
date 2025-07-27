@@ -1,28 +1,71 @@
-.toolbar {
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-secondary-container),
+    container-text-color: var(--mat-sys-on-secondary-container),
+  ));
+
+  @include mat.icon-button-overrides((
+    icon-color: var(--mat-sys-on-secondary-container),
+  ));
+
+  .toolbar {
     padding: 0px;
-    vertical-align: middle;
-    margin-top: -16px;
-    background-color: transparent;
-}
+    padding-left: 16px;
+    //background-color: transparent;
+  }
 
-.tags {
-    margin-top: 0px;
-}
+  .tags {
+    //margin-top: 0px;
+    margin-right: 16px;
+  }
+  
+  @include mat.form-field-overrides((
+    filled-container-color: var(--mat-sys-secondary-container),
+    leading-icon-color: var(--mat-sys-on-secondary-container),
+    filled-input-text-color: var(--mat-sys-on-secondary-container),
+    filled-input-text-placeholder-color: var(--mat-sys-on-secondary-container),
+    filled-label-text-color: var(--mat-sys-on-secondary-container),
+  ));
 
-.search {
+  mat-form-field {
     margin-top: 18px;
-}
+  }
 
-.fullwidth {
+  .fullwidth {
+    width: 108%;
+    margin: 0px;
+    padding: 0px;
+    //background-color: var(--mat-sys-secondary-container);
+  }
+
+  .tagarea {
     width: 98%;
-    margin-left: 4px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
+    margin: 0px;
+    padding: 16px;
+    padding-right: 0px;
+  }
 
-.check {
+  .check {
     height: 20px;
     width: 20px;
     font-size: 20px;
     margin-right: 4px;
+  }
+
+  @include mat.chips-overrides((
+    flat-selected-outline-width: 1px,
+    disabled-outline-color: var(--mat-sys-on-secondary-container),
+    focus-outline-color: var(--mat-sys-on-secondary-container),
+    outline-color: var(--mat-sys-on-secondary-container),
+    label-text-color: var(--mat-sys-on-secondary-container),
+    selected-label-text-color: var(--mat-sys-on-secondary-container),
+    disabled-label-text-color: var(--mat-sys-on-secondary-container),
+    with-icon-selected-icon-color: var(--mat-sys-on-secondary-container),
+  ));
+
+  .cardarea {
+    padding: 8px;
+  }
 }

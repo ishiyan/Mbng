@@ -27,9 +27,6 @@ import { BarSeriesService } from '../bar-series.service';
 export class BarSeriesSelectComponent extends SeriesSelect implements OnInit {
   private barSeriesService = inject(BarSeriesService);
 
-  /** Specifies the sparkline fill color. */
-  readonly color = input<string>();
-
   /** Specifies the label of the form field. */
   readonly label = input<string>();
 
@@ -38,9 +35,6 @@ export class BarSeriesSelectComponent extends SeriesSelect implements OnInit {
 
   constructor() {
     super();
-    effect(() => {
-      this.setColor(this.color());
-    });
     effect(() => {
       this.setLabel(this.label());
     });

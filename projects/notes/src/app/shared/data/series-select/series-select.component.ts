@@ -1,11 +1,11 @@
-import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
+import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect, computed } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 
 import { SparklineConfiguration, SparklineComponent } from 'mb';
 
-import { primaryColor } from '../../theme-colors';
+import { DynamicColorService } from '../../../dynamic-color.service';
 import { BarSeriesService } from '../bar-series/bar-series.service';
 import { ScalarSeriesService } from '../scalar-series/scalar-series.service';
 import { TradeSeriesService } from '../trade-series/trade-series.service';
@@ -28,6 +28,8 @@ import { Series } from '../series.interface';
   ]
 })
 export class SeriesSelectComponent implements OnInit {
+  private dcs = inject(DynamicColorService);
+
   private barSeriesService = inject(BarSeriesService);
   private scalarSeriesService = inject(ScalarSeriesService);
   private tradeSeriesService = inject(TradeSeriesService);
@@ -40,12 +42,12 @@ export class SeriesSelectComponent implements OnInit {
   protected allSeriesArray!: Series[];
   protected selected: Series = this.barSeriesArray[0];
   protected labelText = '';
-  protected configFill: SparklineConfiguration = {
-    fillColor: primaryColor, strokeColor: undefined, strokeWidth: 1
-  };
 
-  /** Specifies the sparkline fill color. */
-  readonly color = input<string>();
+  protected readonly configFill = computed((): SparklineConfiguration => ({
+    fillColor: this.dcs.primaryColor(),
+    strokeColor: undefined,
+    strokeWidth: 1
+  }));
 
   /** Specifies the label of the form field. */
   readonly label = input<string>();
@@ -54,13 +56,6 @@ export class SeriesSelectComponent implements OnInit {
   readonly selectionChange = output<Series>();
 
   constructor() {
-    effect(() => {
-      const c = this.color();
-      if (c && c != null && c.length > 0) {
-        this.configFill.fillColor = c;
-        this.configFill = { ...this.configFill };
-      }
-    });
     effect(() => {
       const text = this.label();
       if (text && text != null) {

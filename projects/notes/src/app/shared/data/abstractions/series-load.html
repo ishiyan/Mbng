@@ -1,8 +1,31 @@
 <!-- '$event.target.value = null;' resets the file input, otherwise you cannot load the same file twice -->
+<p>
+  <button mat-mini-fab class="alert-fab">
+    <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+  </button>
+
+  <button mat-mini-fab class="alert-fab">
+    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
+  </button>
+  <!--button matButton="filled" class="alert-button">
+    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
+  </button>
+  <button matButton="tonal" class="alert-button">
+    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
+  </button-->
+
+  <button mat-mini-fab class="primary-fab">
+    <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
+  </button>
+  <button mat-mini-fab class="alert-fab">
+    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
+  </button>
+</p>
+<p class="alert mtop limitwidth">The very long error text</p>
 <input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
   accept=".csv, .csv.gz" />
   <div>
-    <button color="primary" mat-mini-fab (click)="fileInput.click()">
+    <button mat-mini-fab class="alert-fab" (click)="fileInput.click()">
       <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
     </button>
     @if (filePath.length > 0) {
@@ -16,9 +39,9 @@
     <mat-progress-bar color="accent" mode="indeterminate" [value]="progressPercentage" class="mtop" />
   }
   @if (errorText.length > 0) {
-    <div class="warn mtop limitwidth">{{errorText}}</div>
-    <button mat-raised-button color="warn" class="mtop" (click)="clear()">
-      <mat-icon fontSet="material-symbols-outlined">backspace</mat-icon>
+    <div class="alert mtop limitwidth">{{errorText}}</div>
+    <button mat-mini-fab class="alert-fab mtop" (click)="clear()">
+      <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
     </button>
   }
   @if (data().length > 0) {
@@ -40,10 +63,10 @@
           <textarea matInput minlength="1" placeholder="description" rows="1" [(ngModel)]="description"></textarea>
         </mat-form-field>
       </div>
-      <button mat-mini-fab color="primary" (click)="add()">
+      <button mat-mini-fab class="primary-fab" (click)="add()">
         <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
       </button>
-      <button mat-mini-fab color="warn" class="mleft" (click)="clear()">
+      <button mat-mini-fab class="alert-fab mleft" (click)="clear()">
         <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
       </button>
   }
