@@ -9,19 +9,19 @@ import { TripleExponentialMovingAverageSmoothingFactorParams } from './triple-ex
 import { TripleExponentialMovingAverageParamsComponent } from './triple-exponential-moving-average-params.component';
 
 @Component({
-    selector: 'mb-triple-exponential-moving-average-params-dialog',
-    templateUrl: './triple-exponential-moving-average-params-dialog.component.html',
-    styleUrls: ['./triple-exponential-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      TripleExponentialMovingAverageParamsComponent,
-    ]
+  selector: 'mb-triple-exponential-moving-average-params-dialog',
+  templateUrl: './triple-exponential-moving-average-params-dialog.component.html',
+  styleUrls: ['./triple-exponential-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    TripleExponentialMovingAverageParamsComponent,
+  ]
 })
 export class TripleExponentialMovingAverageParamsDialogComponent {
   protected data = inject<TripleExponentialMovingAverageLengthParams | TripleExponentialMovingAverageSmoothingFactorParams>(MAT_DIALOG_DATA);

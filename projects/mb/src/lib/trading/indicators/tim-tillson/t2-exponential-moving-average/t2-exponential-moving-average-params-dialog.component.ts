@@ -9,19 +9,19 @@ import { T2ExponentialMovingAverageSmoothingFactorParams } from './t2-exponentia
 import { T2ExponentialMovingAverageParamsComponent } from './t2-exponential-moving-average-params.component';
 
 @Component({
-    selector: 'mb-t2-exponential-moving-average-params-dialog',
-    templateUrl: './t2-exponential-moving-average-params-dialog.component.html',
-    styleUrls: ['./t2-exponential-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      T2ExponentialMovingAverageParamsComponent
-    ]
+  selector: 'mb-t2-exponential-moving-average-params-dialog',
+  templateUrl: './t2-exponential-moving-average-params-dialog.component.html',
+  styleUrls: ['./t2-exponential-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    T2ExponentialMovingAverageParamsComponent
+  ]
 })
 export class T2ExponentialMovingAverageParamsDialogComponent {
   protected data = inject<T2ExponentialMovingAverageLengthParams | T2ExponentialMovingAverageSmoothingFactorParams>(MAT_DIALOG_DATA);

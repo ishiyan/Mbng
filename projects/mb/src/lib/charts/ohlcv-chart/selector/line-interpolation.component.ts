@@ -10,11 +10,11 @@ interface Elem {
 }
 
 @Component({
-    selector: 'mb-line-interpolation',
-    templateUrl: './line-interpolation.component.html',
-    styleUrls: ['./line-interpolation.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatFormField, MatLabel, MatSelect, MatOption]
+  selector: 'mb-line-interpolation',
+  templateUrl: './line-interpolation.component.html',
+  styleUrls: ['./line-interpolation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatFormField, MatLabel, MatSelect, MatOption]
 })
 export class LineInterpolationComponent {
   protected elems: Elem[] = [

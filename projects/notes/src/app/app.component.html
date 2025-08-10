@@ -19,58 +19,6 @@
       <h2 class="sidenav-header" style="margin-bottom: 0px;">Math rendering</h2>
       <app-katex-settings class="katex-settings"></app-katex-settings>
 
-      <!-- Current palette styles -->
-      <h2 class="sidenav-header">Current theme color tokens</h2>
-      Surface
-      <div style="background-color: var(--mat-sys-surface); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface</div>
-      <div style="background-color: var(--mat-sys-surface-dim); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-dim</div>
-      <div style="background-color: var(--mat-sys-surface-bright); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-bright</div>
-      <div style="background-color: var(--mat-sys-surface-container-lowest); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-container-lowest</div>
-      <div style="background-color: var(--mat-sys-surface-container-low); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-container-low</div>
-      <div style="background-color: var(--mat-sys-surface-container); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-container</div>
-      <div style="background-color: var(--mat-sys-surface-container-high); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-container-high</div>
-      <div style="background-color: var(--mat-sys-surface-container-highest); color: var(--mat-sys-on-surface);">
-        --mat-sys-surface-container-highest</div>
-      Primary
-      <div style="background-color: var(--mat-sys-primary); color: var(--mat-sys-on-primary);">
-        --mat-sys-primary</div>
-      <div style="background-color: var(--mat-sys-primary-container); color: var(--mat-sys-on-primary-container);">
-        --mat-sys-primary-container</div>
-      <div style="background-color: var(--mat-sys-primary-fixed); color: var(--mat-sys-on-primary-fixed);">
-        --mat-sys-primary-fixed</div>
-      <div style="background-color: var(--mat-sys-primary-fixed-dim); color: var(--mat-sys-on-primary-fixed);">
-        --mat-sys-primary-fixed-dim</div>
-      Secondary
-      <div style="background-color: var(--mat-sys-secondary); color: var(--mat-sys-on-secondary);">
-        --mat-sys-secondary</div>
-      <div style="background-color: var(--mat-sys-secondary-container); color: var(--mat-sys-on-secondary-container);">
-        --mat-sys-secondary-container</div>
-      <div style="background-color: var(--mat-sys-secondary-fixed); color: var(--mat-sys-on-secondary-fixed);">
-        --mat-sys-secondary-fixed</div>
-      <div style="background-color: var(--mat-sys-secondary-fixed-dim); color: var(--mat-sys-on-secondary-fixed);">
-        --mat-sys-secondary-fixed-dim</div>
-      Tertiary
-      <div style="background-color: var(--mat-sys-tertiary); color: var(--mat-sys-on-tertiary);">
-        --mat-sys-tertiary</div>
-      <div style="background-color: var(--mat-sys-tertiary-container); color: var(--mat-sys-on-tertiary-container);">
-        --mat-sys-tertiary-container</div>
-      <div style="background-color: var(--mat-sys-tertiary-fixed); color: var(--mat-sys-on-tertiary-fixed);">
-        --mat-sys-tertiary-fixed</div>
-      <div style="background-color: var(--mat-sys-tertiary-fixed-dim); color: var(--mat-sys-on-tertiary-fixed);">
-        --mat-sys-tertiary-fixed-dim</div>
-      Error
-      <div style="background-color: var(--mat-sys-error); color: var(--mat-sys-on-error);">
-        --mat-sys-error</div>
-      <div style="background-color: var(--mat-sys-error-container); color: var(--mat-sys-on-error-container);">
-        --mat-sys-error-container</div>
-
       <!-- Dynamic palette generation -->
       <h2 class="sidenav-header">Dynamic palette generation</h2>
       Select primary color: {{dcsSvc.primaryColor()}}
@@ -89,6 +37,10 @@
           </div>
         </div>
       </div>
+
+      <!-- Current palette styles -->
+      <h2 class="sidenav-header">Current theme color tokens</h2>
+      <app-theme-colors></app-theme-colors>
       <br />
     </mat-sidenav>
     <mat-sidenav-content>

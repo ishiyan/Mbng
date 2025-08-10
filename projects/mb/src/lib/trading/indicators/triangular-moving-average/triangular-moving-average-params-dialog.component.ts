@@ -8,19 +8,19 @@ import { TriangularMovingAverageParams } from './triangular-moving-average-param
 import { TriangularMovingAverageParamsComponent } from './triangular-moving-average-params.component';
 
 @Component({
-    selector: 'mb-triangular-moving-average-params-dialog',
-    templateUrl: './triangular-moving-average-params-dialog.component.html',
-    styleUrls: ['./triangular-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      TriangularMovingAverageParamsComponent
-    ]
+  selector: 'mb-triangular-moving-average-params-dialog',
+  templateUrl: './triangular-moving-average-params-dialog.component.html',
+  styleUrls: ['./triangular-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    TriangularMovingAverageParamsComponent
+  ]
 })
 export class TriangularMovingAverageParamsDialogComponent {
   protected data = inject<TriangularMovingAverageParams>(MAT_DIALOG_DATA);

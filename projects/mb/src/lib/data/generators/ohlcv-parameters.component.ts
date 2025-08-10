@@ -8,20 +8,20 @@ import { KatexComponent } from '../../katex/katex.component';
 import { OhlcvParameters } from './ohlcv-parameters';
 
 @Component({
-    selector: 'mb-data-generators-ohlcv-parameters',
-    templateUrl: './ohlcv-parameters.component.html',
-    styleUrls: ['./ohlcv-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatInput,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-ohlcv-parameters',
+  templateUrl: './ohlcv-parameters.component.html',
+  styleUrls: ['./ohlcv-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class OhlcvParametersComponent {
   // ohlcvParameters = input.required<OhlcvParameters>();

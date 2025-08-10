@@ -1,0 +1,18 @@
+@use '@angular/material/core/tokens/token-utils';
+@use './svg-viewer';
+
+/*
+The following variables can be externally defined to style the svg viewer.
+
+--svg-viewer-stroke-color
+*/
+
+$fallbacks: svg-viewer.get-tokens();
+
+:host {
+  ---svg-viewer-stroke-color: var(--svg-viewer-stroke-color, #{token-utils.slot(svg-viewer-stroke-color, $fallbacks)});
+}
+
+:host ::ng-deep svg {
+  stroke: var(---svg-viewer-stroke-color);
+}

@@ -8,20 +8,20 @@ import { KatexComponent } from '../../../katex/katex.component';
 import { SinusoidalParameters } from './sinusoidal-parameters';
 
 @Component({
-    selector: 'mb-data-generators-sinusoidal-parameters',
-    templateUrl: './sinusoidal-parameters.component.html',
-    styleUrls: ['./sinusoidal-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatInput,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-sinusoidal-parameters',
+  templateUrl: './sinusoidal-parameters.component.html',
+  styleUrls: ['./sinusoidal-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class SinusoidalParametersComponent {
   // sinusoidalParameters = input.required<SinusoidalParameters>();

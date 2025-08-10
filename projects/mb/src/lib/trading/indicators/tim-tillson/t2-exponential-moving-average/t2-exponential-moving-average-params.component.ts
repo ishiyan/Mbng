@@ -15,19 +15,19 @@ const firstIsAverageDefault = true;
 const guardLength = (object: any): object is T2ExponentialMovingAverageLengthParams => 'length' in object;
 
 @Component({
-    selector: 'mb-t2-exponential-moving-average-params',
-    templateUrl: './t2-exponential-moving-average-params.component.html',
-    styleUrls: ['./t2-exponential-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatSlideToggle,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-t2-exponential-moving-average-params',
+  templateUrl: './t2-exponential-moving-average-params.component.html',
+  styleUrls: ['./t2-exponential-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSlideToggle,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class T2ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

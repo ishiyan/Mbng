@@ -1,9 +1,0 @@
-// Forwards all public API mixins so they can be imported from a single entry point.
-
-@forward "./lib/svg-viewer/svg-viewer-theme" as mb-* show mb-svg-viewer-theme;
-@forward "./lib/charts/historical-data-chart/historical-data-chart-theme" as mb-* show mb-historical-data-chart-theme;
-@forward "./lib/charts/linear-chart/linear-chart-theme" as mb-* show mb-linear-chart-theme;
-@forward "./lib/charts/ohlcv-chart/ohlcv-chart-theme" as mb-* show mb-ohlcv-chart-theme;
-@forward "./lib/charts/ohlcv-chart/selector/width-svg-theme" as mb-* show mb-width-svg-theme;
-@forward "./lib/charts/ohlcv-chart/selector/dash-svg-theme" as mb-* show mb-dash-svg-theme;
-@forward "./lib/charts/hilbert-curve/hilbert-curve-theme" as mb-* show mb-hilbert-curve-theme;

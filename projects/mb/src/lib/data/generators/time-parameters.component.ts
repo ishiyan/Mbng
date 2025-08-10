@@ -17,27 +17,27 @@ import { Enums } from '../../utils/enums';
 import { TimeParameters } from './time-parameters';
 
 @Component({
-    selector: 'mb-data-generators-time-parameters',
-    templateUrl: './time-parameters.component.html',
-    styleUrls: ['./time-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatSuffix,
-      MatLabel,
-      MatInput,
-      MatSelect,
-      MatOption,
-      MatIconButton,
-      MatIcon,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      MatDatepickerInput,
-      MatDatepickerToggle,
-      MatDatepicker
-    ]
+  selector: 'mb-data-generators-time-parameters',
+  templateUrl: './time-parameters.component.html',
+  styleUrls: ['./time-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatSuffix,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatIconButton,
+    MatIcon,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker
+  ]
 })
 export class TimeParametersComponent {
   dialog = inject(MatDialog);

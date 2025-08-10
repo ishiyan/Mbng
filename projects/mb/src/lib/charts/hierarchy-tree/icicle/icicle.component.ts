@@ -25,11 +25,11 @@ const deltaX = 4;
 const deltaY = 16;
 
 @Component({
-    selector: 'mb-icicle',
-    templateUrl: './icicle.component.html',
-    styleUrls: ['./icicle.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+  selector: 'mb-icicle',
+  templateUrl: './icicle.component.html',
+  styleUrls: ['./icicle.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class IcicleComponent implements OnChanges {
   private elementRef = inject(ElementRef);

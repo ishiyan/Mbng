@@ -7,16 +7,16 @@ import { LineInterpolationComponent } from './line-interpolation.component';
 import { ColorComponent } from './color.component';
 
 @Component({
-    selector: 'mb-line-style',
-    templateUrl: './line-style.component.html',
-    styleUrls: ['./line-style.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      LineWidthComponent,
-      LineDashComponent,
-      LineInterpolationComponent,
-      ColorComponent
-    ]
+  selector: 'mb-line-style',
+  templateUrl: './line-style.component.html',
+  styleUrls: ['./line-style.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    LineWidthComponent,
+    LineDashComponent,
+    LineInterpolationComponent,
+    ColorComponent
+  ]
 })
 export class LineStyleComponent {
 

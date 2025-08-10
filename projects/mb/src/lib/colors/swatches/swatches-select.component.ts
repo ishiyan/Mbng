@@ -29,19 +29,19 @@ function inc(n: number): number {
 }
 
 @Component({
-    selector: 'mb-swatches-select',
-    templateUrl: './swatches-select.component.html',
-    styleUrls: ['./swatches-select.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      NgStyle,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      SwatchesComponent,
-      MatOption
-    ]
+  selector: 'mb-swatches-select',
+  templateUrl: './swatches-select.component.html',
+  styleUrls: ['./swatches-select.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    NgStyle,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    SwatchesComponent,
+    MatOption
+  ]
 })
 export class SwatchesSelectComponent {
   /** Specifies a selection index. */

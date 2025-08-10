@@ -1,0 +1,27 @@
+@use '@angular/material/core/tokens/token-utils';
+@use './sparkline';
+@use './sparkline-theme';
+
+@if sparkline-theme.$theming-enabled {
+  /*
+    The following variables can be externally defined to style the sparkline.
+
+    --sparkline-stroke-width
+    --sparkline-stroke-color
+    --sparkline-fill-color
+  */
+
+  $fallbacks: sparkline.get-tokens();
+
+  :host {
+    ---sparkline-stroke-width: var(--sparkline-stroke-width, #{token-utils.slot(sparkline-stroke-width, $fallbacks)});
+    ---sparkline-stroke-color: var(--sparkline-stroke-color, #{token-utils.slot(sparkline-stroke-color, $fallbacks)});
+    ---sparkline-fill-color: var(--sparkline-fill-color, #{token-utils.slot(sparkline-fill-color, $fallbacks)});
+  }
+
+  :host ::ng-deep svg path {
+    stroke-width: var(---sparkline-stroke-width);
+    stroke: var(---sparkline-stroke-color);
+    fill: var(---sparkline-fill-color);
+  }
+}

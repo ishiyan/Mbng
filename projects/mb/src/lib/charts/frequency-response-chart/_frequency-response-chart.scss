@@ -1,0 +1,71 @@
+@use 'sass:map';
+@use '@angular/material/core/tokens/m3-utils' as m3-utils;
+@use '@angular/material/core/tokens/m3/theme' as m3-theme;
+
+// The prefix used to generate the fully qualified name for tokens in this file.
+$prefix: (frequency-response-chart);
+
+/// Generates custom tokens.
+@function get-tokens($theme: m3-theme.$sys-theme, $color-variant: null) {
+  $system: m3-utils.get-system($theme);
+  $on-surface: map.get($system, on-surface);
+  $on-surface-variant: map.get($system, on-surface-variant);
+  $surface-container: map.get($system, surface-container);
+  
+  // Default to primary if no color variant specified
+  $variant-key: if($color-variant, $color-variant, primary);
+  
+  // Dynamically construct colors
+  $variant: map.get($system, $variant-key);
+  $on-variant: map.get($system, on-#{$variant-key});
+  $variant-container: map.get($system, #{$variant-key}-container);
+  $on-variant-container: map.get($system, on-#{$variant-key}-container);
+
+  $font-family: Roboto, sans-serif;
+
+  @return (
+    base: (
+      frequency-response-chart-curve-width: 2px,
+      frequency-response-chart-curve-hover-width: 6px,
+      frequency-response-chart-grid-opacity: 0.5,
+    ),
+    color: (
+      frequency-response-chart-subfigure-color: $on-surface,
+      frequency-response-chart-label-color: $on-surface-variant,
+      frequency-response-chart-legend-color: $on-surface-variant,
+      frequency-response-chart-axis-color: $on-surface-variant,
+      frequency-response-chart-grid-color: $on-surface-variant,
+      frequency-response-chart-coords-color: $on-surface,
+      frequency-response-chart-control-panel-background-color: $surface-container,
+      frequency-response-chart-control-panel-header-color: $on-surface,
+      frequency-response-chart-control-panel-variant-color: $variant,
+      frequency-response-chart-control-panel-on-variant-color: $on-variant,
+      frequency-response-chart-control-panel-variant-container-color: $variant-container,
+      frequency-response-chart-control-panel-on-variant-container-color: $on-variant-container,
+    ),
+    typography: (
+      // Note we don't need line height because we use only single-line labels
+      frequency-response-chart-subfigure-font-family: $font-family,
+      frequency-response-chart-subfigure-font-size: 12px,
+      frequency-response-chart-subfigure-font-weight: 700,
+      frequency-response-chart-label-font-family: $font-family,
+      frequency-response-chart-label-font-size: 12px,
+      frequency-response-chart-label-font-weight: 400,
+      frequency-response-chart-legend-font-family: $font-family,
+      frequency-response-chart-legend-font-size: 12px,
+      frequency-response-chart-legend-font-weight: 400,
+      frequency-response-chart-axis-font-family: $font-family,
+      frequency-response-chart-axis-font-size: 12px,
+      frequency-response-chart-axis-font-weight: 400,
+      frequency-response-chart-coords-font-family: $font-family,
+      frequency-response-chart-coords-font-size: 12px,
+      frequency-response-chart-coords-font-weight: 400,
+    ),
+    density: (),
+  );
+}
+
+@function get-ripple-color($color) {
+  @return m3-utils.color-with-opacity($color,
+    map.get(m3-theme.$sys-theme, pressed-state-layer-opacity));
+}

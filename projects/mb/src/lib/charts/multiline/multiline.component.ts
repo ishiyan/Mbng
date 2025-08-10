@@ -25,10 +25,10 @@ const VALUE_AXIS_WIDTH = 50;
 const TIME_AXIS_HEIGHT = 18;
 
 @Component({
-    selector: 'mb-multiline',
-    templateUrl: './multiline.component.html',
-    styleUrls: ['./multiline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-multiline',
+  templateUrl: './multiline.component.html',
+  styleUrls: ['./multiline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MultilineComponent {
   private readonly elementRef = inject(ElementRef);

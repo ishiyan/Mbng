@@ -27,11 +27,11 @@ const deltaX = 4;
 const deltaY = 16;
 
 @Component({
-    selector: 'mb-treemap',
-    templateUrl: './treemap.component.html',
-    styleUrls: ['./treemap.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+  selector: 'mb-treemap',
+  templateUrl: './treemap.component.html',
+  styleUrls: ['./treemap.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class TreemapComponent implements OnChanges {
   private elementRef = inject(ElementRef);

@@ -4,11 +4,11 @@ import { MatLabel } from '@angular/material/form-field';
 import { ColorPickerDirective } from '../../../colors/picker/color-picker.directive';
 
 @Component({
-    selector: 'mb-color',
-    templateUrl: './color.component.html',
-    styleUrls: ['./color.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatLabel, ColorPickerDirective]
+  selector: 'mb-color',
+  templateUrl: './color.component.html',
+  styleUrls: ['./color.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatLabel, ColorPickerDirective]
 })
 export class ColorComponent {
   private value = '#000';

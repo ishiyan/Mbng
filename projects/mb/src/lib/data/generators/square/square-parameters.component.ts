@@ -8,20 +8,20 @@ import { KatexComponent } from '../../../katex/katex.component';
 import { SquareParameters } from './square-parameters';
 
 @Component({
-    selector: 'mb-data-generators-square-parameters',
-    templateUrl: './square-parameters.component.html',
-    styleUrls: ['./square-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatInput,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-square-parameters',
+  templateUrl: './square-parameters.component.html',
+  styleUrls: ['./square-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class SquareParametersComponent {
   // squareParameters = input.required<SquareParameters>();

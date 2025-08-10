@@ -9,6 +9,14 @@
       )
     )
   }
+  .tertiary-fab {
+    @include mat.fab-overrides(
+      (
+        small-container-color: var(--mat-sys-tertiary-container),
+        small-foreground-color: var(--mat-sys-on-tertiary-container),
+      )
+    )
+  }
   .alert-fab {
     @include mat.fab-overrides(
       (

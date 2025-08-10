@@ -13,23 +13,23 @@ import { NormalRandomGeneratorKind } from '../normal-random-generator-kind.enum'
 import { GeometricBrownianMotionParameters } from './geometric-brownian-motion-parameters';
 
 @Component({
-    selector: 'mb-data-generators-geometric-brownian-motion-parameters',
-    templateUrl: './geometric-brownian-motion-parameters.component.html',
-    styleUrls: ['./geometric-brownian-motion-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatLabel,
-      MatInput,
-      MatSelect,
-      MatOption,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-geometric-brownian-motion-parameters',
+  templateUrl: './geometric-brownian-motion-parameters.component.html',
+  styleUrls: ['./geometric-brownian-motion-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class GeometricBrownianMotionParametersComponent {
   // sawtoothParameters = input.required<GeometricBrownianMotionParameters>();

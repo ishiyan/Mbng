@@ -12,11 +12,11 @@ import { SawtoothParameters } from './sawtooth-parameters';
 import { SawtoothShape } from './sawtooth-shape.enum';
 
 @Component({
-    selector: 'mb-data-generators-sawtooth-parameters',
-    templateUrl: './sawtooth-parameters.component.html',
-    styleUrls: ['./sawtooth-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, MatOption]
+  selector: 'mb-data-generators-sawtooth-parameters',
+  templateUrl: './sawtooth-parameters.component.html',
+  styleUrls: ['./sawtooth-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, KatexComponent, MatFormField, FormsModule, MatInput, MatHint, MatLabel, MatSelect, MatOption]
 })
 export class SawtoothParametersComponent {
   // sawtoothParameters = input.required<SawtoothParameters>();

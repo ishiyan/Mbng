@@ -14,10 +14,10 @@ const defaultWidth = 160;
 const defaultHeight = 24;
 
 @Component({
-    selector: 'mb-sparkline',
-    templateUrl: './sparkline.component.html',
-    styleUrls: ['./sparkline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-sparkline',
+  templateUrl: './sparkline.component.html',
+  styleUrls: ['./sparkline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SparklineComponent {
   private readonly elementRef = inject(ElementRef);

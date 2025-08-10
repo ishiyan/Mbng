@@ -4,10 +4,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { LineStyle } from './line-style';
 
 @Component({
-    selector: 'mb-line-svg',
-    templateUrl: './line-svg.component.html',
-    styleUrls: ['./line-svg.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-line-svg',
+  templateUrl: './line-svg.component.html',
+  styleUrls: ['./line-svg.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineSvgComponent {
   private readonly elementRef = inject(ElementRef);

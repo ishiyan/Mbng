@@ -57,11 +57,11 @@ const shapeToRotation = (choice: string) => {
 };
 
 @Component({
-    selector: 'mb-voronoi',
-    templateUrl: './voronoi.component.html',
-    styleUrls: ['./voronoi.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+  selector: 'mb-voronoi',
+  templateUrl: './voronoi.component.html',
+  styleUrls: ['./voronoi.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class VoronoiComponent implements OnChanges {
   private elementRef = inject(ElementRef);

@@ -10,20 +10,20 @@ import { TemporalEntityKind } from '../../data/entities/temporal-entity-kind.enu
 import { HistoricalData } from '../../data/historical-data';
 
 @Component({
-    selector: 'mb-data-historical-data-download',
-    templateUrl: './historical-data-download.component.html',
-    styleUrls: ['./historical-data-download.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatButton,
-      MatSelect,
-      MatOption,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle
-    ]
+  selector: 'mb-data-historical-data-download',
+  templateUrl: './historical-data-download.component.html',
+  styleUrls: ['./historical-data-download.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatButton,
+    MatSelect,
+    MatOption,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
+  ]
 })
 export class HistoricalDataDownloadComponent {
 

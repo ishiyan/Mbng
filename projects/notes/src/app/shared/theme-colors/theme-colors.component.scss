@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+
+:host {
+  @include mat.divider-overrides((
+    width: 1px,
+    // color: var(--mat-sys-on-surface),
+  ));
+
+  div {
+    padding: 4px 8px;
+  }
+
+  .divider {
+    margin: 4px 0;
+  }
+}

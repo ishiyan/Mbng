@@ -8,10 +8,10 @@ const DEFAULT_WIDTH = 64;
 const DEFAULT_HEIGHT = 24;
 
 @Component({
-    selector: 'mb-swatches',
-    templateUrl: './swatches.component.html',
-    styleUrls: ['./swatches.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-swatches',
+  templateUrl: './swatches.component.html',
+  styleUrls: ['./swatches.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SwatchesComponent {
   private readonly elementRef = inject(ElementRef);

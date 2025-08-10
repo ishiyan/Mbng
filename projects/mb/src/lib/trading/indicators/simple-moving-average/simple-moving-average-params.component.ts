@@ -10,18 +10,18 @@ import { QuoteComponentComponent } from '../../../data/entities/quote-component.
 import { SimpleMovingAverageParams } from './simple-moving-average-params.interface';
 
 @Component({
-    selector: 'mb-simple-moving-average-params',
-    templateUrl: './simple-moving-average-params.component.html',
-    styleUrls: ['./simple-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-simple-moving-average-params',
+  templateUrl: './simple-moving-average-params.component.html',
+  styleUrls: ['./simple-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class SimpleMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

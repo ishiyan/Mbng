@@ -15,6 +15,7 @@
   }
   
   @include mat.card-overrides((
+    outlined-container-color: var(--mat-sys-surface-container),
     title-text-font: var(--mat-sys-body-large),
     title-text-line-height: var(--mat-sys-body-large-line-height),
     title-text-size: var(--mat-sys-body-large-size),

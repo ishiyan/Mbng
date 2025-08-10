@@ -3,13 +3,12 @@
   "dest": "../../dist/mb",
   "assets": [
     "./assets",
-    "./**/_index.scss",
-    "./**/*-theme.scss"
+    { "input": "src/lib", "glob": "**/_*.scss", "output": "styles" }
   ],
   "lib": {
     "entryFile": "./src/public-api.ts",
     "styleIncludePaths": [
-      "./src/lib"
+      "./styles"
     ]
   }
 }

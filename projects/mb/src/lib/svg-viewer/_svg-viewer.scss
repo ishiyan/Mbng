@@ -1,0 +1,23 @@
+@use 'sass:map';
+@use '@angular/material/core/tokens/m3-utils' as m3-utils;
+@use '@angular/material/core/tokens/m3/theme' as m3-theme;
+
+// The prefix used to generate the fully qualified name for tokens in this file.
+$prefix: (svg-viewer);
+
+/// Generates custom tokens.
+@function get-tokens($theme: m3-theme.$sys-theme, $color-variant: null) {
+  $system: m3-utils.get-system($theme);
+
+  // Set to currentColor if no color variant specified, otherwise use the variant color
+  $variant: if($color-variant, map.get($system, $color-variant), currentColor);
+
+  @return (
+    base: (),
+    color: (
+      svg-viewer-stroke-color: $variant,
+    ),
+    typography: (),
+    density: (),
+  );
+}

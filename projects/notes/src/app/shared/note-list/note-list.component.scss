@@ -11,14 +11,24 @@
   ));
 
   .toolbar {
-    padding: 0px;
+    padding: 0;
     padding-left: 16px;
     //background-color: transparent;
   }
 
+  @include mat.fab-overrides((
+    container-color: var(--mat-sys-secondary-container),
+    foreground-color: var(--mat-sys-on-secondary-container),
+    state-layer-color: var(--mat-sys-secondary-container),
+  ));
+
   .tags {
     //margin-top: 0px;
     margin-right: 16px;
+    // This is needed if mat-fab extended button is used
+    //background-color: var(--mat-sys-secondary-container);
+    //color: var(--mat-sys-on-secondary-container);
+    //border: 0px;
   }
   
   @include mat.form-field-overrides((

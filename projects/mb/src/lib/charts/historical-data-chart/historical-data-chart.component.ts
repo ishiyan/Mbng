@@ -51,21 +51,21 @@ const textAfterSvg = `
 `;
 
 @Component({
-    selector: 'mb-historical-data-chart',
-    templateUrl: './historical-data-chart.component.html',
-    styleUrls: ['./historical-data-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatButton,
-      MatButtonToggle,
-      MatButtonToggleGroup,
-      MatSlideToggle,
-      MatIcon,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle
-    ]
+  selector: 'mb-historical-data-chart',
+  templateUrl: './historical-data-chart.component.html',
+  styleUrls: ['./historical-data-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatButton,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+    MatSlideToggle,
+    MatIcon,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
+  ]
 })
 export class HistoricalDataChartComponent {
   readonly container = viewChild.required<ElementRef>('container');

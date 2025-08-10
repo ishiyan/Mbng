@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, PLATFORM_ID, effect, in
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-    selector: 'mb-dash-svg',
-    templateUrl: './dash-svg.component.html',
-    styleUrls: ['./dash-svg.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-dash-svg',
+  templateUrl: './dash-svg.component.html',
+  styleUrls: ['./dash-svg.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashSvgComponent {
   private readonly elementRef = inject(ElementRef);

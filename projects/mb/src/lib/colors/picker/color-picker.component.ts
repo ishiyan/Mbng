@@ -117,20 +117,20 @@ const widthAlpha = 196;
 const gap = 10;
 
 @Component({
-    selector: 'mb-color-picker',
-    templateUrl: './color-picker.component.html',
-    styleUrls: ['./color-picker.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatExpansionPanel,
-      MatIconButton,
-      MatIcon,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      ColorPickerSliderDirective
-    ]
+  selector: 'mb-color-picker',
+  templateUrl: './color-picker.component.html',
+  styleUrls: ['./color-picker.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatExpansionPanel,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    ColorPickerSliderDirective
+  ]
 })
 export class ColorPickerComponent implements OnInit, OnDestroy {
   private ngZone = inject(NgZone);

@@ -23,11 +23,11 @@ const defaultZoom = false;
 const defaultLabelFill = 'white';
 
 @Component({
-    selector: 'mb-sunburst',
-    templateUrl: './sunburst.component.html',
-    styleUrls: ['./sunburst.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+  selector: 'mb-sunburst',
+  templateUrl: './sunburst.component.html',
+  styleUrls: ['./sunburst.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class SunburstComponent implements OnChanges {
   private elementRef = inject(ElementRef);

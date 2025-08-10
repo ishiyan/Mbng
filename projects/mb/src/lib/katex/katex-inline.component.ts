@@ -16,11 +16,11 @@ const empty = '';
 
 /** Component to render a TeX input in inline mode. */
 @Component({
-    selector: 'mb-ki',
-    templateUrl: './katex-inline.component.html',
-    styleUrls: ['./katex-inline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [KatexDirective]
+  selector: 'mb-ki',
+  templateUrl: './katex-inline.component.html',
+  styleUrls: ['./katex-inline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [KatexDirective]
 })
 export class KatexInlineComponent implements AfterContentInit {
   private readonly document = inject(DOCUMENT);

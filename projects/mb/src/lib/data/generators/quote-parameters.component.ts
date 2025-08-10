@@ -8,20 +8,20 @@ import { KatexComponent } from '../../katex/katex.component';
 import { QuoteParameters } from './quote-parameters';
 
 @Component({
-    selector: 'mb-data-generators-quote-parameters',
-    templateUrl: './quote-parameters.component.html',
-    styleUrls: ['./quote-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatInput,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-quote-parameters',
+  templateUrl: './quote-parameters.component.html',
+  styleUrls: ['./quote-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class QuoteParametersComponent {
   // quoteParameters = input.required<QuoteParameters>();

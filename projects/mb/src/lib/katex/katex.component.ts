@@ -4,11 +4,11 @@ import { KatexOptions } from 'katex';
 import { KatexDirective } from './katex.directive';
 
 @Component({
-    selector: 'mb-katex',
-    templateUrl: './katex.component.html',
-    styleUrls: ['./katex.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [KatexDirective]
+  selector: 'mb-katex',
+  templateUrl: './katex.component.html',
+  styleUrls: ['./katex.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [KatexDirective]
 })
 export class KatexComponent {
   readonly expression = input.required<string>();

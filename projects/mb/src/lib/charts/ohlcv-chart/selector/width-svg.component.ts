@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, ElementRef, PLATFORM_ID, effect, in
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
-    selector: 'mb-width-svg',
-    templateUrl: './width-svg.component.html',
-    styleUrls: ['./width-svg.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-width-svg',
+  templateUrl: './width-svg.component.html',
+  styleUrls: ['./width-svg.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WidthSvgComponent {
   private readonly elementRef = inject(ElementRef);

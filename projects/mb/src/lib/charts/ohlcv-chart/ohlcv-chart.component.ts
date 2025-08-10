@@ -74,21 +74,21 @@ const textAfterSvg = `
 const smoothBrushing = false;
 
 @Component({
-    selector: 'mb-ohlcv-chart',
-    templateUrl: './ohlcv-chart.component.html',
-    styleUrls: ['./ohlcv-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatIcon,
-      MatMiniFabButton,
-      MatButtonToggle,
-      MatButtonToggleGroup,
-      MatSlideToggle,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle
-    ]
+  selector: 'mb-ohlcv-chart',
+  templateUrl: './ohlcv-chart.component.html',
+  styleUrls: ['./ohlcv-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatIcon,
+    MatMiniFabButton,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+    MatSlideToggle,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
+  ]
 })
 export class OhlcvChartComponent {
   private readonly document = inject(DOCUMENT);

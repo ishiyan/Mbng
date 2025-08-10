@@ -1,7 +1,11 @@
 <mat-toolbar class="toolbar">
+  <!-- mat-icon-button or mat-fab-extended  -->
   <button mat-icon-button (click)="toggleTagsVisibility()" class="tags" aria-label="Show or hide tags">
     <mat-icon fontSet="material-symbols-outlined">shoppingmode</mat-icon>
-  </button>
+      <mat-icon fontSet="material-symbols-outlined">
+        {{ tagsVisible ? 'arrow_drop_up' : 'arrow_drop_down' }}
+      </mat-icon>
+    </button>
   <div>
     <mat-form-field appearance="fill">
       <mat-icon fontSet="material-symbols-outlined" matPrefix>search</mat-icon>

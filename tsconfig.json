@@ -32,8 +32,8 @@
     ],
     "paths": {
       "mb": [
-        "dist/mb/lib",
-        "dist/mb"
+        "dist/mb",
+        "dist/mb/styles",
       ]
     },
     "useDefineForClassFields": false

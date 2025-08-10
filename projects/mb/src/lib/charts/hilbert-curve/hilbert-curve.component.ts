@@ -11,10 +11,10 @@ const defaultOrder = 5;
 const defaultStrokeWidth = 1;
 
 @Component({
-    selector: 'mb-hilbert-curve',
-    templateUrl: './hilbert-curve.component.html',
-    styleUrls: ['./hilbert-curve.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-hilbert-curve',
+  templateUrl: './hilbert-curve.component.html',
+  styleUrls: ['./hilbert-curve.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HilbertCurveComponent {
   private readonly document = inject(DOCUMENT);

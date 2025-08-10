@@ -8,19 +8,19 @@ import { WeightedMovingAverageParams } from './weighted-moving-average-params.in
 import { WeightedMovingAverageParamsComponent } from './weighted-moving-average-params.component';
 
 @Component({
-    selector: 'mb-weighted-moving-average-params-dialog',
-    templateUrl: './weighted-moving-average-params-dialog.component.html',
-    styleUrls: ['./weighted-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      WeightedMovingAverageParamsComponent
-    ]
+  selector: 'mb-weighted-moving-average-params-dialog',
+  templateUrl: './weighted-moving-average-params-dialog.component.html',
+  styleUrls: ['./weighted-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    WeightedMovingAverageParamsComponent
+  ]
 })
 export class WeightedMovingAverageParamsDialogComponent {
   protected data = inject<WeightedMovingAverageParams>(MAT_DIALOG_DATA);

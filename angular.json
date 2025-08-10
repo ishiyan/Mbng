@@ -30,8 +30,8 @@
               "projects/notes/src/robots.txt",
               "projects/notes/src/assets",
               {
-                "glob": "**/*",
                 "input": "./projects/mb/assets",
+                "glob": "**/*",
                 "output": "/assets/"
               }
             ],

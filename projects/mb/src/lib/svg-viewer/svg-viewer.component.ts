@@ -3,10 +3,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-    selector: 'mb-svg-viewer',
-    templateUrl: './svg-viewer.component.html',
-    styleUrls: ['./svg-viewer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush    
+  selector: 'mb-svg-viewer',
+  templateUrl: './svg-viewer.component.html',
+  styleUrls: ['./svg-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush    
 })
 export class SvgViewerComponent {
   private readonly elementRef = inject(ElementRef);

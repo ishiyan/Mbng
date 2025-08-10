@@ -8,19 +8,19 @@ import { StandardDeviationParams } from './standard-deviation-params.interface';
 import { StandardDeviationParamsComponent } from './standard-deviation-params.component';
 
 @Component({
-    selector: 'mb-standard-deviation-params-dialog',
-    templateUrl: './standard-deviation-params-dialog.component.html',
-    styleUrls: ['./standard-deviation-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      StandardDeviationParamsComponent,
-    ]
+  selector: 'mb-standard-deviation-params-dialog',
+  templateUrl: './standard-deviation-params-dialog.component.html',
+  styleUrls: ['./standard-deviation-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    StandardDeviationParamsComponent,
+  ]
 })
 export class StandardDeviationParamsDialogComponent {
   protected data = inject<StandardDeviationParams>(MAT_DIALOG_DATA);

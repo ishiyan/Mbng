@@ -8,19 +8,19 @@ import { LineStyle } from './line-style';
 import { LineStyleComponent } from './line-style.component';
 
 @Component({
-    selector: 'mb-line-style-dialog',
-    templateUrl: './line-style-dialog.component.html',
-    styleUrls: ['./line-style-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatButton,
-      MatIcon,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      LineStyleComponent,
-    ]
+  selector: 'mb-line-style-dialog',
+  templateUrl: './line-style-dialog.component.html',
+  styleUrls: ['./line-style-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatButton,
+    MatIcon,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    LineStyleComponent,
+  ]
 })
 export class LineStyleDialogComponent {
   protected data = inject<LineStyle>(MAT_DIALOG_DATA);

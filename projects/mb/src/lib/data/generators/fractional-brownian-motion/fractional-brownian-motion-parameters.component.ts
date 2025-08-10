@@ -14,23 +14,23 @@ import { FractionalBrownianMotionParameters } from './fractional-brownian-motion
 import { FractionalBrownianMotionAlgorithm } from './fractional-brownian-motion-algorithm.enum';
 
 @Component({
-    selector: 'mb-data-generators-fractional-brownian-motion-parameters',
-    templateUrl: './fractional-brownian-motion-parameters.component.html',
-    styleUrls: ['./fractional-brownian-motion-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatLabel,
-      MatInput,
-      MatSelect,
-      MatOption,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-fractional-brownian-motion-parameters',
+  templateUrl: './fractional-brownian-motion-parameters.component.html',
+  styleUrls: ['./fractional-brownian-motion-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class FractionalBrownianMotionParametersComponent {
   // sawtoothParameters = input.required<FractionalBrownianMotionParameters>();

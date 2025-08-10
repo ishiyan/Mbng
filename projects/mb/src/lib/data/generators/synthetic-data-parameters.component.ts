@@ -23,33 +23,33 @@ import { QuoteParametersComponent } from './quote-parameters.component';
 import { TradeParametersComponent } from './trade-parameters.component';
 
 @Component({
-    selector: 'mb-data-generators-synthetic-data-parameters',
-    templateUrl: './synthetic-data-parameters.component.html',
-    styleUrls: ['./synthetic-data-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgClass,
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatButtonToggleGroup,
-      MatButtonToggle,
-      MatAccordion,
-      MatExpansionPanel,
-      MatInput,
-      ExtendedModule,
-      ChirpParametersComponent,
-      FractionalBrownianMotionParametersComponent,
-      GeometricBrownianMotionParametersComponent,
-      SawtoothParametersComponent,
-      SquareParametersComponent,
-      SinusoidalParametersComponent,
-      WaveformParametersComponent,
-      TimeParametersComponent,
-      OhlcvParametersComponent,
-      QuoteParametersComponent,
-      TradeParametersComponent
-    ]
+  selector: 'mb-data-generators-synthetic-data-parameters',
+  templateUrl: './synthetic-data-parameters.component.html',
+  styleUrls: ['./synthetic-data-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatAccordion,
+    MatExpansionPanel,
+    MatInput,
+    ExtendedModule,
+    ChirpParametersComponent,
+    FractionalBrownianMotionParametersComponent,
+    GeometricBrownianMotionParametersComponent,
+    SawtoothParametersComponent,
+    SquareParametersComponent,
+    SinusoidalParametersComponent,
+    WaveformParametersComponent,
+    TimeParametersComponent,
+    OhlcvParametersComponent,
+    QuoteParametersComponent,
+    TradeParametersComponent
+  ]
 })
 export class SyntheticDataParametersComponent {
   //syntheticDataParameters = input.required<SyntheticDataParameters>();

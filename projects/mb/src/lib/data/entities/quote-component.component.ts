@@ -14,18 +14,18 @@ interface Comp {
 }
 
 @Component({
-    selector: 'mb-quote-component',
-    templateUrl: './quote-component.component.html',
-    styleUrls: ['./quote-component.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      MatOption,
-      KatexDisplayComponent
-    ]
+  selector: 'mb-quote-component',
+  templateUrl: './quote-component.component.html',
+  styleUrls: ['./quote-component.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    KatexDisplayComponent
+  ]
 })
 export class QuoteComponentComponent implements OnInit {
   protected comps: Comp[] = [

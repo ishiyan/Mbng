@@ -11,18 +11,18 @@ interface Elem {
 }
 
 @Component({
-    selector: 'mb-line-width',
-    templateUrl: './line-width.component.html',
-    styleUrls: ['./line-width.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      MatOption,
-      WidthSvgComponent
-    ]
+  selector: 'mb-line-width',
+  templateUrl: './line-width.component.html',
+  styleUrls: ['./line-width.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    WidthSvgComponent
+  ]
 })
 export class LineWidthComponent {
   protected elems: Elem[] = [

@@ -7,19 +7,19 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { TradeParameters } from './trade-parameters';
 
 @Component({
-    selector: 'mb-data-generators-trade-parameters',
-    templateUrl: './trade-parameters.component.html',
-    styleUrls: ['./trade-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatInput,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle
-    ]
+  selector: 'mb-data-generators-trade-parameters',
+  templateUrl: './trade-parameters.component.html',
+  styleUrls: ['./trade-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatInput,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
+  ]
 })
 export class TradeParametersComponent {
   //tradeParameters = input.required<TradeParameters>();

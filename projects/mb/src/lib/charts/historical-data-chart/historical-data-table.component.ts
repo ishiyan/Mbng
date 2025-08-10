@@ -16,34 +16,34 @@ import { Scalar } from '../../data/entities/scalar';
 import { HistoricalDataDownloadComponent } from './historical-data-download.component';
 
 @Component({
-    selector: 'mb-historical-data-table',
-    templateUrl: './historical-data-table.component.html',
-    styleUrls: ['./historical-data-table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgClass,
-      DecimalPipe,
-      DatePipe,
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatOption,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      MatPaginator,
-      MatTable,
-      MatColumnDef,
-      MatHeaderCellDef,
-      MatHeaderCell,
-      MatCellDef,
-      MatCell,
-      MatHeaderRowDef,
-      MatHeaderRow,
-      MatRowDef,
-      MatRow,
-      HistoricalDataDownloadComponent
-    ]
+  selector: 'mb-historical-data-table',
+  templateUrl: './historical-data-table.component.html',
+  styleUrls: ['./historical-data-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    DecimalPipe,
+    DatePipe,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatPaginator,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    HistoricalDataDownloadComponent
+  ]
 })
 export class HistoricalDataTableComponent implements OnInit {
   readonly paginator = viewChild.required(MatPaginator);

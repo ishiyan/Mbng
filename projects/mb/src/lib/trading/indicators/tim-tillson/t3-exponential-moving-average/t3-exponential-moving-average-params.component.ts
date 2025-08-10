@@ -15,19 +15,19 @@ const firstIsAverageDefault = true;
 const guardLength = (object: any): object is T3ExponentialMovingAverageLengthParams => 'length' in object;
 
 @Component({
-    selector: 'mb-t3-exponential-moving-average-params',
-    templateUrl: './t3-exponential-moving-average-params.component.html',
-    styleUrls: ['./t3-exponential-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatSlideToggle,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-t3-exponential-moving-average-params',
+  templateUrl: './t3-exponential-moving-average-params.component.html',
+  styleUrls: ['./t3-exponential-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSlideToggle,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class T3ExponentialMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

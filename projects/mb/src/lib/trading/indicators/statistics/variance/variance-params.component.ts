@@ -11,19 +11,19 @@ import { QuoteComponentComponent } from '../../../../data/entities/quote-compone
 import { VarianceParams } from './variance-params.interface';
 
 @Component({
-    selector: 'mb-variance-params',
-    templateUrl: './variance-params.component.html',
-    styleUrls: ['./variance-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatSlideToggle,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-variance-params',
+  templateUrl: './variance-params.component.html',
+  styleUrls: ['./variance-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSlideToggle,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class VarianceParamsComponent implements AfterContentInit {
   private initialized = false;

@@ -14,23 +14,23 @@ import { ChirpParameters } from './chirp-parameters';
 import { ChirpSweep } from './chirp-sweep.enum';
 
 @Component({
-    selector: 'mb-data-generators-chirp-parameters',
-    templateUrl: './chirp-parameters.component.html',
-    styleUrls: ['./chirp-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgClass,
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatLabel,
-      MatInput,
-      MatSelect,
-      MatOption,
-      SvgViewerComponent,
-      ExtendedModule,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-chirp-parameters',
+  templateUrl: './chirp-parameters.component.html',
+  styleUrls: ['./chirp-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    SvgViewerComponent,
+    ExtendedModule,
+    KatexComponent
+  ]
 })
 export class ChirpParametersComponent {
   private initialized = false;

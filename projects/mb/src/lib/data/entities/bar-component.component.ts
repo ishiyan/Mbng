@@ -14,18 +14,18 @@ interface Comp {
 }
 
 @Component({
-    selector: 'mb-bar-component',
-    templateUrl: './bar-component.component.html',
-    styleUrls: ['./bar-component.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      MatOption,
-      KatexDisplayComponent
-    ]
+  selector: 'mb-bar-component',
+  templateUrl: './bar-component.component.html',
+  styleUrls: ['./bar-component.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    KatexDisplayComponent
+  ]
 })
 export class BarComponentComponent implements OnInit {
   protected comps: Comp[] = [

@@ -10,18 +10,18 @@ import { QuoteComponentComponent } from '../../../data/entities/quote-component.
 import { WeightedMovingAverageParams } from './weighted-moving-average-params.interface';
 
 @Component({
-    selector: 'mb-weighted-moving-average-params',
-    templateUrl: './weighted-moving-average-params.component.html',
-    styleUrls: ['./weighted-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-weighted-moving-average-params',
+  templateUrl: './weighted-moving-average-params.component.html',
+  styleUrls: ['./weighted-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class WeightedMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

@@ -1,14 +1,53 @@
-@use '@angular/material' as mat;
-@mixin svg-viewer-theme($theme) {
-  $primary: map-get($theme, primary);
-  $accent: map-get($theme, accent);
-  $warn: map-get($theme, warn);
-  $background: map-get($theme, background);
-  $foreground: map-get($theme, foreground);
+@use 'sass:map';
+@use '@angular/material/core/tokens/token-utils';
+@use './svg-viewer';
 
-  mb-svg-viewer {
-    svg {
-      stroke: mat.m2-get-color-from-palette($foreground, text);
-    }
-  }
+@mixin base($theme) {
+  $tokens: map.get(svg-viewer.get-tokens($theme), base);
+  @include token-utils.values($tokens);
+}
+
+/// Outputs color theme styles.
+/// @param {Map} $theme The theme to generate color styles for.
+/// @param {String} $color-variant The color M3 variant to use for the component
+@mixin color($theme, $color-variant: null) {
+  $tokens: map.get(svg-viewer.get-tokens($theme, $color-variant), color);
+  @include token-utils.values($tokens);
+}
+
+/// Outputs typography theme styles.
+/// @param {Map} $theme The theme to generate typography styles for.
+@mixin typography($theme) {
+  $tokens: map.get(svg-viewer.get-tokens($theme), typography);
+  @include token-utils.values($tokens);
+}
+
+/// Outputs density theme styles.
+/// @param {Map} $theme The theme to generate density styles for.
+@mixin density($theme) {
+  $tokens: map.get(svg-viewer.get-tokens($theme), density);
+  @include token-utils.values($tokens);
+}
+
+/// Defines the tokens that will be available in the `overrides` mixin and for docs extraction.
+@function _define-overrides() {
+  @return ((namespace: svg-viewer,
+      tokens: token-utils.get-overrides(svg-viewer.get-tokens(), svg-viewer)),
+  );
+}
+
+/// Outputs the CSS variable values for the given tokens.
+/// @param {Map} $tokens The token values to emit.
+@mixin overrides($tokens: ()) {
+  @include token-utils.batch-create-token-values($tokens, _define-overrides());
+}
+
+/// Outputs all (base, color, typography, and density) theme styles for the mat-icon.
+/// @param {Map} $theme The theme to generate styles for.
+/// @param {String} $color-variant The color variant to use for the component (M3 only)
+@mixin theme($theme, $color-variant: null) {
+  @include base($theme);
+  @include color($theme, $color-variant);
+  @include density($theme);
+  @include typography($theme);
 }

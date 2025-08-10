@@ -9,19 +9,19 @@ import { ExponentialMovingAverageSmoothingFactorParams } from './exponential-mov
 import { ExponentialMovingAverageParamsComponent } from './exponential-moving-average-params.component';
 
 @Component({
-    selector: 'mb-exponential-moving-average-params-dialog',
-    templateUrl: './exponential-moving-average-params-dialog.component.html',
-    styleUrls: ['./exponential-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      ExponentialMovingAverageParamsComponent,
-    ]
+  selector: 'mb-exponential-moving-average-params-dialog',
+  templateUrl: './exponential-moving-average-params-dialog.component.html',
+  styleUrls: ['./exponential-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    ExponentialMovingAverageParamsComponent,
+  ]
 })
 export class ExponentialMovingAverageParamsDialogComponent {
   protected data = inject<ExponentialMovingAverageLengthParams | ExponentialMovingAverageSmoothingFactorParams>(MAT_DIALOG_DATA);

@@ -51,21 +51,21 @@ const textAfterSvg = `
 `;
 
 @Component({
-    selector: 'mb-linear-chart',
-    templateUrl: './linear-chart.component.html',
-    styleUrls: ['./linear-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatIcon,
-      MatMiniFabButton,
-      MatButtonToggle,
-      MatButtonToggleGroup,
-      MatSlideToggle,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-    ]
+  selector: 'mb-linear-chart',
+  templateUrl: './linear-chart.component.html',
+  styleUrls: ['./linear-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatIcon,
+    MatMiniFabButton,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+    MatSlideToggle,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+  ]
 })
 export class LinearChartComponent {
   private readonly document = inject(DOCUMENT);

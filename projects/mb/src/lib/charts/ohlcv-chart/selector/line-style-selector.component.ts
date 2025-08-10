@@ -8,16 +8,16 @@ import { LineStyleDialogComponent } from './line-style-dialog.component';
 import { LineSvgComponent } from './line-svg.component';
 
 @Component({
-    selector: 'mb-line-style-selector',
-    templateUrl: './line-style-selector.component.html',
-    styleUrls: ['./line-style-selector.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatInput,
-      LineSvgComponent,
-    ]
+  selector: 'mb-line-style-selector',
+  templateUrl: './line-style-selector.component.html',
+  styleUrls: ['./line-style-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    LineSvgComponent,
+  ]
 })
 export class LineStyleSelectorComponent {
   private dialog = inject(MatDialog);

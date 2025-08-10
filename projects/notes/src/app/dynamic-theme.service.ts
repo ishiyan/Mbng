@@ -1,12 +1,6 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { computed, effect, inject, Injectable, PLATFORM_ID, Signal, signal } from '@angular/core';
 
-// https://github.com/material-foundation/material-color-utilities
-// https://github.com/material-foundation/material-theme-builder
-// https://github.com/importantimport/material-color-utilities/tree/dev/typescript
-// npm install @material/material-color-utilities
-// https://github.com/Rrothschild18/runtime-angular-material/blob/main/src/app/app.component.ts
-// https://medium.com/@raultonello18/angular-material-m3-dynamic-runtime-colors-6d6d1036d2bb
 import { argbFromHex, DynamicScheme, Hct, hexFromArgb, TonalPalette } from '@material/material-color-utilities';
 
 import { DynamicColorService } from './dynamic-color.service';
@@ -15,6 +9,13 @@ import { DynamicColorService } from './dynamic-color.service';
   providedIn: 'root'
 })
 export class DynamicThemingService {
+  // https://github.com/material-foundation/material-color-utilities
+  // https://github.com/material-foundation/material-theme-builder
+  // https://github.com/importantimport/material-color-utilities/tree/dev/typescript
+  // npm install @material/material-color-utilities
+  // https://github.com/Rrothschild18/runtime-angular-material/blob/main/src/app/app.component.ts
+  // https://medium.com/@raultonello18/angular-material-m3-dynamic-runtime-colors-6d6d1036d2bb
+
   private document = inject(DOCUMENT);
   private platformId = inject(PLATFORM_ID);
   private dcs = inject(DynamicColorService);
@@ -25,12 +26,14 @@ export class DynamicThemingService {
   private themeSchemes: Signal<[DynamicScheme, DynamicScheme]> = computed(() => {
     const primary = this.primaryThemeColor();
     const tertiary = this.tertiaryThemeColor();
-    console.log('DynamicThemingService computing start:', { primary, tertiary });
+
+    // console.log('DynamicThemingService computing start:', { primary, tertiary });
     const sourceColorHct = Hct.fromInt(argbFromHex(primary));
     const tertiaryHct = Hct.fromInt(argbFromHex(tertiary));
     const primaryLight = getDynamicScheme(sourceColorHct, tertiaryHct, false);
     const primaryDark = getDynamicScheme(sourceColorHct, tertiaryHct, true);
-    console.log('DynamicThemingService computing end:', primaryLight.primary, primaryDark.primary, primaryLight.tertiary, primaryDark.tertiary);
+
+    // console.log('DynamicThemingService computing end:', primaryLight.primary, primaryDark.primary, primaryLight.tertiary, primaryDark.tertiary);
     return [primaryLight, primaryDark];
   });
 
@@ -42,11 +45,7 @@ export class DynamicThemingService {
 
       const [lightScheme, darkScheme] = this.themeSchemes();
       const properties = getThemeProperties(lightScheme, darkScheme);
-      //const target = this.document.documentElement;
       const style = this.document.documentElement.style;
-      //const computedStyle = getComputedStyle(target);
-      //const primary = computedStyle.getPropertyValue('--mat-sys-primary').trim();
-      //console.log('ThemingService primary:', primary);
       for (const [property, [lightArgb, darkArgb]] of Object.entries(properties)) {
         style.setProperty(property, `light-dark(${hexFromArgb(lightArgb)}, ${hexFromArgb(darkArgb)})`);
       }
@@ -55,7 +54,7 @@ export class DynamicThemingService {
 }
 
 function getDynamicScheme(sourceColorHct: Hct, tertiaryHct: Hct, isDark: boolean) {
-  // from https://github.com/material-foundation/material-color-utilities/blob/ca894db8b6aebb2833f1805ae61573c92e3f1660/typescript/scheme/scheme_content.ts
+  // From https://github.com/material-foundation/material-color-utilities/blob/ca894db8b6aebb2833f1805ae61573c92e3f1660/typescript/scheme/scheme_content.ts
   // but without the DislikeAnalyzer to ensure the given colors are not changed.
   // This should be the same effect as checking the 'Color match' checkbox in
   // the material theme builder https://material-foundation.github.io/material-theme-builder

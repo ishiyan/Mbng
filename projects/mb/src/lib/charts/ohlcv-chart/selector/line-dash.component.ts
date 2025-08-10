@@ -11,18 +11,18 @@ interface Elem {
 }
 
 @Component({
-    selector: 'mb-line-dash',
-    templateUrl: './line-dash.component.html',
-    styleUrls: ['./line-dash.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatFormField,
-      MatLabel,
-      MatSelect,
-      MatSelectTrigger,
-      MatOption,
-      DashSvgComponent
-    ]
+  selector: 'mb-line-dash',
+  templateUrl: './line-dash.component.html',
+  styleUrls: ['./line-dash.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatSelectTrigger,
+    MatOption,
+    DashSvgComponent
+  ]
 })
 export class LineDashComponent {
   protected elems: Elem[] = [

@@ -12,23 +12,23 @@ import { UniformRandomGeneratorKind } from './uniform-random-generator-kind.enum
 import { WaveformParameters } from './waveform-parameters';
 
 @Component({
-    selector: 'mb-data-generators-waveform-parameters',
-    templateUrl: './waveform-parameters.component.html',
-    styleUrls: ['./waveform-parameters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatHint,
-      MatLabel,
-      MatInput,
-      MatSelect,
-      MatOption,
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      KatexComponent
-    ]
+  selector: 'mb-data-generators-waveform-parameters',
+  templateUrl: './waveform-parameters.component.html',
+  styleUrls: ['./waveform-parameters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatHint,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    KatexComponent
+  ]
 })
 export class WaveformParametersComponent {
   waveformParameters = input.required<WaveformParameters>();

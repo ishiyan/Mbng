@@ -3,28 +3,7 @@
   "version": "1.0.0",
   "exports": {
     ".": {
-      "sass": "./src/_index.scss"
-    },
-    "./theming/svg-viewer-theme": {
-      "sass": "./src/lib/svg-viewer/_svg-viewer-theme.scss"
-    },
-    "./theming/historical-data-chart-theme": {
-      "sass": "./src/lib/charts/historical-data-chart/_historical-data-chart-theme.scss"
-    },
-    "./theming/linear-chart-theme": {
-      "sass": "./src/lib/charts/linear-chart/_linear-chart-theme.scss"
-    },
-    "./theming/ohlcv-chart-theme": {
-      "sass": "./src/lib/charts/ohlcv-chart/_ohlcv-chart-theme.scss"
-    },
-    "./theming/width-svg-theme": {
-      "sass": "./src/lib/charts/ohlcv-chart/selector/_width-svg-theme.scss"
-    },
-    "./theming/dash-svg-theme": {
-      "sass": "./src/lib/charts/ohlcv-chart/selector/_dash-svg-theme.scss"
-    },
-    "./theming/hilbert-curve-theme": {
-      "sass": "./src/lib/charts/hilbert-curve/_hilbert-curve-theme.scss"
+      "sass": "./styles/_index.scss"
     }
   },
   "peerDependencies": {

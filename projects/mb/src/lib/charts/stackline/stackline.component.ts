@@ -26,10 +26,10 @@ const VALUE_AXIS_WIDTH = 50;
 const TIME_AXIS_HEIGHT = 18;
 
 @Component({
-    selector: 'mb-stackiline',
-    templateUrl: './stackline.component.html',
-    styleUrls: ['./stackline.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'mb-stackiline',
+  templateUrl: './stackline.component.html',
+  styleUrls: ['./stackline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StacklineComponent implements OnChanges, AfterViewInit {
   private elementRef = inject(ElementRef);

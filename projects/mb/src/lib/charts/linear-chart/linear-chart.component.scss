@@ -1,63 +1,244 @@
-.container {
-  margin: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 8px;
-  padding-right: 8px;
-  height: 1px;
+@use '@angular/material' as mat;
+
+/*
+The following variables can be externally defined to style the chart.
+
+--linear-chart-legend-color
+--linear-chart-legend-font-family
+--linear-chart-legend-font-size
+--linear-chart-axis-color
+--linear-chart-axis-font-family
+--linear-chart-axis-font-size
+--linear-chart-crosshair-wire-color
+--linear-chart-crosshair-wire-width
+--linear-chart-crosshair-wire-dasharray
+--linear-chart-crosshair-annotation-background
+--linear-chart-crosshair-annotation-color
+--linear-chart-crosshair-annotation-font-family
+--linear-chart-crosshair-annotation-font-size
+--linear-chart-nav-data-color
+--linear-chart-nav-data-opacity
+--linear-chart-nav-selection-color
+--linear-chart-nav-selection-opacity
+--linear-chart-ohlc-color
+--linear-chart-ohlc-up-color
+--linear-chart-ohlc-down-color
+--linear-chart-candle-color
+--linear-chart-candle-up-color
+--linear-chart-candle-down-color
+--linear-chart-line-color
+--linear-chart-line-width
+--linear-chart-area-color
+--linear-chart-area-opacity
+--linear-chart-point-color
+--linear-chart-point-radius
+--linear-chart-volume-color
+--linear-chart-volume-opacity
+*/
+
+:host {
+  ---linear-chart-legend-color: var(--linear-chart-legend-color, var(--mat-sys-on-surface));
+  ---linear-chart-legend-font-family: var(--linear-chart-legend-font-family, Roboto, sans-serif);
+  ---linear-chart-legend-font-size: var(--linear-chart-legend-font-size, 12px);
+  ---linear-chart-axis-color: var(--linear-chart-axis-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-axis-font-family: var(--linear-chart-axis-font-family, Roboto, sans-serif);
+  ---linear-chart-axis-font-size: var(--linear-chart-axis-font-size, 10px);
+  ---linear-chart-crosshair-wire-color: var(--linear-chart-crosshair-wire-color, var(--mat-sys-outline));
+  ---linear-chart-crosshair-wire-width: var(--linear-chart-crosshair-wire-width, 1px);
+  ---linear-chart-crosshair-wire-dasharray: var(--linear-chart-crosshair-wire-dasharray, 1,1);
+  ---linear-chart-crosshair-annotation-background: var(--linear-chart-crosshair-annotation-background, var(--mat-sys-primary-container));
+  ---linear-chart-crosshair-annotation-color: var(--linear-chart-crosshair-annotation-color, var(--mat-sys-on-primary-container));
+  ---linear-chart-crosshair-annotation-font-family: var(--linear-chart-crosshair-annotation-font-family, Roboto, sans-serif);
+  ---linear-chart-crosshair-annotation-font-size: var(--linear-chart-crosshair-annotation-font-size, 10px);
+  ---linear-chart-nav-data-color: var(--linear-chart-nav-data-color, var(--mat-sys-outline));
+  ---linear-chart-nav-data-opacity: var(--linear-chart-nav-data-opacity, 0.3);
+  ---linear-chart-nav-selection-color: var(--linear-chart-nav-selection-color, var(--mat-sys-outline));
+  ---linear-chart-nav-selection-opacity: var(--linear-chart-nav-selection-opacity, 0.3);
+
+  // To draw colored OHLCs use up-color: #6c0, down-color: #c60
+  ---linear-chart-ohlc-color: var(--linear-chart-ohlc-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-ohlc-up-color: var(--linear-chart-ohlc-up-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-ohlc-down-color: var(--linear-chart-ohlc-down-color, var(--mat-sys-on-surface-variant));
+
+  // To draw colored candles use up-color: #6c0, down-color: #c60
+  ---linear-chart-candle-color: var(--linear-chart-candle-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-candle-up-color: var(--linear-chart-candle-up-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-candle-down-color: var(--linear-chart-candle-down-color, var(--mat-sys-on-surface-variant));
+
+  // No fill colors for candlesticks in lightMode.
+  ---linear-chart-candle-up-fill: transparent;
+  ---linear-chart-candle-down-fill: var(---linear-chart-candle-down-color);
+
+  ---linear-chart-line-color: var(--linear-chart-line-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-line-width: var(--linear-chart-line-width, 1px);
+
+  ---linear-chart-area-color: var(--linear-chart-area-color, var(--mat-sys-outline));
+  ---linear-chart-area-opacity: var(--linear-chart-area-opacity, 0.5);
+
+  ---linear-chart-point-color: var(--linear-chart-point-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-point-radius: var(--linear-chart-point-radius, 1.5px);
+
+  ---linear-chart-volume-color: var(--linear-chart-volume-color, var(--mat-sys-outline));
+  ---linear-chart-volume-opacity: var(--linear-chart-volume-opacity, 0.5);
 }
 
-.button-toggle-group {
-  margin: 0;
-  margin-right: 16px;
+// Checks if any ancestor element (including document.documentElement) has the darkMode class.
+// This is used to apply dark mode styles conditionally.
+// The styles will automatically update when the darkMode class is added/removed from the document.
+:host-context(.darkMode) {
+  ---linear-chart-candle-up-fill: var(---linear-chart-candle-up-color);
+  ---linear-chart-candle-down-fill: transparent;
 }
 
-.slide-toggle {
-  margin: 0;
-  margin-right: 16px;
-  vertical-align: middle;
-}
-
-.download {
-  vertical-align: middle;
-}
-
-mat-slide-toggle mat-icon {
-  vertical-align: bottom;
-}
-
-:host ::ng-deep {
-  path.candle.body {
-    stroke-width: 1px; // 0;
+:host {
+  // Axis and tick labels
+  ::ng-deep g.axis{
+    path {
+      stroke: var(---linear-chart-axis-color);
+    }
+    line {
+      stroke: var(---linear-chart-axis-color);
+    }
+    text {
+      fill: var(---linear-chart-axis-color);
+      font-family: var(---linear-chart-axis-font-family);
+      font-size: var(---linear-chart-axis-font-size);
+    }
   }
-
-  path.ohlc {
+  // Crosshair
+  ::ng-deep g.crosshair {
+    path.wire {
+      stroke: var(---linear-chart-crosshair-wire-color);
+      stroke-dasharray: var(---linear-chart-crosshair-wire-dasharray);
+      stroke-width: var(---linear-chart-crosshair-wire-width);
+    }
+    g.axisannotation {
+      path {
+        cursor: crosshair;
+        fill: var(---linear-chart-crosshair-annotation-background);
+      }    
+      text {
+        font-family: var(---linear-chart-crosshair-annotation-font-family);
+        font-size: var(---linear-chart-crosshair-annotation-font-size);
+        fill: var(---linear-chart-crosshair-annotation-color);
+      }
+    }
+  }
+  // Navigation and selection
+  ::ng-deep g.nav {
+    g.area g.data path.area {
+      fill: var(---linear-chart-nav-data-color);
+      fill-opacity: var(---linear-chart-nav-data-opacity);
+    }
+    g.pane rect.selection {
+      fill: var(---linear-chart-nav-selection-color);
+      fill-opacity: var(---linear-chart-nav-selection-opacity);
+      stroke: none;
+    }
+  }
+  // Indicator legend
+  ::ng-deep g.legend text {
+    fill: var(---linear-chart-legend-color);
+    font-family: var(---linear-chart-legend-font-family);
+    font-size: var(---linear-chart-legend-font-size);
+  }
+  // Candlesticks
+  ::ng-deep path.candle {
+    stroke: var(---linear-chart-candle-color);
+    stroke-width: 1px; 
+    &.up {
+      stroke: var(---linear-chart-candle-up-color);
+      fill: var(---linear-chart-candle-up-fill);
+    }
+    &.down {
+      stroke: var(---linear-chart-candle-down-color);
+      fill: var(---linear-chart-candle-down-fill);
+    }
+  }
+  // OHLCs
+  ::ng-deep path.ohlc {
+    stroke: var(---linear-chart-ohlc-color);
     stroke-width: 1px;
+    fill: none;
+    &.up {
+      stroke: var(---linear-chart-ohlc-up-color);
+    }
+    &.down {
+      stroke: var(---linear-chart-ohlc-down-color);
+    }
+  }
+  // Lines
+  ::ng-deep path.line {
+    fill: none;
+    stroke: var(---linear-chart-line-color);
+    stroke-width: var(---linear-chart-line-width);
+  }
+  // Area
+  ::ng-deep path.area {
+    fill: var(---linear-chart-area-color);
+    fill-opacity: var(---linear-chart-area-opacity);
+    stroke: none;
+  }
+  // Points
+  ::ng-deep path.point {
+    fill: none;
+    stroke: var(---linear-chart-point-color);
+    stroke-width: var(---linear-chart-point-radius);
+  }
+  // Volume bars
+  ::ng-deep path.volume {
+    fill: var(---linear-chart-volume-color);
+    fill-opacity: var(---linear-chart-volume-opacity);
+    stroke: none;
   }
 
-  path.point {
-    stroke-width: 1.5px;
+  // Control panel
+  .container {
+    margin: 0;
+    padding: 0 8px;
+    height: 1px;
   }
 
-  path.line {
-    stroke-width: 1;
+  @include mat.expansion-overrides((
+    container-background-color: var(--mat-sys-surface-container),
+    header-text-color: var(--mat-sys-on-surface),
+  ));
+
+  .button-toggle-group {
+    margin: 0px;
+    margin-right: 16px;
   }
 
-  .extent {
-    fill-opacity: 0.125;
-    shape-rendering: crispEdges;
+  @include mat.button-toggle-overrides((
+    background-color: var(--mat-sys-primary),
+    text-color: var(--mat-sys-on-primary),
+    selected-state-background-color: var(--mat-sys-primary-container),
+    selected-state-text-color: var(--mat-sys-on-primary-container),
+  ));
+
+  .mat-button-toggle-appearance-standard .svg-icon {
+    stroke: var(--mat-sys-on-primary);
+  }
+  .mat-button-toggle-checked .svg-icon {
+    stroke:  var(--mat-sys-on-primary-container);
   }
 
-  .coords {
-    font: 10px sans-serif;
+  .slide-toggle {
+    margin: 0;
+    margin-right: 16px;
+    vertical-align: middle;
   }
 
-  .crosshair {
-    cursor: crosshair;
-    font: 10px sans-serif;
+  @include mat.slide-toggle-overrides((
+    selected-icon-color: var(--mat-sys-on-primary-container),
+    selected-handle-color: var(--mat-sys-primary-container),
+  ));
+
+  mat-slide-toggle mat-icon {
+    vertical-align: bottom;
   }
 
-  .crosshair path.wire {
-    stroke-dasharray: 1, 1;
+  .download {
+    vertical-align: middle;
   }
 }

@@ -3,9 +3,15 @@
 @use '@angular/material' as mat;
 @use "styles/_theme-colors-teal-pink.scss" as theme-colors;
 
+//@use 'dist/mb' as mb;
+//@use "../../../dist/mb" as mb;
+//@use "../../../dist/mb/styles/charts/ohlcv-chart/ohlcv_chart-theme" as ohlcv-chart;
+@use "../../mb/src/lib/charts/ohlcv-chart/ohlcv_chart-theme" as ohlcv-chart;
+@use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as freq-resp-chart;
+@use "../../mb/src/lib/charts/sparkline/sparkline-theme" as sparkline with ( $theming-enabled: true );
+
 // Styles used by KaTeX.
 @use 'katex/dist/katex.css' as *;
-@use "./app-components-theme" as *;
 
 // Include material symbols fonts.
 @use 'material-symbols' with (
@@ -50,38 +56,51 @@
   }
 }
 
-/*$current-theme: mat.define-theme((
-  color: (
-    primary: mat.$green-palette,
-    tertiary: mat.$violet-palette,
-  ),
-));
-@include app-components-theme($current-theme);*/
-
-// https://themes.angular-material.dev/colors
-// https://angular-material.dev/articles
-// https://medium.com/@raultonello18/angular-material-m3-dynamic-runtime-colors-6d6d1036d2bb
-// https://angular.love/angular-material-theming-application-with-material-3
-// https://github.com/material-foundation/material-theme-builder
-// https://github.com/material-foundation/material-color-utilities/tree/main/typescript/scheme
-// https://search.brave.com/search?q=npm+%40material%2Fmaterial-color-utilities&summary=1&conversation=e7d7f9db0f21fdbda12537
-// https://github.com/angular/components/issues/30141
-// https://angular-material.dev/articles/modify-angular-material-19-theme-with-scss-css
-// https://konstantin-denerz.com/angular-material-3-theming-design-tokens-and-system-variables/
-// 
-
 // Body style.
 html,
 body {
   height: 100%;
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+  //--ohlcv-chart-axis-color: var(--mat-sys-tertiary);
+  //@include mb.ohlcv-chart-overrides((
+  @include ohlcv-chart.overrides((
+    axis-color: var(--mat-sys-secondary),
+    crosshair-annotation-background: var(--mat-sys-secondary-container),
+    crosshair-annotation-color: var(--mat-sys-on-secondary-container),
+    legend-color: var(--mat-sys-secondary),
+    legend-font-family: var(--mat-sys-label-small-font),
+    legend-font-size: var(--mat-sys-label-small-size),
+    control-panel-variant-color: var(--mat-sys-tertiary),
+    control-panel-on-variant-color: var(--mat-sys-on-tertiary),
+    control-panel-variant-container-color: var(--mat-sys-tertiary-container),
+    control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
+  ));
+  @include freq-resp-chart.overrides((
+    axis-color: var(--mat-sys-secondary),
+    label-color: var(--mat-sys-secondary),
+    legend-color: var(--mat-sys-secondary),
+    coords-color: var(--mat-sys-on-tertiary),
+    control-panel-variant-color: var(--mat-sys-tertiary),
+    control-panel-on-variant-color: var(--mat-sys-on-tertiary),
+    control-panel-variant-container-color: var(--mat-sys-tertiary-container),
+    control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
+  ));
+  @include sparkline.overrides((
+    stroke-width: 0px,
+    stroke-color: var(--mat-sys-tertiary),
+    fill-color: var(--mat-sys-tertiary),
+  ));
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto';
+  font-family: Roboto;
+}
+
+.note {
+  margin: 0 16px;
 }
 
 // External references. Uses hardcoded primary color.

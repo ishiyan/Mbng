@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms'; // color selector
 
 import { SeriesListComponent } from './shared/data/series-list/series-list.component';
 import { KatexSettingsComponent } from './shared/katex-settings/katex-settings.component';
+import { ThemeColorsComponent } from './shared/theme-colors/theme-colors.component';
 import { DynamicThemingService } from './dynamic-theme.service';
 import { DynamicColorService } from './dynamic-color.service';
 
@@ -32,6 +33,7 @@ const lightClassName = 'lightMode';
     MatSidenavContainer,
     MatSidenav,
     MatSidenavContent,
+    ThemeColorsComponent,
     SeriesListComponent,
     KatexSettingsComponent
   ]
@@ -66,13 +68,12 @@ export class AppComponent {
   // Dynamic theme color
   dtsSvc = inject(DynamicThemingService);
   dcsSvc = inject(DynamicColorService);
+
   onPrimaryColorChange(event: any) {
-    //console.log('Primary color changed:', event);
     this.dcsSvc.primaryColor.set(event);
   }
+
   onTertiaryColorChange(event: any) {
-    //console.log('Tertiary color changed:', event);
     this.dcsSvc.tertiaryColor.set(event);
   }
-
 }

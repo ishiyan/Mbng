@@ -8,19 +8,19 @@ import { VarianceParams } from './variance-params.interface';
 import { VarianceParamsComponent } from './variance-params.component';
 
 @Component({
-    selector: 'mb-variance-params-dialog',
-    templateUrl: './variance-params-dialog.component.html',
-    styleUrls: ['./variance-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      VarianceParamsComponent
-    ]
+  selector: 'mb-variance-params-dialog',
+  templateUrl: './variance-params-dialog.component.html',
+  styleUrls: ['./variance-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    VarianceParamsComponent
+  ]
 })
 export class VarianceParamsDialogComponent {
   protected data = inject<VarianceParams>(MAT_DIALOG_DATA);

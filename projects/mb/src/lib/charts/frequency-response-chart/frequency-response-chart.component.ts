@@ -13,7 +13,7 @@ import { FrequencyResponseResult }
 
 const fmt2 = d3.format('.2f');
 const fmt3 = d3.format('.3f');
-
+const xLabelOffset = 28; //25
 const defaultWidth = 300;
 const defaultHeight = 300;
 
@@ -58,11 +58,11 @@ const color = d3.interpolateCool; // d3.interpolateWarm d3.interpolateCool d3.in
 /** The text to place before the SVG line when exporting chart as SVG. */
 const textBeforeSvg = `<html><meta charset="utf-8"><style>
   text { fill: black; font-size: 13px; font-family: Arial, Helvetica, sans-serif; cursor: default; }
-  .filter-response .legend .label circle { stroke-width: 2px; }
-  .filter-response .coords { fill: black; font: 10px sans-serif; }
-  .filter-response .subfigure text { font-weight: bold; }
-  .filter-response .axis path { fill: none; stroke: black; }
-  .filter-response .axis line { fill: none; stroke: grey; }
+  .frequency-response .legend .label circle { stroke-width: 2px; }
+  .frequency-response .coords { fill: black; font: 10px sans-serif; }
+  .frequency-response .subfigure text { font-weight: bold; }
+  .frequency-response .axis path { fill: none; stroke: black; }
+  .frequency-response .axis line { fill: none; stroke: grey; }
   .line { stroke-width: 2px; }
 </style><body>
 `;
@@ -72,19 +72,19 @@ const textAfterSvg = `
 `;
 
 @Component({
-    selector: 'mb-frequency-response-chart',
-    templateUrl: './frequency-response-chart.component.html',
-    styleUrls: ['./frequency-response-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      MatExpansionPanel,
-      MatExpansionPanelHeader,
-      MatExpansionPanelTitle,
-      MatIcon,
-      MatButtonToggleGroup,
-      MatButtonToggle,
-      MatMiniFabButton
-    ]
+  selector: 'mb-frequency-response-chart',
+  templateUrl: './frequency-response-chart.component.html',
+  styleUrls: ['./frequency-response-chart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatIcon,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatMiniFabButton
+  ]
 })
 export class FrequencyResponseChartComponent {
   private elementRef = inject(ElementRef);
@@ -171,6 +171,12 @@ export class FrequencyResponseChartComponent {
   private subFigureLetter = '';
   /** The sub-figure letter of this chart. */
   subfig = input<string>();
+
+  /** The vertical axis data ticks format. */
+  yFormat = input<string>('.2f');
+
+  /** The vertical axis data ticks left margin. */
+  yFormatMargin = input<number>(0);
 
   private forcedFrequencyMin?: number;
   private forcedFrequencyMax?: number;
@@ -363,7 +369,7 @@ export class FrequencyResponseChartComponent {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const thisOne = this;
-    const margin = { top: 20, bottom: 30, right: 10, left: 40 };
+    const margin = { top: 20, bottom: 30, right: 10, left: 44 + this.yFormatMargin() };
 
     const computed = computeDimensions(this.elementRef, this.widthValue, this.heightValue, defaultWidth, defaultHeight);
     const w = computed[0];
@@ -372,7 +378,7 @@ export class FrequencyResponseChartComponent {
     const height = h - margin.top - margin.bottom;
     const labelX = xModeLabels[this.xMode];
     const labelY = yModeLabels[this.yMode];
-    const suffixY =yModeSuffices[this.yMode];
+    const suffixY = yModeSuffices[this.yMode];
     const componentX = this.xComponents[this.xMode];
     const componentY = this.yComponents[this.xMode][this.yMode];
     if (!componentX || !componentY) {
@@ -423,10 +429,11 @@ export class FrequencyResponseChartComponent {
       }
     }
 
+    const yFmt = this.yFormat();
     const xScale = d3.scaleLinear().domain([xmin, xmax]).range([0, width]).nice();
     const yScale = d3.scaleLinear().domain([ymin, ymax]).range([height, 0]).nice();
     const xAxisBottom = d3.axisBottom(xScale).ticks(width / 40).tickSizeInner(-height).tickSizeOuter(0);
-    const yAxisLeft = d3.axisLeft(yScale).ticks(h / 40).tickSizeInner(-width).tickSizeOuter(0);
+    const yAxisLeft = d3.axisLeft(yScale).ticks(h / 40).tickSizeInner(-width).tickSizeOuter(0).tickFormat(d3.format(yFmt));
 
     const sel = d3.select('#' + this.svgContainerId);
     sel.select('svg').remove();
@@ -436,11 +443,11 @@ export class FrequencyResponseChartComponent {
       .attr('viewbox', '0 0 ' + w + ' ' + h)
       .attr('preserveAspectRatio', 'xMinYMin meet');
     const g = svg.append('g')
-      .attr('class', 'filter-response')
+      .attr('class', 'frequency-response')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     g.append('text').attr('class', 'xlabel').attr('text-anchor', 'middle')
-      .attr('x', xScale.range()[1] / 2).attr('y', height + 25).text(labelX || null);
+      .attr('x', xScale.range()[1] / 2).attr('y', height + xLabelOffset).text(labelX || null);
     g.append('g').attr('class', 'x axis')
       .attr('transform', 'translate(0,' + yScale.range()[0] + ')').call(xAxisBottom)
       .selectAll('line.tick').filter((d: any) => !d);
@@ -453,7 +460,7 @@ export class FrequencyResponseChartComponent {
 
     g.append('g').attr('class', 'subfigure').append('text')
       .attr('class', 'subfigure').attr('text-anchor', 'left')
-      .attr('x', -margin.left).attr('y', height + 25).text(this.subFigureLetter || null);
+      .attr('x', -margin.left).attr('y', height + xLabelOffset).text(this.subFigureLetter || null);
 
     const glines = g.append('g').attr('class', 'lines');
     glines.append('clipPath').attr('id', this.clipId)

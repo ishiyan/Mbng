@@ -9,19 +9,19 @@ import { DoubleExponentialMovingAverageSmoothingFactorParams } from './double-ex
 import { DoubleExponentialMovingAverageParamsComponent } from './double-exponential-moving-average-params.component';
 
 @Component({
-    selector: 'mb-double-exponential-moving-average-params-dialog',
-    templateUrl: './double-exponential-moving-average-params-dialog.component.html',
-    styleUrls: ['./double-exponential-moving-average-params-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      CdkScrollable,
-      MatDialogContent,
-      MatDialogActions,
-      MatDialogClose,
-      MatButton,
-      MatIcon,
-      DoubleExponentialMovingAverageParamsComponent,
-    ]
+  selector: 'mb-double-exponential-moving-average-params-dialog',
+  templateUrl: './double-exponential-moving-average-params-dialog.component.html',
+  styleUrls: ['./double-exponential-moving-average-params-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatButton,
+    MatIcon,
+    DoubleExponentialMovingAverageParamsComponent,
+  ]
 })
 export class DoubleExponentialMovingAverageParamsDialogComponent {
   protected data = inject<DoubleExponentialMovingAverageLengthParams | DoubleExponentialMovingAverageSmoothingFactorParams>(MAT_DIALOG_DATA);

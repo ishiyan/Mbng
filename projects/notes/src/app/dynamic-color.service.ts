@@ -49,7 +49,6 @@ export class DynamicColorService implements OnDestroy {
     // Initialize the signals with current values
     this.updateColors();
     
-    console.log('DynamicColorService initializing mutation observer');
     // Watch for class changes that might affect CSS custom properties
     this.mutationObserver = new MutationObserver(() => {
       // Use setTimeout to ensure CSS has updated
@@ -73,7 +72,6 @@ export class DynamicColorService implements OnDestroy {
     const primaryRaw = style.getPropertyValue('--mat-sys-primary').trim();
     const tertiaryRaw = style.getPropertyValue('--mat-sys-tertiary').trim();
     const isDarkMode = this.document.documentElement.classList.contains('darkMode');
-    console.log('DynamicColorService updateColors:', { primaryRaw, tertiaryRaw, isDarkMode });
 
     // Extract the actual color from light-dark() function
     const primary = this.extractColorFromLightDark(primaryRaw, isDarkMode);

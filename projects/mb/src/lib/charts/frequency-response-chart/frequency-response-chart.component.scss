@@ -1,48 +1,197 @@
-.container {
-  margin: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  padding-left: 8px;
-  padding-right: 8px;
-  height: 1px;
+@use '@angular/material' as mat;
+@use '@angular/material/core/tokens/token-utils';
+@use './frequency-response-chart';
+
+/*
+The following variables can be externally defined to style the chart.
+
+--frequency-response-chart-subfigure-color
+--frequency-response-chart-subfigure-font-family
+--frequency-response-chart-subfigure-font-size
+--frequency-response-chart-subfigure-font-weight
+--frequency-response-chart-label-color
+--frequency-response-chart-label-font-family
+--frequency-response-chart-label-font-size
+--frequency-response-chart-label-font-weight
+--frequency-response-chart-legend-color
+--frequency-response-chart-legend-font-family
+--frequency-response-chart-legend-font-size
+--frequency-response-chart-legend-font-weight
+--frequency-response-chart-grid-color
+--frequency-response-chart-grid-opacity
+--frequency-response-chart-axis-color
+--frequency-response-chart-axis-font-family
+--frequency-response-chart-axis-font-size
+--frequency-response-chart-axis-font-weight
+--frequency-response-chart-coords-color
+--frequency-response-chart-coords-font-family
+--frequency-response-chart-coords-font-size
+--frequency-response-chart-coords-font-weight
+--frequency-response-chart-curve-width
+--frequency-response-chart-curve-hover-width
+--frequency-response-chart-control-panel-background-color
+--frequency-response-chart-control-panel-header-color
+--frequency-response-chart-control-panel-variant-color
+--frequency-response-chart-control-panel-on-variant-color
+--frequency-response-chart-control-panel-variant-container-color
+--frequency-response-chart-control-panel-on-variant-container-color
+*/
+
+$fallbacks: frequency-response-chart.get-tokens();
+
+:host {
+  ---frequency-response-chart-subfigure-color: var(--frequency-response-chart-subfigure-color, #{token-utils.slot(frequency-response-chart-subfigure-color, $fallbacks)});
+  ---frequency-response-chart-subfigure-font-family: var(--frequency-response-chart-subfigure-font-family, #{token-utils.slot(frequency-response-chart-subfigure-font-family, $fallbacks)});
+  ---frequency-response-chart-subfigure-font-size: var(--frequency-response-chart-subfigure-font-size, #{token-utils.slot(frequency-response-chart-subfigure-font-size, $fallbacks)});
+  ---frequency-response-chart-subfigure-font-weight: var(--frequency-response-chart-subfigure-font-weight, #{token-utils.slot(frequency-response-chart-subfigure-font-weight, $fallbacks)});
+  ---frequency-response-chart-label-color: var(--frequency-response-chart-label-color, #{token-utils.slot(frequency-response-chart-label-color, $fallbacks)});
+  ---frequency-response-chart-label-font-family: var(--frequency-response-chart-label-font-family, #{token-utils.slot(frequency-response-chart-label-font-family, $fallbacks)});
+  ---frequency-response-chart-label-font-size: var(--frequency-response-chart-label-font-size, #{token-utils.slot(frequency-response-chart-label-font-size, $fallbacks)});
+  ---frequency-response-chart-label-font-weight: var(--frequency-response-chart-label-font-weight, #{token-utils.slot(frequency-response-chart-label-font-weight, $fallbacks)});
+  ---frequency-response-chart-legend-color: var(--frequency-response-chart-legend-color, #{token-utils.slot(frequency-response-chart-legend-color, $fallbacks)});
+  ---frequency-response-chart-legend-font-family: var(--frequency-response-chart-legend-font-family, #{token-utils.slot(frequency-response-chart-legend-font-family, $fallbacks)});
+  ---frequency-response-chart-legend-font-size: var(--frequency-response-chart-legend-font-size, #{token-utils.slot(frequency-response-chart-legend-font-size, $fallbacks)});
+  ---frequency-response-chart-legend-font-weight: var(--frequency-response-chart-legend-font-weight, #{token-utils.slot(frequency-response-chart-legend-font-weight, $fallbacks)});
+  ---frequency-response-chart-grid-color: var(--frequency-response-chart-grid-color, #{token-utils.slot(frequency-response-chart-grid-color, $fallbacks)});
+  ---frequency-response-chart-grid-opacity: var(--frequency-response-chart-grid-opacity, #{token-utils.slot(frequency-response-chart-grid-opacity, $fallbacks)});
+  ---frequency-response-chart-axis-color: var(--frequency-response-chart-axis-color, #{token-utils.slot(frequency-response-chart-axis-color, $fallbacks)});
+  ---frequency-response-chart-axis-font-family: var(--frequency-response-chart-axis-font-family, #{token-utils.slot(frequency-response-chart-axis-font-family, $fallbacks)});
+  ---frequency-response-chart-axis-font-size: var(--frequency-response-chart-axis-font-size, #{token-utils.slot(frequency-response-chart-axis-font-size, $fallbacks)});
+  ---frequency-response-chart-axis-font-weight: var(--frequency-response-chart-axis-font-weight, #{token-utils.slot(frequency-response-chart-axis-font-weight, $fallbacks)});
+  ---frequency-response-chart-coords-color: var(--frequency-response-chart-coords-color, #{token-utils.slot(frequency-response-chart-coords-color, $fallbacks)});
+  ---frequency-response-chart-coords-font-family: var(--frequency-response-chart-coords-font-family, #{token-utils.slot(frequency-response-chart-coords-font-family, $fallbacks)});
+  ---frequency-response-chart-coords-font-size: var(--frequency-response-chart-coords-font-size, #{token-utils.slot(frequency-response-chart-coords-font-size, $fallbacks)});
+  ---frequency-response-chart-coords-font-weight: var(--frequency-response-chart-coords-font-weight, #{token-utils.slot(frequency-response-chart-coords-font-weight, $fallbacks)});
+  ---frequency-response-chart-curve-width: var(--frequency-response-chart-curve-width, #{token-utils.slot(frequency-response-chart-curve-width, $fallbacks)});
+  ---frequency-response-chart-curve-hover-width: var(--frequency-response-chart-curve-hover-width, #{token-utils.slot(frequency-response-chart-curve-hover-width, $fallbacks)});
+  ---frequency-response-chart-control-panel-background-color: var(--frequency-response-chart-control-panel-background-color, #{token-utils.slot(frequency-response-chart-control-panel-background-color, $fallbacks)});
+  ---frequency-response-chart-control-panel-header-color: var(--frequency-response-chart-control-panel-header-color, #{token-utils.slot(frequency-response-chart-control-panel-header-color, $fallbacks)});
+  ---frequency-response-chart-control-panel-variant-color: var(--frequency-response-chart-control-panel-variant-color, #{token-utils.slot(frequency-response-chart-control-panel-variant-color, $fallbacks)});
+  ---frequency-response-chart-control-panel-on-variant-color: var(--frequency-response-chart-control-panel-on-variant-color, #{token-utils.slot(frequency-response-chart-control-panel-on-variant-color, $fallbacks)});
+  ---frequency-response-chart-control-panel-variant-container-color: var(--frequency-response-chart-control-panel-variant-container-color, #{token-utils.slot(frequency-response-chart-control-panel-variant-container-color, $fallbacks)});
+  ---frequency-response-chart-control-panel-on-variant-container-color: var(--frequency-response-chart-control-panel-on-variant-container-color, #{token-utils.slot(frequency-response-chart-control-panel-on-variant-container-color, $fallbacks)});
 }
 
-.panel {
-  margin: 0;
-  margin-bottom: 16px;
-}
-
-.button-toggle-group {
-  margin: 0;
-  margin-right: 16px;
-}
-
-.download {
-  vertical-align: middle;
-}
-
-:host ::ng-deep {
-  text {
+:host {
+  // Curves
+  ::ng-deep .lines .line {
+    fill: none;
+    stroke-width: var(---frequency-response-chart-curve-width);
+  }
+  ::ng-deep .lines .hover {
+    fill: none;
+    stroke-width: var(---frequency-response-chart-curve-hover-width);
+  }
+  // Subfigure
+  ::ng-deep .subfigure {
+    text {
+      fill: var(---frequency-response-chart-subfigure-color);
+      font-family: var(---frequency-response-chart-subfigure-font-family);
+      font-size: var(---frequency-response-chart-subfigure-font-size);
+      font-weight: var(---frequency-response-chart-subfigure-font-weight);
+      cursor: default;
+    }
+  }
+  // Axis and tick labels
+  ::ng-deep g.axis {
+    path {
+      fill: none;
+      stroke: var(---frequency-response-chart-axis-color);
+    }
+    line {
+      fill: none;
+      stroke: var(---frequency-response-chart-axis-color);
+    }
+    text {
+      fill: var(---frequency-response-chart-axis-color);
+      font-family: var(---frequency-response-chart-axis-font-family);
+      font-size: var(---frequency-response-chart-axis-font-size);
+      font-weight: var(---frequency-response-chart-axis-font-weight);
+      cursor: default;
+    }
+  }
+  // Grid lines
+  ::ng-deep g.axis .tick:not(:first-child) {
+    line {
+      fill: none;
+      stroke: var(---frequency-response-chart-grid-color);
+      stroke-opacity: var(---frequency-response-chart-grid-opacity);
+    }
+  }
+  // Coordinates
+  ::ng-deep .coords {
+    fill: var(---frequency-response-chart-coords-color);
+    font-family: var(---frequency-response-chart-coords-font-family);
+    font-size: var(---frequency-response-chart-coords-font-size);
+    font-weight: var(---frequency-response-chart-coords-font-weight);
     cursor: default;
   }
+  // Labels
+  ::ng-deep text.xlabel {
+    fill: var(---frequency-response-chart-label-color);
+    font-family: var(---frequency-response-chart-label-font-family);
+    font-size: var(---frequency-response-chart-label-font-size);
+    font-weight: var(---frequency-response-chart-label-font-weight);
+    cursor: default;
+  }
+  ::ng-deep text.ylabel {
+    fill: var(---frequency-response-chart-label-color);
+    font-family: var(---frequency-response-chart-label-font-family);
+    font-size: var(---frequency-response-chart-label-font-size);
+    font-weight: var(---frequency-response-chart-label-font-weight);
+    cursor: default;
+  }
+  // Legend
+  ::ng-deep g.legend {
+    text {
+      fill: var(---frequency-response-chart-legend-color);
+      font-family: var(---frequency-response-chart-legend-font-family);
+      font-size: var(---frequency-response-chart-legend-font-size);
+      font-weight: var(---frequency-response-chart-legend-font-weight);
+      cursor: default;
+    }
+    circle {
+      stroke-width: 2px;
+    }
+  }
+  // Control panel
+  .panel {
+    margin: 0;
+    margin-bottom: 16px;
+  }
 
-  .filter-response .legend .label circle {
-    stroke-width: 2px;
-  }
-  
-  .filter-response .subfigure text {
-    font-weight: bold;
+  @include mat.expansion-overrides((
+    container-background-color: var(---frequency-response-chart-control-panel-background-color),
+    header-text-color: var(---frequency-response-chart-control-panel-header-color),
+  ));
+
+  .button-toggle-group {
+    margin: 0px;
+    margin-right: 16px;
   }
 
-  .line {
-    stroke-width: 2px;
+  @include mat.button-toggle-overrides((
+    background-color: var(---frequency-response-chart-control-panel-variant-color),
+    text-color: var(---frequency-response-chart-control-panel-on-variant-color),
+    selected-state-background-color: var(---frequency-response-chart-control-panel-variant-container-color),
+    selected-state-text-color: var(---frequency-response-chart-control-panel-on-variant-container-color),
+  ));
+
+  .mat-button-toggle-appearance-standard .svg-icon {
+    stroke: var(---frequency-response-chart-control-panel-on-variant-color);
   }
-  
-  .line.hover {
-    stroke-width: 6px;
+  .mat-button-toggle-checked .svg-icon {
+    stroke:  var(---frequency-response-chart-control-panel-on-variant-container-color);
   }
 
-  .coords {
-    font: 10px sans-serif;
+  .download {
+    vertical-align: middle;
+    @include mat.fab-overrides((
+      small-container-color: var(---frequency-response-chart-control-panel-variant-container-color),
+      small-foreground-color: var(---frequency-response-chart-control-panel-on-variant-container-color),
+      small-state-layer-color: var(---frequency-response-chart-control-panel-on-variant-container-color),
+      small-ripple-color: frequency-response-chart.get-ripple-color(
+        var(---frequency-response-chart-control-panel-on-variant-container-color)),
+    ))
   }
 }

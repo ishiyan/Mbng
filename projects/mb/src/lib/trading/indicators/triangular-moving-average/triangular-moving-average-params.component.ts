@@ -10,18 +10,18 @@ import { QuoteComponentComponent } from '../../../data/entities/quote-component.
 import { TriangularMovingAverageParams } from './triangular-moving-average-params.interface';
 
 @Component({
-    selector: 'mb-triangular-moving-average-params',
-    templateUrl: './triangular-moving-average-params.component.html',
-    styleUrls: ['./triangular-moving-average-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-triangular-moving-average-params',
+  templateUrl: './triangular-moving-average-params.component.html',
+  styleUrls: ['./triangular-moving-average-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class TriangularMovingAverageParamsComponent implements AfterContentInit {
   private initialized = false;

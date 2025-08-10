@@ -1,60 +1,53 @@
-@use '@angular/material' as mat;
-@mixin frequency-response-chart-theme($theme) {
-  $primary: map-get($theme, primary);
-  $accent: map-get($theme, accent);
-  $warn: map-get($theme, warn);
-  $background: map-get($theme, background);
-  $foreground: map-get($theme, foreground);
-  $is-dark-theme: map-get($theme, is-dark);
+@use 'sass:map';
+@use '@angular/material/core/tokens/token-utils';
+@use './frequency-response-chart';
 
-  mb-frequency-response-chart {
-    .mat-button-toggle {
-      .svg-icon {
-        stroke: mat.m2-get-color-from-palette($foreground, hint-text);
-      }
-    }
-    .mat-button-toggle-appearance-standard {
-      .svg-icon {
-        stroke: mat.m2-get-color-from-palette($foreground, secondary-text);
-      }
-    }
-    .mat-button-toggle-checked {
-      .svg-icon {
-        stroke: mat.m2-get-color-from-palette($accent, text);
-      }
-      &.mat-button-toggle-appearance-standard {
-        .svg-icon {
-          stroke: mat.m2-get-color-from-palette($accent, text);
-        }
-      }
-    }
-    .mat-button-toggle-disabled {
-      .svg-icon {
-        stroke: mat.m2-get-color-from-palette($foreground, disabled-button);
-      }
-    }
+@mixin base($theme) {
+  $tokens: map.get(frequency-response-chart.get-tokens($theme), base);
+  @include token-utils.values($tokens);
+}
 
-    text {
-      fill: mat.m2-get-color-from-palette($foreground, secondary-text);
-    }
+/// Outputs color theme styles.
+/// @param {Map} $theme The theme to generate color styles for.
+/// @param {String} $color-variant The color M3 variant to use for the component
+@mixin color($theme, $color-variant: null) {
+  $tokens: map.get(frequency-response-chart.get-tokens($theme, $color-variant), color);
+  @include token-utils.values($tokens);
+}
 
-    .filter-response .coords {
-      fill: mat.m2-get-color-from-palette($foreground, text);
-    }
-  
-    .filter-response .axis path {
-      fill: none;
-      stroke: mat.m2-get-color-from-palette($foreground, secondary-text);
-    }
-    
-    .filter-response .axis line {
-      fill: none;
-      stroke: mat.m2-get-color-from-palette($foreground, divider);
-    }
-  
-    path.line {
-      fill: none;
-      stroke: mat.m2-get-color-from-palette($foreground, text);
-    }
-  }
+/// Outputs typography theme styles.
+/// @param {Map} $theme The theme to generate typography styles for.
+@mixin typography($theme) {
+  $tokens: map.get(frequency-response-chart.get-tokens($theme), typography);
+  @include token-utils.values($tokens);
+}
+
+/// Outputs density theme styles.
+/// @param {Map} $theme The theme to generate density styles for.
+@mixin density($theme) {
+  $tokens: map.get(frequency-response-chart.get-tokens($theme), density);
+  @include token-utils.values($tokens);
+}
+
+/// Defines the tokens that will be available in the `overrides` mixin and for docs extraction.
+@function _define-overrides() {
+  @return ((namespace: frequency-response-chart,
+      tokens: token-utils.get-overrides(frequency-response-chart.get-tokens(), frequency-response-chart)),
+  );
+}
+
+/// Outputs the CSS variable values for the given tokens.
+/// @param {Map} $tokens The token values to emit.
+@mixin overrides($tokens: ()) {
+  @include token-utils.batch-create-token-values($tokens, _define-overrides());
+}
+
+/// Outputs all (base, color, typography, and density) theme styles for the mat-icon.
+/// @param {Map} $theme The theme to generate styles for.
+/// @param {String} $color-variant The color variant to use for the component (M3 only)
+@mixin theme($theme, $color-variant: null) {
+  @include base($theme);
+  @include color($theme, $color-variant);
+  @include density($theme);
+  @include typography($theme);
 }

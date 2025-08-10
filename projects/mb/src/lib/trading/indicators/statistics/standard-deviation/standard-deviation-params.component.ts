@@ -11,19 +11,19 @@ import { QuoteComponentComponent } from '../../../../data/entities/quote-compone
 import { StandardDeviationParams } from './standard-deviation-params.interface';
 
 @Component({
-    selector: 'mb-standard-deviation-params',
-    templateUrl: './standard-deviation-params.component.html',
-    styleUrls: ['./standard-deviation-params.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      FormsModule,
-      MatFormField,
-      MatLabel,
-      MatInput,
-      MatSlideToggle,
-      BarComponentComponent,
-      QuoteComponentComponent
-    ]
+  selector: 'mb-standard-deviation-params',
+  templateUrl: './standard-deviation-params.component.html',
+  styleUrls: ['./standard-deviation-params.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSlideToggle,
+    BarComponentComponent,
+    QuoteComponentComponent
+  ]
 })
 export class StandardDeviationParamsComponent implements AfterContentInit {
   private initialized = false;

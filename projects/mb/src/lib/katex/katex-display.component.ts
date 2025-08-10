@@ -19,11 +19,11 @@ const empty = '';
 
 /** Component to render a TeX input in display mode with optional equation tag. */
 @Component({
-    selector: 'mb-kd',
-    templateUrl: './katex-display.component.html',
-    styleUrls: ['./katex-display.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [KatexDirective]
+  selector: 'mb-kd',
+  templateUrl: './katex-display.component.html',
+  styleUrls: ['./katex-display.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [KatexDirective]
 })
 export class KatexDisplayComponent implements AfterContentInit {
   private readonly document = inject(DOCUMENT);
