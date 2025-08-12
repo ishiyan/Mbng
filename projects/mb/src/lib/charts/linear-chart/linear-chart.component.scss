@@ -1,4 +1,6 @@
 @use '@angular/material' as mat;
+@use '@angular/material/core/tokens/token-utils';
+@use './linear-chart';
 
 /*
 The following variables can be externally defined to style the chart.
@@ -6,9 +8,11 @@ The following variables can be externally defined to style the chart.
 --linear-chart-legend-color
 --linear-chart-legend-font-family
 --linear-chart-legend-font-size
+--linear-chart-legend-font-weight
 --linear-chart-axis-color
 --linear-chart-axis-font-family
 --linear-chart-axis-font-size
+--linear-chart-axis-font-weight
 --linear-chart-crosshair-wire-color
 --linear-chart-crosshair-wire-width
 --linear-chart-crosshair-wire-dasharray
@@ -16,6 +20,7 @@ The following variables can be externally defined to style the chart.
 --linear-chart-crosshair-annotation-color
 --linear-chart-crosshair-annotation-font-family
 --linear-chart-crosshair-annotation-font-size
+--linear-chart-crosshair-annotation-font-weight
 --linear-chart-nav-data-color
 --linear-chart-nav-data-opacity
 --linear-chart-nav-selection-color
@@ -34,52 +39,70 @@ The following variables can be externally defined to style the chart.
 --linear-chart-point-radius
 --linear-chart-volume-color
 --linear-chart-volume-opacity
+--linear-chart-control-panel-background-color
+--linear-chart-control-panel-header-color
+--linear-chart-control-panel-variant-color
+--linear-chart-control-panel-on-variant-color
+--linear-chart-control-panel-variant-container-color
+--linear-chart-control-panel-on-variant-container-color
 */
 
+$fallbacks: linear-chart.get-tokens();
+
 :host {
-  ---linear-chart-legend-color: var(--linear-chart-legend-color, var(--mat-sys-on-surface));
-  ---linear-chart-legend-font-family: var(--linear-chart-legend-font-family, Roboto, sans-serif);
-  ---linear-chart-legend-font-size: var(--linear-chart-legend-font-size, 12px);
-  ---linear-chart-axis-color: var(--linear-chart-axis-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-axis-font-family: var(--linear-chart-axis-font-family, Roboto, sans-serif);
-  ---linear-chart-axis-font-size: var(--linear-chart-axis-font-size, 10px);
-  ---linear-chart-crosshair-wire-color: var(--linear-chart-crosshair-wire-color, var(--mat-sys-outline));
-  ---linear-chart-crosshair-wire-width: var(--linear-chart-crosshair-wire-width, 1px);
-  ---linear-chart-crosshair-wire-dasharray: var(--linear-chart-crosshair-wire-dasharray, 1,1);
-  ---linear-chart-crosshair-annotation-background: var(--linear-chart-crosshair-annotation-background, var(--mat-sys-primary-container));
-  ---linear-chart-crosshair-annotation-color: var(--linear-chart-crosshair-annotation-color, var(--mat-sys-on-primary-container));
-  ---linear-chart-crosshair-annotation-font-family: var(--linear-chart-crosshair-annotation-font-family, Roboto, sans-serif);
-  ---linear-chart-crosshair-annotation-font-size: var(--linear-chart-crosshair-annotation-font-size, 10px);
-  ---linear-chart-nav-data-color: var(--linear-chart-nav-data-color, var(--mat-sys-outline));
-  ---linear-chart-nav-data-opacity: var(--linear-chart-nav-data-opacity, 0.3);
-  ---linear-chart-nav-selection-color: var(--linear-chart-nav-selection-color, var(--mat-sys-outline));
-  ---linear-chart-nav-selection-opacity: var(--linear-chart-nav-selection-opacity, 0.3);
+  ---linear-chart-legend-color: var(--linear-chart-legend-color, #{token-utils.slot(linear-chart-legend-color, $fallbacks)});
+  ---linear-chart-legend-font-family: var(--linear-chart-legend-font-family, #{token-utils.slot(linear-chart-legend-font-family, $fallbacks)});
+  ---linear-chart-legend-font-size: var(--linear-chart-legend-font-size, #{token-utils.slot(linear-chart-legend-font-size, $fallbacks)});
+  ---linear-chart-legend-font-weight: var(--linear-chart-legend-font-weight, #{token-utils.slot(linear-chart-legend-font-weight, $fallbacks)});
+  ---linear-chart-axis-color: var(--linear-chart-axis-color, #{token-utils.slot(linear-chart-axis-color, $fallbacks)});
+  ---linear-chart-axis-font-family: var(--linear-chart-axis-font-family, #{token-utils.slot(linear-chart-axis-font-family, $fallbacks)});
+  ---linear-chart-axis-font-size: var(--linear-chart-axis-font-size, #{token-utils.slot(linear-chart-axis-font-size, $fallbacks)});
+  ---linear-chart-axis-font-weight: var(--linear-chart-axis-font-weight, #{token-utils.slot(linear-chart-axis-font-weight, $fallbacks)});
+  ---linear-chart-crosshair-wire-color: var(--linear-chart-crosshair-wire-color, #{token-utils.slot(linear-chart-crosshair-wire-color, $fallbacks)});
+  ---linear-chart-crosshair-wire-width: var(--linear-chart-crosshair-wire-width, #{token-utils.slot(linear-chart-crosshair-wire-width, $fallbacks)});
+  ---linear-chart-crosshair-wire-dasharray: var(--linear-chart-crosshair-wire-dasharray, #{token-utils.slot(linear-chart-crosshair-wire-dasharray, $fallbacks)});
+  ---linear-chart-crosshair-annotation-background: var(--linear-chart-crosshair-annotation-background, #{token-utils.slot(linear-chart-crosshair-annotation-background, $fallbacks)});
+  ---linear-chart-crosshair-annotation-color: var(--linear-chart-crosshair-annotation-color, #{token-utils.slot(linear-chart-crosshair-annotation-color, $fallbacks)});
+  ---linear-chart-crosshair-annotation-font-family: var(--linear-chart-crosshair-annotation-font-family, #{token-utils.slot(linear-chart-crosshair-annotation-font-family, $fallbacks)});
+  ---linear-chart-crosshair-annotation-font-size: var(--linear-chart-crosshair-annotation-font-size, #{token-utils.slot(linear-chart-crosshair-annotation-font-size, $fallbacks)});
+  ---linear-chart-crosshair-annotation-font-weight: var(--linear-chart-crosshair-annotation-font-weight, #{token-utils.slot(linear-chart-crosshair-annotation-font-weight, $fallbacks)});
+  ---linear-chart-nav-data-color: var(--linear-chart-nav-data-color, #{token-utils.slot(linear-chart-nav-data-color, $fallbacks)});
+  ---linear-chart-nav-data-opacity: var(--linear-chart-nav-data-opacity, #{token-utils.slot(linear-chart-nav-data-opacity, $fallbacks)});
+  ---linear-chart-nav-selection-color: var(--linear-chart-nav-selection-color, #{token-utils.slot(linear-chart-nav-selection-color, $fallbacks)});
+  ---linear-chart-nav-selection-opacity: var(--linear-chart-nav-selection-opacity, #{token-utils.slot(linear-chart-nav-selection-opacity, $fallbacks)});
 
   // To draw colored OHLCs use up-color: #6c0, down-color: #c60
-  ---linear-chart-ohlc-color: var(--linear-chart-ohlc-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-ohlc-up-color: var(--linear-chart-ohlc-up-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-ohlc-down-color: var(--linear-chart-ohlc-down-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-ohlc-color: var(--linear-chart-ohlc-color, #{token-utils.slot(linear-chart-ohlc-color, $fallbacks)});
+  ---linear-chart-ohlc-up-color: var(--linear-chart-ohlc-up-color, #{token-utils.slot(linear-chart-ohlc-up-color, $fallbacks)});
+  ---linear-chart-ohlc-down-color: var(--linear-chart-ohlc-down-color, #{token-utils.slot(linear-chart-ohlc-down-color, $fallbacks)});
 
   // To draw colored candles use up-color: #6c0, down-color: #c60
-  ---linear-chart-candle-color: var(--linear-chart-candle-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-candle-up-color: var(--linear-chart-candle-up-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-candle-down-color: var(--linear-chart-candle-down-color, var(--mat-sys-on-surface-variant));
+  ---linear-chart-candle-color: var(--linear-chart-candle-color, #{token-utils.slot(linear-chart-candle-color, $fallbacks)});
+  ---linear-chart-candle-up-color: var(--linear-chart-candle-up-color, #{token-utils.slot(linear-chart-candle-up-color, $fallbacks)});
+  ---linear-chart-candle-down-color: var(--linear-chart-candle-down-color, #{token-utils.slot(linear-chart-candle-down-color, $fallbacks)});
 
   // No fill colors for candlesticks in lightMode.
   ---linear-chart-candle-up-fill: transparent;
   ---linear-chart-candle-down-fill: var(---linear-chart-candle-down-color);
 
-  ---linear-chart-line-color: var(--linear-chart-line-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-line-width: var(--linear-chart-line-width, 1px);
+  ---linear-chart-line-color: var(--linear-chart-line-color, #{token-utils.slot(linear-chart-line-color, $fallbacks)});
+  ---linear-chart-line-width: var(--linear-chart-line-width, #{token-utils.slot(linear-chart-line-width, $fallbacks)});
 
-  ---linear-chart-area-color: var(--linear-chart-area-color, var(--mat-sys-outline));
-  ---linear-chart-area-opacity: var(--linear-chart-area-opacity, 0.5);
+  ---linear-chart-area-color: var(--linear-chart-area-color, #{token-utils.slot(linear-chart-area-color, $fallbacks)});
+  ---linear-chart-area-opacity: var(--linear-chart-area-opacity, #{token-utils.slot(linear-chart-area-opacity, $fallbacks)});
 
-  ---linear-chart-point-color: var(--linear-chart-point-color, var(--mat-sys-on-surface-variant));
-  ---linear-chart-point-radius: var(--linear-chart-point-radius, 1.5px);
+  ---linear-chart-point-color: var(--linear-chart-point-color, #{token-utils.slot(linear-chart-point-color, $fallbacks)});
+  ---linear-chart-point-radius: var(--linear-chart-point-radius, #{token-utils.slot(linear-chart-point-radius, $fallbacks)});
 
-  ---linear-chart-volume-color: var(--linear-chart-volume-color, var(--mat-sys-outline));
-  ---linear-chart-volume-opacity: var(--linear-chart-volume-opacity, 0.5);
+  ---linear-chart-volume-color: var(--linear-chart-volume-color, #{token-utils.slot(linear-chart-volume-color, $fallbacks)});
+  ---linear-chart-volume-opacity: var(--linear-chart-volume-opacity, #{token-utils.slot(linear-chart-volume-opacity, $fallbacks)});
+
+  ---linear-chart-control-panel-background-color: var(--linear-chart-control-panel-background-color, #{token-utils.slot(linear-chart-control-panel-background-color, $fallbacks)});
+  ---linear-chart-control-panel-header-color: var(--linear-chart-control-panel-header-color, #{token-utils.slot(linear-chart-control-panel-header-color, $fallbacks)});
+  ---linear-chart-control-panel-variant-color: var(--linear-chart-control-panel-variant-color, #{token-utils.slot(linear-chart-control-panel-variant-color, $fallbacks)});
+  ---linear-chart-control-panel-on-variant-color: var(--linear-chart-control-panel-on-variant-color, #{token-utils.slot(linear-chart-control-panel-on-variant-color, $fallbacks)});
+  ---linear-chart-control-panel-variant-container-color: var(--linear-chart-control-panel-variant-container-color, #{token-utils.slot(linear-chart-control-panel-variant-container-color, $fallbacks)});
+  ---linear-chart-control-panel-on-variant-container-color: var(--linear-chart-control-panel-on-variant-container-color, #{token-utils.slot(linear-chart-control-panel-on-variant-container-color, $fallbacks)});
 }
 
 // Checks if any ancestor element (including document.documentElement) has the darkMode class.
@@ -103,6 +126,7 @@ The following variables can be externally defined to style the chart.
       fill: var(---linear-chart-axis-color);
       font-family: var(---linear-chart-axis-font-family);
       font-size: var(---linear-chart-axis-font-size);
+      font-weight: var(---linear-chart-axis-font-weight);
     }
   }
   // Crosshair
@@ -120,6 +144,7 @@ The following variables can be externally defined to style the chart.
       text {
         font-family: var(---linear-chart-crosshair-annotation-font-family);
         font-size: var(---linear-chart-crosshair-annotation-font-size);
+        font-weight: var(---linear-chart-crosshair-annotation-font-weight);
         fill: var(---linear-chart-crosshair-annotation-color);
       }
     }
@@ -141,6 +166,7 @@ The following variables can be externally defined to style the chart.
     fill: var(---linear-chart-legend-color);
     font-family: var(---linear-chart-legend-font-family);
     font-size: var(---linear-chart-legend-font-size);
+    font-weight: var(---linear-chart-legend-font-weight);
   }
   // Candlesticks
   ::ng-deep path.candle {
@@ -200,8 +226,8 @@ The following variables can be externally defined to style the chart.
   }
 
   @include mat.expansion-overrides((
-    container-background-color: var(--mat-sys-surface-container),
-    header-text-color: var(--mat-sys-on-surface),
+    container-background-color: var(---linear-chart-control-panel-background-color),
+    header-text-color: var(---linear-chart-control-panel-header-color),
   ));
 
   .button-toggle-group {
@@ -210,17 +236,17 @@ The following variables can be externally defined to style the chart.
   }
 
   @include mat.button-toggle-overrides((
-    background-color: var(--mat-sys-primary),
-    text-color: var(--mat-sys-on-primary),
-    selected-state-background-color: var(--mat-sys-primary-container),
-    selected-state-text-color: var(--mat-sys-on-primary-container),
+    background-color: var(---linear-chart-control-panel-variant-color),
+    text-color: var(---linear-chart-control-panel-on-variant-color),
+    selected-state-background-color: var(---linear-chart-control-panel-variant-container-color),
+    selected-state-text-color: var(---linear-chart-control-panel-on-variant-container-color),
   ));
 
   .mat-button-toggle-appearance-standard .svg-icon {
-    stroke: var(--mat-sys-on-primary);
+    stroke: var(---linear-chart-control-panel-on-variant-color);
   }
   .mat-button-toggle-checked .svg-icon {
-    stroke:  var(--mat-sys-on-primary-container);
+    stroke:  var(---linear-chart-control-panel-on-variant-container-color);
   }
 
   .slide-toggle {
@@ -230,8 +256,18 @@ The following variables can be externally defined to style the chart.
   }
 
   @include mat.slide-toggle-overrides((
-    selected-icon-color: var(--mat-sys-on-primary-container),
-    selected-handle-color: var(--mat-sys-primary-container),
+    selected-focus-handle-color: var(---linear-chart-control-panel-variant-container-color),
+    selected-focus-state-layer-color: var(---linear-chart-control-panel-variant-color),
+    selected-focus-track-color: var(---linear-chart-control-panel-variant-color),
+    selected-handle-color: var(---linear-chart-control-panel-variant-on-color),
+    selected-hover-handle-color: var(---linear-chart-control-panel-variant-container-color),
+    selected-hover-state-layer-color: var(---linear-chart-control-panel-variant-color),
+    selected-hover-track-color: var(---linear-chart-control-panel-variant-color),
+    selected-icon-color: var(---linear-chart-control-panel-on-variant-container-color),
+    selected-pressed-handle-color: var(---linear-chart-control-panel-variant-container-color),
+    selected-pressed-state-layer-color: var(---linear-chart-control-panel-variant-color),
+    selected-pressed-track-color: var(---linear-chart-control-panel-variant-color),
+    selected-track-color: var(---linear-chart-control-panel-variant-color),
   ));
 
   mat-slide-toggle mat-icon {
@@ -240,5 +276,12 @@ The following variables can be externally defined to style the chart.
 
   .download {
     vertical-align: middle;
+    @include mat.fab-overrides((
+      small-container-color: var(---linear-chart-control-panel-variant-container-color),
+      small-foreground-color: var(---linear-chart-control-panel-on-variant-container-color),
+      small-state-layer-color: var(---linear-chart-control-panel-on-variant-container-color),
+      small-ripple-color: linear-chart.get-ripple-color(
+        var(---linear-chart-control-panel-on-variant-container-color)),
+    ))
   }
 }

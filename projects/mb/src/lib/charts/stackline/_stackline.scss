@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use '@angular/material/core/tokens/m3-utils' as m3-utils;
+@use '@angular/material/core/tokens/m3/theme' as m3-theme;
+
+// The prefix used to generate the fully qualified name for tokens in this file.
+$prefix: (stackline);
+
+/// Generates custom tokens.
+@function get-tokens($theme: m3-theme.$sys-theme, $color-variant: null) {
+  $system: m3-utils.get-system($theme);
+  $on-surface-variant: map.get($system, on-surface-variant);
+  
+  $font-family: Roboto, sans-serif;
+
+  @return (
+    base: (
+      stackline-grid-opacity: 0.5,
+    ),
+    color: (
+      stackline-axis-color: $on-surface-variant,
+      stackline-grid-color: $on-surface-variant,
+    ),
+    typography: (
+      // Note we don't need line height because we use only single-line labels
+      stackline-axis-font-family: $font-family,
+      stackline-axis-font-size: 12px,
+      stackline-axis-font-weight: 400,
+    ),
+    density: (),
+  );
+}

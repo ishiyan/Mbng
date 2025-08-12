@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+@use '@angular/material/core/tokens/token-utils';
+@use './stackline';
+
+/*
+The following variables can be externally defined to style the chart.
+
+--stackline-grid-color
+--stackline-grid-opacity
+--stackline-axis-color
+--stackline-axis-font-family
+--stackline-axis-font-size
+--stackline-axis-font-weight
+*/
+
+$fallbacks: stackline.get-tokens();
+
+:host {
+  ---stackline-grid-color: var(--stackline-grid-color, #{token-utils.slot(stackline-grid-color, $fallbacks)});
+  ---stackline-grid-opacity: var(--stackline-grid-opacity, #{token-utils.slot(stackline-grid-opacity, $fallbacks)});
+  ---stackline-axis-color: var(--stackline-axis-color, #{token-utils.slot(stackline-axis-color, $fallbacks)});
+  ---stackline-axis-font-family: var(--stackline-axis-font-family, #{token-utils.slot(stackline-axis-font-family, $fallbacks)});
+  ---stackline-axis-font-size: var(--stackline-axis-font-size, #{token-utils.slot(stackline-axis-font-size, $fallbacks)});
+  ---stackline-axis-font-weight: var(--stackline-axis-font-weight, #{token-utils.slot(stackline-axis-font-weight, $fallbacks)});
+}
+
+:host {
+  // Axis and tick labels
+  ::ng-deep g.axis {
+    path {
+      fill: none;
+      stroke: var(---stackline-axis-color);
+    }
+    line {
+      fill: none;
+      stroke: var(---stackline-axis-color);
+    }
+    text {
+      fill: var(---stackline-axis-color);
+      font-family: var(---stackline-axis-font-family);
+      font-size: var(---stackline-axis-font-size);
+      font-weight: var(---stackline-axis-font-weight);
+      cursor: default;
+    }
+  }
+  // Grid lines
+  ::ng-deep g.axis .tick:not(:first-child) {
+    line {
+      fill: none;
+      stroke: var(---stackline-grid-color);
+      stroke-opacity: var(---stackline-grid-opacity);
+    }
+  }
+}

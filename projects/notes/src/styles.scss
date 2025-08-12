@@ -9,6 +9,7 @@
 @use "../../mb/src/lib/charts/ohlcv-chart/ohlcv_chart-theme" as ohlcv-chart;
 @use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as freq-resp-chart;
 @use "../../mb/src/lib/charts/sparkline/sparkline-theme" as sparkline with ( $theming-enabled: true );
+@use "../../mb/src/lib/charts/multiline/multiline-theme" as multiline;
 
 // Styles used by KaTeX.
 @use 'katex/dist/katex.css' as *;
@@ -90,6 +91,11 @@ body {
     stroke-width: 0px,
     stroke-color: var(--mat-sys-tertiary),
     fill-color: var(--mat-sys-tertiary),
+  ));
+  @include multiline.overrides((
+    axis-color: var(--mat-sys-secondary),
+    grid-color: var(--mat-sys-secondary),
+    grid-opacity: 0.5,
   ));
 }
 

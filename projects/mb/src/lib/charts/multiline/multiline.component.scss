@@ -1,0 +1,99 @@
+@use '@angular/material' as mat;
+@use '@angular/material/core/tokens/token-utils';
+@use './multiline';
+
+/*
+The following variables can be externally defined to style the chart.
+
+--multiline-grid-color
+--multiline-grid-opacity
+--multiline-axis-color
+--multiline-axis-font-family
+--multiline-axis-font-size
+--multiline-axis-font-weight
+*/
+
+$fallbacks: multiline.get-tokens();
+
+:host {
+  ---multiline-grid-color: var(--multiline-grid-color, #{token-utils.slot(multiline-grid-color, $fallbacks)});
+  ---multiline-grid-opacity: var(--multiline-grid-opacity, #{token-utils.slot(multiline-grid-opacity, $fallbacks)});
+  ---multiline-axis-color: var(--multiline-axis-color, #{token-utils.slot(multiline-axis-color, $fallbacks)});
+  ---multiline-axis-font-family: var(--multiline-axis-font-family, #{token-utils.slot(multiline-axis-font-family, $fallbacks)});
+  ---multiline-axis-font-size: var(--multiline-axis-font-size, #{token-utils.slot(multiline-axis-font-size, $fallbacks)});
+  ---multiline-axis-font-weight: var(--multiline-axis-font-weight, #{token-utils.slot(multiline-axis-font-weight, $fallbacks)});
+}
+
+:host {
+
+  // Axis and tick labels
+  ::ng-deep svg g {
+    path {
+      fill: none;
+      stroke: var(---multiline-axis-color);
+    }
+
+    g.tick {
+      path {
+        fill: none;
+        stroke: var(---multiline-axis-color);
+      }
+
+      line {
+        fill: none;
+        stroke: var(---multiline-grid-color);
+        stroke-opacity: var(---multiline-grid-opacity);
+      }
+
+      text {
+        fill: var(---multiline-axis-color);
+        font-family: var(---multiline-axis-font-family);
+        font-size: var(---multiline-axis-font-size);
+        font-weight: var(---multiline-axis-font-weight);
+        cursor: default;
+      }
+    }
+
+    /*line {
+      fill: none;
+      stroke: var(---multiline-axis-color);
+    }
+
+    text {
+      fill: var(---multiline-axis-color);
+      font-family: var(---multiline-axis-font-family);
+      font-size: var(---multiline-axis-font-size);
+      font-weight: var(---multiline-axis-font-weight);
+      cursor: default;
+    }*/
+  }
+
+  /*::ng-deep svg g g.tick {
+    path {
+      fill: none;
+      stroke: var(---multiline-axis-color);
+    }
+
+    line {
+      fill: none;
+      stroke: var(---multiline-axis-color);
+    }
+
+    text {
+      fill: var(---multiline-axis-color);
+      font-family: var(---multiline-axis-font-family);
+      font-size: var(---multiline-axis-font-size);
+      font-weight: var(---multiline-axis-font-weight);
+      cursor: default;
+    }
+  }
+
+  // Grid lines
+  ::ng-deep svg g g.tick:not(:first-child) {
+    line {
+      fill: none;
+      stroke: var(---multiline-grid-color);
+      stroke-opacity: var(---multiline-grid-opacity);
+    }
+  }*/
+}
