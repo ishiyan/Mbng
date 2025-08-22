@@ -32,8 +32,8 @@
   </div>
 }
 
-<div class="card-area">
+<div class="card-area" [class]="layoutSettings.layoutMode() + '-layout'">
   @for (note of currentNotes; track note.title; let i = $index) {
-    <app-note-card [note]="note"></app-note-card>
+    <app-note-card [note]="note" />
   }
 </div>

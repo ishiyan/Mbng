@@ -1,8 +1,21 @@
-<div class="wrapper">
+@if (layoutSettings.layoutMode() === 'list') {
+  <!-- List view: flat link style -->
+  <div class="note-list-item">
+    <div class="note-list-header" [routerLink]="note().route">
+      <div class="note-title">{{note().title}}</div>
+      <div class="note-meta">
+        <span class="note-date">{{note().created | date:'MMM d, y'}}</span>
+        @if (note().summary) {
+          <span class="note-summary">{{note().summary}}</span>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
   <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title [routerLink]="note().route">{{note().title}}</mat-card-title>
-      <mat-card-subtitle>{{note().created|date}}</mat-card-subtitle>
+    <mat-card-header [routerLink]="note().route">
+       <mat-card-title>{{note().title}}</mat-card-title>
+       <mat-card-subtitle>{{note().created|date}}</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
-</div>
+}

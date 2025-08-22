@@ -9,6 +9,7 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
 import { SeriesListComponent } from './shared/data/series-list/series-list.component';
 import { ContentSettingsComponent } from './shared/content-settings/content-settings.component';
 import { ThemeSettingsComponent } from './shared/theme-settings/theme-settings.component';
+import { LayoutSettingsComponent } from './shared/layout-settings/layout-settings.component';
 
 import { DynamicColorTokensComponent } from 'mb';
 import { LightDarkToggleComponent } from 'mb';
@@ -32,7 +33,8 @@ import { LightDarkToggleComponent } from 'mb';
     ContentSettingsComponent,
     ThemeSettingsComponent,
     DynamicColorTokensComponent,
-    LightDarkToggleComponent
+    LightDarkToggleComponent,
+    LayoutSettingsComponent
   ]
 })
 export class AppComponent {

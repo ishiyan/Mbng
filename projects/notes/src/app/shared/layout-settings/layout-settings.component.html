@@ -1,0 +1,22 @@
+<div class="layout-settings">
+  <label>Notes layout</label>
+  <mat-button-toggle-group [value]="layoutSettings.layoutMode()" (change)="onLayoutChange($event.value)">
+
+    <mat-button-toggle value="grid">
+      <span>Grid</span>
+    </mat-button-toggle>
+
+    <mat-button-toggle value="masonry">
+      <span>Masonry</span>
+    </mat-button-toggle>
+
+    <mat-button-toggle value="list">
+      <span>List</span>
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>
+</div>
+<div class="remember-section">
+  <label>Remember layout preference</label>
+  <mat-slide-toggle [(ngModel)]="layoutSettings.rememberPreference" />
+</div>

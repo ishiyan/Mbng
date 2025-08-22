@@ -1,0 +1,43 @@
+:host {
+  .layout-settings {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+
+    label {
+      flex: 1; // Takes up all remaining space
+    }
+
+    mat-button-toggle-group {
+      flex: 0 0 auto; // Don't grow/shrink, use natural width
+
+      mat-button-toggle {
+        flex: 1;
+
+        .mat-button-toggle-label-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+      }
+    }
+  }
+
+  .remember-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    margin-top: 1rem;
+
+    label {
+      flex: 1; // Takes up all remaining space
+    }
+    
+    mat-slide-toggle {
+      flex: 0 0 auto; // Don't grow/shrink, use natural width
+    }
+  }
+}

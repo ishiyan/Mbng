@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { notes as initialNotes } from '../../notes';
 import { Tag } from '../tag.interface';
 import { tags as initialTags } from '../../tags';
 import { NoteCardComponent } from '../note-card/note-card.component';
+import { LayoutSettingsService } from '../layout-settings/layout-settings.service';
 
 const empty = '';
 
@@ -33,6 +34,7 @@ const empty = '';
   ]
 })
 export class NoteListComponent {
+  readonly layoutSettings = inject(LayoutSettingsService);
   readonly notes = input<Note[]>(initialNotes);
 
   constructor() {

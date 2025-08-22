@@ -14,6 +14,8 @@ export * from './lib/katex/katex-settings.service';
 //export * from './lib/math-jax/math-jax.directive';
 //export * from './lib/math-jax/math-jax.component';
 
+export * from './lib/local-storage/local-storage';
+
 export * from './lib/theming/light-dark.service';
 export * from './lib/theming/light-dark-toggle.component';
 export * from './lib/theming/light-dark-preference.component';
