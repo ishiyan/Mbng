@@ -3,9 +3,8 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 
-import { SparklineConfiguration, SparklineComponent } from 'mb';
+import { DynamicColorService, SparklineConfiguration, SparklineComponent } from 'mb';
 
-import { DynamicColorService } from '../../../dynamic-color.service';
 import { BarSeriesService } from '../bar-series/bar-series.service';
 import { ScalarSeriesService } from '../scalar-series/scalar-series.service';
 import { TradeSeriesService } from '../trade-series/trade-series.service';

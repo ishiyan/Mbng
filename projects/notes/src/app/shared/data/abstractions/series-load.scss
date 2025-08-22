@@ -1,67 +1,173 @@
 @use "@angular/material" as mat;
 
 :host {
-  .primary-fab {
-    @include mat.fab-overrides(
-      (
-        small-container-color: var(--mat-sys-primary-container),
-        small-foreground-color: var(--mat-sys-on-primary-container),
-      )
-    )
-  }
-  .tertiary-fab {
-    @include mat.fab-overrides(
-      (
-        small-container-color: var(--mat-sys-tertiary-container),
-        small-foreground-color: var(--mat-sys-on-tertiary-container),
-      )
-    )
-  }
-  .alert-fab {
-    @include mat.fab-overrides(
-      (
-        small-container-color: var(--mat-sys-error-container),
-        small-foreground-color: var(--mat-sys-on-error-container),
-      )
-    )
-  }
-  .alert-button {
-    @include mat.button-overrides(
-      (
-        filled-container-color: var(--mat-sys-error-container),
-        filled-label-text-color: var(--mat-sys-on-error-container),
-        tonal-container-color: var(--mat-sys-error-container),
-        tonal-label-text-color: var(--mat-sys-on-error-container),
-      )
-    )
+  display: block;
+  
+  .series-load-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .alert {
-    color: var(--mat-sys-error);
+  // File selection section
+  .file-selection-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    @include mat.fab-overrides((
+      small-container-color: var(--mat-sys-primary-container),
+      small-foreground-color: var(--mat-sys-on-primary-container),
+    ));
+
+    .file-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0; // Allows text truncation
+
+      .selected-file-name {
+        font-weight: 500;
+        color: var(--mat-sys-on-surface);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .selected-file-size {
+        font-size: 0.875rem;
+        color: var(--mat-sys-on-surface-variant);
+      }
+    }
   }
 
-  .selected-file-name {
-    margin-left: 8px;
+  // Progress section
+  .progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    mat-progress-bar {
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    @include mat.progress-bar-overrides((
+      active-indicator-color: var(--mat-sys-secondary),
+    ));
   }
 
-  .selected-file-size {
-    margin-left: 48px;
+  // Error section
+  .error-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--mat-sys-error);
+    border-radius: 8px;
+    background-color: var(--mat-sys-error-container);
+
+    .error-message {
+      flex: 1;
+      color: var(--mat-sys-on-error-container);
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-all; // Aggressive text wrapping - breaks anywhere to prevent overflow
+      hyphens: auto;
+    }
   }
 
-  .mtop {
-    margin-top: 4px;
+  // Data section
+  .data-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 4px;
+
+    .stats-info {
+      color: var(--mat-sys-on-surface-variant);
+      font-size: 0.875rem;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-all; // Aggressive text wrapping - breaks anywhere to prevent overflow
+    }
+
+    .chart-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+
+      .input-row {
+        display: flex;
+        width: 100%;
+
+        mat-form-field {
+          &.full-width {
+            width: 100%;
+          }
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-start;
+        align-items: center;
+
+        .done{
+          @include mat.fab-overrides((
+            small-container-color: var(--mat-sys-primary-container),
+            small-foreground-color: var(--mat-sys-on-primary-container),
+          ));
+        }
+
+        .cancel{
+          @include mat.fab-overrides((
+            small-container-color: var(--mat-sys-error-container),
+            small-foreground-color: var(--mat-sys-on-error-container),
+          ));
+        }
+      }
+    }
   }
 
-  .limitwidth {
-    max-width: 360px;
-    overflow-wrap: break-word;
-  }
+  // Responsive behavior
+  @media (max-width: 480px) {
+    .series-load-container {
+      max-width: 100%;
+    }
 
-  .fullwidth {
-    width: 100%;
-  }
+    .file-selection-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
 
-  .mleft {
-    margin-left: 8px;
+      .file-info {
+        width: 100%;
+      }
+    }
+
+    .error-section {
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .error-message {
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .action-buttons {
+      justify-content: center;
+    }
   }
 }

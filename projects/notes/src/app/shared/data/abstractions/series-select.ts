@@ -1,8 +1,8 @@
-import { SparklineConfiguration } from 'mb';
-
-import { DynamicColorService } from '../../../dynamic-color.service';
-import { Series } from '../series.interface';
 import { computed, inject } from '@angular/core';
+
+import { DynamicColorService, SparklineConfiguration } from 'mb';
+
+import { Series } from '../series.interface';
 
 export abstract class SeriesSelect {
   private dcs = inject(DynamicColorService);

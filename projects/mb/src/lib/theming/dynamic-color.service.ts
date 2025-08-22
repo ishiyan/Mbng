@@ -2,6 +2,7 @@ import { afterNextRender, inject, Injectable, OnDestroy, PLATFORM_ID, signal } f
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 const DEFAULT_PRIMARY = '#000000';
+const DEFAULT_SECONDARY = '#000000';
 const DEFAULT_TERTIARY = '#000000';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class DynamicColorService implements OnDestroy {
   private mutationObserverInitialized = false;
 
   readonly primaryColor = signal<string>(DEFAULT_PRIMARY);
+  readonly secondaryColor = signal<string>(DEFAULT_SECONDARY);
   readonly tertiaryColor = signal<string>(DEFAULT_TERTIARY);
 
   /**
@@ -57,7 +59,7 @@ export class DynamicColorService implements OnDestroy {
     
     this.mutationObserver.observe(this.document.documentElement, {
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['style', 'class']
     });
 
     this.mutationObserverInitialized = true;
@@ -70,15 +72,23 @@ export class DynamicColorService implements OnDestroy {
 
     const style = getComputedStyle(this.document.documentElement);
     const primaryRaw = style.getPropertyValue('--mat-sys-primary').trim();
+    const secondaryRaw = style.getPropertyValue('--mat-sys-secondary').trim();
     const tertiaryRaw = style.getPropertyValue('--mat-sys-tertiary').trim();
-    const isDarkMode = this.document.documentElement.classList.contains('darkMode');
+
+    const colorScheme = style.getPropertyValue('color-scheme').trim();
+    const isDarkMode = colorScheme.includes('dark');
 
     // Extract the actual color from light-dark() function
     const primary = this.extractColorFromLightDark(primaryRaw, isDarkMode);
+    const secondary = this.extractColorFromLightDark(secondaryRaw, isDarkMode);
     const tertiary = this.extractColorFromLightDark(tertiaryRaw, isDarkMode);
  
     if (primary && primary !== this.primaryColor()) {
       this.primaryColor.set(primary);
+    }
+
+    if (secondary && secondary !== this.secondaryColor()) {
+      this.secondaryColor.set(secondary);
     }
 
     if (tertiary && tertiary !== this.tertiaryColor()) {

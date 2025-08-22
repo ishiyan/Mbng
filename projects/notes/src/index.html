@@ -7,6 +7,18 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <script>
+  // Check if we have theme settings in local storage
+  // and do not load the default theme in styles.scss
+  // in this case to prevent flickering.
+  // Make sure the key matches the key set in appconfig.ts
+  (function() {
+    if (localStorage.getItem('notes-dynamic-theming')) {
+      document.documentElement.setAttribute('has-dynamic-theme', '');
+    }
+  })();
+  </script>
 </head>
 
 <body class="mat-typography mat-app-background">

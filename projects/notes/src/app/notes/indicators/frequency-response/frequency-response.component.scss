@@ -1,0 +1,25 @@
+:host {
+  .chart-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+
+    // Ensure charts are evenly distributed
+    >mb-frequency-response-chart {
+      flex: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .chart-row {
+      flex-direction: column;
+
+      >mb-frequency-response-chart {
+        width: 100% !important; // Override the width="50%" attribute
+      }
+    }
+  }
+}

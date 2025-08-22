@@ -11,6 +11,7 @@
   );
 */
 $theming-enabled: false !default;
+@debug ("sparkline theming-enabled:", $theming-enabled);
 
 @mixin base($theme) {
   @if $theming-enabled {

@@ -5,6 +5,31 @@
   padding: 0;
 }
 
+.shown {
+  display: block;
+}
+
+.svg-container {
+  width: 300px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.equation-container {
+  margin-bottom: 0;
+}
+
+.equation-container:last-of-type {
+  margin-bottom: 16px; // Add space after the last equation
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0; // No gap since mat-form-field has its own margins
+}
+
 mat-form-field {
   margin-top: 16px;
   margin-right: 16px;
@@ -23,4 +48,16 @@ div {
 
 .last-form-field {
   margin-bottom: 24px;
+}
+
+@media (max-width: 480px) {
+  .svg-container {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-right: 0;
+  }
 }

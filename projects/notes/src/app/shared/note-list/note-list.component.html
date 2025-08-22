@@ -1,5 +1,4 @@
 <mat-toolbar class="toolbar">
-  <!-- mat-icon-button or mat-fab-extended  -->
   <button mat-icon-button (click)="toggleTagsVisibility()" class="tags" aria-label="Show or hide tags">
     <mat-icon fontSet="material-symbols-outlined">shoppingmode</mat-icon>
       <mat-icon fontSet="material-symbols-outlined">
@@ -19,8 +18,8 @@
   </div>
 </mat-toolbar>
 @if (tagsVisible) {
-  <div class="fullwidth">
-    <div class="tagarea">
+  <div class="tags-container">
+    <div class="tag-area">
       <mat-chip-listbox [selectable]="true" [multiple]="true" aria-label="Select tags to search">
         @for (tag of tags; track tag.title) {
           <mat-chip-option [selectable]="true" [selected]="tag.enabled"
@@ -32,7 +31,8 @@
     </div>
   </div>
 }
-<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="5.0%" fxLayoutAlign="center" class="cardarea">
+
+<div class="card-area">
   @for (note of currentNotes; track note.title; let i = $index) {
     <app-note-card [note]="note"></app-note-card>
   }

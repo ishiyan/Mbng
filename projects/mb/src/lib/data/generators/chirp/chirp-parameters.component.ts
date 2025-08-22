@@ -5,7 +5,6 @@ import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { ExtendedModule } from '@angular/flex-layout/extended';
 
 import { SvgViewerComponent } from '../../../svg-viewer/svg-viewer.component';
 import { KatexComponent } from '../../../katex/katex.component';
@@ -28,7 +27,6 @@ import { ChirpSweep } from './chirp-sweep.enum';
     MatSelect,
     MatOption,
     SvgViewerComponent,
-    ExtendedModule,
     KatexComponent
   ]
 })

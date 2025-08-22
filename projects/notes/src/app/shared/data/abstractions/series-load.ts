@@ -1,29 +1,34 @@
-import { LineConfiguration } from 'mb';
+import { computed, inject, signal } from '@angular/core';
+
+import {  DynamicColorService, LineConfiguration } from 'mb';
 import { TemporalEntity } from 'mb';
 import { TimeGranularity } from 'mb';
 
-import { primaryColor } from '../../theme-colors';
 import { Series } from '../series.interface';
-import { signal } from '@angular/core';
 
 const empty = '';
 
 export abstract class SeriesLoad {
+  private dcs = inject(DynamicColorService);
+
   protected abstract entity: string;
   protected abstract addSeries(s: Series): void;
   protected abstract determineGranularity(data: TemporalEntity[]): TimeGranularity;
   protected abstract minParts: number;
   protected abstract parseEntity(time: Date, splitted: string[]): TemporalEntity | string;
 
-  protected readonly configMultiline: LineConfiguration = {
-    fillColor: undefined, strokeColor: primaryColor, strokeWidth: 1
-  };
+  protected readonly configMultiline = computed((): LineConfiguration => ({
+    fillColor: undefined,
+    strokeColor: this.dcs.secondaryColor(),
+    strokeWidth: 1
+  }));
 
   protected filePath = empty;
   protected fileType = empty;
   protected fileBytes = 0;
-  protected progressVisible = false;
-  protected progressPercentage = 0;
+  protected readonly progressVisible = signal(false);
+  protected readonly progressPercentageReading = signal(50);
+  protected readonly progressPercentageParsing = signal(0);
   protected errorText = empty;
   protected data = signal<TemporalEntity[]>([]);
   protected granularity = TimeGranularity.Aperiodic;
@@ -36,7 +41,7 @@ export abstract class SeriesLoad {
       mnemonic: this.mnemonic,
       description: this.description,
       timeGranularity: this.granularity,
-      timeStart:d[0].time,
+      timeStart: d[0].time,
       timeEnd: d[d.length - 1].time,
       data: d
     };
@@ -48,8 +53,9 @@ export abstract class SeriesLoad {
     this.filePath = empty;
     this.fileType = empty;
     this.fileBytes = 0;
-    this.progressVisible = false;
-    this.progressPercentage = 0;
+    this.progressVisible.set(false);
+    this.progressPercentageReading.set(0);
+    this.progressPercentageParsing.set(0);
     this.errorText = empty;
     this.data.set([]);
     this.granularity = TimeGranularity.Aperiodic;
@@ -57,27 +63,36 @@ export abstract class SeriesLoad {
     this.description = empty;
   }
 
-  protected selectedFile(files: FileList): void {
+  protected async selectedFile(files: FileList): Promise<void> {
     if (files.length > 0) {
       const file = files[0];
       this.filePath = file.webkitRelativePath || file.name;
       this.fileType = file.type;
       this.fileBytes = file.size;
 
-      this.readFileContent(file)
-        .then(content => {
-          this.parseContent(content)
-            .then(data => {
-              this.granularity = this.determineGranularity(data);
-              this.mnemonic = 'temp';
-              this.description = this.filePath;
-              this.data.set(data);
-            }).catch(error => this.errorText = empty + error)
-            .finally(() => this.progressVisible = false);
-        }).catch(error => {
-          this.progressVisible = false;
-          this.errorText = empty + error;
-        });
+      // Clear any previous errors and data
+      this.errorText = empty;
+      this.data.set([]);
+
+      this.progressVisible.set(true);
+      this.progressPercentageReading.set(0);
+      this.progressPercentageParsing.set(0);
+
+      try {
+        const content = await this.readFileContent(file);
+        const data = await this.parseContent(content);
+
+        // Success - update the UI
+        this.granularity = this.determineGranularity(data);
+        this.mnemonic = 'temp';
+        this.description = this.filePath;
+        this.data.set(data);
+      } catch (error) {
+        this.errorText = empty + error;
+        this.data.set([]); // Ensure data is cleared
+      } finally {
+        this.progressVisible.set(false);
+      }
     } else {
       this.clear();
     }
@@ -88,14 +103,13 @@ export abstract class SeriesLoad {
 
     return new Promise((resolve, reject) => {
       reader.onloadstart = () => {
-        this.progressPercentage = 0;
-        this.progressVisible = true;
+        this.progressPercentageReading.set(0);
       };
       reader.onprogress = (event: ProgressEvent<FileReader>) => {
-        this.progressPercentage = event.loaded / event.total * 100;
+        this.progressPercentageReading.set(event.loaded / event.total * 100);
       };
       reader.onload = () => {
-        this.progressPercentage = 100;
+        this.progressPercentageReading.set(100);
       };
       reader.onloadend = (event: ProgressEvent<FileReader>) => {
         const content = event?.target?.result as string ?? empty;
@@ -117,62 +131,93 @@ export abstract class SeriesLoad {
 
       if (len < 2) {
         reject('cannot split content into lines using delimiter \'\\n\'');
+        return;
       }
 
+      const chunkSize = 100;
+      let currentLine = 0;
       let timePrevious = new Date(0);
 
-      for (let i = 0; i < len; i++) {
-        const line = lines[i];
-        if (line.length < 2) {
-          continue;
-        }
+      const processChunk = () => {
+        try {
+          const endLine = Math.min(currentLine + chunkSize, len);
 
-        const splitted = line.split(';');
-        if (splitted.length < this.minParts) {
-          reject(
-            `expected at least ${this.minParts} parts delimited by ';', got ${splitted.length} parts: line ${i + 1} '${line}'`);
-        }
+          // Process chunk of lines
+          for (let i = currentLine; i < endLine; i++) {
+            const line = lines[i];
+            if (line.length < 2) {
+              continue;
+            }
 
-        const date = splitted[0];
-        let time!: Date;
-        if (date.length === 8) { // yyyymmdd
-          const y = +date.substring(0, 4);
-          const m = +date.substring(4, 6) - 1;
-          const d = +date.substring(6, 8);
-          time = new Date(y, m, d);
-          if (time.getDate() !== d || time.getMonth() !== m || time.getFullYear() !== y) {
-            reject(`invaid yyyymmdd date '${date}': line ${i + 1} '${line}'`);
+            const splitted = line.split(';');
+            if (splitted.length < this.minParts) {
+              reject(
+                `expected at least ${this.minParts} parts delimited by ';', got ${splitted.length} parts: line ${i + 1} '${line}'`);
+              return;
+            }
+
+            const date = splitted[0];
+            let time!: Date;
+            if (date.length === 8) { // yyyymmdd
+              const y = +date.substring(0, 4);
+              const m = +date.substring(4, 6) - 1;
+              const d = +date.substring(6, 8);
+              time = new Date(y, m, d);
+              if (time.getDate() !== d || time.getMonth() !== m || time.getFullYear() !== y) {
+                reject(`invalid yyyymmdd date '${date}': line ${i + 1} '${line}'`);
+                return;
+              }
+            } else if (date.length === 10) { // yyyy-mm-dd or yyyy/mm/dd
+              const y = +date.substring(0, 4);
+              const m = +date.substring(5, 7) - 1;
+              const d = +date.substring(8, 10);
+              time = new Date(y, m, d);
+              if (time.getDate() !== d || time.getMonth() !== m || time.getFullYear() !== y) {
+                reject(`invalid yyyy/mm/dd date '${date}': line ${i + 1} '${line}'`);
+                return;
+              }
+            } else {
+              time = new Date(date);
+              if (time.toString().startsWith('Invalid')) {
+                reject(`unknown date '${date}': line ${i + 1} '${line}'`);
+                return;
+              }
+            }
+
+            if (time < timePrevious) {
+              reject(`time '${date}' is less than previous time '${timePrevious}': line ${i + 1} '${line}'`);
+              return;
+            }
+
+            timePrevious = time;
+
+            const ret = this.parseEntity(time, splitted);
+            if (typeof (ret) === 'string') {
+              reject(`${ret}: line ${i + 1} '${line}'`);
+              return;
+            }
+
+            data.push(ret as TemporalEntity);
           }
-        } else if (date.length === 10) { // yyyy-mm-dd or yyyy/mm/dd
-          const y = +date.substring(0, 4);
-          const m = +date.substring(5, 7) - 1;
-          const d = +date.substring(8, 10);
-          time = new Date(y, m, d);
-          if (time.getDate() !== d || time.getMonth() !== m || time.getFullYear() !== y) {
-            reject(`invaid yyyy/mm/dd date '${date}': line ${i + 1} '${line}'`);
+
+          currentLine = endLine;
+          const progressPercent = (currentLine / len) * 100;
+          this.progressPercentageParsing.set(progressPercent);
+
+          if (currentLine < len) {
+            setTimeout(processChunk, 5); // Small delay allows UI to update
+          } else {
+            this.progressPercentageParsing.set(100);
+            resolve(data);
           }
-        } else {
-          time = new Date(date);
-          if (time.toString().startsWith('Invalid')) {
-            reject(`unknown date '${date}': line ${i + 1} '${line}'`);
-          }
+        } catch (error) {
+          reject(error);
         }
+      };
 
-        if (time < timePrevious) {
-          reject(`time '${date}' is less than previous time '${timePrevious}': line ${i + 1} '${line}'`);
-        }
-
-        timePrevious = time;
-
-        const ret = this.parseEntity(time, splitted);
-        if (typeof(ret) === 'string') {
-          reject(`${ret}: line ${i + 1} '${line}'`);
-        }
-
-        data.push(ret as TemporalEntity);
-      }
-
-      resolve(data);
+      // Start processing
+      this.progressPercentageParsing.set(0);
+      setTimeout(processChunk, 0);
     });
   }
 }

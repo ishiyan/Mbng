@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.tabs-overrides((
+    label-text-size: 0.9rem,
+    label-text-weight: var(--mat-sys-regular-font-weight),
+  ));
+
+  // Fix: Allow tab content to grow naturally
+  ::ng-deep .mat-mdc-tab-body-wrapper {
+    height: auto !important;
+    min-height: 0;
+  }
+
+  ::ng-deep .mat-mdc-tab-body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  ::ng-deep .cdk-scrollable {
+    height: auto !important;
+    overflow: visible !important;
+    max-height: none !important;
+  }
+}

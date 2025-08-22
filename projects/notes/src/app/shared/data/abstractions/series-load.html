@@ -1,72 +1,82 @@
-<!-- '$event.target.value = null;' resets the file input, otherwise you cannot load the same file twice -->
-<p>
-  <button mat-mini-fab class="alert-fab">
-    <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
-  </button>
-
-  <button mat-mini-fab class="tertiary-fab">
-    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
-  </button>
-  <!--button matButton="filled" class="alert-button">
-    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
-  </button>
-  <button matButton="tonal" class="alert-button">
-    <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
-  </button-->
-
-  <button mat-mini-fab class="primary-fab">
-    <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
-  </button>
-  <button mat-mini-fab class="alert-fab">
-    <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
-  </button>
-</p>
-<p class="alert mtop limitwidth">The very long error text</p>
-<input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
-  accept=".csv, .csv.gz" />
-  <div>
-    <button mat-mini-fab class="alert-fab" (click)="fileInput.click()">
-      <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+<div class="series-load-container">
+  <!-- '$event.target.value = null;' resets the file input, otherwise you cannot load the same file twice -->
+  <input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
+    accept=".csv, .csv.gz" />
+  
+  <!-- File selection section -->
+  <div class="file-selection-section">
+    <button mat-mini-fab (click)="fileInput.click()">
+      <mat-icon fontSet="material-symbols-outlined">file_upload</mat-icon>
     </button>
+    
     @if (filePath.length > 0) {
-      <span class="selected-file-name">{{filePath}}</span>
+      <div class="file-info">
+        <div class="selected-file-name">{{filePath}}</div>
+        <div class="selected-file-size">{{fileBytes|filesize}}, {{fileType}}</div>
+      </div>
     }
   </div>
-  @if (filePath.length > 0) {
-    <div class="selected-file-size">{{fileBytes|filesize}}, {{fileType}}</div>
-  }
-  @if (progressVisible) {
-    <mat-progress-bar color="accent" mode="indeterminate" [value]="progressPercentage" class="mtop" />
-  }
-  @if (errorText.length > 0) {
-    <div class="alert mtop limitwidth">{{errorText}}</div>
-    <button mat-mini-fab class="alert-fab mtop" (click)="clear()">
-      <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
-    </button>
-  }
-  @if (data().length > 0) {
-    <div class="mtop">
-      {{data.length}} <i>{{granularity}}</i> {{entity}}
-      ({{data()[0].time|date}} to {{data()[data().length-1].time|date}})
+
+  <!-- Progress section -->
+  @if (progressVisible() && errorText.length === 0) {
+    <div class="progress-section">
+      <mat-progress-bar mode="determinate" [value]="progressPercentageReading()" />
+      <mat-progress-bar mode="determinate" [value]="progressPercentageParsing()" />
     </div>
-    <div class="mtop"></div>
-    <mb-multiline [width]="360" [height]="'50%width'" [configuration]="[configMultiline]" [data]="[data]" [min]="0"
-      [timeAxis]="['bottom']" [valueAxis]="['grid']" />
-    <div class="mtop">
-      <mat-form-field>
-        <input matInput type="text" minlength="1" maxlength="16" size="16" placeholder="mnemonic"
-          [(ngModel)]="mnemonic">
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="fullwidth">
-          <textarea matInput minlength="1" placeholder="description" rows="1" [(ngModel)]="description"></textarea>
-        </mat-form-field>
-      </div>
-      <button mat-mini-fab class="primary-fab" (click)="add()">
-        <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
-      </button>
-      <button mat-mini-fab class="alert-fab mleft" (click)="clear()">
-        <mat-icon fontSet="material-symbols-outlined">close</mat-icon>
-      </button>
   }
+
+  <!-- Error section -->
+  @if (errorText.length > 0) {
+    <div class="error-section">
+      <div class="error-message">{{errorText}}</div>
+      <button mat-mini-fab class="alert-fab" (click)="clear()">
+        <mat-icon fontSet="material-symbols-outlined">undo</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Data preview and input section -->
+  @if (data().length > 0) {
+    <div class="data-section">
+      <!-- Stats info -->
+      <div class="stats-info">
+        {{data().length}} <i>{{granularity}}</i> {{entity}}
+        ({{data()[0].time|date}} to {{data()[data().length-1].time|date}})
+      </div>
+      
+      <!-- Chart -->
+      <div class="chart-container">
+        <mb-multiline [width]="348" [height]="'50%width'" [configuration]="[configMultiline()]" [data]="[data()]" [min]="0"
+          [timeAxis]="['bottom']" [valueAxis]="['grid']" />
+      </div>
+      
+      <!-- Form inputs -->
+      <div class="form-section">
+        <div class="input-row">
+          <mat-form-field appearance="fill">
+            <mat-label>Mnemonic</mat-label>
+            <input matInput type="text" minlength="1" maxlength="16" placeholder="mnemonic"
+              [(ngModel)]="mnemonic">
+          </mat-form-field>
+        </div>
+        
+        <div class="input-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput minlength="1" placeholder="description" rows="2" [(ngModel)]="description"></textarea>
+          </mat-form-field>
+        </div>
+        
+        <!-- Action buttons -->
+        <div class="action-buttons">
+          <button mat-mini-fab class="done" (click)="add()" [disabled]="!mnemonic || !description">
+            <mat-icon fontSet="material-symbols-outlined">done</mat-icon>
+          </button>
+          <button mat-mini-fab class="cancel" (click)="clear()">
+            <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

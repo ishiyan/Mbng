@@ -4,46 +4,103 @@
   @include mat.toolbar-overrides((
     container-background-color: var(--mat-sys-primary-container),
     container-text-color: var(--mat-sys-on-primary-container),
-    //standard-height: 42px,
-    //mobile-height: 42px,
+    // Make toolbar less tall
+    standard-height: 42px,
+    mobile-height: 42px,
   ));
 
   @include mat.icon-button-overrides((
     icon-color: var(--mat-sys-on-primary-container),
   ));
 
-  /*.toolbar {
-    // Use in combination with height: 42px; otherwise it is not needed
-    padding: 0px;
-  }*/
+  @include mat.sidenav-overrides((
+    container-width: auto,
+    container-shape: 8px,
+  ));
 
-  // This fills the remaining space, by using flexbox.
-  // Every toolbar row uses a flexbox row layout.
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .toolbar {
+    flex: 0 0 auto; // Don't grow/shrink, use natural height
+  }
+
   .fill-remaining-space {
-    flex-grow: 1;
-    // or: flex: 1 1 auto;
+    flex-grow: 1; // Grow to fill available space
   }
 
   .sidenav-container {
-    flex: 1;
+    flex: 1; // Take remaining space
     width: auto;
+
+    ::ng-deep .mat-drawer {
+      max-width: 410px;
+      width: auto;
+    }
   }
 
-  @include mat.sidenav-overrides((
-    //container-background-color: orange,
-    //container-text-color: red,
-    //scrim-color: var(--mat-sys-neutral-variant20),
-    container-width: auto,
-    container-shape: 0px,
-  ));
+  .collapsible {
+    margin-bottom: 1rem;
 
-  .sidenav-header {
-    // margin: 0px;
-    padding-left: 22px;
-  }
+    .collapsible-summary {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      list-style: none;
 
-  .katex-settings {
-    padding-left: 22px;
+      &:hover {
+        background-color: var(--mat-sys-surface-variant);
+        color: var(--mat-sys-on-surface-variant);
+      }
+
+      &::-webkit-details-marker {
+        display: none; // Hide default arrow
+      }
+
+      .section-header {
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin: 0;
+        flex: 1;
+      }
+
+      // Custom arrow
+      &::after {
+        content: 'expand_more';
+        font-family: 'Material Symbols Outlined';
+        transition: transform 300ms ease-in-out;
+      }
+    }
+
+    &[open] .collapsible-summary::after {
+      transform: rotate(180deg);
+    }
+
+    .collapsible-content {
+      padding-inline: 1rem;
+      animation: slideDown 300ms ease-in-out;
+
+      mat-divider {
+        padding-bottom: 1rem;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 
   .outlet {
@@ -55,41 +112,5 @@
   .mat-drawer-container,
   .mat-drawer-content {
     overflow: visible !important;
-  }
-}
-
-// Color selectors for dynamic theming.
-:host {
-  .theme-controls {
-    display: flex;
-    gap: 0.65rem;
-    align-items: center;
-    margin: auto;
-
-    .color-picker-wrapper {
-      display: flex;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      position: relative;
-
-      .color-picker-overflow {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        border-radius: 50%;
-
-        #color-input {
-          cursor: pointer;
-          border: none;
-          background: none;
-          min-width: 150%;
-          min-height: 150%;
-        }
-      }
-    }
   }
 }

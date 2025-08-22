@@ -1,17 +1,87 @@
 
-mat-button-toggle-group {
-  flex-wrap: wrap;
+:host {
+  display: block;
 }
 
-.hidden {
-  height: 0;
-  display: none;
-  margin: 0;
-  padding: 0;
+mat-button-toggle-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+
+  mat-button-toggle {
+    flex: 0 0 auto; // Don't grow/shrink, use natural size
+  }
+}
+
+mat-accordion {
+  display: block;
+}
+
+mat-expansion-panel {
+  margin-bottom: 0.5rem;
+
+  .mat-expansion-panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 
 mat-form-field {
   margin-right: 16px;
   margin-bottom: 0px;
   padding-bottom: 16px;
+  width: auto;
+  min-width: 200px;
+}
+
+.hidden {
+  display: none !important;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.shown {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  mat-button-toggle-group {
+    flex-direction: column;
+    align-items: stretch;
+
+    mat-button-toggle {
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  mat-form-field {
+    margin-right: 0;
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+// Improve spacing for nested components
+mb-data-generators-chirp-parameters,
+mb-data-generators-fractional-brownian-motion-parameters,
+mb-data-generators-geometric-brownian-motion-parameters,
+mb-data-generators-sawtooth-parameters,
+mb-data-generators-square-parameters,
+mb-data-generators-sinusoidal-parameters,
+mb-data-generators-waveform-parameters,
+mb-data-generators-time-parameters,
+mb-data-generators-ohlcv-parameters,
+mb-data-generators-quote-parameters,
+mb-data-generators-trade-parameters {
+  display: block;
+  margin-bottom: 1rem;
+  
+  &.hidden {
+    margin-bottom: 0;
+  }
 }

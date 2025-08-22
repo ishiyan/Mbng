@@ -1,80 +1,88 @@
-<div style="width:300px;height:auto;margin:0;padding:0">
+<div class="svg-container">
   <mb-svg-viewer src="assets/img/mb-chirp.svg" [scaleToContainer]="true"
     [ngClass]="!isBiDirectionalParam ? 'shown' : 'hidden'"></mb-svg-viewer>
 </div>
-<div style="width:300px;height:auto;margin:0;padding:0">
+<div class="svg-container">
   <mb-svg-viewer src="assets/img/mb-chirp-bidirectional.svg" [scaleToContainer]="true"
     [ngClass]="isBiDirectionalParam ? 'shown' : 'hidden'"></mb-svg-viewer>
 </div>
 <div></div>
-<div style="margin-bottom:0;">
-  <mb-katex [expression]="eq1" [options]="options"/>&#8203;
+<div class="equation-container">
+  <mb-katex [expression]="eq1" [options]="options" />&#8203;
 </div>
-<div style="margin-bottom:0;">
-  <mb-katex [expression]="eq2" [options]="options"/>&#8203;
+<div class="equation-container">
+  <mb-katex [expression]="eq2" [options]="options" />&#8203;
 </div>
-<div style="margin-bottom:0;">
-  <mb-katex [expression]="eq3" [options]="options"/>&#8203;
+<div class="equation-container">
+  <mb-katex [expression]="eq3" [options]="options" />&#8203;
 </div>
-<div>
-  <mb-katex [expression]="eq4" [options]="options"/>
+<div class="equation-container">
+  <mb-katex [expression]="eq4" [options]="options" />
 </div>
-<div>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'\\alpha'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Amplitude" [(ngModel)]="amplitudeParam" min="0" step="0.0001" required>
-  <mat-hint>The amplitude <mb-katex [expression]="'\\alpha > 0'" [options]="options"/> of the chirp.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'\\beta'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Minimum value" [(ngModel)]="minimalValueParam" min="0" step="0.0001" required>
-  <mat-hint>The minimum <mb-katex [expression]="'\\beta > 0'" [options]="options"/> of the chirp.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'\\lambda_1'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Initial period" [(ngModel)]="initialPeriodParam" min="2" step="1" required>
-  <mat-hint>The instantaneous initial period <mb-katex [expression]="'\\lambda_{1}\\ge 2'" [options]="options"/> of the chirp in samples.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'\\lambda_L'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Final period" [(ngModel)]="finalPeriodParam" min="2" step="1" required>
-  <mat-hint>The instantaneous final period <mb-katex [expression]="'\\lambda_{L}\\ge 2'" [options]="options"/> of the chirp in samples.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'\\varphi'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Initial phase" [(ngModel)]="phaseInPiParam" min="-1" max="1"
-    step="0.0001" required>
-  <mat-hint>The initial phase <mb-katex [expression]="'\\varphi\\in [-1,1]'" [options]="options"/> of the chirp in ratios of <mb-katex [expression]="'\\pi'" [options]="options"/>.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label><mb-katex [expression]="'noise_t'" [options]="options"/></mat-label>
-  <input type="number" matInput placeholder="Noise fraction" [(ngModel)]="noiseRatioParam" min="0" max="1"
-    step="0.0001" required>
-  <mat-hint>The amplitude of the noise <mb-katex [expression]="'noise_t'" [options]="options"/> as a fraction of the generated sample value.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label>Chirp sweep samples</mat-label>
-  <input type="number" matInput placeholder="# samples" [(ngModel)]="chirpSweepSamplesParam" min="2" step="1" required>
-  <mat-hint>The number of data points <mb-katex [expression]="'\\ge 2'" [options]="options"/> in the chirp sweep.</mat-hint>
-</mat-form-field>
-<mat-form-field appearance="fill" floatLabel="always">
-  <mat-label>sweep algo</mat-label>
-  <mat-select [(value)]="chirpSweepParam" [compareWith]="compare" required>
-    @for (type of chirpSweeps; track type) {
-    <mat-option [value]="type">
-      {{type}}
-    </mat-option>
-    }
-  </mat-select>
-  <mat-hint>The chirp sweep generation algorithm.</mat-hint>
-</mat-form-field>
-<mat-form-field class="last-form-field" appearance="fill" floatLabel="always">
-  <mat-label>bi-directional</mat-label>
-  <mat-select [(value)]="isBiDirectionalParam" required>
-    <mat-option [value]="true">Yes</mat-option>
-    <mat-option [value]="false">No</mat-option>
-  </mat-select>
-  <mat-hint>If the period of even chirps descends from the final period to the initial one, to form a symmetrical
-    shape with odd chirps.</mat-hint>
-</mat-form-field>
+<div class="form-container">
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'\\alpha'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Amplitude" [(ngModel)]="amplitudeParam" min="0" step="0.0001" required>
+    <mat-hint>The amplitude <mb-katex [expression]="'\\alpha > 0'" [options]="options" /> of the chirp.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'\\beta'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Minimum value" [(ngModel)]="minimalValueParam" min="0" step="0.0001"
+      required>
+    <mat-hint>The minimum <mb-katex [expression]="'\\beta > 0'" [options]="options" /> of the chirp.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'\\lambda_1'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Initial period" [(ngModel)]="initialPeriodParam" min="2" step="1"
+      required>
+    <mat-hint>The instantaneous initial period <mb-katex [expression]="'\\lambda_{1}\\ge 2'" [options]="options" /> of
+      the chirp in samples.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'\\lambda_L'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Final period" [(ngModel)]="finalPeriodParam" min="2" step="1" required>
+    <mat-hint>The instantaneous final period <mb-katex [expression]="'\\lambda_{L}\\ge 2'" [options]="options" /> of the
+      chirp in samples.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'\\varphi'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Initial phase" [(ngModel)]="phaseInPiParam" min="-1" max="1"
+      step="0.0001" required>
+    <mat-hint>The initial phase <mb-katex [expression]="'\\varphi\\in [-1,1]'" [options]="options" /> of the chirp in
+      ratios of <mb-katex [expression]="'\\pi'" [options]="options" />.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label><mb-katex [expression]="'noise_t'" [options]="options" /></mat-label>
+    <input type="number" matInput placeholder="Noise fraction" [(ngModel)]="noiseRatioParam" min="0" max="1"
+      step="0.0001" required>
+    <mat-hint>The amplitude of the noise <mb-katex [expression]="'noise_t'" [options]="options" /> as a fraction of the
+      generated sample value.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label>Chirp sweep samples</mat-label>
+    <input type="number" matInput placeholder="# samples" [(ngModel)]="chirpSweepSamplesParam" min="2" step="1"
+      required>
+    <mat-hint>The number of data points <mb-katex [expression]="'\\ge 2'" [options]="options" /> in the chirp
+      sweep.</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label>sweep algo</mat-label>
+    <mat-select [(value)]="chirpSweepParam" [compareWith]="compare" required>
+      @for (type of chirpSweeps; track type) {
+      <mat-option [value]="type">
+        {{type}}
+      </mat-option>
+      }
+    </mat-select>
+    <mat-hint>The chirp sweep generation algorithm.</mat-hint>
+  </mat-form-field>
+  <mat-form-field class="last-form-field" appearance="fill" floatLabel="always">
+    <mat-label>bi-directional</mat-label>
+    <mat-select [(value)]="isBiDirectionalParam" required>
+      <mat-option [value]="true">Yes</mat-option>
+      <mat-option [value]="false">No</mat-option>
+    </mat-select>
+    <mat-hint>If the period of even chirps descends from the final period to the initial one, to form a symmetrical
+      shape with odd chirps.</mat-hint>
+  </mat-form-field>
 </div>

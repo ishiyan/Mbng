@@ -3,20 +3,20 @@
 @use '@angular/material' as mat;
 @use "styles/_theme-colors-teal-pink.scss" as theme-colors;
 
-//@use 'dist/mb' as mb;
-//@use "../../../dist/mb" as mb;
-//@use "../../../dist/mb/styles/charts/ohlcv-chart/ohlcv_chart-theme" as ohlcv-chart;
-@use "../../mb/src/lib/charts/ohlcv-chart/ohlcv_chart-theme" as ohlcv-chart;
-@use "../../mb/src/lib/charts/frequency-response-chart/frequency-response-chart-theme" as freq-resp-chart;
-@use "../../mb/src/lib/charts/sparkline/sparkline-theme" as sparkline with ( $theming-enabled: true );
-@use "../../mb/src/lib/charts/multiline/multiline-theme" as multiline;
+$enable-sparkline-theming: false;
+$enable-multiline-chart-theming: true;
+$enable-ohlcv-chart-theming: true;
+$enable-linear-chart-theming: true;
+$enable-frequency-response-chart-theming: true;
+//@use "../../mb/src/lib/" as mb with ($enable-sparkline-theming: $enable-sparkline-theming);
+@use "../../../dist/mb/styles/" as mb with ($enable-sparkline-theming: $enable-sparkline-theming);
+//@use "../../../dist/mb/styles/sparkline" as mb-sparkline;
 
 // Styles used by KaTeX.
 @use 'katex/dist/katex.css' as *;
 
 // Include material symbols fonts.
-@use 'material-symbols' with (
-  $material-symbols-font-path: 'material-symbols/'
+@use 'material-symbols' with ($material-symbols-font-path: 'material-symbols/'
 );
 
 /*@use 'roboto-fontface/css/roboto/sass/roboto-fontface' with (
@@ -28,32 +28,93 @@
 @include fontsource.faces($metadata: Roboto.$metadata);
 
 :root {
-  // Must specify color-scheme for theme mixin to automatically work
-  //color-scheme: light dark;
+  // This will use 'prefers-color-scheme' to automatically set the initial light-dark mode.
+  color-scheme: light dark;
 
-  // Create one theme that works automatically for light and dark theme
-  @include mat.theme((
-    color: (
-      //primary: mat.$green-palette,
-      //tertiary: mat.$violet-palette,
-      primary: theme-colors.$primary-palette,
-      tertiary: theme-colors.$tertiary-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+  // Only apply the static theme if no dynamic theme is saved in local storage
+  // See index.html where this check is made.
+  &:not([has-dynamic-theme]) {
+    @include mat.theme((color: ( //primary: mat.$green-palette,
+          //tertiary: mat.$violet-palette,
+          primary: theme-colors.$primary-palette,
+          tertiary: theme-colors.$tertiary-palette,
+        ),
+        typography: Roboto,
+        density: 0,
+      ));
 
-  // Use high contrast values when users prefer contrast
-  @media (prefers-contrast: more) {
-    @include theme-colors.high-contrast-overrides(color-scheme);
+    // Use high contrast values when users prefer contrast
+    @media (prefers-contrast: more) {
+      @include theme-colors.high-contrast-overrides(color-scheme);
+    }
   }
 
-  .darkMode {
-    color-scheme: dark;
+  &[has-dynamic-theme] {
+    // Apply base theme structure without colors
+    @include mat.theme((typography: Roboto,
+        density: 0,
+      ));
   }
 
-  .lightMode {
-    color-scheme: light;
+  @if $enable-sparkline-theming {
+    @debug ("sparkline theming enabled, including mb.sparkline-overrides");
+    //@include mb-sparkline.sparkline-overrides((
+    @include mb.sparkline-overrides((
+      stroke-width: 0px,
+      stroke-color: var(--mat-sys-tertiary),
+      fill-color: var(--mat-sys-tertiary),
+    ));
+  }
+
+  @if $enable-multiline-chart-theming {
+    @include mb.multiline-overrides((
+      axis-color: var(--mat-sys-secondary),
+      grid-color: var(--mat-sys-secondary),
+      grid-opacity: 0.5,
+    ));
+  }
+
+  @if $enable-ohlcv-chart-theming {
+    @include mb.ohlcv-chart-overrides((
+      axis-color: var(--mat-sys-secondary),
+      crosshair-annotation-background: var(--mat-sys-secondary-container),
+      crosshair-annotation-color: var(--mat-sys-on-secondary-container),
+      legend-color: var(--mat-sys-secondary),
+      legend-font-family: var(--mat-sys-label-small-font),
+      legend-font-size: var(--mat-sys-label-small-size),
+      control-panel-variant-color: var(--mat-sys-tertiary),
+      control-panel-on-variant-color: var(--mat-sys-on-tertiary),
+      control-panel-variant-container-color: var(--mat-sys-tertiary-container),
+      control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
+    ));
+  }
+
+  @if $enable-linear-chart-theming {
+    @include mb.linear-chart-overrides((
+      axis-color: var(--mat-sys-secondary),
+      crosshair-annotation-background: var(--mat-sys-secondary-container),
+      crosshair-annotation-color: var(--mat-sys-on-secondary-container),
+      legend-color: var(--mat-sys-secondary),
+      legend-font-family: var(--mat-sys-label-small-font),
+      legend-font-size: var(--mat-sys-label-small-size),
+      control-panel-variant-color: var(--mat-sys-tertiary),
+      control-panel-on-variant-color: var(--mat-sys-on-tertiary),
+      control-panel-variant-container-color: var(--mat-sys-tertiary-container),
+      control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
+    ));
+  }
+
+  @if $enable-frequency-response-chart-theming {
+    @include mb.frequency-response-chart-overrides((
+      axis-color: var(--mat-sys-secondary),
+      label-color: var(--mat-sys-secondary),
+      legend-color: var(--mat-sys-secondary),
+      coords-color: var(--mat-sys-on-tertiary),
+      control-panel-variant-color: var(--mat-sys-tertiary),
+      control-panel-on-variant-color: var(--mat-sys-on-tertiary),
+      control-panel-variant-container-color: var(--mat-sys-tertiary-container),
+      control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
+    ));
   }
 }
 
@@ -63,40 +124,6 @@ body {
   height: 100%;
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
-  //--ohlcv-chart-axis-color: var(--mat-sys-tertiary);
-  //@include mb.ohlcv-chart-overrides((
-  @include ohlcv-chart.overrides((
-    axis-color: var(--mat-sys-secondary),
-    crosshair-annotation-background: var(--mat-sys-secondary-container),
-    crosshair-annotation-color: var(--mat-sys-on-secondary-container),
-    legend-color: var(--mat-sys-secondary),
-    legend-font-family: var(--mat-sys-label-small-font),
-    legend-font-size: var(--mat-sys-label-small-size),
-    control-panel-variant-color: var(--mat-sys-tertiary),
-    control-panel-on-variant-color: var(--mat-sys-on-tertiary),
-    control-panel-variant-container-color: var(--mat-sys-tertiary-container),
-    control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
-  ));
-  @include freq-resp-chart.overrides((
-    axis-color: var(--mat-sys-secondary),
-    label-color: var(--mat-sys-secondary),
-    legend-color: var(--mat-sys-secondary),
-    coords-color: var(--mat-sys-on-tertiary),
-    control-panel-variant-color: var(--mat-sys-tertiary),
-    control-panel-on-variant-color: var(--mat-sys-on-tertiary),
-    control-panel-variant-container-color: var(--mat-sys-tertiary-container),
-    control-panel-on-variant-container-color: var(--mat-sys-on-tertiary-container),
-  ));
-  @include sparkline.overrides((
-    stroke-width: 0px,
-    stroke-color: var(--mat-sys-tertiary),
-    fill-color: var(--mat-sys-tertiary),
-  ));
-  @include multiline.overrides((
-    axis-color: var(--mat-sys-secondary),
-    grid-color: var(--mat-sys-secondary),
-    grid-opacity: 0.5,
-  ));
 }
 
 body {

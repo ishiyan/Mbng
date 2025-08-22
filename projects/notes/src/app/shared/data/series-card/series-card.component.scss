@@ -1,8 +1,122 @@
-.limitwidth {
-    max-width: 360px;
-}
+@use "@angular/material" as mat;
 
-.mtopbot {
-    margin-top: 4px;
-    margin-bottom: 4px;
+:host {
+  .series-card {
+    margin-block: 2px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 4px;
+    background-color: var(--mat-sys-surface-container);
+
+    .series-summary {
+      display: flex;
+      align-items: center;
+      padding: 8px 0.5rem;
+      cursor: pointer;
+      list-style: none;
+
+      &:hover {
+        background-color: var(--mat-sys-surface-variant);
+      }
+
+      &::-webkit-details-marker {
+        display: none; // Hide default arrow
+      }
+
+      .series-header {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 0.8rem;
+
+        .series-sparkline {
+          flex: 0 0 auto; // Don't grow/shrink
+        }
+
+        .series-mnemonic {
+          flex: 1; // Take remaining space
+          font: var(--mat-sys-body-medium);
+          color: var(--mat-sys-on-surface-container);
+
+          // Truncate with ellipsis
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      // Custom arrow (similar to your app component)
+      &::after {
+        content: 'expand_more';
+        font-family: 'Material Symbols Outlined';
+        transition: transform 300ms ease-in-out;
+        color: var(--mat-sys-on-surface-container-variant);
+        margin-left: auto;
+      }
+    }
+
+    &[open] .series-summary::after {
+      transform: rotate(180deg);
+    }
+
+    .series-content {
+      padding: 0.5rem;
+      animation: slideDown 300ms ease-in-out;
+      border-top: 1px solid var(--mat-sys-outline-variant);
+      background-color: var(--mat-sys-surface-container-low);
+      color: var(--mat-sys-on-surface-container);
+      font: var(--mat-sys-body-medium);
+
+      .description-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .delete-button {
+          flex: 0 0 auto; // Don't grow/shrink
+
+          @include mat.icon-button-overrides((
+            icon-color: var(--mat-sys-error),
+            state-layer-color: var(--mat-sys-error),
+          ));
+        }
+
+        .description-text {
+          flex: 1; // Take remaining space
+
+          word-wrap: break-all;
+          overflow-wrap: break-all;
+          hyphens: auto;
+          white-space: normal;
+
+          mat-divider {
+            margin-top: 0.5rem;
+          }
+        }
+      }
+
+      .stats-info {
+        word-wrap: break-all;
+        overflow-wrap: break-all;
+        hyphens: auto;
+        white-space: normal;
+      }
+
+      mat-divider {
+        margin-top: 0.5rem;
+        padding-bottom: 1rem;
+      }
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
 }

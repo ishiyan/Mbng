@@ -1,12 +1,15 @@
 // Forwards all public API mixins so they can be imported from a single entry point.
 
+$enable-sparkline-theming: false !default;
+@use "./charts/sparkline/sparkline-theme" with ($theming-enabled: $enable-sparkline-theming);
+
 @forward "./svg-viewer/svg-viewer-theme" as svg-viewer-* show svg-viewer-theme, svg-viewer-overrides,
   svg-viewer-base, svg-viewer-color, svg-viewer-typography, svg-viewer-density;
 @forward "./charts/sparkline/sparkline-theme" as sparkline-* show sparkline-theme, sparkline-overrides,
-  sparkline-base, sparkline-color, sparkline-typography, sparkline-density, sparkline-theming-enabled;
+  sparkline-base, sparkline-color, sparkline-typography, sparkline-density;
 @forward "./charts/multiline/multiline-theme" as multiline-* show multiline-theme, multiline-overrides,
   multiline-base, multiline-color, multiline-typography, multiline-density, multiline-theming-enabled;
-@forward "./charts/multiline/stackline-theme" as stackline-* show stackline-theme, stackline-overrides,
+@forward "./charts/stackline/stackline-theme" as stackline-* show stackline-theme, stackline-overrides,
   stackline-base, stackline-color, stackline-typography, stackline-density, stackline-theming-enabled;
 @forward "./charts/ohlcv-chart/ohlcv-chart-theme" as ohlcv-chart-* show ohlcv-chart-theme, ohlcv-chart-overrides,
   ohlcv-chart-base, ohlcv-chart-color, ohlcv-chart-typography, ohlcv-chart-density;

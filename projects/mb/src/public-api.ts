@@ -14,6 +14,20 @@ export * from './lib/katex/katex-settings.service';
 //export * from './lib/math-jax/math-jax.directive';
 //export * from './lib/math-jax/math-jax.component';
 
+export * from './lib/theming/light-dark.service';
+export * from './lib/theming/light-dark-toggle.component';
+export * from './lib/theming/light-dark-preference.component';
+export * from './lib/theming/dynamic-color.service';
+export * from './lib/theming/dynamic-color-tokens.component';
+export * from './lib/theming/dynamic-theming-variant.enum';
+export * from './lib/theming/dynamic-theming.service';
+export * from './lib/theming/dynamic-theming-storage-prefix';
+export * from './lib/theming/dynamic-theming.component';
+export { DynamicThemingParameters, SpecVersion } from './lib/theming/generate';
+export * from './lib/theming/generate-scss';
+export * from './lib/theming/generate-css';
+export * from './lib/theming/download';
+
 export * from './lib/svg-viewer/svg-viewer.component';
 
 export * from './lib/snack-bar/snack-bar.service';

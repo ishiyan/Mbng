@@ -223,11 +223,11 @@
     </mat-card-header>
     <mat-card-content>
       <mat-card-subtitle>[subfig]="'(a)'" [width]="200"<br/>[subfig]="'(b)'" [width]="200" [ymode]="'powerPct'"</mat-card-subtitle>
-      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px">
+      <div class="chart-row">
         <mb-frequency-response-chart [subfig]="'(a)'" [width]="200" [height]="200" [data]="[sma5, sma3]"></mb-frequency-response-chart>
         <mb-frequency-response-chart [subfig]="'(b)'" [width]="200" [height]="200" [ymode]="'powerPct'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
       </div>
-      <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="0px">
+      <div class="chart-row">
         <mb-frequency-response-chart [subfig]="'(c)'" [width]="200" [height]="200" [data]="[sma5, sma3]"></mb-frequency-response-chart>
         <mb-frequency-response-chart [subfig]="'(d)'" [width]="200" [height]="200" [ymode]="'powerPct'" [data]="[sma5, sma3]"></mb-frequency-response-chart>
       </div>

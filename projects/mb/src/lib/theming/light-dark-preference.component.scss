@@ -1,0 +1,20 @@
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0;
+
+  .remember-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+
+    label {
+      flex: 1; // Takes up all remaining space
+    }
+    
+    mat-slide-toggle {
+      flex: 0 0 auto; // Don't grow/shrink, use natural width
+    }
+  }
+}

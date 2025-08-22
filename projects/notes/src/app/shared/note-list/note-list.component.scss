@@ -1,9 +1,16 @@
 @use '@angular/material' as mat;
 
 :host {
+  display: block;
+  width: 100%;
+  overflow-x: hidden; // Prevent horizontal scrolling
+
   @include mat.toolbar-overrides((
     container-background-color: var(--mat-sys-secondary-container),
     container-text-color: var(--mat-sys-on-secondary-container),
+    // This is needed when we make the main toolbar less tall, so we need to set the standard height
+    standard-height: 56px,
+    mobile-height: 56px,
   ));
 
   @include mat.icon-button-overrides((
@@ -11,9 +18,10 @@
   ));
 
   .toolbar {
-    padding: 0;
-    padding-left: 16px;
-    //background-color: transparent;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
   @include mat.fab-overrides((
@@ -23,12 +31,7 @@
   ));
 
   .tags {
-    //margin-top: 0px;
-    margin-right: 16px;
-    // This is needed if mat-fab extended button is used
-    //background-color: var(--mat-sys-secondary-container);
-    //color: var(--mat-sys-on-secondary-container);
-    //border: 0px;
+    flex: 0 0 auto; // Don't grow/shrink
   }
   
   @include mat.form-field-overrides((
@@ -40,28 +43,28 @@
   ));
 
   mat-form-field {
-    margin-top: 18px;
+    margin-top: 18px; // Align with icon button
   }
 
-  .fullwidth {
-    width: 108%;
-    margin: 0px;
-    padding: 0px;
-    //background-color: var(--mat-sys-secondary-container);
+  .tags-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background-color: var(--mat-sys-secondary-container);
   }
 
-  .tagarea {
-    width: 98%;
-    margin: 0px;
-    padding: 16px;
-    padding-right: 0px;
-  }
-
-  .check {
-    height: 20px;
-    width: 20px;
-    font-size: 20px;
-    margin-right: 4px;
+  .tag-area {
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    box-sizing: border-box; // Include padding in width calculation
+    
+    mat-chip-listbox {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto; // Allow horizontal scrolling within chip area only
+      overflow-y: hidden;
+    }
   }
 
   @include mat.chips-overrides((
@@ -75,7 +78,43 @@
     with-icon-selected-icon-color: var(--mat-sys-on-secondary-container),
   ));
 
-  .cardarea {
-    padding: 8px;
+  .card-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    justify-content: flex-start;
+   
+    /**/
+    // Mobile: single column
+    @media (max-width: 599px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    // Tablet and up: responsive grid
+    @media (min-width: 600px) {
+      justify-content: flex-start;
+      
+      app-note-card {
+        flex: 1 1 calc(50% - 1rem); // 2 columns with gap
+        max-width: calc(50% - 1rem);
+      }
+    }
+    
+    @media (min-width: 960px) {
+      app-note-card {
+        flex: 1 1 calc(33.333% - 1rem); // 3 columns with gap
+        max-width: calc(33.333% - 1rem);
+      }
+    }
+    
+    @media (min-width: 1280px) {
+      app-note-card {
+        flex: 1 1 calc(25% - 1rem); // 4 columns with gap
+        max-width: calc(25% - 1rem);
+      }
+    }
+    /**/
   }
 }

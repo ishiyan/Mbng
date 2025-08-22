@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatFormField, MatHint } from '@angular/material/form-field';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { MatInput } from '@angular/material/input';
-import { ExtendedModule } from '@angular/flex-layout/extended';
 
 import { SyntheticDataKind } from './synthetic-data-kind.enum';
 import { TemporalEntityKind } from '../entities/temporal-entity-kind.enum';
@@ -36,8 +35,10 @@ import { TradeParametersComponent } from './trade-parameters.component';
     MatButtonToggle,
     MatAccordion,
     MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
     MatInput,
-    ExtendedModule,
+    MatLabel,
     ChirpParametersComponent,
     FractionalBrownianMotionParametersComponent,
     GeometricBrownianMotionParametersComponent,

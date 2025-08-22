@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout/flex';
 
 import { FrequencyResponse, SimpleMovingAverage, FrequencyResponseChartComponent } from 'mb';
 import { KatexInlineComponent, KatexDisplayComponent } from 'mb';
@@ -15,7 +14,6 @@ const sl = 4096;
   styleUrls: ['./frequency-response.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    FlexModule,
     KatexInlineComponent,
     KatexDisplayComponent,
     FrequencyResponseChartComponent

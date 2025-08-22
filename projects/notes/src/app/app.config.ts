@@ -4,6 +4,8 @@ import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/c
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideClientHydration, withIncrementalHydration } from '@angular/platform-browser';
 
+import { provideDynamicThemingStoragePrefix } from 'mb';
+
 import { routes } from './app.routes';
 
 const scrollConfig: InMemoryScrollingOptions = {
@@ -22,5 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, inMemoryScrollingFeature, withViewTransitions()),
     provideAnimationsAsync(),
     provideClientHydration(withIncrementalHydration()),
+    // Make sure this is consistent with the key used in index.html
+    provideDynamicThemingStoragePrefix('notes'),
   ]
 };

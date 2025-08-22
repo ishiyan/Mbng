@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton, MatButton } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { FilesizePipe } from '../../filesize/filesize.pipe';
     DatePipe,
     FormsModule,
     MatFormField,
+    MatLabel,
     MatInput,
     MatIcon,
     MatButton,

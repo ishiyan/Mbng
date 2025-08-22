@@ -1,5 +1,76 @@
 # Howtos
 
+## VS Code with Copilot
+
+1. Read [VS Code documentation](https://code.visualstudio.com/docs/copilot/copilot-customization#_custom-instructions) first.
+
+2. Create `.github/instructions` folder in the root of the repo.
+
+3. Download [instructions.md](https://next.angular.dev/assets/context/guidelines.md) from [angular.dev](https://next.angular.dev/ai/develop-with-ai), copy it to the `.github/instructions` folder and rename to `angular-guidelines.md`.
+
+4. Download [best-practices.md](https://next.angular.dev/assets/context/best-practices.md) from [angular.dev](https://next.angular.dev/ai/develop-with-ai), copy it to the `.github/instructions` folder and rename to `angular-best-practices.md`.
+
+5. Download [llms-full.txt](https://next.angular.dev/context/llm-files/llms-full.txt) from [angular.dev](https://next.angular.dev/ai/develop-with-ai), copy it to the `.github/instructions` folder and rename to `angular-llms-full.md` respectively.
+
+Update downloaded files regulary.
+
+```bash
+# from the root of the repo with curl
+curl -o .github/instructions/angular-guidelines.md https://next.angular.dev/assets/context/guidelines.md
+curl -o .github/instructions/angular-best-practices.md https://next.angular.dev/assets/context/best-practices.md
+curl -o .github/instructions/angular-llms-full.md https://next.angular.dev/assets/context/llms-full.txt
+
+# or the same with wget
+wget -O .github/instructions/angular-guidelines.md https://next.angular.dev/assets/context/guidelines.md
+wget -O .github/instructions/angular-best-practices.md https://next.angular.dev/assets/context/best-practices.md
+wget -O .github/instructions/angular-llms-full.md https://next.angular.dev/assets/context/llms-full.txt
+```
+
+## Updating
+
+Install `n` to update `npm`-
+
+```bash
+sudo npm cache clean -f
+sudo npm install --location=global n
+sudo n stable
+node -v
+```
+
+Install latest tools, run `ng update`, run `ncu`, run `npm install`.
+
+```bash
+sudo npm install --location=global @angular/cli@latest
+sudo npm install --location=global npm-check-updates@latest
+sudo npm install --location=global sass@latest
+npm list -g
+
+# This will give an overview
+ng update
+
+# This will do an actual update of specified packages
+# Use an optional `--force` switch if something is not compatible
+ng update --force @angular/cli @angular/core @angular-eslint/schematics @angular/material @angular/cdk @angular/ssr @angular/platform-server
+
+# This will show updates for the rest of packages
+ncu
+
+# Now edit `package.json` manually and do `npm install`
+npm install
+```
+
+- Run `prod.cmd`.
+- Go to the `src/themes` and run `build_themes_compressed.cmd`.
+- Run `prod_notes.cmd`
+
+If `ng serve notes` command gives the
+`Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory`
+error, increase the memory using
+
+```bash
+export NODE_OPTIONS="--max-old-space-size=8192"
+```
+
 ## Self-hosting Roboto font
 
 [npm package](https://www.npmjs.com/package/roboto-fontface)
@@ -303,49 +374,6 @@ for http://ng-localhost/notes/assets/mb/mb-candlesticks.svg
 - Copy everything inside the `dist/notes/browser` to the root of the `notes` repo.
 - In `notes` repo, clone the `index.html` as the `404.html`.
 - Add all, commit and push the `notes` repo.
-
-## Updating
-
-Install `n` to update `npm`-
-
-```bash
-sudo npm cache clean -f
-sudo npm install -g n
-sudo n stable
-node -v
-```
-
-Install latest tools, run `ng update`, run `ncu`, run `npm install`.
-
-```bash
-sudo npm install --location=global @angular/cli@latest
-sudo npm install --location=global npm-check-updates@latest
-sudo npm install --location=global sass@latest
-npm list -g
-
-# This will give an overview
-ng update
-# This will do an actual update of specified packages
-# Use an optional `--force` switch if something is not compatible
-ng update --force @angular/cli @angular/core @angular-eslint/schematics @angular/material @angular/cdk @angular/ssr @angular/platform-server
-
-# This will show updates for the rest of packages
-ncu
-# Now edit `package.json` manually and do `npm install`
-npm install
-```
-
-- Run `prod.cmd`.
-- Go to the `src/themes` and run `build_themes_compressed.cmd`.
-- Run `prod_notes.cmd`
-
-If `ng serve notes` command gives the
-`Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory`
-error, increase the memory using
-
-```bash
-export NODE_OPTIONS="--max-old-space-size=8192"
-```
 
 ## ESLint problems -- .eslintrc.json
 
