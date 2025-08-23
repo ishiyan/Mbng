@@ -25,7 +25,7 @@ export * from './lib/theming/dynamic-theming-variant.enum';
 export * from './lib/theming/dynamic-theming.service';
 export * from './lib/theming/dynamic-theming-storage-prefix';
 export * from './lib/theming/dynamic-theming.component';
-export { DynamicThemingParameters, SpecVersion } from './lib/theming/generate';
+export { DynamicThemingParameters, SpecVersion, DynamicThemingPlatform } from './lib/theming/generate';
 export * from './lib/theming/generate-scss';
 export * from './lib/theming/generate-css';
 export * from './lib/theming/download';

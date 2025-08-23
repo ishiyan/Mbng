@@ -40,6 +40,7 @@ export class DynamicThemingComponent {
   showContrast = input<boolean>(true);
   showVariant = input<boolean>(true);
   showSpecVersion = input<boolean>(true);
+  showPlatform = input<boolean>(true);
   showRememberTheme = input<boolean>(true);
 
   constructor() {

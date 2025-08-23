@@ -28,7 +28,12 @@
         </summary>
         <div class="collapsible-content">
           <mat-divider />
-          <app-content-settings />
+          <app-content-settings
+            [enableChartEditing]="true"
+            [LeftAlignedEquations]="true"
+            [leftAlignedEquationNumbers]="true"
+            [rememberPreferences]="false"
+          />
         </div>
       </details>
 
@@ -38,7 +43,10 @@
         </summary>
         <div class="collapsible-content">
           <mat-divider />
-          <app-layout-settings />
+          <app-layout-settings
+            [notesLayout]="true"
+            [rememberPreferences]="true"
+          />
         </div>
       </details>
 
@@ -48,7 +56,17 @@
         </summary>
         <div class="collapsible-content">
           <mat-divider />
-          <app-theme-settings />
+          <app-theme-settings
+            [dynamicTheming]="true"
+            [dynamicThemingShowTertiary]="true"
+            [dynamicThemingShowContrast]="true"
+            [dynamicThemingShowVariant]="true"
+            [dynamicThemingShowSpecVersion]="true"
+            [dynamicThemingShowPlatform]="true"
+            [dynamicThemingShowRememberTheme]="true"
+            [lightDark]="true"
+            [downloadThemeSCSS]="true"
+          />
         </div>
       </details>
 

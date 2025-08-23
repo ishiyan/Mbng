@@ -28,7 +28,7 @@ import { DynamicThemingVariant } from './dynamic-theming-variant.enum';
 // SpecVersion is not exported from the package, so we define it locally.
 export type SpecVersion = '2021' | '2025';
 
-const PLATFORM = 'phone';
+export type DynamicThemingPlatform = 'phone' | 'watch';
 
 // DynamicSchemeOptions is not exported from the package, so we define it locally based on the usage.
 export type DynamicSchemeOptions = {
@@ -48,7 +48,8 @@ export class DynamicThemingParameters {
     public useTertiaryColor: boolean,
     public variant: DynamicThemingVariant,
     public specVersion: SpecVersion,
-    public contrastLevel: number
+    public contrastLevel: number,
+    public platform: DynamicThemingPlatform
   ) { }
 
   getDescription(): string {
@@ -56,7 +57,7 @@ export class DynamicThemingParameters {
     if (this.useTertiaryColor) {
       str += `tertiary color: ${this.tertiaryColor}, `;
     }
-    return `${str}variant: ${this.variant}, spec version: ${this.specVersion}, platform: ${PLATFORM}`;
+    return `${str}variant: ${this.variant}, spec version: ${this.specVersion}, platform: ${this.platform}`;
   }
 
   supportsDim(): boolean {
@@ -66,13 +67,13 @@ export class DynamicThemingParameters {
 
 function makeDynamicSchemeOptions(
   sourceColorHct: Hct, tertiary: TonalPalette | undefined, variant: DynamicThemingVariant,
-  contrast: number, spec: SpecVersion, dark: boolean): DynamicSchemeOptions {
+  contrast: number, spec: SpecVersion, platform: DynamicThemingPlatform, dark: boolean): DynamicSchemeOptions {
   return {
     sourceColorHct,
     variant: variant as number,
     contrastLevel: contrast,
     isDark: dark,
-    platform: PLATFORM,
+    platform: platform,
     specVersion: spec,
     ...(tertiary && { tertiaryPalette: tertiary }),
   };
@@ -85,9 +86,9 @@ export function generateLightDarkDynamicScheme(
   const contrast = highContrast ? 1 : params.contrastLevel;
 
   const light = new DynamicScheme(makeDynamicSchemeOptions(
-    sourceColorHct, tertiaryPalette, params.variant, contrast, params.specVersion, false));
+    sourceColorHct, tertiaryPalette, params.variant, contrast, params.specVersion, params.platform, false));
   const dark = new DynamicScheme(makeDynamicSchemeOptions(
-    sourceColorHct, tertiaryPalette, params.variant, contrast, params.specVersion, true));
+    sourceColorHct, tertiaryPalette, params.variant, contrast, params.specVersion, params.platform, true));
 
   return [light, dark];
 }
@@ -97,5 +98,5 @@ export function generateLightDynamicScheme(params: DynamicThemingParameters): Dy
   const tertiaryPalette = params.useTertiaryColor ? TonalPalette.fromHct(Hct.fromInt(argbFromHex(params.tertiaryColor))) : undefined;
 
   return new DynamicScheme(makeDynamicSchemeOptions(
-    sourceColorHct, tertiaryPalette, params.variant, params.contrastLevel, params.specVersion, false));
+    sourceColorHct, tertiaryPalette, params.variant, params.contrastLevel, params.specVersion, params.platform, false));
 }

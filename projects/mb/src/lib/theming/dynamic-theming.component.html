@@ -57,6 +57,18 @@
   </div>
   }
 
+  @if (showPlatform()) {
+  <div class="select-section">
+    <label>Platform</label>
+    <mat-form-field class="spec-select" appearance="fill">
+      <mat-select [(ngModel)]="dtsSvc.platform">
+        <mat-option [value]="'phone'">Phone</mat-option>
+        <mat-option [value]="'watch'">Watch</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  }
+
   @if (showRememberTheme()) {
   <div class="remember-section">
     <label>Remember color theme settings</label>

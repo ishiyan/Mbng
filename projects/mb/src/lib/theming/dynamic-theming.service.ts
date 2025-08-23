@@ -33,7 +33,7 @@ import { LOCAL_STORAGE } from '../local-storage/local-storage';
 import { DynamicColorService } from './dynamic-color.service';
 import { DynamicThemingVariant } from './dynamic-theming-variant.enum';
 import { DYNAMIC_THEMING_STORAGE_PREFIX } from './dynamic-theming-storage-prefix';
-import { SpecVersion, DynamicThemingParameters, generateLightDarkDynamicScheme } from './generate'
+import { SpecVersion, DynamicThemingParameters, DynamicThemingPlatform, generateLightDarkDynamicScheme } from './generate'
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,7 @@ export class DynamicThemingService {
   readonly variant = signal<DynamicThemingVariant>(DynamicThemingVariant.Fidelity);
   readonly contrastLevel = signal<number>(0);
   readonly specVersion = signal<SpecVersion>('2025');
+  readonly platform = signal<DynamicThemingPlatform>('phone');
   readonly rememberTheme = signal<boolean>(false);
 
   readonly currentParameters: Signal<DynamicThemingParameters> = computed(() => {
@@ -61,7 +62,8 @@ export class DynamicThemingService {
       this.useTertiaryColor(),
       this.variant(),
       this.specVersion(),
-      Math.max(-1, Math.min(this.contrastLevel(), 1))
+      Math.max(-1, Math.min(this.contrastLevel(), 1)),
+      this.platform()
     );
   });
 
