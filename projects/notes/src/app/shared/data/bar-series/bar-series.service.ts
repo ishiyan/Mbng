@@ -23,4 +23,10 @@ export class BarSeriesService extends SeriesService {
     barSeriesRdsaXams1d,
     barSeriesRdsaXams1m
   ];
+
+  constructor() {
+    super();
+    // Initialize the signal after construction
+    this.initializeSignal();
+  }
 }

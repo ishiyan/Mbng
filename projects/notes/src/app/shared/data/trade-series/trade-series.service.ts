@@ -11,4 +11,10 @@ export class TradeSeriesService extends SeriesService {
   protected seriesArray: RemovableSeries[] = [
     tradeSeriesRdsaXamsAperiodic
   ];
+
+  constructor() {
+    super();
+    // Initialize the signal after construction
+    this.initializeSignal();
+  }
 }

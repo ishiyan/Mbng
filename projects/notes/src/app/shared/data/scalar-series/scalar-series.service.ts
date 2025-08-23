@@ -13,4 +13,10 @@ export class ScalarSeriesService extends SeriesService {
     scalarSeriesEonia1d,
     scalarSeriesSescSsn1d
   ];
+
+  constructor() {
+    super();
+    // Initialize the signal after construction
+    this.initializeSignal();
+  }
 }

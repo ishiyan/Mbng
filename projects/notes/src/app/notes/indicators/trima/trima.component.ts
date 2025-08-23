@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -15,6 +15,7 @@ import { TriangularMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
+import { BarSeriesService } from '../../../shared/data/bar-series/bar-series.service';
 import { BarSeries } from '../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { simpleMovingAverageNote, triangularMovingAverageNote, frequencyResponseOfAnIndicatorNote } from '../../../notes';
@@ -108,6 +109,9 @@ const getConfigTemplate = (): Configuration => ({
   ]
 })
 export class TrimaComponent implements AfterViewInit {
+  private readonly barSeriesService = inject(BarSeriesService);
+  protected dataSelection: BarSeries = this.barSeriesService.series()[0] as BarSeries;
+
   private indicators: Trima[] = [];
   private initialized = false;
   protected selectedIndex = 0;
@@ -156,7 +160,6 @@ export class TrimaComponent implements AfterViewInit {
   protected smaNote = simpleMovingAverageNote;
   protected trimaNote = triangularMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
-  protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
   protected freqsMaxPeriod = 40;

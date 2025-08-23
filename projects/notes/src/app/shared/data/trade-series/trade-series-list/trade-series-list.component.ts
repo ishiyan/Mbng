@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
 import { TradeSeriesService } from '../trade-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
@@ -13,20 +13,14 @@ import { TradeSeriesLoadComponent } from '../trade-series-load/trade-series-load
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SeriesCardComponent, TradeSeriesLoadComponent]
 })
-export class TradeSeriesListComponent implements OnInit {
-  private tradeSeriesService = inject(TradeSeriesService);
+export class TradeSeriesListComponent {
+  private seriesService = inject(TradeSeriesService);
 
-  protected seriesArray: RemovableSeries[] = this.tradeSeriesService.get();
-
-  /* constructor() {
-    this.seriesArray = this.tradeSeriesService.get();
-  } */
-
-  ngOnInit(): void {
-    this.tradeSeriesService.getObservable().subscribe(x => (this.seriesArray = x as RemovableSeries[]));
-  }
+  protected readonly seriesArray = computed(() => 
+    this.seriesService.series() as RemovableSeries[]
+  );
 
   protected removed(series: RemovableSeries): void {
-    this.tradeSeriesService.remove(series);
+    this.seriesService.remove(series);
   }
 }

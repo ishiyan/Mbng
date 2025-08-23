@@ -1,4 +1,4 @@
-import { computed, inject } from '@angular/core';
+import { computed, inject, Signal } from '@angular/core';
 
 import { DynamicColorService, SparklineConfiguration } from 'mb';
 
@@ -9,8 +9,9 @@ export abstract class SeriesSelect {
 
   protected abstract changed(selection: Series): void;
 
-  protected seriesArray!: Series[];
-  protected selected!: Series;
+  protected abstract readonly seriesArray: Signal<Series[]>;
+  protected abstract readonly selected: Signal<Series | null>;
+
   protected labelText = '';
 
   protected readonly configFill = computed((): SparklineConfiguration => ({

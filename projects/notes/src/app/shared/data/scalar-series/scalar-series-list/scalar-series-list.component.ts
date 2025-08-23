@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
 import { ScalarSeriesService } from '../scalar-series.service';
 import { RemovableSeries } from '../../removable-series.interface';
@@ -13,18 +13,12 @@ import { ScalarSeriesLoadComponent } from '../scalar-series-load/scalar-series-l
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SeriesCardComponent, ScalarSeriesLoadComponent]
 })
-export class ScalarSeriesListComponent implements OnInit {
+export class ScalarSeriesListComponent {
   private seriesService = inject(ScalarSeriesService);
 
-  protected seriesArray: RemovableSeries[] = this.seriesService.get();
-
-  /* constructor() {
-    this.seriesArray = this.seriesService.get();
-  } */
-
-  ngOnInit(): void {
-    this.seriesService.getObservable().subscribe(x => (this.seriesArray = x as RemovableSeries[]));
-  }
+  protected readonly seriesArray = computed(() => 
+    this.seriesService.series() as RemovableSeries[]
+  );
 
   protected removed(series: RemovableSeries): void {
     this.seriesService.remove(series);

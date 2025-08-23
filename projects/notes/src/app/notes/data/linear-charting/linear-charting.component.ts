@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, effect } from '@angular/core';
 
 import { LinearChartComponent } from 'mb';
 
@@ -12,6 +12,10 @@ import { BarSeriesSelectComponent } from '../../../shared/data/bar-series/bar-se
 import { ScalarSeriesSelectComponent } from '../../../shared/data/scalar-series/scalar-series-select/scalar-series-select.component';
 import { TradeSeriesSelectComponent } from '../../../shared/data/trade-series/trade-series-select/trade-series-select.component';
 import { QuoteSeriesSelectComponent } from '../../../shared/data/quote-series/quote-series-select/quote-series-select.component';
+import { BarSeriesService } from '../../../shared/data/bar-series/bar-series.service';
+import { ScalarSeriesService } from '../../../shared/data/scalar-series/scalar-series.service';
+import { TradeSeriesService } from '../../../shared/data/trade-series/trade-series.service';
+import { QuoteSeriesService } from '../../../shared/data/quote-series/quote-series.service';
 import { visualisingFinancialDataWithLinearChartNote } from '../../../notes';
 
 @Component({
@@ -29,31 +33,41 @@ import { visualisingFinancialDataWithLinearChartNote } from '../../../notes';
     ]
 })
 export class LinearChartingComponent {
-  protected lcNote = visualisingFinancialDataWithLinearChartNote;
+  private readonly barSeriesService = inject(BarSeriesService);
+  private readonly scalarSeriesService = inject(ScalarSeriesService);
+  private readonly tradeSeriesService = inject(TradeSeriesService);
+  private readonly quoteSeriesService = inject(QuoteSeriesService);
 
-  protected seriesSelection!: Series;
-  protected barSeriesSelection!: BarSeries;
-  protected scalarSeriesSelection!: ScalarSeries;
-  protected tradeSeriesSelection!: TradeSeries;
-  protected quoteSeriesSelection!: QuoteSeries;
+  protected readonly seriesSelection = signal<Series>([
+    ...this.barSeriesService.series(),
+    ...this.scalarSeriesService.series(),
+    ...this.tradeSeriesService.series(),
+    ...this.quoteSeriesService.series()
+  ][0]);
+  protected readonly barSeriesSelection = signal<BarSeries>(this.barSeriesService.series()[0] as BarSeries);
+  protected readonly scalarSeriesSelection = signal<ScalarSeries>(this.scalarSeriesService.series()[0] as ScalarSeries);
+  protected readonly tradeSeriesSelection = signal<TradeSeries>(this.tradeSeriesService.series()[0] as TradeSeries);
+  protected readonly quoteSeriesSelection = signal<QuoteSeries>(this.quoteSeriesService.series()[0] as QuoteSeries);
+
+  protected readonly lcNote = visualisingFinancialDataWithLinearChartNote;
 
   protected seriesSelectionChanged(series: Series) {
-    this.seriesSelection = series;
+    this.seriesSelection.set(series);
   }
 
   protected barSeriesSelectionChanged(barSeries: BarSeries) {
-    this.barSeriesSelection = barSeries;
+    this.barSeriesSelection.set(barSeries);
   }
 
   protected scalarSeriesSelectionChanged(scalarSeries: ScalarSeries) {
-    this.scalarSeriesSelection = scalarSeries;
+    this.scalarSeriesSelection.set(scalarSeries);
   }
 
   protected tradeSeriesSelectionChanged(tradeSeries: TradeSeries) {
-    this.tradeSeriesSelection = tradeSeries;
+    this.tradeSeriesSelection.set(tradeSeries);
   }
 
   protected quoteSeriesSelectionChanged(quoteSeries: QuoteSeries) {
-    this.quoteSeriesSelection = quoteSeries;
+    this.quoteSeriesSelection.set(quoteSeries);
   }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
@@ -14,6 +14,7 @@ import { predefinedLinePalettes } from 'mb';
 import { HilbertTransformerCycleEstimatorType, HilbertTransformerCycleEstimatorParams } from 'mb';
 import { BarComponent, barComponentValue } from 'mb';
 
+import { BarSeriesService } from '../../../../shared/data/bar-series/bar-series.service';
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { ehlersHilbertTransformerCycleEstimatorNote, exponentialMovingAverageNote } from '../../../../notes';
@@ -117,6 +118,8 @@ const getConfigTemplate = (): Configuration => ({
   ]
 })
 export class HtceComponent implements AfterViewInit {
+  private readonly barSeriesService = inject(BarSeriesService);
+  protected dataSelection: BarSeries = this.barSeriesService.series()[0] as BarSeries;
 
   private indicators: Htce[] = [];
   private initialized = false;
@@ -249,7 +252,6 @@ export class HtceComponent implements AfterViewInit {
   protected htceNote = ehlersHilbertTransformerCycleEstimatorNote;
   protected emaNote = exponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
-  protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected unlocked = true;
 

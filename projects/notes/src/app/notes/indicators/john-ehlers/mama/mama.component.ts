@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -16,6 +16,7 @@ import { predefinedLinePalettes } from 'mb';
 import { MesaAdaptiveMovingAverageLengthParams, MesaAdaptiveMovingAverageSmoothingFactorParams } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
+import { BarSeriesService } from '../../../../shared/data/bar-series/bar-series.service';
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
 import { ehlersMesaAdaptiveMovingAverageNote, exponentialMovingAverageNote } from '../../../../notes';
@@ -122,6 +123,8 @@ const getConfigTemplate = (): Configuration => ({
   ]
 })
 export class MamaComponent implements AfterViewInit {
+  private readonly barSeriesService = inject(BarSeriesService);
+  protected dataSelection: BarSeries = this.barSeriesService.series()[0] as BarSeries;
 
   private indicators: Mama[] = [];
   private initialized = false;
@@ -268,7 +271,6 @@ export class MamaComponent implements AfterViewInit {
   protected mamaNote = ehlersMesaAdaptiveMovingAverageNote;
   protected emaNote = exponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
-  protected dataSelection!: BarSeries;
   protected configuration!: Configuration;
   protected freqs: FrequencyResponseResult[] = [];
   protected freqsMaxPeriod = 40;

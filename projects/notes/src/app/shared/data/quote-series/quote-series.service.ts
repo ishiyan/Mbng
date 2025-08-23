@@ -11,4 +11,10 @@ export class QuoteSeriesService extends SeriesService {
   protected seriesArray: RemovableSeries[] = [
     quoteSeriesSp500Aperiodic
   ];
+
+  constructor() {
+    super();
+    // Initialize the signal after construction
+    this.initializeSignal();
+  }
 }

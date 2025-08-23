@@ -1,4 +1,4 @@
-import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect, computed } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, input, effect, computed, signal } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOptgroup, MatOption } from '@angular/material/core';
@@ -26,7 +26,7 @@ import { Series } from '../series.interface';
     SparklineComponent
   ]
 })
-export class SeriesSelectComponent implements OnInit {
+export class SeriesSelectComponent {
   private dcs = inject(DynamicColorService);
 
   private barSeriesService = inject(BarSeriesService);
@@ -34,12 +34,36 @@ export class SeriesSelectComponent implements OnInit {
   private tradeSeriesService = inject(TradeSeriesService);
   private quoteSeriesService = inject(QuoteSeriesService);
 
-  protected barSeriesArray: Series[] = this.barSeriesService.get();
-  protected scalarSeriesArray: Series[] = this.scalarSeriesService.get();
-  protected tradeSeriesArray: Series[] = this.tradeSeriesService.get();
-  protected quoteSeriesArray: Series[] = this.quoteSeriesService.get();
-  protected allSeriesArray!: Series[];
-  protected selected: Series = this.barSeriesArray[0];
+  protected readonly barSeriesArray = computed(() => this.barSeriesService.series());
+  protected readonly scalarSeriesArray = computed(() => this.scalarSeriesService.series());
+  protected readonly tradeSeriesArray = computed(() => this.tradeSeriesService.series());
+  protected readonly quoteSeriesArray = computed(() => this.quoteSeriesService.series());
+
+  // Computed all series array
+  protected readonly allSeriesArray = computed(() => [
+    ...this.barSeriesArray(),
+    ...this.scalarSeriesArray(),
+    ...this.tradeSeriesArray(),
+    ...this.quoteSeriesArray()
+  ]);
+
+  // Signal for current selection
+  private readonly selectedSignal = signal<Series | null>(null);
+
+  // Computed selected with fallback to first available series
+  protected readonly selected = computed(() => {
+    const current = this.selectedSignal();
+    const available = this.allSeriesArray();
+    
+    // If current selection is still available, use it
+    if (current && available.includes(current)) {
+      return current;
+    }
+    
+    // Otherwise, select first available series
+    return available.length > 0 ? available[0] : null;
+  });
+
   protected labelText = '';
 
   protected readonly configFill = computed((): SparklineConfiguration => ({
@@ -55,53 +79,44 @@ export class SeriesSelectComponent implements OnInit {
   readonly selectionChange = output<Series>();
 
   constructor() {
+    // Handle label changes
     effect(() => {
       const text = this.label();
       if (text && text != null) {
         this.labelText = text;
       }
     });
-  }
 
-  ngOnInit(): void {
-    this.selectionChange.emit(this.selected);
-    this.barSeriesService.getObservable().subscribe(ar => {
-      this.barSeriesArray = ar;
-      this.concatenateAll();
-      if (!this.allSeriesArray.includes(this.selected)) {
-        this.selected = this.allSeriesArray[0];
+    // Initialize with first available series
+    effect(() => {
+      const available = this.allSeriesArray();
+      if (available.length > 0 && !this.selectedSignal()) {
+        this.selectedSignal.set(available[0]);
       }
     });
-    this.scalarSeriesService.getObservable().subscribe(ar => {
-      this.scalarSeriesArray = ar;
-      this.concatenateAll();
-      if (!this.allSeriesArray.includes(this.selected)) {
-        this.selected = this.allSeriesArray[0];
+
+    // Handle selection changes and validate current selection
+    effect(() => {
+      const available = this.allSeriesArray();
+      const current = this.selectedSignal();
+      
+      // If current selection is no longer available, select first available
+      if (current && !available.includes(current) && available.length > 0) {
+        this.selectedSignal.set(available[0]);
       }
     });
-    this.tradeSeriesService.getObservable().subscribe(ar => {
-      this.tradeSeriesArray = ar;
-      this.concatenateAll();
-      if (!this.allSeriesArray.includes(this.selected)) {
-        this.selected = this.allSeriesArray[0];
-      }
-    });
-    this.quoteSeriesService.getObservable().subscribe(ar => {
-      this.quoteSeriesArray = ar;
-      this.concatenateAll();
-      if (!this.allSeriesArray.includes(this.selected)) {
-        this.selected = this.allSeriesArray[0];
+
+    // Emit selection changes
+    effect(() => {
+      const selected = this.selected();
+      if (selected) {
+        this.selectionChange.emit(selected);
       }
     });
   }
 
   protected changed(selection: Series): void {
+    this.selectedSignal.set(selection);
     this.selectionChange.emit(selection);
-  }
-
-  private concatenateAll() {
-    const ar: Series[] = [];
-    this.allSeriesArray = ar.concat(
-      this.barSeriesArray, this.scalarSeriesArray, this.tradeSeriesArray, this.quoteSeriesArray);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, output, inject, ChangeDetectionStrategy, input, effect } from '@angular/core';
+import { Component, output, inject, ChangeDetectionStrategy, input, effect, computed, signal } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
@@ -24,7 +24,7 @@ import { QuoteSeriesService } from '../quote-series.service';
     SparklineComponent
   ]
 })
-export class QuoteSeriesSelectComponent extends SeriesSelect implements OnInit {
+export class QuoteSeriesSelectComponent extends SeriesSelect {
   private quoteSeriesService = inject(QuoteSeriesService);
 
   /** Specifies the label of the form field. */
@@ -33,26 +33,54 @@ export class QuoteSeriesSelectComponent extends SeriesSelect implements OnInit {
   /** Event emitted when the selection has been changed. */
   readonly selectionChange = output<QuoteSeries>();
 
+  // Use signals for reactive state
+  private readonly selectedSignal = signal<Series | null>(null);
+  
+  // Computed series array from service
+  protected readonly seriesArray = computed(() => this.quoteSeriesService.series());
+  
+  // Computed selected series with fallback
+  protected readonly selected = computed(() => {
+    const current = this.selectedSignal();
+    const available = this.seriesArray();
+    
+    // If current selection is still available, use it
+    if (current && available.includes(current)) {
+      return current;
+    }
+    
+    // Otherwise, select first available series
+    return available.length > 0 ? available[0] : null;
+  });
+
+
   constructor() {
     super();
+    
+    // Handle label changes
     effect(() => {
       this.setLabel(this.label());
     });
-    this.seriesArray = this.quoteSeriesService.get();
-    this.selected = this.seriesArray[0];
-  }
-
-  ngOnInit(): void {
-    this.selectionChange.emit(this.selected as QuoteSeries);
-    this.quoteSeriesService.getObservable().subscribe(ar => {
-      this.seriesArray = ar;
-      if (!ar.includes(this.selected)) {
-        this.selected = ar[0];
+    
+    // Initialize with first series
+    effect(() => {
+      const series = this.seriesArray();
+      if (series.length > 0 && !this.selectedSignal()) {
+        this.selectedSignal.set(series[0]);
+      }
+    });
+    
+    // Emit selection changes
+    effect(() => {
+      const selected = this.selected();
+      if (selected) {
+        this.selectionChange.emit(selected as QuoteSeries);
       }
     });
   }
 
   protected changed(selection: Series): void {
+    this.selectedSignal.set(selection);
     this.selectionChange.emit(selection as QuoteSeries);
   }
 }

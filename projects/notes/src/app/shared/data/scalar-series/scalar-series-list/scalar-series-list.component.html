@@ -1,4 +1,4 @@
-@for (series of seriesArray; track series.data) {
+@for (series of seriesArray(); track series.data) {
   <app-series-card [series]="series" [removable]="series.removable"
     (removed)="removed($event);" />
 }
