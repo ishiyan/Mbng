@@ -1,14 +1,11 @@
+<div class=note>
 <h1>{{t2emaNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -134,11 +131,11 @@ for indicators shown above.
 The transition is clearly not linear and you can see the overshooting and undershooting.
 <p></p>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp" />
   <figcaption>Step-up response.</figcaption>
 </figure>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn" />
   <figcaption>Step-down response.</figcaption>
 </figure>
 <p></p>
@@ -150,20 +147,20 @@ Increasing the volume factor decreases the lag, but increases the overshooting a
 Increasing the length increases bothe the lag and the overshooting and undershooting.
 <p></p>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonUpCofig"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonUpCofig" />
   <figcaption>Step-up response for different lengths and equal volume factor.</figcaption>
 </figure>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonUpCofig"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonUpCofig" />
   <figcaption>Step-up response for different volume factor and equal length.</figcaption>
 </figure>
 <p></p>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonDnCofig"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="lengthComparisonDnCofig" />
   <figcaption>Step-down response for different lengths and equal volume factor.</figcaption>
 </figure>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonDnCofig"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="volumeFactorComparisonDnCofig" />
   <figcaption>Step-down response for different volume factor and equal length.</figcaption>
 </figure>
 <p></p>
@@ -184,12 +181,12 @@ Increasing the length increases bothe the lag and the overshooting and undershoo
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [minDeg]="-180" [maxDeg]="180" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude (a) and a phase lag (b) as a function of a period of a cycle.</figcaption>
-  @if (unlocked) {
+  @if (csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -202,7 +199,7 @@ Increasing the length increases bothe the lag and the overshooting and undershoo
         <mat-label>Height</mat-label>
         <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
       </mat-form-field>
-      <app-t2ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);"></app-t2ema-list>
+      <app-t2ema-list [initialLength]="initialFreqs" (changed)="freqsChanged($event);" />
     </mat-expansion-panel>
   }  
 </figure>
@@ -221,32 +218,32 @@ Increasing the length increases bothe the lag and the overshooting and undershoo
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="140" [data]="[t2ema1l, t2ema2l, t2ema3l]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[t2ema1l, t2ema2l, t2ema3l]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'period'" [maxPeriod]="140" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1l, t2ema2l, t2ema3l]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1l, t2ema2l, t2ema3l]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude (a, b) and a phase (c, d) as a function of a period of a cycle (a, c) and as a function of a normalized frequency of a cycle (b, d) for various T2 lengths.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="140" [data]="[t2ema1v, t2ema2v, t2ema3v]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[t2ema1v, t2ema2v, t2ema3v]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(c)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-      [xmode]="'period'" [maxPeriod]="140" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
-      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'period'" [maxPeriod]="140" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(d)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
-      [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
-      [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [xmode]="'frequency'" [minDeg]="-100" [maxDeg]="100" [data]="[t2ema1v, t2ema2v, t2ema3v]"
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude (a, b) and a phase (c, d) as a function of a period of a cycle (a, c) and as a function of a normalized frequency of a cycle (b, d) for various T2 volume factors.</figcaption>
 </figure>
   
@@ -282,4 +279,5 @@ Increasing the length increases bothe the lag and the overshooting and undershoo
 <div class="citation-src"><!-- Website -->Article Archive For Patrick G. Mulloy.
   <em>Technical Analysis of Stocks &amp; Commodities</em>.
   <a href="https://technical.traders.com/archive/combo/display5.asp?author=Patrick%20G%20Mulloy" target="_blank">traders.com</a>
+</div>
 </div>

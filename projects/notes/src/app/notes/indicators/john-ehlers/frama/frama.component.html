@@ -1,15 +1,11 @@
 <div class=note>
 <h1>{{framaNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || csvc.enableChartEditing()) {
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -219,7 +215,7 @@
 </div>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen" />
   <figcaption>Varying the window length <mb-ki>{{"\\ell"}}</mb-ki>.
     The lower pane shows the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
   </figcaption>
@@ -227,7 +223,7 @@
 <p></p>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlpha"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlpha" />
   <figcaption>Varying the slowest smoothing factor <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.
     The lower pane shows the box-counting fractal dimension <mb-ki>{{"\\mathcal{D}"}}</mb-ki>.
   </figcaption>
@@ -256,20 +252,20 @@
   when <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki> is smaller, mirroring the EMA's behavior.
   <p></p>
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLen"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpLen" />
     <figcaption>Step-up response shows almost no dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
   </figure>
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnLen"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnLen" />
     <figcaption>Step-down response shows almost no dependency on <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
   </figure>
   <p></p>
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpAlpha"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUpAlpha" />
     <figcaption>Step-up response dependency on <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.</figcaption>
   </figure>
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnAlpha"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDnAlpha" />
     <figcaption>Step-down response dependency on <mb-ki>{{"\\alpha_{slowest}"}}</mb-ki>.</figcaption>
   </figure>
   <p></p>
@@ -299,14 +295,14 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs" [minPct]="99.97" [maxPct]="100.01"
-     [yFormat]="'.3f'" [yFormatMargin]="12"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.3f'" [yFormatMargin]="12"
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-0.02" [maxDeg]="0.02" [data]="freqs"
-     [yFormat]="'.3f'" [yFormatMargin]="12"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.3f'" [yFormatMargin]="12"
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
 
-  @if (unlocked) {
+  @if (csvc.enableChartEditing()) {
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -319,7 +315,7 @@
       <mat-label>Height</mat-label>
       <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
     </mat-form-field>
-    <app-frama-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-frama-list>
+    <app-frama-list [initial]="initialFreqs" (changed)="freqsChanged($event);" />
   </mat-expansion-panel>
   }
 
@@ -370,11 +366,11 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]" [minPct]="99.97"
-    [maxPct]="100.01" [settingsPanelVisible]="unlocked"
-    [yFormat]="'.2f'" [yFormatMargin]="10"></mb-frequency-response-chart>
+    [maxPct]="100.01" [settingsPanelVisible]="csvc.enableChartEditing()"
+    [yFormat]="'.2f'" [yFormatMargin]="10" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]" [minPct]="99.97" [maxPct]="100.01"
-    [settingsPanelVisible]="unlocked" [yFormat]="'.2f'" [yFormatMargin]="10"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" [yFormat]="'.2f'" [yFormatMargin]="10" />
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various FRAMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
 </figure>
@@ -382,10 +378,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="40" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
-    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaLen4, framaLen8, framaLen16, framaLen32]"
-    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various FRAMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
 </figure>
@@ -405,11 +401,11 @@
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
     [minPct]="99.97" [maxPct]="100.01"
-    [yFormat]="'.2f'" [yFormatMargin]="10" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="10" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]" [minPct]="99.97"
     [maxPct]="100.01"
-    [yFormat]="'.2f'" [yFormatMargin]="10" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="10" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various FRAMA slowest smoothing factors <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.</figcaption>
 </figure>
@@ -417,11 +413,11 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="40" [minDeg]="-0.02" [maxDeg]="0.02" [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
-    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-0.02" [maxDeg]="0.02"
     [data]="[framaAlpha005, framaAlpha01, framaAlpha05, framaAlpha1]"
-    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [yFormat]="'.2f'" [yFormatMargin]="6" [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various FRAMA slowest smoothing factors <mb-ki>{{"\\alpha_{slow}"}}</mb-ki>.</figcaption>
 </figure>

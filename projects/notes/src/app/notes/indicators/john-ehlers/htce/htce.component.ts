@@ -1,7 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, OhlcvChartComponent, SwatchesSelectComponent } from 'mb';
@@ -14,6 +13,7 @@ import { predefinedLinePalettes } from 'mb';
 import { HilbertTransformerCycleEstimatorType, HilbertTransformerCycleEstimatorParams } from 'mb';
 import { BarComponent, barComponentValue } from 'mb';
 
+import { ContentSettingsService } from '../../../../shared/content-settings/content-settings.service';
 import { BarSeriesService } from '../../../../shared/data/bar-series/bar-series.service';
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
@@ -22,8 +22,6 @@ import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { HtceInput } from './htce-input.interface';
 import { Htce } from './htce.interface';
 import { HtceListComponent } from './htce-list.component';
-
-const isUnlocked = false;
 
 const calculateHtce = (bars: Bar[], htce: HilbertTransformerCycleEstimator, barComponent: BarComponent): Scalar[] => {
   const scalars: Scalar[] = [];
@@ -104,7 +102,6 @@ const getConfigTemplate = (): Configuration => ({
   imports: [
     FormsModule,
     MatIcon,
-    MatSlideToggle,
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
@@ -120,9 +117,10 @@ const getConfigTemplate = (): Configuration => ({
 export class HtceComponent implements AfterViewInit {
   private readonly barSeriesService = inject(BarSeriesService);
   protected dataSelection: BarSeries = this.barSeriesService.series()[0] as BarSeries;
+  protected readonly csvc = inject(ContentSettingsService);
 
   private indicators: Htce[] = [];
-  private initialized = false;
+  protected initialized = false;
   protected selectedIndex = 0;
 
   private readonly indicatorsLen: Htce[] = [
@@ -238,14 +236,6 @@ export class HtceComponent implements AfterViewInit {
     barComponent: BarComponent.Median, showStyle: true
   };
 
-  protected get unLocked(): boolean {
-    return this.unlocked;
-  }
-  protected set unLocked(value: boolean) {
-    this.unlocked = value;
-    this.render();
-  }
-
   protected palettes: string[][] = predefinedLinePalettes(
     Math.max(3, this.initialIndicators.params.length));
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
@@ -253,15 +243,23 @@ export class HtceComponent implements AfterViewInit {
   protected emaNote = exponentialMovingAverageNote;
   protected froaiNote = frequencyResponseOfAnIndicatorNote;
   protected configuration!: Configuration;
-  protected unlocked = true;
 
   protected configurationParamsLen!: Configuration;
   protected configurationParamsAlphaQuad!: Configuration;
   protected configurationParamsAlphaPer!: Configuration;
 
+  constructor() {
+    effect(() => {
+      void this.csvc.enableChartEditing(); // Read signal to make effect reactive
+      this.indicatorPaletteChanged(this.selectedPalette);
+      if (this.initialized) {
+        this.render();
+      }
+    });
+  }
+
   ngAfterViewInit() {
     this.initialized = true;
-    this.unlocked = isUnlocked;
     this.render();
   }
 
@@ -309,7 +307,7 @@ export class HtceComponent implements AfterViewInit {
 
   private prepareConfig(mnemonic: string, bars: Bar[], indicators: Htce[]): Configuration {
     const cloned = getConfigTemplate();
-    cloned.menuVisible = this.unlocked;
+    cloned.menuVisible = this.csvc.enableChartEditing();
     cloned.ohlcv.name = mnemonic;
     cloned.ohlcv.data = bars;
 

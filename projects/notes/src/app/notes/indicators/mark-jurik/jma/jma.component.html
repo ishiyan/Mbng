@@ -1,14 +1,11 @@
+<div class=note>
 <h1>{{jmaNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || this.csvc.enableChartEditing()) {
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -143,13 +140,13 @@
 </div>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLe"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLe" />
   <figcaption>Varying the length.
   </figcaption>
 </figure>
 <p></p>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsPh"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsPh" />
   <figcaption>Varying the phase.
   </figcaption>
 </figure>
@@ -203,12 +200,12 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [minDeg]="-150" [maxDeg]="150" [data]="freqs"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
 
-  @if (unlocked) {
+  @if (this.csvc.enableChartEditing()) {
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -249,10 +246,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various JMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
 </figure>
@@ -260,10 +257,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaLe2, jmaLe5, jmaLe10, jmaLe20]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various JMA lengths <mb-ki>{{"\\ell"}}</mb-ki>.</figcaption>
 </figure>
@@ -279,10 +276,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a period of a cycle (a) and as a function of a normalized frequency of a
     cycle (b) for various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
 </figure>
@@ -290,10 +287,10 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'" [xmode]="'period'"
     [maxPeriod]="40" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDeg'"
     [xmode]="'frequency'" [minDeg]="-140" [maxDeg]="20" [data]="[jmaPhMin100, jmaPh0, jmaPh100]"
-    [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="this.csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave (a) and as a function of a normalized frequency of a wave for
     various JMA phases <mb-ki>{{"\\phi"}}</mb-ki>.</figcaption>
 </figure>
@@ -354,5 +351,4 @@
   <em>JMA code</em>. Retrieved April 12, 2025, from
   <a href="https://forum.tslab.ru/ubb/ubbthreads.php?ubb=showflat&Number=5796#Post5796" target="_blank" rel="noopener noreferrer">tslab.com</a>
 </div>
-
-
+</div>

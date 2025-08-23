@@ -1,14 +1,11 @@
+<div class=note>
 <h1>{{htceNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || csvc.enableChartEditing()) {
   <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
     <mat-expansion-panel-header>
       <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -391,21 +388,21 @@
 </div>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsLen" />
   <figcaption>Varying the estimator smoothing length.
   </figcaption>
 </figure>
 <p></p>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlphaQuad"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlphaQuad" />
   <figcaption>Varying the estimator <mb-ki>{{"\\alpha"}}</mb-ki> quadrature.
   </figcaption>
 </figure>
 <p></p>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlphaPer"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationParamsAlphaPer" />
   <figcaption>Varying the estimator <mb-ki>{{"\\alpha"}}</mb-ki> period.
   </figcaption>
 </figure>
@@ -431,4 +428,5 @@
 <div class="citation"><!-- @Book Jeffrey2008 -->Jeffrey, A., &amp; Dai, H. H. (2008).
   <em>Handbook of mathematical formulas and integrals</em>. (4th ed., p. 592). San Diego, CA: Elsevier/Academic Press.
   <a href="https://books.google.com/books?id=JokQD5nK4LMC" target="_blank">google books</a>
+</div>
 </div>

@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 
 import { Bar, generateStep, /*generateStepWithNoise,*/ OhlcvChartComponent, SwatchesSelectComponent, FrequencyResponseChartComponent } from 'mb';
@@ -15,6 +14,7 @@ import { FractalAdaptiveMovingAverage } from 'mb';
 import { predefinedLinePalettes } from 'mb';
 import { FrequencyResponse, FrequencyResponseResult, BarComponent, barComponentValue } from 'mb';
 
+import { ContentSettingsService } from '../../../../shared/content-settings/content-settings.service';
 import { BarSeriesService } from '../../../../shared/data/bar-series/bar-series.service';
 import { BarSeries } from '../../../../shared/data/bar-series/bar-series.interface';
 import { BarSeriesSelectComponent } from '../../../../shared/data/bar-series/bar-series-select/bar-series-select.component';
@@ -24,7 +24,6 @@ import { FramaInput } from './frama-input.interface';
 import { Frama } from './frama.interface';
 import { FramaListComponent } from './frama-list.component';
 
-const isUnlocked = false;
 const sl = 4096;
 const stepMin = 10;
 const stepMax = 90;
@@ -154,7 +153,6 @@ const getConfigTemplate = (): Configuration => ({
     MatLabel,
     MatInput,
     MatIcon,
-    MatSlideToggle,
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
@@ -171,9 +169,10 @@ const getConfigTemplate = (): Configuration => ({
 export class FramaComponent implements AfterViewInit {
   private readonly barSeriesService = inject(BarSeriesService);
   protected dataSelection: BarSeries = this.barSeriesService.series()[0] as BarSeries;
+  protected readonly csvc = inject(ContentSettingsService);
 
   private indicators: Frama[] = [];
-  private initialized = false;
+  protected initialized = false;
   protected selectedIndex = 0;
 
   private readonly indicatorsLen: Frama[] = [
@@ -251,14 +250,6 @@ export class FramaComponent implements AfterViewInit {
     }
   }
 
-  protected get unLocked(): boolean {
-    return this.unlocked;
-  }
-  protected set unLocked(value: boolean) {
-    this.unlocked = value;
-    this.render();
-  }
-
   protected palettes: string[][] = predefinedLinePalettes(this.initialIndicators.length.length);
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
   protected framaNote = ehlersFractalAdaptiveMovingAverageNote;
@@ -268,7 +259,6 @@ export class FramaComponent implements AfterViewInit {
   protected freqs: FrequencyResponseResult[] = [];
   protected freqsMaxPeriod = 40;
   protected freqsHeight = 300;
-  protected unlocked = true;
 
   protected configurationParamsLen!: Configuration;
   protected configurationParamsAlpha!: Configuration;
@@ -295,9 +285,18 @@ export class FramaComponent implements AfterViewInit {
   protected framaAlpha05 = calculateFfr(16, 0.05);
   protected framaAlpha1 = calculateFfr(16, 0.1);
 
+  constructor() {
+    effect(() => {
+      void this.csvc.enableChartEditing(); // Read signal to make effect reactive
+      this.indicatorPaletteChanged(this.selectedPalette);
+      if (this.initialized) {
+        this.render();
+      }
+    });
+  }
+
   ngAfterViewInit() {
     this.initialized = true;
-    this.unlocked = isUnlocked;
     this.render();
   }
 
@@ -360,7 +359,7 @@ export class FramaComponent implements AfterViewInit {
 
   private prepareConfig(mnemonic: string, bars: Bar[], doStep: boolean, indicators: Frama[]): Configuration {
     const cloned = getConfigTemplate();
-    cloned.menuVisible = this.unlocked;
+    cloned.menuVisible = this.csvc.enableChartEditing();
     cloned.ohlcv.name = mnemonic;
     cloned.ohlcv.data = bars;
 

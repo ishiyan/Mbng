@@ -1,14 +1,11 @@
+<div class=note>
 <h1>{{trimaNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -31,14 +28,11 @@
 <div style="width:100%">
   <figure class="figleft">
     (a)
-    <mb-svg-viewer src="assets/indicators/trima-weights-6.svg" [scaleToContainer]="true">
-    </mb-svg-viewer>
+    <mb-svg-viewer src="assets/indicators/trima-weights-6.svg" [scaleToContainer]="true" />
     (b)
-    <mb-svg-viewer src="assets/indicators/trima-weights-5.svg" [scaleToContainer]="true">
-    </mb-svg-viewer>
+    <mb-svg-viewer src="assets/indicators/trima-weights-5.svg" [scaleToContainer]="true" />
     (c)
-    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true">
-    </mb-svg-viewer>
+    <mb-svg-viewer src="assets/indicators/sma-weights-5.svg" [scaleToContainer]="true" />
 
     <figcaption>Weight coefficients of the (a) TRIMA(6), (b) TRIMA(5) and (c) SMA(5).</figcaption>
   </figure>
@@ -105,11 +99,9 @@
 
   <figure class="figleft">
     (a)
-    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-6.svg" [scaleToContainer]="true">
-    </mb-svg-viewer>
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-6.svg" [scaleToContainer]="true" />
     (b)
-    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-5.svg" [scaleToContainer]="true">
-    </mb-svg-viewer>
+    <mb-svg-viewer src="assets/indicators/trima-sma-over-sma-5.svg" [scaleToContainer]="true" />
 
     <figcaption>SMA over SMA calculation grid for the even and odd length of the TRIMA: (a) TRIMA(6) and (b) TRIMA(5).</figcaption>
   </figure>
@@ -136,11 +128,11 @@
   <p></p>
 
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp" />
     <figcaption>Step-up response.</figcaption>
   </figure>
   <figure class="figwide">
-    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
+    <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn" />
     <figcaption>Step-down response.</figcaption>
   </figure>
   <p></p>
@@ -173,12 +165,12 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="maxPeriod" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'period'"
     [maxPeriod]="maxPeriod" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
 
-  @if (unlocked) {
+  @if (csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -191,7 +183,7 @@
         <mat-label>Height</mat-label>
         <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
       </mat-form-field>
-      <app-trima-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-trima-list>
+      <app-trima-list [initial]="initialFreqs" (changed)="freqsChanged($event);" />
     </mat-expansion-panel>
   }
 
@@ -394,40 +386,41 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4, trima6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5, trima7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima2, trima4, trima6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[trima3, trima5, trima7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima2, trima4]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="15" [data]="[trima3, trima5]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[trima2, trima4]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[trima3, trima5]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) TRIMA length.</figcaption>
 </figure>
 <p></p>
+</div>

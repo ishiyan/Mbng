@@ -1,14 +1,11 @@
+<div class=note>
 <h1>{{smaNote.title}}</h1>
-
-<mat-slide-toggle class="slide-toggle" [color]="'primary'" [(ngModel)]="unLocked">
-  <mat-icon fontSet="material-symbols-outlined" class="icon">tune</mat-icon>
-</mat-slide-toggle>
 <app-bar-series-select label="" (selectionChange)="dataSelectionChanged($event)" />
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configuration" />
 
-  @if (unlocked) {
+  @if (!initialized || csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -86,11 +83,11 @@
 </div>
 
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepUp" />
   <figcaption>Step-up response.</figcaption>
 </figure>
 <figure class="figwide">
-  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn"></mb-ohlcv-chart>
+  <mb-ohlcv-chart class="ohlcv-chart-study" [configuration]="configurationStepDn" />
   <figcaption>Step-down response.</figcaption>
 </figure>
 <p></p>
@@ -122,12 +119,12 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="freqsH" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [maxPeriod]="maxPeriod" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="freqsH" [ymode]="'phaseDegUnwrapped'" [xmode]="'frequency'"
     [maxPeriod]="maxPeriod" [data]="freqs"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
 
-  @if (unlocked) {
+  @if (csvc.enableChartEditing()) {
     <mat-expansion-panel expanded="false" style="margin-bottom: 1em;">
       <mat-expansion-panel-header>
         <mat-panel-title><mat-icon fontSet="material-symbols-outlined">tune</mat-icon></mat-panel-title>
@@ -140,7 +137,7 @@
         <mat-label>Height</mat-label>
         <input matInput type="number" min="100" max="1024" step="1" [(ngModel)]="freqsH">
       </mat-form-field>
-      <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);"></app-sma-list>
+      <app-sma-list [initial]="initialFreqs" (changed)="freqsChanged($event);" />
     </mat-expansion-panel>
   }
 
@@ -164,40 +161,40 @@
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma2, sma4, sma6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma3, sma5, sma7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a period of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[sma2, sma4, sma6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'amplitudePct'"
     [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>An amplitude as a function of a normalized frequency of a cycle for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma2, sma4, sma6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'period'" [maxPeriod]="40" [data]="[sma3, sma5, sma7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a period of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 
 <figure class="figwide">
   <mb-frequency-response-chart [subfig]="'(a)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[sma2, sma4, sma6]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <mb-frequency-response-chart [subfig]="'(b)'" [width]="'100%'" [height]="200" [ymode]="'phaseDegUnwrapped'"
     [xmode]="'frequency'" [data]="[sma3, sma5, sma7]"
-  [settingsPanelVisible]="unlocked"></mb-frequency-response-chart>
+    [settingsPanelVisible]="csvc.enableChartEditing()" />
   <figcaption>A phase as a function of a normalized frequency of a wave for even (a) and odd (b) SMA length.</figcaption>
 </figure>
 <p></p>
@@ -355,4 +352,5 @@
 <div><!-- @Book Oppenheim2009 -->Oppenheim, A. V., Schafer, R. W., Yoder, M. A., &amp; Padgett, W. T. (2009).
   <em>Discrete-time signal processing</em>. (3rd ed., p. 1120). Upper Saddle River, NJ: Pearson.
   <a href="https://books.google.com/books?id=EaMuAAAAQBAJ" target="_blank">google books</a>
+</div>
 </div>
