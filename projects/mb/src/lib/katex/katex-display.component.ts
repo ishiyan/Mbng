@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, afterNextRender, inject, signal, DOCUMENT } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, afterNextRender, inject, signal, effect } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { KatexOptions } from 'katex';
 
@@ -26,7 +26,6 @@ const empty = '';
   imports: [KatexDirective]
 })
 export class KatexDisplayComponent implements AfterContentInit {
-  private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly element = inject(ElementRef);
   private readonly settings = inject(KatexSettingsService);
@@ -39,15 +38,17 @@ export class KatexDisplayComponent implements AfterContentInit {
     afterNextRender({
       write: () => {
         this.render();
-
-        this.settings.tagLeftObservable().subscribe({next: () => {
-          this.options.set(this.initialSettings());
-        }});
-
-        this.settings.equationLeftObservable().subscribe({next: () => {
-          this.options.set(this.initialSettings());
-        }});
       }
+    });
+
+    // Replace subscriptions with effects
+    effect(() => {
+      // Read the signals to make effect reactive
+      const tagLeft = this.settings.tagLeft();
+      const equationLeft = this.settings.equationLeft();
+      
+      // Update options when settings change
+      this.options.set(this.initialSettings());
     });
   }
 
@@ -59,7 +60,7 @@ export class KatexDisplayComponent implements AfterContentInit {
   }
 
   private render () {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
@@ -70,6 +71,10 @@ export class KatexDisplayComponent implements AfterContentInit {
   }
 
   private initialSettings(): KatexOptions {
-    return { ...defaultOptions, leqno: this.settings.tagLeft, fleqn: this.settings.equationLeft };
+    return { 
+      ...defaultOptions, 
+      leqno: this.settings.tagLeft(), 
+      fleqn: this.settings.equationLeft() 
+    };
   }
 }

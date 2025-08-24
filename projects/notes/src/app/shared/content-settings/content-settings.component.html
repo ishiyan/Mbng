@@ -1,19 +1,19 @@
 @if (enableChartEditing()) {
 <div class="setting">
   <label class="setting-label">Enable chart editing</label>
-  <mat-slide-toggle (checked)="contentSettings.enableChartEditing" (change)="contentSettings.enableChartEditing.set($event.checked)" />
+  <mat-slide-toggle (checked)="contentSettings.enableChartEditing()" (change)="contentSettings.enableChartEditing.set($event.checked)" />
 </div>
 }
 @if (LeftAlignedEquations()) {
 <div class="setting">
   <label class="setting-label">Left-aligned equations</label>
-  <mat-slide-toggle (checked)="katexSettings.equationLeft" (change)="katexSettings.equationLeft = $event.checked" />
+  <mat-slide-toggle (checked)="katexSettings.equationLeft()" (change)="katexSettings.equationLeft.set($event.checked)" />
 </div>
 }
 @if (leftAlignedEquationNumbers()) {
 <div class="setting">
   <label class="setting-label">Left-aligned equation numbers</label>
-  <mat-slide-toggle (checked)="katexSettings.tagLeft" (change)="katexSettings.tagLeft = $event.checked" />
+  <mat-slide-toggle (checked)="katexSettings.tagLeft()" (change)="katexSettings.tagLeft.set($event.checked)" />
 </div>
 }
 @if (rememberPreferences()) {
