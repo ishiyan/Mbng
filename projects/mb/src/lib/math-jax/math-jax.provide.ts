@@ -8,6 +8,7 @@ import { MathJaxConfiguration } from './math-jax.configuration';
 export function provideMathJax(
     mathJaxConfiguration: MathJaxConfiguration = {
       version: '3',
+      //version: '4',
       config: 'tex-svg',
       online: true
     }

@@ -102,9 +102,15 @@ export class MathJaxService {
       loaderScript.type = 'text/javascript';
       loaderScript.async = true;
       if (conf.online) {
+        // ver 3
         loaderScript.src = `https://cdn.jsdelivr.net/npm/mathjax@${conf.version}/es5/${conf.config}.js`;
+        // ver 4
+        //loaderScript.src = `https://cdn.jsdelivr.net/npm/mathjax@${conf.version}/${conf.config}.js`;
       } else {
+        // ver 3
         loaderScript.src = `assets/mathjax/es5/${conf.config}.js`;
+        // ver 4
+        //loaderScript.src = `assets/mathjax/${conf.config}.js`;
       }
 
       // When the script is loaded, resolve the promise.

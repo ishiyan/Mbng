@@ -10,8 +10,9 @@ import { routes } from './app.routes';
 
 const mathJaxConfig: MathJaxConfiguration = {
   version: '3',
+  //version: '4',
   config: 'tex-svg',
-  online: false
+  online: true
 };
 
 export const appConfig: ApplicationConfig = {
