@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 import { DynamicThemingComponent, LightDarkPreferenceComponent } from 'mb'
 import { DynamicThemingParameters, downloadSCSS } from 'mb'
+import { DynamicThemingPreset, DynamicThemingPresetService } from 'mb';
 
 @Component({
   selector: 'app-theme-settings',
@@ -18,10 +19,13 @@ import { DynamicThemingParameters, downloadSCSS } from 'mb'
   ]
 })
 export class ThemeSettingsComponent {
+  private presetSvc = inject(DynamicThemingPresetService);
   protected params: DynamicThemingParameters|null = null;
   
   // Input signals for controlling visibility
   dynamicTheming = input<boolean>(true);
+  dynamicThemingShowPresets = input<boolean>(true);
+  dynamicThemingShowGenerator = input<boolean>(true);
   dynamicThemingShowTertiary = input<boolean>(true);
   dynamicThemingShowContrast = input<boolean>(true);
   dynamicThemingShowVariant = input<boolean>(true);
@@ -30,6 +34,10 @@ export class ThemeSettingsComponent {
   dynamicThemingShowRememberTheme = input<boolean>(true);
   lightDark = input<boolean>(true);
   downloadThemeSCSS = input<boolean>(true);
+
+  protected readonly themePresets = signal<DynamicThemingPreset[]>(
+    this.presetSvc.createDefaultPresets()
+  );
 
   protected downloadScssStyle(): void {
     if (this.params) {

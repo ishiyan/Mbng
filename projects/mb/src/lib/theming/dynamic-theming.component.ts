@@ -10,6 +10,7 @@ import { DynamicColorService } from './dynamic-color.service';
 import { DynamicThemingService } from './dynamic-theming.service';
 import { DynamicThemingVariant } from './dynamic-theming-variant.enum';
 import { DynamicThemingParameters } from './generate';
+import { DynamicThemingPreset } from './dynamic-theming-preset.interface';
 
 @Component({
   selector: 'mb-dynamic-theming',
@@ -23,7 +24,7 @@ import { DynamicThemingParameters } from './generate';
     MatOption,
     MatSlideToggle,
     MatSlider,
-    MatSliderThumb,
+    MatSliderThumb
   ]
 })
 export class DynamicThemingComponent {
@@ -36,17 +37,35 @@ export class DynamicThemingComponent {
   parametersChange = output<DynamicThemingParameters>();
   
   // Input signals for controlling visibility
+  showPresets = input<boolean>(true);
+  showGenerator = input<boolean>(true);
   showTertiary = input<boolean>(true);
   showContrast = input<boolean>(true);
   showVariant = input<boolean>(true);
   showSpecVersion = input<boolean>(true);
   showPlatform = input<boolean>(true);
   showRememberTheme = input<boolean>(true);
+  
+  // Input for theme presets
+  presets = input<DynamicThemingPreset[]>([]);
 
   constructor() {
     effect(() => {
       const currentParams = this.dtsSvc.currentParameters();
       this.parametersChange.emit(currentParams);
     });
+  }
+
+  protected applyPreset(preset: DynamicThemingPreset): void {
+    const params = preset.parameters;
+    
+    // Apply all parameters from the preset
+    this.dtsSvc.primaryColor.set(params.primaryColor);
+    this.dtsSvc.tertiaryColor.set(params.tertiaryColor);
+    this.dtsSvc.useTertiaryColor.set(params.useTertiaryColor);
+    this.dtsSvc.variant.set(params.variant);
+    this.dtsSvc.contrastLevel.set(params.contrastLevel);
+    this.dtsSvc.specVersion.set(params.specVersion);
+    this.dtsSvc.platform.set(params.platform);
   }
 }

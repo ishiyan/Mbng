@@ -1,8 +1,27 @@
 <div class="wrapper">
+  @if (showPresets() && presets().length > 0) {
+  <div class="presets-section">
+    <div class="presets-grid">
+      @for (preset of presets(); track preset.name) {
+        <button class="preset-button" (click)="applyPreset(preset)">
+          <div class="preset-colors">
+            <div class="color-swatch primary" [style.background-color]="preset.primaryColor"></div>
+            <div class="color-swatch secondary" [style.background-color]="preset.secondaryColor"></div>
+            <div class="color-swatch tertiary" [style.background-color]="preset.tertiaryColor"></div>
+          </div>
+          @if (preset.displayName && preset.displayName.length > 0) {
+            <span class="preset-name">{{ preset.displayName }}</span>
+          }
+        </button>
+      }
+    </div>
+  </div>
+  }
+
+  @if (showGenerator()) {
   <div class="color-section">
     <label>Primary</label>
     <input type="color" [(ngModel)]="dtsSvc.primaryColor" class="color-picker" />
-
     @if (showTertiary()) {
       <label>Tertiary</label>
       <mat-slide-toggle [(ngModel)]="dtsSvc.useTertiaryColor" />
@@ -74,5 +93,6 @@
     <label>Remember color theme settings</label>
     <mat-slide-toggle [(ngModel)]="dtsSvc.rememberTheme" />
   </div>
+  }
   }
 </div>
