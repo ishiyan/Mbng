@@ -1,5 +1,4 @@
-import { Component, input, output, signal, ChangeDetectionStrategy, ElementRef, inject, viewChild, effect } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, input, output, signal, ChangeDetectionStrategy, ElementRef, inject, viewChild } from '@angular/core';
 import { OverlayModule, Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 
@@ -14,21 +13,23 @@ import { ColorDiscComponent } from './color-disc.component';
 })
 export class ColorDiscPickerComponent {
   private overlay = inject(Overlay);
-  private document = inject(DOCUMENT);
 
   private trigger = viewChild.required<ElementRef>('trigger');
   private overlayRef: OverlayRef | null = null;
   private isOpen = signal(false);
 
   // Input properties
+  readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-lightness');
   readonly diameter = input<number>(280);
   readonly ringWidth = input<number>(24);
   readonly handleSize = input<number>(12);
   readonly resolution = input<number>(2);
-  readonly autoResolution = input<boolean>(false); // Enable auto-detection
+  /** Enable auto-detection */
+  readonly autoResolution = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly hexValue = input<string>('#ff4081');
-  readonly backgroundColor = input<string>('auto'); // 'auto', 'transparent', or any CSS color
+  /** 'auto', 'transparent', or any CSS color */
+  readonly backgroundColor = input<string>('auto');
   readonly showValue = input<boolean>(true);
   readonly closeOnSelect = input<boolean>(false);
 
@@ -37,9 +38,6 @@ export class ColorDiscPickerComponent {
   readonly colorChanged = output<{ hex: string; hsl: [number, number, number] }>();
   readonly pickerOpened = output<void>();
   readonly pickerClosed = output<void>();
-
-  constructor() {
-  }
 
   protected togglePicker(): void {
     if (this.disabled()) return;
@@ -73,8 +71,27 @@ export class ColorDiscPickerComponent {
     });
 
     // Close when backdrop is clicked (this handles click-outside)
+    // Handle both click and touchstart for mobile compatibility
     this.overlayRef.backdropClick().subscribe(() => {
       this.closePicker();
+    });
+
+    // Add additional touch event handling for mobile
+    this.overlayRef.attachments().subscribe(() => {
+      const backdropElement = this.overlayRef?.backdropElement;
+      if (backdropElement) {
+        // Add both mouse and touch events
+        backdropElement.addEventListener('touchstart', (event) => {
+          event.preventDefault();
+          this.closePicker();
+        }, { passive: false });
+
+        // Also handle touchend as fallback
+        backdropElement.addEventListener('touchend', (event) => {
+          event.preventDefault();
+          this.closePicker();
+        }, { passive: false });
+      }
     });
 
     // Close on Escape key
@@ -88,6 +105,7 @@ export class ColorDiscPickerComponent {
     const componentRef = this.overlayRef.attach(colorDiscPortal);
 
     // Configure the color disc
+    componentRef.setInput('layout', this.layout());
     componentRef.setInput('diameter', this.diameter());
     componentRef.setInput('ringWidth', this.ringWidth());
     componentRef.setInput('handleSize', this.handleSize());
@@ -98,16 +116,18 @@ export class ColorDiscPickerComponent {
     componentRef.setInput('backgroundColor', this.backgroundColor());
 
     // Handle color changes - only close if closeOnSelect is true
-    componentRef.instance.hexValueChange.subscribe(hex => {
+    componentRef.instance.hexValueChange.subscribe((hex) => {
       this.hexValueChange.emit(hex);
-      
-      // Only close if closeOnSelect is true
+
+      // Close if closeOnSelect is true
       if (this.closeOnSelect()) {
-        this.closePicker();
+        setTimeout(() => {
+          this.closePicker();
+        }, 0);
       }
     });
 
-    componentRef.instance.colorChanged.subscribe(colorEvent => {
+    componentRef.instance.colorChanged.subscribe((colorEvent) => {
       this.colorChanged.emit(colorEvent);
     });
 

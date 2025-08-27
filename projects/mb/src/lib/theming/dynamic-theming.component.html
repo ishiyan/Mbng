@@ -22,11 +22,11 @@
   <div class="color-section">
     <label>Primary</label>
   <mb-color-disc-picker
+    [layout]="'outer-hue'"
     [hexValue]="dtsSvc.primaryColor()"
     (hexValueChange)="dtsSvc.primaryColor.set($event)"
     [showValue]="false"
-    [closeOnSelect]="false"
-    [diameter]="240"
+    [diameter]="300"
     [autoResolution]="true">
   </mb-color-disc-picker>
     @if (showTertiary()) {
@@ -34,11 +34,11 @@
       <mat-slide-toggle [(ngModel)]="dtsSvc.useTertiaryColor" />
       @if (dtsSvc.useTertiaryColor()) {
         <mb-color-disc-picker 
+          [layout]="'outer-lightness'"
           [hexValue]="dtsSvc.tertiaryColor()"
           (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
           [showValue]="false"
-          [closeOnSelect]="false"
-          [diameter]="240"
+          [diameter]="300"
           [autoResolution]="true">
         </mb-color-disc-picker>
       }

@@ -20,14 +20,18 @@ export class ColorDiscComponent implements OnDestroy {
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   // Input properties
+  readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-lightness');
   readonly diameter = input<number>(280);
   readonly ringWidth = input<number>(24);
   readonly handleSize = input<number>(12);
-  readonly resolution = input<number>(1); // For high-DPI displays
-  readonly autoResolution = input<boolean>(false); // Enable auto-detection
+  /** Resolution for high-DPI displays */
+  readonly resolution = input<number>(1);
+  /** Enable auto-detection */
+  readonly autoResolution = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly hexValue = input<string>('#ff4081');
-  readonly backgroundColor = input<string>('auto'); // 'auto', 'transparent', 'var(--mat-sys-primary)', or any CSS color
+  /** 'auto', 'transparent', or any CSS color */
+  readonly backgroundColor = input<string>('auto');
 
   // Output events
   readonly hexValueChange = output<string>();
@@ -79,8 +83,11 @@ export class ColorDiscComponent implements OnDestroy {
     });
   }
 
+  private abortController = new AbortController();
+
   ngOnDestroy(): void {
-    this.removeEventListeners();
+    // This will automatically remove all event listeners added with this signal
+    this.abortController.abort();
   }
 
   private initializeCanvas(): void {
@@ -266,12 +273,21 @@ export class ColorDiscComponent implements OnDestroy {
       this.ctx.fillRect(0, 0, canvas.width / this.effectiveResolution(), canvas.height / this.effectiveResolution());
     }
 
-    this.renderColorWheel();
-    this.renderLightnessRing();
+    const layoutMode = this.layout();
+    if (layoutMode === 'outer-lightness') {
+      // Inner hue/saturation wheel, outer lightness ring
+      this.renderInnerColorWheel();
+      this.renderOuterLightnessRing();
+    } else {
+      // Inner saturation/lightness area, outer hue ring
+      this.renderInnerSaturationLightness();
+      this.renderOuterHueRing();
+    }
+
     this.renderHandles();
   }
 
-  private renderColorWheel(): void {
+  private renderInnerColorWheel(): void {
     if (!this.ctx || !this.geometry) return;
 
     const { center, wheelRadius } = this.geometry;
@@ -299,7 +315,7 @@ export class ColorDiscComponent implements OnDestroy {
     }
   }
 
-  private renderLightnessRing(): void {
+  private renderOuterLightnessRing(): void {
     if (!this.ctx || !this.geometry) return;
 
     const { center, ringInnerRadius, ringOuterRadius } = this.geometry;
@@ -320,23 +336,93 @@ export class ColorDiscComponent implements OnDestroy {
     }
   }
 
+  private renderOuterHueRing(): void {
+    if (!this.ctx || !this.geometry) return;
+
+    const { center, ringInnerRadius, ringOuterRadius } = this.geometry;
+    const [, saturation, lightness] = this.currentHsl();
+    const segments = 360;
+
+    for (let i = 0; i < segments; i++) {
+      const hue = i;
+      const startAngle = (i * 2 * Math.PI) / segments;
+      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+
+      this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      this.ctx.beginPath();
+      this.ctx.arc(center.x, center.y, ringOuterRadius, startAngle, endAngle);
+      this.ctx.arc(center.x, center.y, ringInnerRadius, endAngle, startAngle, true);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+  }
+
+  private renderInnerSaturationLightness(): void {
+    if (!this.ctx || !this.geometry) return;
+
+    const { center, wheelRadius } = this.geometry;
+    const [hue] = this.currentHsl();
+    const segments = 360; // Angular segments for lightness
+    const rings = 50;     // Radial segments for saturation
+
+    for (let angleSegment = 0; angleSegment < segments; angleSegment++) {
+      // Map angle to saturation (0° = 0% saturation, 360° = 100% saturation)
+      const saturation = (angleSegment / segments) * 100;
+      const startAngle = (angleSegment * 2 * Math.PI) / segments;
+      const endAngle = ((angleSegment + 1) * 2 * Math.PI) / segments;
+
+      for (let radiusSegment = 0; radiusSegment < rings; radiusSegment++) {
+        // Map radius to lightness (center = 100% lightness, edge = 0% lightness)
+        const lightness = 100 - ((radiusSegment + 1) / rings) * 100;
+        const innerRadius = (radiusSegment / rings) * wheelRadius;
+        const outerRadius = ((radiusSegment + 1) / rings) * wheelRadius;
+
+        this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        this.ctx.beginPath();
+        this.ctx.arc(center.x, center.y, outerRadius, startAngle, endAngle);
+        this.ctx.arc(center.x, center.y, innerRadius, endAngle, startAngle, true);
+        this.ctx.closePath();
+        this.ctx.fill();
+      }
+    }
+  }
+
   private renderHandles(): void {
     if (!this.ctx || !this.geometry) return;
 
     const { center, wheelRadius, ringInnerRadius, ringOuterRadius, handleRadius } = this.geometry;
     const [hue, saturation, lightness] = this.currentHsl();
+    const layoutMode = this.layout();
 
-    // Wheel handle position
-    const wheelAngle = (hue * Math.PI) / 180;
-    const wheelDistance = (saturation / 100) * wheelRadius;
-    const wheelX = center.x + Math.cos(wheelAngle) * wheelDistance;
-    const wheelY = center.y + Math.sin(wheelAngle) * wheelDistance;
+    let wheelX: number, wheelY: number, ringX: number, ringY: number;
 
-    // Ring handle position  
-    const ringAngle = (lightness / 100) * 2 * Math.PI;
-    const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
-    const ringX = center.x + Math.cos(ringAngle) * ringRadius;
-    const ringY = center.y + Math.sin(ringAngle) * ringRadius;
+    if (layoutMode === 'outer-lightness') {
+      // Wheel handle for hue/saturation, ring handle for lightness
+      const wheelAngle = (hue * Math.PI) / 180;
+      const wheelDistance = (saturation / 100) * wheelRadius;
+      wheelX = center.x + Math.cos(wheelAngle) * wheelDistance;
+      wheelY = center.y + Math.sin(wheelAngle) * wheelDistance;
+
+      const ringAngle = (lightness / 100) * 2 * Math.PI;
+      const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
+      ringX = center.x + Math.cos(ringAngle) * ringRadius;
+      ringY = center.y + Math.sin(ringAngle) * ringRadius;
+    } else {
+      // Wheel handle for saturation/lightness, ring handle for hue
+      // Angle represents saturation (0° = 0% saturation, 360° = 100% saturation)
+      const saturationAngle = (saturation / 100) * 2 * Math.PI;
+
+      // Radius represents lightness (100% at center, 0% at wheelRadius (at edge)
+      const lightnessRadius = ((100 - lightness) / 100) * wheelRadius;
+
+      wheelX = center.x + Math.cos(saturationAngle) * lightnessRadius;
+      wheelY = center.y + Math.sin(saturationAngle) * lightnessRadius;
+
+      const ringAngle = (hue / 360) * 2 * Math.PI;
+      const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
+      ringX = center.x + Math.cos(ringAngle) * ringRadius;
+      ringY = center.y + Math.sin(ringAngle) * ringRadius;
+    }
 
     // Draw handles
     this.drawHandle(wheelX, wheelY, handleRadius, '#ffffff', '#333333');
@@ -358,31 +444,20 @@ export class ColorDiscComponent implements OnDestroy {
 
   private attachEventListeners(): void {
     const canvas = this.canvas().nativeElement;
+    const signal = this.abortController.signal;
 
-    // Mouse events
-    canvas.addEventListener('mousedown', this.handlePointerDown);
-    document.addEventListener('mousemove', this.handlePointerMove);
-    document.addEventListener('mouseup', this.handlePointerUp);
+    // Mouse events with abort signal
+    canvas.addEventListener('mousedown', this.handlePointerDown, { signal });
+    document.addEventListener('mousemove', this.handlePointerMove, { signal });
+    document.addEventListener('mouseup', this.handlePointerUp, { signal });
 
-    // Touch events
-    canvas.addEventListener('touchstart', this.handleTouchStart);
-    document.addEventListener('touchmove', this.handleTouchMove);
-    document.addEventListener('touchend', this.handleTouchEnd);
+    // Touch events with abort signal
+    canvas.addEventListener('touchstart', this.handleTouchStart, { signal });
+    document.addEventListener('touchmove', this.handleTouchMove, { signal });
+    document.addEventListener('touchend', this.handleTouchEnd, { signal });
 
-    // Prevent context menu
-    canvas.addEventListener('contextmenu', e => e.preventDefault());
-  }
-
-  private removeEventListeners(): void {
-    const canvas = this.canvas()?.nativeElement;
-    if (!canvas) return;
-
-    canvas.removeEventListener('mousedown', this.handlePointerDown);
-    document.removeEventListener('mousemove', this.handlePointerMove);
-    document.removeEventListener('mouseup', this.handlePointerUp);
-    canvas.removeEventListener('touchstart', this.handleTouchStart);
-    document.removeEventListener('touchmove', this.handleTouchMove);
-    document.removeEventListener('touchend', this.handleTouchEnd);
+    // Prevent context menu with abort signal
+    canvas.addEventListener('contextmenu', this.preventContextMenu, { signal });
   }
 
   private handlePointerDown = (event: MouseEvent): void => {
@@ -394,7 +469,7 @@ export class ColorDiscComponent implements OnDestroy {
   };
 
   private handlePointerMove = (event: MouseEvent): void => {
-    if (!this.isDragging() || this.disabled()) return;
+    if (!this.isDragging() || this.disabled() || this.abortController.signal.aborted) return;
 
     event.preventDefault();
     const coords = this.getEventCoordinates(event);
@@ -402,6 +477,7 @@ export class ColorDiscComponent implements OnDestroy {
   };
 
   private handlePointerUp = (): void => {
+    if (this.abortController.signal.aborted) return;
     this.stopDragging();
   };
 
@@ -415,7 +491,7 @@ export class ColorDiscComponent implements OnDestroy {
   };
 
   private handleTouchMove = (event: TouchEvent): void => {
-    if (!this.isDragging() || this.disabled()) return;
+    if (!this.isDragging() || this.disabled() || this.abortController.signal.aborted) return;
 
     event.preventDefault();
     const touch = event.touches[0];
@@ -424,8 +500,13 @@ export class ColorDiscComponent implements OnDestroy {
   };
 
   private handleTouchEnd = (event: TouchEvent): void => {
+    if (this.abortController.signal.aborted) return;
     event.preventDefault();
     this.stopDragging();
+  };
+
+  private preventContextMenu = (event: Event): void => {
+    event.preventDefault();
   };
 
   private getEventCoordinates(event: MouseEvent): { x: number; y: number } {
@@ -468,6 +549,8 @@ export class ColorDiscComponent implements OnDestroy {
   private updateColor(coords: { x: number; y: number }): void {
     if (!this.geometry || !this.dragTarget) return;
 
+    if (this.abortController.signal.aborted) return;
+
     const { center } = this.geometry;
     const dx = coords.x - center.x;
     const dy = coords.y - center.y;
@@ -475,26 +558,49 @@ export class ColorDiscComponent implements OnDestroy {
     const angle = Math.atan2(dy, dx);
 
     let [hue, saturation, lightness] = this.currentHsl();
+    const layoutMode = this.layout();
 
     if (this.dragTarget === 'wheel') {
-      // Update hue and saturation
-      hue = ((angle * 180) / Math.PI + 360) % 360;
-      saturation = Math.min(100, (distance / this.geometry.wheelRadius) * 100);
+      if (layoutMode === 'outer-lightness') {
+        // Inner wheel controls hue and saturation
+        hue = ((angle * 180) / Math.PI + 360) % 360;
+        saturation = Math.min(100, (distance / this.geometry.wheelRadius) * 100);
+      } else {
+        // Inner area controls saturation and lightness
+        // Saturation from angle (0° = 0%, 360° = 100%)
+        let normalizedAngle = angle;
+        if (normalizedAngle < 0) {
+          normalizedAngle += 2 * Math.PI;
+        }
+        saturation = (normalizedAngle / (2 * Math.PI)) * 100;
+
+        // Lightness from radius (100 at center, 0 at edge)
+        lightness = Math.max(0, 100 - (distance / this.geometry.wheelRadius) * 100);
+      }
     } else if (this.dragTarget === 'ring') {
-      // Update lightness
       let normalizedAngle = angle;
       if (normalizedAngle < 0) {
-        normalizedAngle += 2 * Math.PI; // Convert negative angles to positive
+        normalizedAngle += 2 * Math.PI;
       }
-      lightness = Math.max(0, Math.min(100, (normalizedAngle / (2 * Math.PI)) * 100));
+
+      if (layoutMode === 'outer-lightness') {
+        // Outer ring controls lightness
+        lightness = Math.max(0, Math.min(100, (normalizedAngle / (2 * Math.PI)) * 100));
+      } else {
+        // Outer ring controls hue
+        hue = (normalizedAngle / (2 * Math.PI)) * 360;
+      }
     }
 
     const newHsl: [number, number, number] = [hue, saturation, lightness];
     this.currentHsl.set(newHsl);
 
     const hex = this.hslToHex(newHsl);
-    this.hexValueChange.emit(hex);
-    this.colorChanged.emit({ hex, hsl: newHsl });
+    // Check abort signal before emitting
+    if (!this.abortController.signal.aborted) {
+      this.hexValueChange.emit(hex);
+      this.colorChanged.emit({ hex, hsl: newHsl });
+    }
   }
 
   private stopDragging(): void {

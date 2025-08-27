@@ -53,6 +53,15 @@
   .transparent-backdrop {
     background: transparent;
     cursor: default;
+    touch-action: auto; // Allow touch interactions
+    -webkit-tap-highlight-color: transparent;
+    
+    // Ensure backdrop covers entire screen on mobile
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
   }
 
   .color-picker-overlay {
