@@ -1,0 +1,7 @@
+<div class="color-picker-trigger" #trigger (click)="togglePicker()" [style.background-color]="hexValue()"
+  [class.disabled]="disabled()">
+  <div class="color-preview"></div>
+  @if (showValue()) {
+  <span class="color-value">{{ hexValue() }}</span>
+  }
+</div>

@@ -1,0 +1,63 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default</mat-card-title>
+      <mat-card-subtitle>
+        Color disc with ring and handle
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+<mb-color-disc
+  [hexValue]="selectedColor()"
+  [diameter]="300"
+  [ringWidth]="28"
+  [handleSize]="14"
+  [autoResolution]="true"
+  (hexValueChange)="hexValueChange($event)"
+  (colorChanged)="colorChange($event)">
+</mb-color-disc>
+      </mat-card-content>
+      <mat-card-content>
+        Selected:
+        @if (selected.length > 0) {
+          <button mat-mini-fab color="primary" (click)="selected=''">
+            <mat-icon fontSet="material-symbols-outlined">clear_all</mat-icon>
+          </button>
+        }
+        @if (selected.length > 0) {
+          <div>{{selected}}</div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default</mat-card-title>
+      <mat-card-subtitle>
+        Color disc picker
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+<mb-color-disc-picker
+  [hexValue]="selectedColor2()"
+  [diameter]="300"
+  [ringWidth]="28"
+  [handleSize]="14"
+  (hexValueChange)="hexValueChange2($event)"
+  (colorChanged)="colorChange2($event)">
+</mb-color-disc-picker>
+      </mat-card-content>
+      <mat-card-content>
+        Selected:
+        @if (selected2.length > 0) {
+          <button mat-mini-fab color="primary" (click)="selected2=''">
+            <mat-icon fontSet="material-symbols-outlined">clear_all</mat-icon>
+          </button>
+        }
+        @if (selected2.length > 0) {
+          <div>{{selected2}}</div>
+        }
+      </mat-card-content>
+    </mat-card>
+</div>

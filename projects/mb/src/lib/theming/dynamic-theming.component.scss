@@ -90,22 +90,22 @@
       flex: 0 0 auto; // Don't grow/shrink, use natural width
     }
 
-    .color-picker {
+    mb-color-disc-picker {
       $diameter: 40px;
       flex: 0 0 $diameter; // Don't grow/shrink, fixed width
-      width: $diameter;
-      height: $diameter;
-      border-radius: 50%;
-      border: 2px solid var(--mat-sys-outline-variant);
       cursor: pointer;
-      padding: 0;
 
-      &::-webkit-color-swatch-wrapper,
-      &::-webkit-color-swatch {
-        padding: 0;
-        border: none;
-        border-radius: 50%;
-      }
+      // Use CSS custom properties to style the inner trigger
+      --color-disc-picker-gap: 0;
+      --color-disc-picker-padding: 0;
+      --color-disc-picker-border: 2px solid var(--mat-sys-outline-variant);
+      --color-disc-picker-border-radius: 50%;
+      --color-disc-picker-width: #{$diameter};
+      --color-disc-picker-height: #{$diameter};
+      --color-disc-picker-min-height: #{$diameter};
+      --color-disc-picker-preview-width: calc(#{$diameter} - 8px);
+      --color-disc-picker-preview-height: calc(#{$diameter} - 8px);
+      --color-disc-picker-preview-border-radius: 50%;
     }
     
     mat-slide-toggle {

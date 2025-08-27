@@ -21,12 +21,26 @@
   @if (showGenerator()) {
   <div class="color-section">
     <label>Primary</label>
-    <input type="color" [(ngModel)]="dtsSvc.primaryColor" class="color-picker" />
+  <mb-color-disc-picker
+    [hexValue]="dtsSvc.primaryColor()"
+    (hexValueChange)="dtsSvc.primaryColor.set($event)"
+    [showValue]="false"
+    [closeOnSelect]="false"
+    [diameter]="240"
+    [autoResolution]="true">
+  </mb-color-disc-picker>
     @if (showTertiary()) {
       <label>Tertiary</label>
       <mat-slide-toggle [(ngModel)]="dtsSvc.useTertiaryColor" />
       @if (dtsSvc.useTertiaryColor()) {
-        <input type="color" [(ngModel)]="dtsSvc.tertiaryColor" class="color-picker" />
+        <mb-color-disc-picker 
+          [hexValue]="dtsSvc.tertiaryColor()"
+          (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
+          [showValue]="false"
+          [closeOnSelect]="false"
+          [diameter]="240"
+          [autoResolution]="true">
+        </mb-color-disc-picker>
       }
     }
   </div>

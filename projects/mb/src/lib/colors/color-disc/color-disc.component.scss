@@ -1,0 +1,32 @@
+:host {
+  display: block;
+
+  .color-disc-container {
+    display: inline-block;
+    position: relative;
+    
+    canvas {
+      display: block;
+      border-radius: 50%;
+      cursor: crosshair;
+      user-select: none;
+      touch-action: none;
+      
+      &.dragging {
+        cursor: grabbing;
+      }
+      
+      &:focus {
+        outline: 2px solid var(--mat-sys-primary);
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+:host([disabled]) {
+  .color-disc-container canvas {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

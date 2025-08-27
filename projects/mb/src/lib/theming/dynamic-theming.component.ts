@@ -6,6 +6,7 @@ import { MatOption } from '@angular/material/core';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 
+import { ColorDiscPickerComponent } from '../colors/color-disc/color-disc-picker.component';
 import { DynamicColorService } from './dynamic-color.service';
 import { DynamicThemingService } from './dynamic-theming.service';
 import { DynamicThemingVariant } from './dynamic-theming-variant.enum';
@@ -24,7 +25,8 @@ import { DynamicThemingPreset } from './dynamic-theming-preset.interface';
     MatOption,
     MatSlideToggle,
     MatSlider,
-    MatSliderThumb
+    MatSliderThumb,
+    ColorDiscPickerComponent
   ]
 })
 export class DynamicThemingComponent {
