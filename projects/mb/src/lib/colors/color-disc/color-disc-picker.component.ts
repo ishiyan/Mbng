@@ -19,6 +19,7 @@ export class ColorDiscPickerComponent {
   private isOpen = signal(false);
 
   // Input properties
+  readonly alphaChannel = input<boolean>(false);
   readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-lightness');
   readonly diameter = input<number>(280);
   readonly ringWidth = input<number>(24);
@@ -105,6 +106,7 @@ export class ColorDiscPickerComponent {
     const componentRef = this.overlayRef.attach(colorDiscPortal);
 
     // Configure the color disc
+    componentRef.setInput('alphaChannel', this.alphaChannel());
     componentRef.setInput('layout', this.layout());
     componentRef.setInput('diameter', this.diameter());
     componentRef.setInput('ringWidth', this.ringWidth());

@@ -23,6 +23,7 @@
     <label>Primary</label>
   <mb-color-disc-picker
     [layout]="'outer-hue'"
+    [alphaChannel]="false"
     [hexValue]="dtsSvc.primaryColor()"
     (hexValueChange)="dtsSvc.primaryColor.set($event)"
     [showValue]="false"
@@ -35,6 +36,7 @@
       @if (dtsSvc.useTertiaryColor()) {
         <mb-color-disc-picker 
           [layout]="'outer-lightness'"
+          [alphaChannel]="false"
           [hexValue]="dtsSvc.tertiaryColor()"
           (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
           [showValue]="false"

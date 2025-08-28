@@ -3,8 +3,10 @@ import { Component, ElementRef, input, output, viewChild, effect, signal, Change
 interface DiscGeometry {
   center: { x: number; y: number };
   wheelRadius: number;
-  ringInnerRadius: number;
-  ringOuterRadius: number;
+  middleRingInnerRadius: number;
+  middleRingOuterRadius: number;
+  outerRingInnerRadius: number;
+  outerRingOuterRadius: number;
   handleRadius: number;
 }
 
@@ -20,7 +22,9 @@ export class ColorDiscComponent implements OnDestroy {
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   // Input properties
-  readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-lightness');
+  readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-hue');
+  /** Enable alpha channel */
+  readonly alphaChannel = input<boolean>(false);
   readonly diameter = input<number>(280);
   readonly ringWidth = input<number>(24);
   readonly handleSize = input<number>(12);
@@ -35,14 +39,14 @@ export class ColorDiscComponent implements OnDestroy {
 
   // Output events
   readonly hexValueChange = output<string>();
-  readonly colorChanged = output<{ hex: string; hsl: [number, number, number] }>();
+  readonly colorChanged = output<{ hex: string; hsl: [number, number, number]; alpha?: number }>();
 
   // Internal state
   protected readonly isDragging = signal<boolean>(false);
   private ctx: CanvasRenderingContext2D | null = null;
   private geometry: DiscGeometry | null = null;
-  private currentHsl = signal<[number, number, number]>([0, 100, 50]);
-  private dragTarget: 'wheel' | 'ring' | null = null;
+  private currentHsla = signal<[number, number, number, number]>([0, 100, 50, 1]);
+  private dragTarget: 'wheel' | 'middle-ring' | 'outer-ring' | null = null;
 
   // Computed resolution that considers auto-detection
   private readonly effectiveResolution = computed(() => {
@@ -60,9 +64,9 @@ export class ColorDiscComponent implements OnDestroy {
     // React to hex input changes
     effect(() => {
       const hex = this.hexValue();
-      if (this.isValidHex(hex)) {
-        const hsl = this.hexToHsl(hex);
-        this.currentHsl.set(hsl);
+      if (this.isValidHex(hex) || this.isValidHexa(hex)) {
+        const hsla = this.hexToHsla(hex);
+        this.currentHsla.set(hsla);
         this.scheduleRender();
       }
     });
@@ -73,12 +77,13 @@ export class ColorDiscComponent implements OnDestroy {
       this.ringWidth();
       this.handleSize();
       this.effectiveResolution();
+      this.alphaChannel();
       this.updateCanvasSize();
     });
 
-    // Render when HSL changes
+    // Render when HSLA changes
     effect(() => {
-      this.currentHsl();
+      this.currentHsla();
       this.scheduleRender();
     });
   }
@@ -122,14 +127,41 @@ export class ColorDiscComponent implements OnDestroy {
     const center = diameter / 2;
     const ringWidth = this.ringWidth();
     const handleRadius = this.handleSize() / 2;
+    const gapSize = 4;
 
-    this.geometry = {
-      center: { x: center, y: center },
-      wheelRadius: center - ringWidth - handleRadius - 8,
-      ringInnerRadius: center - ringWidth - 4,
-      ringOuterRadius: center - 4,
-      handleRadius
-    };
+    if (this.alphaChannel()) {
+      // Layout with middle (alpha) ring between inner disc and outer ring
+      const outerRingOuterRadius = center - gapSize;
+      const outerRingInnerRadius = center - ringWidth - gapSize;
+      const middleRingOuterRadius = outerRingInnerRadius - gapSize;
+      const middleRingInnerRadius = middleRingOuterRadius - Math.round(ringWidth * 0.7);
+      const wheelRadius = middleRingInnerRadius - gapSize;
+
+      this.geometry = {
+        center: { x: center, y: center },
+        wheelRadius,
+        middleRingInnerRadius: middleRingInnerRadius,
+        middleRingOuterRadius: middleRingOuterRadius,
+        outerRingInnerRadius: outerRingInnerRadius,
+        outerRingOuterRadius: outerRingOuterRadius,
+        handleRadius
+      };
+    } else {
+      // layout without middle (alpha) ring
+      const outerRingOuterRadius = center - gapSize;
+      const outerRingInnerRadius = center - ringWidth - gapSize;
+      const wheelRadius = outerRingInnerRadius - handleRadius - gapSize;
+
+      this.geometry = {
+        center: { x: center, y: center },
+        wheelRadius,
+        middleRingInnerRadius: 0,
+        middleRingOuterRadius: 0,
+        outerRingInnerRadius: outerRingInnerRadius,
+        outerRingOuterRadius: outerRingOuterRadius,
+        handleRadius
+      };
+    }
 
     this.scheduleRender();
   }
@@ -276,18 +308,81 @@ export class ColorDiscComponent implements OnDestroy {
     const layoutMode = this.layout();
     if (layoutMode === 'outer-lightness') {
       // Inner hue/saturation wheel, outer lightness ring
-      this.renderInnerColorWheel();
+      this.renderInnerSaturationHueColorWheel();
       this.renderOuterLightnessRing();
     } else {
       // Inner saturation/lightness area, outer hue ring
-      this.renderInnerSaturationLightness();
+      this.renderInnerSaturationLightnessColorWheel();
       this.renderOuterHueRing();
+    }
+
+    // Render middle (alpha) ring if enabled
+    if (this.alphaChannel()) {
+      this.renderMiddleAlphaRing();
     }
 
     this.renderHandles();
   }
 
-  private renderInnerColorWheel(): void {
+  private renderMiddleAlphaRing(): void {
+    if (!this.ctx || !this.geometry) return;
+
+    const { center, middleRingInnerRadius: alphaInnerRadius, middleRingOuterRadius: alphaOuterRadius } = this.geometry;
+    const [hue, saturation, lightness] = this.currentHsla();
+
+    // Draw checkerboard background
+    this.drawCheckerboardInRing(center, alphaInnerRadius, alphaOuterRadius);
+
+    // Draw alpha gradient overlay
+    const segments = 120;
+    for (let i = 0; i < segments; i++) {
+      const alpha = i / segments;
+      const startAngle = (i * 2 * Math.PI) / segments;
+      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+
+      this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+      this.ctx.beginPath();
+      this.ctx.arc(center.x, center.y, alphaOuterRadius, startAngle, endAngle);
+      this.ctx.arc(center.x, center.y, alphaInnerRadius, endAngle, startAngle, true);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+  }
+
+  private drawCheckerboardInRing(center: { x: number; y: number }, innerR: number, outerR: number): void {
+    if (!this.ctx) return;
+
+    // Create checkerboard pattern
+    const patternCanvas = document.createElement('canvas');
+    const patternCtx = patternCanvas.getContext('2d')!;
+    const checkerSize = 8;
+
+    patternCanvas.width = checkerSize * 2;
+    patternCanvas.height = checkerSize * 2;
+
+    // Draw 2x2 checker pattern
+    patternCtx.fillStyle = '#f0f0f0';
+    patternCtx.fillRect(0, 0, checkerSize, checkerSize);
+    patternCtx.fillRect(checkerSize, checkerSize, checkerSize, checkerSize);
+
+    patternCtx.fillStyle = '#d0d0d0';
+    patternCtx.fillRect(checkerSize, 0, checkerSize, checkerSize);
+    patternCtx.fillRect(0, checkerSize, checkerSize, checkerSize);
+
+    // Create pattern
+    const pattern = this.ctx.createPattern(patternCanvas, 'repeat')!;
+
+    // Draw ring with pattern
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.arc(center.x, center.y, outerR, 0, Math.PI * 2);
+    this.ctx.arc(center.x, center.y, innerR, 0, Math.PI * 2, true);
+    this.ctx.fillStyle = pattern;
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+
+  private renderInnerSaturationHueColorWheel(): void {
     if (!this.ctx || !this.geometry) return;
 
     const { center, wheelRadius } = this.geometry;
@@ -318,8 +413,9 @@ export class ColorDiscComponent implements OnDestroy {
   private renderOuterLightnessRing(): void {
     if (!this.ctx || !this.geometry) return;
 
-    const { center, ringInnerRadius, ringOuterRadius } = this.geometry;
-    const [hue, saturation] = this.currentHsl();
+    const { center, outerRingInnerRadius, outerRingOuterRadius } = this.geometry;
+    const [hue, saturation] = this.currentHsla();
+
     const segments = 100;
 
     for (let i = 0; i < segments; i++) {
@@ -329,8 +425,8 @@ export class ColorDiscComponent implements OnDestroy {
 
       this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       this.ctx.beginPath();
-      this.ctx.arc(center.x, center.y, ringOuterRadius, startAngle, endAngle);
-      this.ctx.arc(center.x, center.y, ringInnerRadius, endAngle, startAngle, true);
+      this.ctx.arc(center.x, center.y, outerRingOuterRadius, startAngle, endAngle);
+      this.ctx.arc(center.x, center.y, outerRingInnerRadius, endAngle, startAngle, true);
       this.ctx.closePath();
       this.ctx.fill();
     }
@@ -339,8 +435,8 @@ export class ColorDiscComponent implements OnDestroy {
   private renderOuterHueRing(): void {
     if (!this.ctx || !this.geometry) return;
 
-    const { center, ringInnerRadius, ringOuterRadius } = this.geometry;
-    const [, saturation, lightness] = this.currentHsl();
+    const { center, outerRingInnerRadius, outerRingOuterRadius } = this.geometry;
+    const [, saturation, lightness] = this.currentHsla();
     const segments = 360;
 
     for (let i = 0; i < segments; i++) {
@@ -350,18 +446,18 @@ export class ColorDiscComponent implements OnDestroy {
 
       this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       this.ctx.beginPath();
-      this.ctx.arc(center.x, center.y, ringOuterRadius, startAngle, endAngle);
-      this.ctx.arc(center.x, center.y, ringInnerRadius, endAngle, startAngle, true);
+      this.ctx.arc(center.x, center.y, outerRingOuterRadius, startAngle, endAngle);
+      this.ctx.arc(center.x, center.y, outerRingInnerRadius, endAngle, startAngle, true);
       this.ctx.closePath();
       this.ctx.fill();
     }
   }
 
-  private renderInnerSaturationLightness(): void {
+  private renderInnerSaturationLightnessColorWheel(): void {
     if (!this.ctx || !this.geometry) return;
 
     const { center, wheelRadius } = this.geometry;
-    const [hue] = this.currentHsl();
+    const [hue] = this.currentHsla();
 
     // Save current context state
     this.ctx.save();
@@ -377,19 +473,19 @@ export class ColorDiscComponent implements OnDestroy {
 
     // Lightness gradient (vertical: top = white, bottom = black)
     const lightnessGradient = this.ctx.createLinearGradient(
-      0, -wheelRadius,  // Start at top
-      0, wheelRadius    // End at bottom
+      0, -wheelRadius, // Start at top
+      0, wheelRadius   // End at bottom
     );
     lightnessGradient.addColorStop(0, 'white');
     lightnessGradient.addColorStop(1, 'black');
 
     // Saturation gradient (horizontal: left = transparent, right = full saturation)
     const saturationGradient = this.ctx.createLinearGradient(
-      -wheelRadius, 0,  // Start at left
-      wheelRadius, 0    // End at right
+      -wheelRadius, 0, // Start at left
+      wheelRadius, 0   // End at right
     );
-    saturationGradient.addColorStop(0, `hsla(${hue}, 100%, 50%, 0)`);  // Transparent (no saturation)
-    saturationGradient.addColorStop(1, `hsla(${hue}, 100%, 50%, 1)`);  // Full saturation
+    saturationGradient.addColorStop(0, `hsla(${hue}, 100%, 50%, 0)`); // Transparent (no saturation)
+    saturationGradient.addColorStop(1, `hsla(${hue}, 100%, 50%, 1)`); // Full saturation
 
     // Fill the circle with lightness gradient
     this.ctx.fillStyle = lightnessGradient;
@@ -410,8 +506,8 @@ export class ColorDiscComponent implements OnDestroy {
   private renderHandles(): void {
     if (!this.ctx || !this.geometry) return;
 
-    const { center, wheelRadius, ringInnerRadius, ringOuterRadius, handleRadius } = this.geometry;
-    const [hue, saturation, lightness] = this.currentHsl();
+    const { center, wheelRadius, middleRingInnerRadius, middleRingOuterRadius, outerRingInnerRadius, outerRingOuterRadius, handleRadius } = this.geometry;
+    const [hue, saturation, lightness, alpha] = this.currentHsla();
     const layoutMode = this.layout();
 
     let wheelX: number, wheelY: number, ringX: number, ringY: number;
@@ -423,8 +519,9 @@ export class ColorDiscComponent implements OnDestroy {
       wheelX = center.x + Math.cos(wheelAngle) * wheelDistance;
       wheelY = center.y + Math.sin(wheelAngle) * wheelDistance;
 
+      // Outer ring handle for lightness
       const ringAngle = (lightness / 100) * 2 * Math.PI;
-      const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
+      const ringRadius = (outerRingInnerRadius + outerRingOuterRadius) / 2;
       ringX = center.x + Math.cos(ringAngle) * ringRadius;
       ringY = center.y + Math.sin(ringAngle) * ringRadius;
     } else {
@@ -448,11 +545,20 @@ export class ColorDiscComponent implements OnDestroy {
         wheelY = center.y + lightnessY;
       }
 
-      // Ring handle for hue
+      // Outer ring handle for hue
       const ringAngle = (hue / 360) * 2 * Math.PI;
-      const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
+      const ringRadius = (outerRingInnerRadius + outerRingOuterRadius) / 2;
       ringX = center.x + Math.cos(ringAngle) * ringRadius;
       ringY = center.y + Math.sin(ringAngle) * ringRadius;
+    }
+
+    // Ring handle for the middle (alpha) ring (if alpha channel is enabled)
+    if (this.alphaChannel()) {
+      const middleAngle = alpha * 2 * Math.PI;
+      const middleRadius = (middleRingInnerRadius + middleRingOuterRadius) / 2;
+      const middleX = center.x + Math.cos(middleAngle) * middleRadius;
+      const middleY = center.y + Math.sin(middleAngle) * middleRadius;
+      this.drawHandle(middleX, middleY, handleRadius, '#ffffff', '#333333');
     }
 
     // Draw handles
@@ -559,7 +665,7 @@ export class ColorDiscComponent implements OnDestroy {
   private startDragging(coords: { x: number; y: number }): void {
     if (!this.geometry) return;
 
-    const { center, wheelRadius, ringInnerRadius, ringOuterRadius } = this.geometry;
+    const { center, wheelRadius, middleRingInnerRadius, middleRingOuterRadius, outerRingInnerRadius, outerRingOuterRadius } = this.geometry;
     const dx = coords.x - center.x;
     const dy = coords.y - center.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -567,8 +673,10 @@ export class ColorDiscComponent implements OnDestroy {
     // Determine drag target
     if (distance <= wheelRadius + 8) {
       this.dragTarget = 'wheel';
-    } else if (distance >= ringInnerRadius - 8 && distance <= ringOuterRadius + 8) {
-      this.dragTarget = 'ring';
+    } else if (this.alphaChannel() && distance >= middleRingInnerRadius - 8 && distance <= middleRingOuterRadius + 8) {
+      this.dragTarget = 'middle-ring';
+    } else if (distance >= outerRingInnerRadius - 8 && distance <= outerRingOuterRadius + 8) {
+      this.dragTarget = 'outer-ring';
     } else {
       return; // Outside valid areas
     }
@@ -589,7 +697,7 @@ export class ColorDiscComponent implements OnDestroy {
     const angle = Math.atan2(dy, dx);
     const wheelRadius = this.geometry.wheelRadius;
 
-    let [hue, saturation, lightness] = this.currentHsl();
+    let [hue, saturation, lightness, alpha] = this.currentHsla();
     const layoutMode = this.layout();
 
     if (this.dragTarget === 'wheel') {
@@ -610,7 +718,14 @@ export class ColorDiscComponent implements OnDestroy {
           lightness = Math.max(0, Math.min(100, (1 - (dy + wheelRadius) / wheelDiameter) * 100));
         }
       }
-    } else if (this.dragTarget === 'ring') {
+    } else if (this.dragTarget === 'middle-ring') {
+      // Handle middle (alpha) ring interaction
+      let normalizedAngle = angle;
+      if (normalizedAngle < 0) {
+        normalizedAngle += 2 * Math.PI;
+      }
+      alpha = normalizedAngle / (2 * Math.PI);
+    } else if (this.dragTarget === 'outer-ring') {
       let normalizedAngle = angle;
       if (normalizedAngle < 0) {
         normalizedAngle += 2 * Math.PI;
@@ -625,15 +740,16 @@ export class ColorDiscComponent implements OnDestroy {
       }
     }
 
-    const newHsl: [number, number, number] = [hue, saturation, lightness];
-    this.currentHsl.set(newHsl);
+    const newHsla: [number, number, number, number] = [hue, saturation, lightness, alpha];
+    this.currentHsla.set(newHsla);
 
-    const hex = this.hslToHex(newHsl);
+    // Generate hex or hexa based on alpha
+    const hex = this.generateHexOutput(newHsla);
 
     // Check abort signal before emitting
     if (!this.abortController.signal.aborted) {
       this.hexValueChange.emit(hex);
-      this.colorChanged.emit({ hex, hsl: newHsl });
+      this.colorChanged.emit({ hex, hsl: [hue, saturation, lightness], alpha });
     }
   }
 
@@ -643,36 +759,126 @@ export class ColorDiscComponent implements OnDestroy {
   }
 
   // Color conversion utilities
-  private isValidHex(hex: string): boolean {
-    return /^#[0-9A-Fa-f]{6}$/.test(hex);
+  protected isValidHex(hex: string): boolean {
+    const original = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex);
+    const hexa = this.alphaChannel() ? this.isValidHexa(hex) : false;
+    return original || hexa;
   }
 
-  private hexToHsl(hex: string): [number, number, number] {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
+  private isValidHexa(hex: string): boolean {
+    return /^#([0-9A-Fa-f]{8})$/.test(hex);
+  }
+
+  private hexToHsla(hex: string): [number, number, number, number] {
+    // Remove # if present
+    hex = hex.replace('#', '');
+
+    let r: number, g: number, b: number, a: number = 1;
+
+    if (hex.length === 3) {
+      // Short hex: #RGB
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      // Long hex: #RRGGBB
+      r = parseInt(hex.slice(0, 2), 16);
+      g = parseInt(hex.slice(2, 4), 16);
+      b = parseInt(hex.slice(4, 6), 16);
+    } else if (hex.length === 8) {
+      // Hexa: #RRGGBBAA
+      r = parseInt(hex.slice(0, 2), 16);
+      g = parseInt(hex.slice(2, 4), 16);
+      b = parseInt(hex.slice(4, 6), 16);
+      a = parseInt(hex.slice(6, 8), 16) / 255;
+    } else {
+      return [0, 0, 0, 1];
+    }
+
+    const [h, s, l] = this.rgbToHsl([r, g, b]);
+    return [h, s, l, a];
+  }
+
+  private generateHexOutput([h, s, l, a]: [number, number, number, number]): string {
+    if (!this.alphaChannel() || a === 1) {
+      return this.hslToHex([h, s, l]);
+    }
+
+    // Convert to HEXA format
+    const rgb = this.hslToRgb([h, s, l]);
+    const alphaHex = Math.round(a * 255).toString(16).padStart(2, '0');
+    const rgbHex = rgb.map(c => Math.round(c).toString(16).padStart(2, '0')).join('');
+
+    return `#${rgbHex}${alphaHex}`;
+  }
+
+  private rgbToHsl([r, g, b]: [number, number, number]): [number, number, number] {
+    r /= 255;
+    g /= 255;
+    b /= 255;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
     const diff = max - min;
     const sum = max + min;
-    const l = sum / 2;
 
     let h = 0;
     let s = 0;
+    let l = sum / 2;
 
     if (diff !== 0) {
       s = l > 0.5 ? diff / (2 - sum) : diff / sum;
 
       switch (max) {
-        case r: h = ((g - b) / diff) + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / diff + 2; break;
-        case b: h = (r - g) / diff + 4; break;
+        case r:
+          h = ((g - b) / diff + (g < b ? 6 : 0)) / 6;
+          break;
+        case g:
+          h = ((b - r) / diff + 2) / 6;
+          break;
+        case b:
+          h = ((r - g) / diff + 4) / 6;
+          break;
       }
-      h /= 6;
     }
 
-    return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+    return [
+      Math.round(h * 360),
+      Math.round(s * 100),
+      Math.round(l * 100)
+    ];
+  }
+
+  private hslToRgb([h, s, l]: [number, number, number]): [number, number, number] {
+    h /= 360;
+    s /= 100;
+    l /= 100;
+
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h * 6) % 2 - 1));
+    const m = l - c / 2;
+
+    let r = 0, g = 0, b = 0;
+
+    if (0 <= h && h < 1 / 6) {
+      r = c; g = x; b = 0;
+    } else if (1 / 6 <= h && h < 2 / 6) {
+      r = x; g = c; b = 0;
+    } else if (2 / 6 <= h && h < 3 / 6) {
+      r = 0; g = c; b = x;
+    } else if (3 / 6 <= h && h < 4 / 6) {
+      r = 0; g = x; b = c;
+    } else if (4 / 6 <= h && h < 5 / 6) {
+      r = x; g = 0; b = c;
+    } else if (5 / 6 <= h && h < 1) {
+      r = c; g = 0; b = x;
+    }
+
+    return [
+      Math.round((r + m) * 255),
+      Math.round((g + m) * 255),
+      Math.round((b + m) * 255)
+    ];
   }
 
   private hslToHex([h, s, l]: [number, number, number]): string {
