@@ -362,29 +362,49 @@ export class ColorDiscComponent implements OnDestroy {
 
     const { center, wheelRadius } = this.geometry;
     const [hue] = this.currentHsl();
-    const segments = 360; // Angular segments for lightness
-    const rings = 50;     // Radial segments for saturation
 
-    for (let angleSegment = 0; angleSegment < segments; angleSegment++) {
-      // Map angle to saturation (0° = 0% saturation, 360° = 100% saturation)
-      const saturation = (angleSegment / segments) * 100;
-      const startAngle = (angleSegment * 2 * Math.PI) / segments;
-      const endAngle = ((angleSegment + 1) * 2 * Math.PI) / segments;
+    // Save current context state
+    this.ctx.save();
 
-      for (let radiusSegment = 0; radiusSegment < rings; radiusSegment++) {
-        // Map radius to lightness (center = 100% lightness, edge = 0% lightness)
-        const lightness = 100 - ((radiusSegment + 1) / rings) * 100;
-        const innerRadius = (radiusSegment / rings) * wheelRadius;
-        const outerRadius = ((radiusSegment + 1) / rings) * wheelRadius;
+    // Translate to center for easier coordinate system
+    this.ctx.translate(center.x, center.y);
 
-        this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        this.ctx.beginPath();
-        this.ctx.arc(center.x, center.y, outerRadius, startAngle, endAngle);
-        this.ctx.arc(center.x, center.y, innerRadius, endAngle, startAngle, true);
-        this.ctx.closePath();
-        this.ctx.fill();
-      }
-    }
+    // Create clipping circle to keep gradients within wheel bounds
+    this.ctx.beginPath();
+    this.ctx.arc(0, 0, wheelRadius, 0, Math.PI * 2);
+    this.ctx.clip();
+    this.ctx.closePath();
+
+    // Lightness gradient (vertical: top = white, bottom = black)
+    const lightnessGradient = this.ctx.createLinearGradient(
+      0, -wheelRadius,  // Start at top
+      0, wheelRadius    // End at bottom
+    );
+    lightnessGradient.addColorStop(0, 'white');
+    lightnessGradient.addColorStop(1, 'black');
+
+    // Saturation gradient (horizontal: left = transparent, right = full saturation)
+    const saturationGradient = this.ctx.createLinearGradient(
+      -wheelRadius, 0,  // Start at left
+      wheelRadius, 0    // End at right
+    );
+    saturationGradient.addColorStop(0, `hsla(${hue}, 100%, 50%, 0)`);  // Transparent (no saturation)
+    saturationGradient.addColorStop(1, `hsla(${hue}, 100%, 50%, 1)`);  // Full saturation
+
+    // Fill the circle with lightness gradient
+    this.ctx.fillStyle = lightnessGradient;
+    this.ctx.fill();
+
+    // Apply saturation gradient using multiply blend mode
+    this.ctx.globalCompositeOperation = 'multiply';
+    this.ctx.fillStyle = saturationGradient;
+    this.ctx.fill();
+
+    // Reset blend mode
+    this.ctx.globalCompositeOperation = 'source-over';
+
+    // Restore context state
+    this.ctx.restore();
   }
 
   private renderHandles(): void {
@@ -409,15 +429,26 @@ export class ColorDiscComponent implements OnDestroy {
       ringY = center.y + Math.sin(ringAngle) * ringRadius;
     } else {
       // Wheel handle for saturation/lightness, ring handle for hue
-      // Angle represents saturation (0° = 0% saturation, 360° = 100% saturation)
-      const saturationAngle = (saturation / 100) * 2 * Math.PI;
+      // rectangular positioning within circle
+      // Map saturation (0-100%) to horizontal position (-wheelRadius to +wheelRadius)
+      const saturationX = ((saturation / 100) * 2 - 1) * wheelRadius;
 
-      // Radius represents lightness (100% at center, 0% at wheelRadius (at edge)
-      const lightnessRadius = ((100 - lightness) / 100) * wheelRadius;
+      // Map lightness (0-100%) to vertical position (+wheelRadius to -wheelRadius)
+      // Note: Y increases downward in canvas, so we invert
+      const lightnessY = ((1 - lightness / 100) * 2 - 1) * wheelRadius;
 
-      wheelX = center.x + Math.cos(saturationAngle) * lightnessRadius;
-      wheelY = center.y + Math.sin(saturationAngle) * lightnessRadius;
+      // Ensure handle stays within circle bounds
+      const distance = Math.sqrt(saturationX * saturationX + lightnessY * lightnessY);
+      if (distance > wheelRadius) {
+        const scale = wheelRadius / distance;
+        wheelX = center.x + saturationX * scale;
+        wheelY = center.y + lightnessY * scale;
+      } else {
+        wheelX = center.x + saturationX;
+        wheelY = center.y + lightnessY;
+      }
 
+      // Ring handle for hue
       const ringAngle = (hue / 360) * 2 * Math.PI;
       const ringRadius = (ringInnerRadius + ringOuterRadius) / 2;
       ringX = center.x + Math.cos(ringAngle) * ringRadius;
@@ -556,6 +587,7 @@ export class ColorDiscComponent implements OnDestroy {
     const dy = coords.y - center.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx);
+    const wheelRadius = this.geometry.wheelRadius;
 
     let [hue, saturation, lightness] = this.currentHsl();
     const layoutMode = this.layout();
@@ -564,18 +596,19 @@ export class ColorDiscComponent implements OnDestroy {
       if (layoutMode === 'outer-lightness') {
         // Inner wheel controls hue and saturation
         hue = ((angle * 180) / Math.PI + 360) % 360;
-        saturation = Math.min(100, (distance / this.geometry.wheelRadius) * 100);
+        saturation = Math.min(100, (distance / wheelRadius) * 100);
       } else {
         // Inner area controls saturation and lightness
-        // Saturation from angle (0° = 0%, 360° = 100%)
-        let normalizedAngle = angle;
-        if (normalizedAngle < 0) {
-          normalizedAngle += 2 * Math.PI;
-        }
-        saturation = (normalizedAngle / (2 * Math.PI)) * 100;
+        // Rectangular coordinate mapping within circle
+        // Only process if within circle bounds
+        if (distance <= wheelRadius) {
+          const wheelDiameter = 2 * wheelRadius;
+          // Map horizontal position to saturation (left = 0%, right = 100%)
+          saturation = Math.max(0, Math.min(100, ((dx + wheelRadius) / wheelDiameter) * 100));
 
-        // Lightness from radius (100 at center, 0 at edge)
-        lightness = Math.max(0, 100 - (distance / this.geometry.wheelRadius) * 100);
+          // Map vertical position to lightness (top = 100%, bottom = 0%)
+          lightness = Math.max(0, Math.min(100, (1 - (dy + wheelRadius) / wheelDiameter) * 100));
+        }
       }
     } else if (this.dragTarget === 'ring') {
       let normalizedAngle = angle;
@@ -596,6 +629,7 @@ export class ColorDiscComponent implements OnDestroy {
     this.currentHsl.set(newHsl);
 
     const hex = this.hslToHex(newHsl);
+
     // Check abort signal before emitting
     if (!this.abortController.signal.aborted) {
       this.hexValueChange.emit(hex);
