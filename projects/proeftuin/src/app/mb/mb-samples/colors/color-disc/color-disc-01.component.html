@@ -1,0 +1,382 @@
+<div class="sample">
+
+  <!-- Default Example -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default Configuration</mat-card-title>
+      <mat-card-subtitle>
+        Basic color disc with default settings
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-color-disc [resolution]="'auto'" [hexValue]="defaultHexColor()" (hexValueChange)="defaultHexColor.set($event)"
+        (colorChange)="defaultColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>hexValueChange:</strong> {{defaultHexColor()}}</span>
+      @if (defaultColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{defaultColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Layout Options -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Layout Options</mat-card-title>
+      <mat-card-subtitle>
+        Switch between outer-lightness and outer-hue layouts
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Layout:</label>
+        <mat-select [value]="layoutMode()" (selectionChange)="layoutMode.set($event.value)" placeholder="Layout">
+          <mat-option value="outer-lightness">Outer Lightness</mat-option>
+          <mat-option value="outer-hue">Outer Hue</mat-option>
+        </mat-select>
+      </div>
+      <mb-color-disc [resolution]="3" [hexValue]="layoutHexColor()" [layout]="layoutMode()"
+        (hexValueChange)="layoutHexColor.set($event)" (colorChange)="layoutColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>layout:</strong> {{layoutMode()}}</span>
+      <span><strong>hexValueChange:</strong> {{layoutHexColor()}}</span>
+      @if (layoutColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{layoutColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Alpha Channel -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Alpha Channel Support</mat-card-title>
+      <mat-card-subtitle>
+        Enable transparency selection with middle alpha ring
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <mat-slide-toggle [(ngModel)]="alphaEnabled">
+          Enable Alpha Channel
+        </mat-slide-toggle>
+      </div>
+      <mb-color-disc [hexValue]="alphaHexColor()" [alphaChannel]="alphaEnabled" [layout]="'outer-hue'" [diameter]="300"
+        [ringWidth]="24" [handleSize]="12" [resolution]="'auto'" (hexValueChange)="alphaHexColor.set($event)"
+        (colorChange)="alphaColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>alpha:</strong> {{alphaEnabled}}</span>
+      <span><strong>hexValueChange:</strong> {{alphaHexColor()}}</span>
+      @if (alphaColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{alphaColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Diameter Variations -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Diameter Variations</mat-card-title>
+      <mat-card-subtitle>
+        Different diameter sizes for various use cases
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Diameter:</label>
+        <mat-select [(ngModel)]="diameterValue" placeholder="Diameter">
+          <mat-option [value]="180">Small (180px)</mat-option>
+          <mat-option [value]="240">Medium (240px)</mat-option>
+          <mat-option [value]="320">Large (320px)</mat-option>
+          <mat-option [value]="400">Extra Large (400px)</mat-option>
+        </mat-select>
+      </div>
+      <mb-color-disc [hexValue]="diameterHexColor()" [diameter]="diameterValue" [ringWidth]="24" [handleSize]="12"
+        [resolution]="'auto'" (hexValueChange)="diameterHexColor.set($event)" (colorChange)="diameterColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>diameter:</strong> {{diameterValue}}</span>
+      <span><strong>hexValueChange:</strong> {{diameterHexColor()}}</span>
+      @if (diameterColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{diameterColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Ring Width Variations -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Ring Width Options</mat-card-title>
+      <mat-card-subtitle>
+        Adjust the thickness of the outer color ring
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Ring Width:</label>
+        <mat-select [(ngModel)]="ringWidthValue" placeholder="Ring Width">
+          <mat-option [value]="16">Thin (16px)</mat-option>
+          <mat-option [value]="24">Normal (24px)</mat-option>
+          <mat-option [value]="32">Thick (32px)</mat-option>
+          <mat-option [value]="40">Extra Thick (40px)</mat-option>
+        </mat-select>
+      </div>
+      <mb-color-disc [hexValue]="ringWidthHexColor()" [diameter]="280" [ringWidth]="ringWidthValue" [handleSize]="12"
+        [resolution]="'auto'" (hexValueChange)="ringWidthHexColor.set($event)"
+        (colorChange)="ringWidthColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>ringWidth:</strong> {{ringWidthValue}}</span>
+      <span><strong>hexValueChange:</strong> {{ringWidthHexColor()}}</span>
+      @if (ringWidthColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{ringWidthColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Handle Size Variations -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Handle Size Options</mat-card-title>
+      <mat-card-subtitle>
+        Different handle sizes for accessibility and precision
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Handle Size:</label>
+        <mat-select [(ngModel)]="handleSizeValue" placeholder="Handle Size">
+          <mat-option [value]="8">Small (8px)</mat-option>
+          <mat-option [value]="12">Normal (12px)</mat-option>
+          <mat-option [value]="16">Large (16px)</mat-option>
+          <mat-option [value]="20">Extra Large (20px)</mat-option>
+        </mat-select>
+      </div>
+      <mb-color-disc [hexValue]="handleSizeHexColor()" [diameter]="280" [ringWidth]="24" [handleSize]="handleSizeValue"
+        [resolution]="'auto'" (hexValueChange)="handleSizeHexColor.set($event)"
+        (colorChange)="handleSizeColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>handleSize:</strong> {{handleSizeValue}}</span>
+      <span><strong>hexValueChange:</strong> {{handleSizeHexColor()}}</span>
+      @if (handleSizeColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{handleSizeColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Resolution -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Resolution Settings</mat-card-title>
+      <mat-card-subtitle>
+        Control rendering resolution for high-DPI displays
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Resolution:</label>
+        <mat-select [(ngModel)]="resolutionValue" placeholder="Resolution">
+          <mat-option [value]="'auto'">Automatic</mat-option>
+          <mat-option [value]="1">1x (Standard)</mat-option>
+          <mat-option [value]="2">2x (Retina)</mat-option>
+          <mat-option [value]="3">3x (High DPI)</mat-option>
+        </mat-select>
+      </div>
+      <mb-color-disc [hexValue]="resolutionHexColor()" [resolution]="resolutionValue"
+        (hexValueChange)="resolutionHexColor.set($event)" (colorChange)="resolutionColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>resolution:</strong> {{resolutionValue}}</span>
+      <span><strong>hexValueChange:</strong> {{resolutionHexColor()}}</span>
+      @if (resolutionColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{resolutionColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Background -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Background</mat-card-title>
+      <mat-card-subtitle>
+        Different background colors and transparency
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Background:</label>
+        <mat-select [(ngModel)]="backgroundValue" placeholder="Background">
+          <mat-option value="auto">Auto (Theme-aware)</mat-option>
+          <mat-option value="transparent">Transparent</mat-option>
+          <mat-option value="#ffffff">White</mat-option>
+          <mat-option value="#000000">Black</mat-option>
+          <mat-option value="#f5f5f5">Light Gray</mat-option>
+          <mat-option value="#2196f3">Blue</mat-option>
+        </mat-select>
+      </div>
+      <div class="background-demo"
+        [style.background]="backgroundValue === 'transparent' ? 'repeating-conic-gradient(#808080 0% 25%, transparent 0% 50%) 50% / 20px 20px' : backgroundValue">
+        <mb-color-disc [hexValue]="backgroundHexColor()" [backgroundColor]="backgroundValue" [resolution]="'auto'"
+          (hexValueChange)="backgroundHexColor.set($event)" (colorChange)="backgroundColor.set($event)">
+        </mb-color-disc>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>background:</strong> {{backgroundValue}}</span>
+      <span><strong>hexValueChange:</strong> {{backgroundHexColor()}}</span>
+      @if (backgroundColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{backgroundColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Disabled State -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Disabled State</mat-card-title>
+      <mat-card-subtitle>
+        Component in disabled mode
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <mat-slide-toggle [(ngModel)]="disabledValue">Disabled</mat-slide-toggle>
+      </div>
+      <mb-color-disc [hexValue]="disabledHexColor()" [disabled]="disabledValue" [resolution]="'auto'"
+        (hexValueChange)="disabledHexColor.set($event)" (colorChange)="disabledColor.set($event)">
+      </mb-color-disc>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>disabled:</strong> {{disabledValue}}</span>
+      <span><strong>hexValueChange:</strong> {{disabledHexColor()}}</span>
+      @if (disabledColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{disabledColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- All Features Combined -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Advanced Configuration</mat-card-title>
+      <mat-card-subtitle>
+        Combine multiple features for advanced use cases
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="controls-group">
+        <div class="control-row">
+          <mat-slide-toggle [(ngModel)]="advancedDisabled">Disabled</mat-slide-toggle>
+        </div>
+        <div class="control-row">
+          <mat-slide-toggle [(ngModel)]="advancedAlpha">Alpha</mat-slide-toggle>
+        </div>
+        <div class="control-row">
+          <label>Layout:</label>
+          <mat-select [(ngModel)]="advancedLayout">
+            <mat-option value="outer-lightness">Outer Lightness</mat-option>
+            <mat-option value="outer-hue">Outer Hue</mat-option>
+          </mat-select>
+        </div>
+        <div class="control-row">
+          <label>Diameter:</label>
+          <mat-select [(ngModel)]="advancedDiameter">
+            <mat-option [value]="240">240px</mat-option>
+            <mat-option [value]="320">320px</mat-option>
+            <mat-option [value]="400">400px</mat-option>
+          </mat-select>
+        </div>
+        <div class="control-row">
+          <label>Ring Width:</label>
+          <mat-select [(ngModel)]="advancedRingWidth">
+            <mat-option [value]="20">20px</mat-option>
+            <mat-option [value]="28">28px</mat-option>
+            <mat-option [value]="36">36px</mat-option>
+          </mat-select>
+        </div>
+        <div class="control-row">
+          <label>Handle Size:</label>
+          <mat-select [(ngModel)]="advancedHandleSize" placeholder="Handle Size">
+            <mat-option [value]="8">Small (8px)</mat-option>
+            <mat-option [value]="12">Normal (12px)</mat-option>
+            <mat-option [value]="16">Large (16px)</mat-option>
+            <mat-option [value]="20">Extra Large (20px)</mat-option>
+          </mat-select>
+        </div>
+        <div class="control-row">
+          <label>Background:</label>
+          <mat-select [(ngModel)]="advancedBackground" placeholder="Background">
+            <mat-option value="auto">Auto (Theme-aware)</mat-option>
+            <mat-option value="transparent">Transparent</mat-option>
+            <mat-option value="#ffffff">White</mat-option>
+            <mat-option value="#000000">Black</mat-option>
+            <mat-option value="#f5f5f5">Light Gray</mat-option>
+            <mat-option value="#2196f3">Blue</mat-option>
+          </mat-select>
+        </div>
+        <div class="control-row">
+          <label>Resolution:</label>
+          <mat-select [(ngModel)]="advancedResolution" placeholder="Resolution">
+            <mat-option [value]="'auto'">Automatic</mat-option>
+            <mat-option [value]="1">1x (Standard)</mat-option>
+            <mat-option [value]="2">2x (Retina)</mat-option>
+            <mat-option [value]="3">3x (High DPI)</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="background-demo"
+        [style.background]="backgroundValue === 'transparent' ? 'repeating-conic-gradient(#808080 0% 25%, transparent 0% 50%) 50% / 20px 20px' : backgroundValue">
+        <mb-color-disc [hexValue]="advancedHexColor()" [layout]="advancedLayout" [alphaChannel]="advancedAlpha"
+          [diameter]="advancedDiameter" [ringWidth]="advancedRingWidth" [handleSize]="advancedHandleSize"
+          [resolution]="advancedResolution" [disabled]="advancedDisabled" [backgroundColor]="advancedBackground"
+          (hexValueChange)="advancedHexColor.set($event)" (colorChange)="advancedColor.set($event)">
+        </mb-color-disc>
+      </div>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>disabled:</strong> {{advancedDisabled}}</span>
+      <span><strong>alpha:</strong> {{advancedAlpha}}</span>
+      <span><strong>layout:</strong> {{advancedLayout}}</span>
+      <span><strong>diameter:</strong> {{advancedDiameter}}</span>
+      <span><strong>ringWidth:</strong> {{advancedRingWidth}}</span>
+      <span><strong>handleSize:</strong> {{advancedHandleSize}}</span>
+      <span><strong>backgroundColor:</strong> {{advancedBackground}}</span>
+      <span><strong>resolution:</strong> {{advancedResolution}}</span>
+      <span><strong>hexValueChange:</strong> {{advancedHexColor()}}</span>
+      @if (advancedColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{advancedColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+</div>

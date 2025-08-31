@@ -19,25 +19,37 @@ export class ColorDiscPickerComponent {
   private isOpen = signal(false);
 
   // Input properties
-  readonly alphaChannel = input<boolean>(false);
+  /** Layout mode: 'outer-lightness' shows lightness on outer ring, 'outer-hue' shows hue on outer ring */
   readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-lightness');
+  /** Enable alpha channel control (opacity/transparency) */
+  readonly alphaChannel = input<boolean>(false);
+  /** Overall diameter of the color disc in pixels */
   readonly diameter = input<number>(280);
+  /** Width of each color ring in pixels */
   readonly ringWidth = input<number>(24);
+  /** Size of the color selection handle in pixels */
   readonly handleSize = input<number>(12);
-  readonly resolution = input<number>(2);
-  /** Enable auto-detection */
-  readonly autoResolution = input<boolean>(false);
+  /** Resolution for high-DPI displays - use 'auto' for automatic detection based on devicePixelRatio, or specify a number (1-3) for manual control */
+  readonly resolution = input<number | 'auto'>('auto');
+  /** Whether the color disc is disabled and non-interactive */
   readonly disabled = input<boolean>(false);
+  /** Initial hex color value (with or without alpha channel, e.g., '#ff4081' or '#ff408180') */
   readonly hexValue = input<string>('#ff4081');
-  /** 'auto', 'transparent', or any CSS color */
+  /** Background color behind the color disc - 'auto' uses theme background, 'transparent' for no background, or any CSS color value */
   readonly backgroundColor = input<string>('auto');
+   /** Show the current color value as text in the trigger button */
   readonly showValue = input<boolean>(true);
+  /** Automatically close the color picker when a color is selected */
   readonly closeOnSelect = input<boolean>(false);
 
   // Output events
+  /** Emitted only a hex value when a color is selected from the picker */
   readonly hexValueChange = output<string>();
-  readonly colorChanged = output<{ hex: string; hsl: [number, number, number] }>();
+  /** Emitted when a color is selected from the picker */
+  readonly colorChange = output<{ hex: string; hsl: [number, number, number]; alpha?: number }>();
+  /** Emitted when the picker overlay is opened */
   readonly pickerOpened = output<void>();
+  /** Emitted when a picker overlay is closed */
   readonly pickerClosed = output<void>();
 
   protected togglePicker(): void {
@@ -112,7 +124,6 @@ export class ColorDiscPickerComponent {
     componentRef.setInput('ringWidth', this.ringWidth());
     componentRef.setInput('handleSize', this.handleSize());
     componentRef.setInput('resolution', this.resolution());
-    componentRef.setInput('autoResolution', this.autoResolution());
     componentRef.setInput('disabled', this.disabled());
     componentRef.setInput('hexValue', this.hexValue());
     componentRef.setInput('backgroundColor', this.backgroundColor());
@@ -129,8 +140,8 @@ export class ColorDiscPickerComponent {
       }
     });
 
-    componentRef.instance.colorChanged.subscribe((colorEvent) => {
-      this.colorChanged.emit(colorEvent);
+    componentRef.instance.colorChange.subscribe((colorEvent) => {
+      this.colorChange.emit(colorEvent);
     });
 
     this.isOpen.set(true);

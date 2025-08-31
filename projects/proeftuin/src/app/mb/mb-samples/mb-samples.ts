@@ -4,6 +4,12 @@ export const treeNodes: MbSample[] = [
   {
     name: 'Ohlcv chart study', header: 'Ohlcv chart study', route: 'ohlcv-chart-study'
   }, {
+    name: 'Colors',
+    children: [
+      { name: 'Color disc', header: 'Color disc', route: 'colors/color-disc-01' },
+      { name: 'Color disc picker', header: 'Color disc picker', route: 'colors/color-disc-picker-01' }
+    ]
+  }, {
     name: 'Synthetic data', header: 'Synthetic data', route: 'synthetic-data'
   }, {
     name: 'Data',
@@ -18,7 +24,14 @@ export const treeNodes: MbSample[] = [
   }, {
     name: 'Components',
     children: [
-      {
+        {
+        name: 'Colors',
+        children: [
+          { name: 'Color disc', header: 'Color disc', route: 'colors/color-disc-01' },
+          { name: 'Color disc picker', header: 'Color disc picker', route: 'colors/color-disc-picker-01' }
+        ]
+      },
+    {
         name: 'Frequency response',
         children: [
           { name: 'Features', header: 'Frequency response features', route: 'comp-freqresp/s1' }
@@ -119,8 +132,7 @@ export const treeNodes: MbSample[] = [
           { name: 'Palettes from web', header: 'Palettes from web', route: 'comp-swatches/s7' },
           { name: 'Predefined interpolated palettes', header: 'Predefined interpolated palettes', route: 'comp-swatches/s8' },
           { name: 'Predefined line palettes', header: 'Predefined line palettes', route: 'comp-swatches/s11' },
-          { name: 'Color picker', header: 'Color picker', route: 'comp-swatches/s9' },
-          { name: 'Color disc', header: 'Color discr', route: 'comp-swatches/s12' }
+          { name: 'Color picker', header: 'Color picker', route: 'comp-swatches/s9' }
         ]
       },
       {

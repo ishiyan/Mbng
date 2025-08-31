@@ -22,24 +22,30 @@ export class ColorDiscComponent implements OnDestroy {
   private canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   // Input properties
+  /** Layout mode: 'outer-lightness' shows lightness on outer ring, 'outer-hue' shows hue on outer ring */
   readonly layout = input<'outer-lightness' | 'outer-hue'>('outer-hue');
-  /** Enable alpha channel */
+  /** Enable alpha channel control (opacity/transparency) */
   readonly alphaChannel = input<boolean>(false);
+  /** Overall diameter of the color disc in pixels */
   readonly diameter = input<number>(280);
+  /** Width of each color ring in pixels */
   readonly ringWidth = input<number>(24);
+  /** Size of the color selection handle in pixels */
   readonly handleSize = input<number>(12);
-  /** Resolution for high-DPI displays */
-  readonly resolution = input<number>(1);
-  /** Enable auto-detection */
-  readonly autoResolution = input<boolean>(false);
+  /** Resolution for high-DPI displays - use 'auto' for automatic detection based on devicePixelRatio, or specify a number (1-3) for manual control */
+  readonly resolution = input<number | 'auto'>('auto');
+  /** Whether the color disc is disabled and non-interactive */
   readonly disabled = input<boolean>(false);
+  /** Initial hex color value (with or without alpha channel, e.g., '#ff4081' or '#ff408180') */
   readonly hexValue = input<string>('#ff4081');
-  /** 'auto', 'transparent', or any CSS color */
+  /** Background color behind the color disc - 'auto' uses theme background, 'transparent' for no background, or any CSS color value */
   readonly backgroundColor = input<string>('auto');
 
   // Output events
+  /** Emitted only a hex value when a color is selected from the picker */
   readonly hexValueChange = output<string>();
-  readonly colorChanged = output<{ hex: string; hsl: [number, number, number]; alpha?: number }>();
+  /** Emitted when a color is selected from the picker */
+  readonly colorChange = output<{ hex: string; hsl: [number, number, number]; alpha?: number }>();
 
   // Internal state
   protected readonly isDragging = signal<boolean>(false);
@@ -50,11 +56,37 @@ export class ColorDiscComponent implements OnDestroy {
 
   // Computed resolution that considers auto-detection
   private readonly effectiveResolution = computed(() => {
-    if (this.autoResolution()) {
+    const resolution = this.resolution();
+    if (resolution === 'auto') {
       return Math.min(window.devicePixelRatio || 1, 3); // Cap at 3x for performance
     }
-    return this.resolution();
+    return resolution;
   });
+
+  private radialSegments(radius: number): number {
+    const resolution = this.effectiveResolution();
+
+    // Calculate circumference in actual pixels
+    const circumference = 2 * Math.PI * radius * resolution;
+
+    // Target 1-2 pixels per segment for smooth gradients
+    const pixelsPerSegment = 1.5;
+    let segments = Math.round(circumference / pixelsPerSegment);
+
+    // Ensure we have enough segments for smooth gradients
+    segments = Math.max(segments, 360);
+
+    // Round to multiples of 4 to align with cardinal directions (0°, 90°, 180°, 270°)
+    // This helps prevent moiré patterns at these critical angles
+    const rounding = 16;
+    segments = Math.round(segments / rounding) * rounding;
+
+    // Clamp to reasonable bounds
+    const maxSegments = Math.min(3600, circumference * 2); // Cap at 2 pixels per segment max
+    segments = Math.min(segments, maxSegments);
+
+    return Math.max(360, segments); // Minimum 360 for 1° precision
+  }
 
   constructor() {
     afterNextRender(() => {
@@ -84,6 +116,7 @@ export class ColorDiscComponent implements OnDestroy {
     // Render when HSLA changes
     effect(() => {
       this.currentHsla();
+      this.layout();
       this.scheduleRender();
     });
   }
@@ -298,11 +331,12 @@ export class ColorDiscComponent implements OnDestroy {
     const bgColor = this.getEffectiveBackgroundColor();
 
     // Clear/fill canvas based on background setting
+    const resolution = this.effectiveResolution();
     if (bgColor === 'transparent') {
-      this.ctx.clearRect(0, 0, canvas.width / this.effectiveResolution(), canvas.height / this.effectiveResolution());
+      this.ctx.clearRect(0, 0, canvas.width / resolution, canvas.height / resolution);
     } else {
       this.ctx.fillStyle = bgColor;
-      this.ctx.fillRect(0, 0, canvas.width / this.effectiveResolution(), canvas.height / this.effectiveResolution());
+      this.ctx.fillRect(0, 0, canvas.width / resolution, canvas.height / resolution);
     }
 
     const layoutMode = this.layout();
@@ -327,23 +361,25 @@ export class ColorDiscComponent implements OnDestroy {
   private renderMiddleAlphaRing(): void {
     if (!this.ctx || !this.geometry) return;
 
-    const { center, middleRingInnerRadius: alphaInnerRadius, middleRingOuterRadius: alphaOuterRadius } = this.geometry;
+    const { center, middleRingInnerRadius, middleRingOuterRadius } = this.geometry;
     const [hue, saturation, lightness] = this.currentHsla();
 
     // Draw checkerboard background
-    this.drawCheckerboardInRing(center, alphaInnerRadius, alphaOuterRadius);
+    this.drawCheckerboardInRing(center, middleRingInnerRadius, middleRingOuterRadius);
 
     // Draw alpha gradient overlay
-    const segments = 120;
+    const segments = this.radialSegments(middleRingOuterRadius);
+    const factor = 2 * Math.PI / segments;
+
     for (let i = 0; i < segments; i++) {
       const alpha = i / segments;
-      const startAngle = (i * 2 * Math.PI) / segments;
-      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+      const startAngle = factor * i;
+      const endAngle = factor * (i + 1);
 
       this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
       this.ctx.beginPath();
-      this.ctx.arc(center.x, center.y, alphaOuterRadius, startAngle, endAngle);
-      this.ctx.arc(center.x, center.y, alphaInnerRadius, endAngle, startAngle, true);
+      this.ctx.arc(center.x, center.y, middleRingOuterRadius, startAngle, endAngle);
+      this.ctx.arc(center.x, center.y, middleRingInnerRadius, endAngle, startAngle, true);
       this.ctx.closePath();
       this.ctx.fill();
     }
@@ -386,12 +422,14 @@ export class ColorDiscComponent implements OnDestroy {
     if (!this.ctx || !this.geometry) return;
 
     const { center, wheelRadius } = this.geometry;
-    const segments = 360;
+    const segments = this.radialSegments(wheelRadius);
+    const factor = 2 * Math.PI / segments;
+    const coeff = 360 / segments;
 
     for (let i = 0; i < segments; i++) {
-      const hue = i;
-      const startAngle = (i * 2 * Math.PI) / segments;
-      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+      const hue = coeff * i;
+      const startAngle = factor * i;
+      const endAngle = factor * (i + 1);
 
       // Create radial gradient for saturation
       const gradient = this.ctx.createRadialGradient(
@@ -415,13 +453,14 @@ export class ColorDiscComponent implements OnDestroy {
 
     const { center, outerRingInnerRadius, outerRingOuterRadius } = this.geometry;
     const [hue, saturation] = this.currentHsla();
-
-    const segments = 100;
+    const segments = this.radialSegments(outerRingOuterRadius);
+    const factor = 2 * Math.PI / segments;
+    const coeff = 100 / segments;
 
     for (let i = 0; i < segments; i++) {
-      const lightness = (i / segments) * 100;
-      const startAngle = (i * 2 * Math.PI) / segments;
-      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+      const lightness = coeff * i;
+      const startAngle = factor * i;
+      const endAngle = factor * (i + 1);
 
       this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       this.ctx.beginPath();
@@ -437,17 +476,23 @@ export class ColorDiscComponent implements OnDestroy {
 
     const { center, outerRingInnerRadius, outerRingOuterRadius } = this.geometry;
     const [, saturation, lightness] = this.currentHsla();
-    const segments = 360;
+    const segments = this.radialSegments(outerRingOuterRadius);
+    const factor = 2 * Math.PI / segments;
+    const coeff = 360 / segments;
 
     for (let i = 0; i < segments; i++) {
-      const hue = i;
-      const startAngle = (i * 2 * Math.PI) / segments;
-      const endAngle = ((i + 1) * 2 * Math.PI) / segments;
+      const angle = i * factor;
+      const nextAngle = (i + 1) * factor;
+      const hue = coeff * i;
 
-      this.ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      const gradient = this.ctx.createRadialGradient(center.x, center.y, outerRingInnerRadius, center.x, center.y, outerRingOuterRadius);
+      gradient.addColorStop(0, `hsl(${hue}, ${saturation}%, ${lightness}%)`);
+      gradient.addColorStop(1, `hsl(${hue}, ${saturation}%, ${lightness}%)`);
+
+      this.ctx.fillStyle = gradient;
       this.ctx.beginPath();
-      this.ctx.arc(center.x, center.y, outerRingOuterRadius, startAngle, endAngle);
-      this.ctx.arc(center.x, center.y, outerRingInnerRadius, endAngle, startAngle, true);
+      this.ctx.arc(center.x, center.y, outerRingOuterRadius, angle, nextAngle);
+      this.ctx.arc(center.x, center.y, outerRingInnerRadius, nextAngle, angle, true);
       this.ctx.closePath();
       this.ctx.fill();
     }
@@ -749,7 +794,7 @@ export class ColorDiscComponent implements OnDestroy {
     // Check abort signal before emitting
     if (!this.abortController.signal.aborted) {
       this.hexValueChange.emit(hex);
-      this.colorChanged.emit({ hex, hsl: [hue, saturation, lightness], alpha });
+      this.colorChange.emit({ hex, hsl: [hue, saturation, lightness], alpha });
     }
   }
 

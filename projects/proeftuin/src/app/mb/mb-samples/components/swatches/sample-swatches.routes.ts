@@ -11,7 +11,6 @@ export const routes: Routes = [
   { path: 's8', loadComponent: () => import('./sample-8/sample-swatches-8.component').then(m => m.SampleSwatches8Component) },
   { path: 's9', loadComponent: () => import('./sample-9/sample-swatches-9.component').then(m => m.SampleSwatches9Component) },
   { path: 's10', loadComponent: () => import('./sample-10/sample-swatches-10.component').then(m => m.SampleSwatches10Component) },
-  { path: 's11', loadComponent: () => import('./sample-11/sample-swatches-11.component').then(m => m.SampleSwatches11Component) },
-  { path: 's12', loadComponent: () => import('./sample-12/sample-swatches-12.component').then(m => m.SampleSwatches12Component) } // ,
+  { path: 's11', loadComponent: () => import('./sample-11/sample-swatches-11.component').then(m => m.SampleSwatches11Component) } //,
   // { path: '**', redirectTo: 's1' }
 ];

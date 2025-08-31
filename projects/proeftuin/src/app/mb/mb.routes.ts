@@ -47,6 +47,10 @@ export const routes: Routes = [
           import('./mb-samples/components/hilbert-curve/sample-hilbert-curve.routes').then(m => m.routes)
       },
       {
+        path: 'colors', loadChildren: () =>
+          import('./mb-samples/colors/colors.routes').then(m => m.routes)
+      },
+      {
         path: 'comp-swatches', loadChildren: () =>
           import('./mb-samples/components/swatches/sample-swatches.routes').then(m => m.routes)
       },

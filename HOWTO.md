@@ -26,6 +26,11 @@ wget -O .github/instructions/angular-best-practices.md https://next.angular.dev/
 wget -O .github/instructions/angular-llms-full.md https://next.angular.dev/assets/context/llms-full.txt
 ```
 
+### Using built-in simple browser
+
+1. Run `ng serve proeftuin` in the terminal.
+2. Use the `Simple Browser: Show` command to open the built-in browser. Enter `http://localhost:4200` when prompted for URL.
+
 ## Updating
 
 Install `n` to update `npm`-
