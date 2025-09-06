@@ -3,14 +3,12 @@
 @use '@angular/material' as mat;
 @use "styles/_theme-colors-teal-pink.scss" as theme-colors;
 
-$enable-sparkline-theming: false;
+$enable-sparkline-theming: true;
 $enable-multiline-chart-theming: true;
 $enable-ohlcv-chart-theming: true;
 $enable-linear-chart-theming: true;
 $enable-frequency-response-chart-theming: true;
-//@use "../../mb/src/lib/" as mb with ($enable-sparkline-theming: $enable-sparkline-theming);
-@use "../../../dist/mb/styles/" as mb with ($enable-sparkline-theming: $enable-sparkline-theming);
-//@use "../../../dist/mb/styles/sparkline" as mb-sparkline;
+@use "../../../dist/mb/styles/" as mb;
 
 // Styles used by KaTeX.
 @use 'katex/dist/katex.css' as *;
@@ -57,12 +55,10 @@ $enable-frequency-response-chart-theming: true;
   }
 
   @if $enable-sparkline-theming {
-    @debug ("sparkline theming enabled, including mb.sparkline-overrides");
-    //@include mb-sparkline.sparkline-overrides((
     @include mb.sparkline-overrides((
-      stroke-width: 0px,
-      stroke-color: var(--mat-sys-tertiary),
-      fill-color: var(--mat-sys-tertiary),
+      stroke-width: 0,
+      stroke-color: var(--mat-sys-primary),
+      fill-color: var(--mat-sys-primary),
     ));
   }
 

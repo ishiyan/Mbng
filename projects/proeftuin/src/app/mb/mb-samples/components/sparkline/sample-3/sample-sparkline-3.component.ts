@@ -4,7 +4,6 @@ import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatSelectionList, MatListOption, MatListItemLine, MatList, MatListItem } from '@angular/material/list';
 
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
 import { SparklineComponent } from 'projects/mb/src/lib/charts/sparkline/sparkline.component';
 import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 import { Quote } from 'projects/mb/src/lib/data/entities/quote';
@@ -61,8 +60,6 @@ export class SampleSparkline3Component {
   arrayItemsSelected6 = [ {data: this.dataOhlcv, name: 'ohlcv data'} ];
   arrayItemsSelected7 = [ {data: this.dataOhlcv, name: 'ohlcv data'} ];
 
-  readonly configLine: SparklineConfiguration = { fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 };
-  readonly configFill: SparklineConfiguration = { fillColor: 'steelblue', strokeColor: undefined, strokeWidth: 1 };
   arrayItemIsLine1 = false;
   arrayItemIsLine2 = false;
   arrayItemIsLine3 = false;

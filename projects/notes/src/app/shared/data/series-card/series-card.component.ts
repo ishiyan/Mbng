@@ -4,7 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatDivider } from '@angular/material/divider';
 
-import { SparklineConfiguration, SparklineComponent, MultilineComponent } from 'mb';
+import { SparklineComponent, MultilineComponent } from 'mb';
 import { DynamicColorService, LineConfiguration } from 'mb';
 
 import { Series } from '../series.interface';
@@ -34,12 +34,6 @@ export class SeriesCardComponent {
 
   /** Event emitted when the series has been removed by the user. */
   readonly removed = output<Series>();
-
-  protected readonly configSparkline = computed((): SparklineConfiguration => ({
-    fillColor: this.dcs.secondaryColor(),
-    strokeColor: this.dcs.secondaryColor(),//undefined,
-    strokeWidth: 1
-  }));
 
   protected readonly configMultiline = computed((): LineConfiguration => ({
     fillColor: undefined,

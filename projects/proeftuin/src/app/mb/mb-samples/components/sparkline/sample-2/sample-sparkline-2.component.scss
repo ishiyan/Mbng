@@ -1,11 +1,25 @@
-.sample {
-  margin: 16px;
-  margin-bottom: 0px;
+:host {
+  .sample {
+    margin: 16px;
+    margin-bottom: 0px;
+  }
+
+  .example-card {
+    // max-width: 500px;
+    margin-bottom: 16px;
+  }
 }
 
-.example-card {
-  // max-width: 500px;
-  margin-bottom: 16px;
+.fill-only {
+  --sparkline-fill-color: steelblue;
+  --sparkline-stroke-color: none;
+  --sparkline-stroke-width: 0;
+}
+
+.line-only {
+  --sparkline-fill-color: none;
+  --sparkline-stroke-color: steelblue;
+  --sparkline-stroke-width: 1px;
 }
 
 /*

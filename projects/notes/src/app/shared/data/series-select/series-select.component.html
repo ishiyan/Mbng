@@ -1,57 +1,72 @@
 <mat-form-field style="width:330px">
   @if (labelText.length > 0) {
-    <mat-label>{{labelText}}</mat-label>
+  <mat-label>{{labelText}}</mat-label>
   }
-  <mat-select style="margin-top: 8px;" [value]="selected()" (selectionChange)="changed($event.value)">
+  <mat-select [value]="selected()" (selectionChange)="changed($event.value)">
     <mat-select-trigger>
       @if (selected(); as selectedSeries) {
-        <mb-sparkline [width]="160" [height]="24" [data]="selectedSeries.data" [configuration]="configFill()" />
-        {{selectedSeries.mnemonic}}
+      <mb-sparkline
+        [style.width.px]="160"
+        [style.height.px]="24"
+        [data]="selectedSeries.data" />
+      {{selectedSeries.mnemonic}}
       }
     </mat-select-trigger>
 
     @if (barSeriesArray().length > 0) {
-      <mat-optgroup label="Bar Series">
-        @for (series of barSeriesArray(); track series.mnemonic) {
-          <mat-option [value]="series">
-            <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill()" />
-            {{series.mnemonic}}
-          </mat-option>
-        }
-      </mat-optgroup>
+    <mat-optgroup label="Bar Series">
+      @for (series of barSeriesArray(); track series.mnemonic) {
+      <mat-option [value]="series">
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="series.data" />
+        {{series.mnemonic}}
+      </mat-option>
+      }
+    </mat-optgroup>
     }
 
     @if (scalarSeriesArray().length > 0) {
-      <mat-optgroup label="Scalar Series">
-        @for (series of scalarSeriesArray(); track series.mnemonic) {
-          <mat-option [value]="series">
-            <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill()" />
-            {{series.mnemonic}}
-          </mat-option>
-        }
-      </mat-optgroup>
+    <mat-optgroup label="Scalar Series">
+      @for (series of scalarSeriesArray(); track series.mnemonic) {
+      <mat-option [value]="series">
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="series.data" />
+        {{series.mnemonic}}
+      </mat-option>
+      }
+    </mat-optgroup>
     }
 
     @if (tradeSeriesArray().length > 0) {
-      <mat-optgroup label="Trade Series">
-        @for (series of tradeSeriesArray(); track series.mnemonic) {
-          <mat-option [value]="series">
-            <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill()" />
-            {{series.mnemonic}}
-          </mat-option>
-        }
-      </mat-optgroup>
+    <mat-optgroup label="Trade Series">
+      @for (series of tradeSeriesArray(); track series.mnemonic) {
+      <mat-option [value]="series">
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="series.data" />
+        {{series.mnemonic}}
+      </mat-option>
+      }
+    </mat-optgroup>
     }
 
     @if (quoteSeriesArray().length > 0) {
-      <mat-optgroup label="Quote Series">
-        @for (series of quoteSeriesArray(); track series.mnemonic) {
-          <mat-option [value]="series">
-            <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill()" />
-            {{series.mnemonic}}
-          </mat-option>
-        }
-      </mat-optgroup>
+    <mat-optgroup label="Quote Series">
+      @for (series of quoteSeriesArray(); track series.mnemonic) {
+      <mat-option [value]="series">
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="series.data" />
+        {{series.mnemonic}}
+      </mat-option>
+      }
+    </mat-optgroup>
     }
   </mat-select>
 </mat-form-field>

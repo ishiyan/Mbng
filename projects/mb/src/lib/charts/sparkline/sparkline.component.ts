@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
@@ -6,8 +6,6 @@ import { Bar } from '../../data/entities/bar';
 import { Quote } from '../../data/entities/quote';
 import { Trade } from '../../data/entities/trade';
 import { Scalar } from '../../data/entities/scalar';
-import { SparklineConfiguration } from './sparkline-configuration.interface';
-import { computeDimensions } from '../compute-dimensions';
 import { convertInterpolation } from '../convert-interpolation';
 
 const defaultWidth = 160;
@@ -19,48 +17,47 @@ const defaultHeight = 24;
   styleUrls: ['./sparkline.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SparklineComponent {
+export class SparklineComponent implements OnDestroy {
   private readonly elementRef = inject(ElementRef);
-  private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
-
-  /** A width of the sparkline. */
-  readonly width = input<number | string>(defaultWidth);
-
-  /** A height of the sparkline. */
-  readonly height = input<number | string>(defaultHeight);
-
-  private currentConfiguration: SparklineConfiguration = {
-    fillColor: 'steelblue', strokeColor: undefined, strokeWidth: 1, interpolation: 'linear'
-  };
   private currentData?: Bar[] | Quote[] | Trade[] | Scalar[];
-
-  /** Specifies fill, stroke and interpolation. */
-  configuration = input.required<SparklineConfiguration>();
+  private resizeObserver?: ResizeObserver;
 
   /** The data array to use. */
   data = input.required<Bar[] | Quote[] | Trade[] | Scalar[]>();
 
   constructor() {
-    effect(() => {      
-      const cfg = this.configuration();
-      this.currentConfiguration = { ...this.currentConfiguration, ...cfg };
-      this.render();
-    });
     effect(() => {
       this.currentData = this.data();
       this.render();
     });
+
     afterNextRender({
       write: () => {
+        this.setupResizeObserver();
         this.render();
       }
     });
   }
 
-  @HostListener('window:resize', [])
-  public render(): void {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  private setupResizeObserver(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.render();
+    });
+    
+    this.resizeObserver.observe(this.elementRef.nativeElement);
+  }
+
+  private render(): void {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
@@ -75,10 +72,19 @@ export class SparklineComponent {
     }
 
     sel.select('svg').remove();
-    const cfg = this.currentConfiguration;
-    const computed = computeDimensions(this.elementRef, this.width(), this.height(), defaultWidth, defaultHeight);
-    const w = computed[0];
-    const h = computed[1];
+    const computedStyle = getComputedStyle(this.elementRef.nativeElement);
+
+    // Get colors and gradient settings
+    const hasGradientStart = computedStyle.getPropertyValue('--sparkline-gradient-start-internal').trim();
+    const hasGradientEnd = computedStyle.getPropertyValue('--sparkline-gradient-end-internal').trim();
+    const gradientDirection = computedStyle.getPropertyValue('--sparkline-gradient-direction-internal').trim();
+    const hasGradient = hasGradientStart && hasGradientEnd;
+    const interpolation = computedStyle.getPropertyValue('--sparkline-interpolation-internal').trim();
+
+    // Use element's computed width/height directly
+    const rect = this.elementRef.nativeElement.getBoundingClientRect();
+    const w = rect.width || defaultWidth;
+    const h = rect.height || defaultHeight;
 
     const svg: any = sel.append('svg').attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('width', w).attr('height', h).attr('viewBox', `0 0 ${w} ${h}`);
@@ -102,36 +108,98 @@ export class SparklineComponent {
       getY = (d: any) => (d as Scalar).value;
     }
 
-    const interp = cfg.interpolation ? cfg.interpolation : 'linear;';
     const yScale = d3.scaleLinear().domain(yExtent).range([h, 0]);
     svg.datum(dat);
-    if (cfg.fillColor && cfg.fillColor !== 'none') {
-      const min: number = yExtent[0];
-      const area: any = d3.area()
-        .curve(convertInterpolation(interp))
-        .defined((d: any) => !isNaN(getY(d)))
-        // .x((d: any, i: number) => xScale(i))
-        .x((d: any) => xScale(d.time) as number)
-        .y0(() => yScale(min) as number)
-        .y1((d: any) => yScale(getY(d)) as number);
-      svg.append('path')
-        .attr('fill', cfg.fillColor)
-        .attr('d', area);
+
+    // Create gradient if needed
+    let fillId = '';
+    let strokeId = '';
+    let fillClass = 'sparkline-fill';
+    let strokeClass = 'sparkline-stroke';
+
+    if (hasGradient) {
+      const defs = svg.append('defs');
+      const uid = `sparkline-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      
+      fillId = `${uid}-fill-gradient`;
+      fillClass = 'sparkline-fill-gradient';
+      const fillGradient = defs.append('linearGradient')
+        .attr('id', fillId)
+        .attr('gradientUnits', 'userSpaceOnUse');
+
+      strokeId = `${uid}-stroke-gradient`;
+      strokeClass = 'sparkline-stroke-gradient';
+      const strokeGradient = defs.append('linearGradient')
+        .attr('id', strokeId)
+        .attr('gradientUnits', 'userSpaceOnUse');
+
+      if (gradientDirection === 'horizontal') {
+        fillGradient
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', w)
+          .attr('y2', 0);
+        strokeGradient
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', w)
+          .attr('y2', 0);
+      } else {
+        fillGradient
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', 0)
+          .attr('y2', h);
+        strokeGradient
+          .attr('x1', 0)
+          .attr('y1', 0)
+          .attr('x2', 0)
+          .attr('y2', h);
+      }
+      
+      fillGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('class', 'sparkline-gradient-start');
+      fillGradient.append('stop')
+        .attr('offset', '100%')
+        .attr('class', 'sparkline-gradient-end');
+
+      strokeGradient.append('stop')
+        .attr('offset', '0%')
+        .attr('class', 'sparkline-gradient-start');
+      strokeGradient.append('stop')
+        .attr('offset', '100%')
+        .attr('class', 'sparkline-gradient-end');
     }
-    if (cfg.strokeColor && cfg.strokeWidth && cfg.strokeWidth > 0 && cfg.strokeColor !== 'none') {
-      const line: any = d3.line()
-        .curve(convertInterpolation(interp))
-        .defined((d: any) => !isNaN(getY(d)))
-        // .x((d: any, i: number) => xScale(i))
-        .x((d: any) => xScale(d.time) as number)
-        .y((d: any) => yScale(getY(d)) as number);
-      svg.append('path')
-        .attr('stroke-width', cfg.strokeWidth)
-        .attr('stroke', cfg.strokeColor)
-        .attr('stroke-linejoin', 'round')
-        .attr('stroke-linecap', 'round')
-        .style('fill', 'none')
-        .attr('d', line);
+
+    // Always render area and line - let CSS determine styling
+    const min: number = yExtent[0];
+    const area: any = d3.area()
+      .curve(convertInterpolation(interpolation))
+      .defined((d: any) => !isNaN(getY(d)))
+      .x((d: any) => xScale(d.time) as number)
+      .y0(() => yScale(min) as number)
+      .y1((d: any) => yScale(getY(d)) as number);
+    const areaPath = svg.append('path')
+      .attr('d', area)
+      .attr('class', fillClass);
+    if (hasGradient) {
+        areaPath.attr('fill', `url(#${fillId})`);
+    }
+
+    const line: any = d3.line()
+      .curve(convertInterpolation(interpolation))
+      .defined((d: any) => !isNaN(getY(d)))
+      .x((d: any) => xScale(d.time) as number)
+      .y((d: any) => yScale(getY(d)) as number);
+    const linePath = svg.append('path')
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-linecap', 'round')
+      .style('fill', 'none')
+      .attr('d', line)
+      .attr('class', strokeClass);
+    if (hasGradient) {
+      linePath.attr('stroke', `url(#${strokeId})`);
     }
   }
 }

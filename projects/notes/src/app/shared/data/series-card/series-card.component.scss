@@ -1,6 +1,13 @@
 @use "@angular/material" as mat;
+@use "../../../../../../../dist/mb/styles/" as mb;
 
 :host {
+  @include mb.sparkline-overrides((
+    stroke-width: 0,
+    stroke-color: var(--mat-sys-secondary),
+    fill-color: var(--mat-sys-secondary),
+  ));
+
   .series-card {
     margin-block: 2px;
     border: 1px solid var(--mat-sys-outline-variant);
@@ -74,10 +81,9 @@
         .delete-button {
           flex: 0 0 auto; // Don't grow/shrink
 
-          @include mat.icon-button-overrides((
-            icon-color: var(--mat-sys-error),
-            state-layer-color: var(--mat-sys-error),
-          ));
+          @include mat.icon-button-overrides((icon-color: var(--mat-sys-error),
+              state-layer-color: var(--mat-sys-error),
+            ));
         }
 
         .description-text {

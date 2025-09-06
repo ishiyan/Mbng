@@ -5,14 +5,24 @@
 $prefix: (sparkline);
 
 /// Generates custom tokens.
-@function get-tokens($theme: m3-theme.$sys-theme) {
+@function get-tokens($theme: m3-theme.$sys-theme, $color-variant: null) {
   @return (
     base: (
-      sparkline-stroke-width: null,
+      sparkline-width: 160px,
+      sparkline-height: 24px,
+      sparkline-min-width: auto,
+      sparkline-max-width: none,
+      sparkline-min-height: auto,
+      sparkline-max-height: none,
+      sparkline-stroke-width: 0,
+      sparkline-interpolation: linear,
+      sparkline-gradient-direction: vertical,
     ),
     color: (
-      sparkline-stroke-color: null,
-      sparkline-fill-color: null,
+      sparkline-stroke-color: steelblue,
+      sparkline-fill-color: steelblue,
+      sparkline-gradient-start: null,
+      sparkline-gradient-end: null,
     ),
     typography: (),
     density: (),

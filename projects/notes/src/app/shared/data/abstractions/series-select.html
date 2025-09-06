@@ -5,13 +5,19 @@
   <mat-select style="margin-top: 8px;" [value]="selected()" (selectionChange)="changed($event.value)">
     <mat-select-trigger>
       @if (selected(); as selectedSeries) {
-        <mb-sparkline [width]="160" [height]="24" [data]="selectedSeries.data" [configuration]="configFill()" />
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="selectedSeries.data" />
         {{selectedSeries.mnemonic}}
       }
     </mat-select-trigger>
     @for (series of seriesArray(); track series.data) {
       <mat-option [value]="series">
-        <mb-sparkline [width]="160" [height]="24" [data]="series.data" [configuration]="configFill()" />
+        <mb-sparkline
+          [style.width.px]="160"
+          [style.height.px]="24"
+          [data]="series.data" />
         {{series.mnemonic}}
       </mat-option>
     }

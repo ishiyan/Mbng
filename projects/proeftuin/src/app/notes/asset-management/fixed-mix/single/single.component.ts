@@ -8,7 +8,6 @@ import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 import { Scalar } from 'projects/mb/src/lib/data/entities/scalar';
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
 import { SparklineComponent } from 'projects/mb/src/lib/charts/sparkline/sparkline.component';
 import { StacklineComponent } from 'projects/mb/src/lib/charts/stackline/stackline.component';
 import { MultilineComponent } from 'projects/mb/src/lib/charts/multiline/multiline.component';
@@ -78,10 +77,22 @@ export class SingleComponent {
     bamEuroBondSicav, bamWeightedLowRiskBenchmark, alexDefensive, alexCautious
   ];
 
-  cashFill: SparklineConfiguration = { fillColor: this.selectedPalette[0], strokeColor: undefined, strokeWidth: 1 };
-  hrFill: SparklineConfiguration = { fillColor: this.selectedPalette[1], strokeColor: undefined, strokeWidth: 1 };
-  lrFill: SparklineConfiguration = { fillColor: this.selectedPalette[2], strokeColor: undefined, strokeWidth: 1 };
-  hrPercentageLine: SparklineConfiguration = { fillColor: undefined, strokeColor: this.selectedPalette[1], strokeWidth: 1 };
+  get cashSparklineStyle() {
+    return `--sparkline-width: 120px; --sparkline-height: 24px; --sparkline-fill-color: ${this.selectedPalette[0]}; --sparkline-stroke-color: none;`;
+  }
+  get hrSparklineStyle() {
+    return `--sparkline-width: 120px; --sparkline-height: 24px; --sparkline-fill-color: ${this.selectedPalette[1]}; --sparkline-stroke-color: none;`;
+  }
+  get lrSparklineStyle() {
+    return `--sparkline-width: 120px; --sparkline-height: 24px; --sparkline-fill-color: ${this.selectedPalette[2]}; --sparkline-stroke-color: none;`;
+  }
+  get hrPercentageLineStyle() {
+    return `--sparkline-width: 120px; --sparkline-height: 24px; --sparkline-fill-color: none; --sparkline-stroke-color: ${this.selectedPalette[0]}; --sparkline-stroke-width: 1px;`;
+  }
+  hrFill = { fillColor: this.selectedPalette[1], strokeColor: undefined, strokeWidth: 1 };
+  lrFill = { fillColor: this.selectedPalette[2], strokeColor: undefined, strokeWidth: 1 };
+  hrPercentageLine = { fillColor: undefined, strokeColor: this.selectedPalette[1], strokeWidth: 1 };
+  cashFill = { fillColor: this.selectedPalette[0], strokeColor: undefined, strokeWidth: 1 };
 
   private hrInstr: TestInstrument = this.hrInstruments[0];
   private lrInstr: TestInstrument = this.lrInstruments[0];
@@ -149,10 +160,6 @@ export class SingleComponent {
   paletteSelectionChanged(selection: string[]) {
     // console.log(selection);
     this.selectedPalette = selection;
-    this.cashFill = { fillColor: this.selectedPalette[0], strokeColor: undefined, strokeWidth: 1 };
-    this.hrFill = { fillColor: this.selectedPalette[1], strokeColor: undefined, strokeWidth: 1 };
-    this.lrFill = { fillColor: this.selectedPalette[2], strokeColor: undefined, strokeWidth: 1 };
-    this.hrPercentageLine = { fillColor: undefined, strokeColor: this.selectedPalette[0], strokeWidth: 1 };
   }
 
   initialAmountChanged(event: any) {

@@ -3,7 +3,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOptgroup, MatOption } from '@angular/material/core';
 
-import { DynamicColorService, SparklineConfiguration, SparklineComponent } from 'mb';
+import { SparklineComponent } from 'mb';
 
 import { BarSeriesService } from '../bar-series/bar-series.service';
 import { ScalarSeriesService } from '../scalar-series/scalar-series.service';
@@ -27,8 +27,6 @@ import { Series } from '../series.interface';
   ]
 })
 export class SeriesSelectComponent {
-  private dcs = inject(DynamicColorService);
-
   private barSeriesService = inject(BarSeriesService);
   private scalarSeriesService = inject(ScalarSeriesService);
   private tradeSeriesService = inject(TradeSeriesService);
@@ -65,12 +63,6 @@ export class SeriesSelectComponent {
   });
 
   protected labelText = '';
-
-  protected readonly configFill = computed((): SparklineConfiguration => ({
-    fillColor: this.dcs.primaryColor(),
-    strokeColor: undefined,
-    strokeWidth: 1
-  }));
 
   /** Specifies the label of the form field. */
   readonly label = input<string>();

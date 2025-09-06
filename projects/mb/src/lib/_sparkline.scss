@@ -1,6 +1,0 @@
-// Forwards all public API mixins so they can be imported from a single entry point.
-
-@use "./charts/sparkline/sparkline-theme" with ($theming-enabled: true);
-
-@forward "./charts/sparkline/sparkline-theme" as sparkline-* show sparkline-theme, sparkline-overrides,
-  sparkline-base, sparkline-color, sparkline-typography, sparkline-density;

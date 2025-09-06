@@ -2,26 +2,79 @@
 @use './sparkline';
 @use './sparkline-theme';
 
-@if sparkline-theme.$theming-enabled {
-  /*
+/*
     The following variables can be externally defined to style the sparkline.
 
-    --sparkline-stroke-width
-    --sparkline-stroke-color
-    --sparkline-fill-color
+    --sparkline-width
+    --sparkline-height
+    --sparkline-min-width
+    --sparkline-max-width
+    --sparkline-min-height
+    --sparkline-max-height
+    --sparkline-stroke-width: stroke width
+    --sparkline-stroke-color: solid stroke color
+    --sparkline-fill-color: solid fill color
+    --sparkline-interpolation
+    --sparkline-gradient-start: gradient start color (if set, enables gradient)
+    --sparkline-gradient-end: gradient end color (fallback to start color if not set)
+    --sparkline-gradient-direction: vertical | horizontal (default: vertical)
   */
 
-  $fallbacks: sparkline.get-tokens();
+$fallbacks: sparkline.get-tokens();
 
-  :host {
-    ---sparkline-stroke-width: var(--sparkline-stroke-width, #{token-utils.slot(sparkline-stroke-width, $fallbacks)});
-    ---sparkline-stroke-color: var(--sparkline-stroke-color, #{token-utils.slot(sparkline-stroke-color, $fallbacks)});
-    ---sparkline-fill-color: var(--sparkline-fill-color, #{token-utils.slot(sparkline-fill-color, $fallbacks)});
-  }
+:host {
+  --sparkline-width-internal: var(--sparkline-width, #{token-utils.slot(sparkline-width, $fallbacks)});
+  --sparkline-height-internal: var(--sparkline-height, #{token-utils.slot(sparkline-height, $fallbacks)});
+  --sparkline-min-width-internal: var(--sparkline-min-width, #{token-utils.slot(sparkline-min-width, $fallbacks)});
+  --sparkline-max-width-internal: var(--sparkline-max-width, #{token-utils.slot(sparkline-max-width, $fallbacks)});
+  --sparkline-min-height-internal: var(--sparkline-min-height, #{token-utils.slot(sparkline-min-height, $fallbacks)});
+  --sparkline-max-height-internal: var(--sparkline-max-height, #{token-utils.slot(sparkline-max-height, $fallbacks)});
+  --sparkline-stroke-width-internal: var(--sparkline-stroke-width, #{token-utils.slot(sparkline-stroke-width, $fallbacks)});
+  --sparkline-stroke-color-internal: var(--sparkline-stroke-color, #{token-utils.slot(sparkline-stroke-color, $fallbacks)});
+  --sparkline-fill-color-internal: var(--sparkline-fill-color, #{token-utils.slot(sparkline-fill-color, $fallbacks)});
+  --sparkline-interpolation-internal: var(--sparkline-interpolation, #{token-utils.slot(sparkline-interpolation, $fallbacks)});
+  --sparkline-gradient-start-internal: var(--sparkline-gradient-start, #{token-utils.slot(sparkline-gradient-start, $fallbacks)});
+  --sparkline-gradient-end-internal: var(--sparkline-gradient-end, #{token-utils.slot(sparkline-gradient-end, $fallbacks)});
+  --sparkline-gradient-direction-internal: var(--sparkline-gradient-direction, #{token-utils.slot(sparkline-gradient-direction, $fallbacks)});
 
-  :host ::ng-deep svg path {
-    stroke-width: var(---sparkline-stroke-width);
-    stroke: var(---sparkline-stroke-color);
-    fill: var(---sparkline-fill-color);
+  display: inline-block;
+
+  // Default dimensions
+  width: var(--sparkline-width-internal);
+  height: var(--sparkline-height-internal);
+
+  // Support for responsive sizing
+  min-width: var(--sparkline-min-width-internal);
+  max-width: var(--sparkline-max-width-internal);
+  min-height: var(--sparkline-min-height-internal);
+  max-height: var(--sparkline-max-height-internal);
+
+  ::ng-deep {
+    .sparkline-fill {
+      fill: var(--sparkline-fill-color-internal);
+    }
+
+    // For gradient fills, the fill attribute is set to url(#gradient-id)
+    // No additional CSS needed here since fill is handled by the SVG gradient
+    //::ng-deep .sparkline-fill-gradient {
+    //}
+
+    .sparkline-stroke {
+      stroke: var(--sparkline-stroke-color-internal);
+      stroke-width: var(--sparkline-stroke-width-internal);
+    }
+
+    .sparkline-stroke-gradient {
+      // For gradient strokes, the stroke attribute is set to url(#gradient-id)
+      stroke-width: var(--sparkline-stroke-width-internal);
+    }
+
+    .sparkline-gradient-start {
+      stop-color: var(--sparkline-gradient-start-internal);
+    }
+
+    .sparkline-gradient-end {
+      stop-color: var(--sparkline-gradient-end-internal);
+    }
   }
 }

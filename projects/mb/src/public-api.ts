@@ -282,7 +282,6 @@ export * from './lib/charts/historical-data-chart/historical-data-chart.componen
 export * from './lib/charts/historical-data-chart/historical-data-table.component';
 export * from './lib/charts/historical-data-chart/historical-data-download.component';
 
-export * from './lib/charts/sparkline/sparkline-configuration.interface';
 export * from './lib/charts/sparkline/sparkline.component';
 
 export * from './lib/charts/stackline/stackline.component';

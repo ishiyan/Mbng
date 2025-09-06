@@ -2,7 +2,10 @@
   <summary class="series-summary">
     <div class="series-header">
       <div class="series-sparkline">
-        <mb-sparkline [width]="200" [height]="32" [configuration]="configSparkline()" [data]="series().data" />
+        <mb-sparkline
+          [style.width.px]="200"
+          [style.height.px]="32"
+          [data]="series().data" />
       </div>
       <div class="series-mnemonic">
         {{series().mnemonic}}

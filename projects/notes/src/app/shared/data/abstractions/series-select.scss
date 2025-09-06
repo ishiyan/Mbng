@@ -1,0 +1,9 @@
+@use "../../../../../../../dist/mb/styles/" as mb;
+
+:host {
+  @include mb.sparkline-overrides((
+      stroke-width: 0,
+      stroke-color: var(--mat-sys-primary),
+      fill-color: var(--mat-sys-primary),
+  ));
+}

@@ -5,7 +5,6 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, 
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatOption, MatOptgroup } from '@angular/material/core';
 
-import { SparklineConfiguration } from 'projects/mb/src/lib/charts/sparkline/sparkline-configuration.interface';
 import { SparklineComponent } from 'projects/mb/src/lib/charts/sparkline/sparkline.component';
 import { Ohlcv } from 'projects/mb/src/lib/data/entities/ohlcv';
 import { Quote } from 'projects/mb/src/lib/data/entities/quote';
@@ -81,8 +80,6 @@ export class SampleSparkline2Component {
   groupItemFixed: DataItem = this.dataGroups[0].items[0];
   groupItem: DataItem = this.dataGroups[0].items[0];
 
-  readonly configLine: SparklineConfiguration = { fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 };
-  readonly configFill: SparklineConfiguration = { fillColor: 'steelblue', strokeColor: undefined, strokeWidth: 1 };
   arrayItemIsLineFixed = false;
   groupItemIsLineFixed = false;
   arrayItemIsLine = false;

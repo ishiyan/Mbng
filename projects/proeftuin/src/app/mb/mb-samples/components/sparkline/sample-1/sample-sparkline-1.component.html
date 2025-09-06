@@ -6,20 +6,37 @@
     </mat-card-header>
     <mat-card-content>
       <span class="nowrap">
-        <mb-sparkline [width]="100" [height]="20" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}"
-          [data]="dataOhlcv"></mb-sparkline>&nbsp;&nbsp;ohlcv
+        <mb-sparkline 
+        [data]="dataOhlcv"
+        style="
+          --sparkline-width: 100px;
+          --sparkline-height: 20px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        " />&nbsp;&nbsp;ohlcv
       </span>
       &#8203;
       <span class="nowrap">
-        <mb-sparkline [width]="100" [height]="20"
-          [configuration]="{fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1}" [data]="dataScalar">
-        </mb-sparkline>&nbsp;&nbsp;scalar
+        <mb-sparkline 
+        [data]="dataScalar"
+        style="
+          --sparkline-width: 100px;
+          --sparkline-height: 20px;
+          --sparkline-fill-color: none;
+          --sparkline-stroke-color: steelblue;
+          --sparkline-stroke-width: 1px;
+        " />&nbsp;&nbsp;scalar
       </span>
       &#8203;
       <span class="nowrap">
-        <mb-sparkline [width]="100" [height]="20"
-          [configuration]="{fillColor: undefined, strokeColor: 'cornflowerblue', strokeWidth: 1}" [data]="dataScalarWithNaN">
-        </mb-sparkline>&nbsp;&nbsp;scalar with NaN
+        <mb-sparkline 
+        [data]="dataScalarWithNaN"
+        style="
+          --sparkline-width: 100px;
+          --sparkline-height: 20px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        " />&nbsp;&nbsp;scalar with NaN
       </span>
       </mat-card-content>
   </mat-card>
@@ -29,39 +46,180 @@
       <mat-card-title>Default configuration</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mb-sparkline [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mb-sparkline [data]="dataOhlcv" />
     </mat-card-content>
   </mat-card>
 
   <mat-card appearance="raised" class="example-card">
     <mat-card-header>
-      <mat-card-title>Percentage width</mat-card-title>
+      <mat-card-title>Responsive width with CSS</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-card-subtitle>style="width:95%"</mat-card-subtitle>
-      <mb-sparkline style="width:95%" [height]="24" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mat-card-subtitle>width: 95%</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 95%;
+          --sparkline-height: 24px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        "
+        [data]="dataOhlcv" />
     </mat-card-content>
     <mat-card-content>
-      <mat-card-subtitle>[width]="'50%'"</mat-card-subtitle>
-      <mb-sparkline [width]="'50%'" [height]="24" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mat-card-subtitle>width: 50%</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 50%;
+          --sparkline-height: 24px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        "
+        [data]="dataOhlcv" />
     </mat-card-content>
     <mat-card-content>
-      <mat-card-subtitle>style="min-width:200px;max-width:400px" [width]="'50%'"</mat-card-subtitle>
-      <mb-sparkline style="min-width:200px;max-width:400px" [width]="'50%'" [height]="24" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mat-card-subtitle>width: 50% with min/max constraints</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 50%;
+          min-width: 200px;
+          max-width: 400px;
+          --sparkline-height: 24px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        "
+        [data]="dataOhlcv" />
     </mat-card-content>
   </mat-card>
 
   <mat-card appearance="raised" class="example-card">
     <mat-card-header>
-      <mat-card-title>Percentage height</mat-card-title>
+      <mat-card-title>Responsive height with CSS</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-card-subtitle>[width]="'50%' [height]="'10%width'"</mat-card-subtitle>
-      <mb-sparkline [width]="'50%'"  [height]="'10%width'" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mat-card-subtitle>width: 50%, aspect-ratio: 10/1</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 50%;
+          aspect-ratio: 10/1;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        "
+        [data]="dataOhlcv" />
     </mat-card-content>
     <mat-card-content>
-      <mat-card-subtitle>[width]="'50%'" [height]="'10%width'" style="min-height:50px;max-height:100px"</mat-card-subtitle>
-      <mb-sparkline style="min-height:50px;max-height:100px" [width]="'50%'" [height]="'10%width'" [configuration]="{fillColor: 'cornflowerblue', strokeColor: 'none'}" [data]="dataOhlcv"></mb-sparkline>
+      <mat-card-subtitle>width: 50%, aspect-ratio: 10/1 with min/max height</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 50%;
+          aspect-ratio: 10/1;
+          min-height: 50px;
+          max-height: 100px;
+          --sparkline-fill-color: cornflowerblue;
+          --sparkline-stroke-color: none;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Vertical Gradients</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>Area fill - Red to blue gradient</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          --sparkline-width: 300px;
+          --sparkline-height: 40px;
+          --sparkline-fill-color: steelblue;
+          --sparkline-stroke-color: none;
+          --sparkline-gradient-start: red;
+          --sparkline-gradient-end: rgb(0, 21, 255);
+          --sparkline-gradient-direction: vertical;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>Line stroke - Green to red gradient</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          --sparkline-width: 300px;
+          --sparkline-height: 40px;
+          --sparkline-fill-color: none;
+          --sparkline-stroke-color: green;
+          --sparkline-stroke-width: 1px;
+          --sparkline-gradient-start: #3cf405;
+          --sparkline-gradient-end: #f90303;
+          --sparkline-gradient-direction: vertical;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>Combined - Red to blue gradient fill & stroke</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          --sparkline-width: 300px;
+          --sparkline-height: 40px;
+          --sparkline-fill-color: #ffcccc;
+          --sparkline-stroke-color: red;
+          --sparkline-stroke-width: 1px;
+          --sparkline-gradient-start: #fb4700;
+          --sparkline-gradient-end: #0848fa;
+          --sparkline-gradient-direction: vertical;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Horizontal Gradients</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-card-subtitle>Area fill - Purple to yellow horizontal</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          --sparkline-width: 300px;
+          --sparkline-height: 40px;
+          --sparkline-fill-color: purple;
+          --sparkline-stroke-color: none;
+          --sparkline-gradient-start: #8207f6;
+          --sparkline-gradient-end: #fcc304;
+          --sparkline-gradient-direction: horizontal;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>Line stroke - Red to yellow horizontal</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          --sparkline-width: 300px;
+          --sparkline-height: 40px;
+          --sparkline-fill-color: none;
+          --sparkline-stroke-color: orange;
+          --sparkline-stroke-width: 3px;
+          --sparkline-gradient-start: #fd0606;
+          --sparkline-gradient-end: #ffff00;
+          --sparkline-gradient-direction: horizontal;
+        "
+        [data]="dataOhlcv" />
+    </mat-card-content>
+    <mat-card-content>
+      <mat-card-subtitle>Responsive with horizontal gradient</mat-card-subtitle>
+      <mb-sparkline 
+        style="
+          width: 80%;
+          min-width: 200px;
+          max-width: 500px;
+          --sparkline-height: 32px;
+          --sparkline-fill-color: teal;
+          --sparkline-stroke-color: darkslategray;
+          --sparkline-stroke-width: 1px;
+          --sparkline-gradient-start: #dc7413;
+          --sparkline-gradient-end: #20b2aa;
+          --sparkline-gradient-direction: horizontal;
+        "
+        [data]="dataOhlcv" />
     </mat-card-content>
   </mat-card>
 </div>

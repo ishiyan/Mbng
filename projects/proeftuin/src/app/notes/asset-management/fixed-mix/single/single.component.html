@@ -6,12 +6,17 @@
         <mat-label>LR instrument</mat-label>
         <mat-select [(value)]="lrInstrument">
           <mat-select-trigger>
-            <mb-sparkline [width]="120" [height]="24" [data]="lrInstrument.data" [configuration]="lrFill">
+            <mb-sparkline 
+              [data]="lrInstrument.data" 
+              [style]="lrSparklineStyle">
             </mb-sparkline> {{lrInstrument.name}}
           </mat-select-trigger>
           @for (d of lrInstruments; track d) {
             <mat-option [value]="d">
-              <mb-sparkline [width]="120" [height]="24" [data]="d.data" [configuration]="lrFill"></mb-sparkline>
+              <mb-sparkline 
+                [data]="d.data" 
+                [style]="lrSparklineStyle">
+              </mb-sparkline>
               {{d.name}}
             </mat-option>
           }
@@ -22,12 +27,17 @@
         <mat-label>HR instrument</mat-label>
         <mat-select [(value)]="hrInstrument">
           <mat-select-trigger>
-            <mb-sparkline [width]="120" [height]="24" [data]="hrInstrument.data" [configuration]="hrFill">
+            <mb-sparkline 
+              [data]="hrInstrument.data" 
+              [style]="hrSparklineStyle">
             </mb-sparkline> {{hrInstrument.name}}
           </mat-select-trigger>
           @for (d of hrInstruments; track d) {
             <mat-option [value]="d">
-              <mb-sparkline [width]="120" [height]="24" [data]="d.data" [configuration]="hrFill"></mb-sparkline>
+              <mb-sparkline 
+                [data]="d.data" 
+                [style]="hrSparklineStyle">
+              </mb-sparkline>
               {{d.name}}
             </mat-option>
           }

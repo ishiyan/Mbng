@@ -1,15 +1,66 @@
-.sample {
-  margin: 16px;
-  margin-bottom: 0px;
-}
+:host {
 
-.example-card {
-  // max-width: 500px;
-  margin-bottom: 16px;
-}
+  .sample {
+    margin: 16px;
+    margin-bottom: 0px;
+  }
 
-/*
-mb-sparkline {
-  outline: thin solid red !important;
-}
+  .example-card {
+    // max-width: 500px;
+    margin-bottom: 16px;
+  }
+
+  ::ng-deep {
+    .fill-only {
+      --sparkline-fill-color: steelblue;
+      --sparkline-stroke-color: none;
+      --sparkline-stroke-width: 0;
+    }
+
+    .line-only {
+      --sparkline-fill-color: none;
+      --sparkline-stroke-color: steelblue;
+      --sparkline-stroke-width: 1px;
+    }
+
+    // Size variants for different list contexts
+    .small {
+      --sparkline-width: 100px;
+      --sparkline-height: 16px;
+    }
+
+    // Dense list sparklines
+    .list-dense {
+      --sparkline-width: 180px;
+      --sparkline-height: 24px;
+    }
+
+    // Dense inline sparklines (simple list, single line)
+    .list-dense-inline {
+      --sparkline-width: 180px;
+      --sparkline-height: 24px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    // Multi-line list sparklines
+    .list-multiline {
+      --sparkline-width: 180px;
+      --sparkline-height: 24px;
+    }
+
+    // Responsive sparklines for unlimited width lists
+    .list-responsive {
+      width: 180px;
+      min-width: 120px;
+      max-width: 300px;
+      --sparkline-height: 24px;
+    }
+  }
+
+  /*
+  mb-sparkline {
+    outline: thin solid red !important;
+  }
 */
+}
