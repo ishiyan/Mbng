@@ -1,0 +1,22 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { BrushHandlesComponent } from './brush-handles/brush-handles.component';
+import { BrushHandles2Component } from './brush-handles-2/brush-handles-2.component';
+import { ClickToRecenterBrushComponent } from './click-to-recenter-brush/click-to-recenter-brush.component';
+import { ClickToRecenterBrush2Component } from './click-to-recenter-brush-2/click-to-recenter-brush-2.component';
+import { ClickToSelectAllComponent } from './click-to-select-all/click-to-select-all.component';
+
+@Component({
+  selector: 'app-d3-draggable-brush',
+  templateUrl: './draggable-brush.component.html',
+  styleUrls: ['./draggable-brush.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    BrushHandlesComponent,
+    BrushHandles2Component,
+    ClickToRecenterBrushComponent,
+    ClickToRecenterBrush2Component,
+    ClickToSelectAllComponent
+  ]
+})
+export class DraggableBrushComponent { }

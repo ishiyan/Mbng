@@ -7,8 +7,8 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
 
-import { D3Sample } from './d3-samples/d3-sample';
-import { treeNodes } from './d3-samples/d3-samples';
+import { D3Sample } from './d3-sample';
+import { treeNodes } from './d3-samples';
 
 @Component({
   selector: 'app-d3-sample-collection',

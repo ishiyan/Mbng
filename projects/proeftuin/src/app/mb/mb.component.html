@@ -1,36 +1,35 @@
-<mat-toolbar color="primary" class="header">
+<mat-toolbar class="header">
   <button mat-button class="sidenav-toggle" (click)="mbSidenav.toggle()">
     <mat-icon fontSet="material-symbols-outlined">{{ mbSidenav.opened ? 'menu_open' : 'menu' }}</mat-icon>
   </button>
   <span>Mb: {{sample.header ? sample.header : '???'}}</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #mbSidenav class="mat-elevation-z16" mode="push" fixedInViewport="false" opened="false">
-    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
-      <!-- this is the tree node template for leaf nodes -->
-      <mat-nested-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="tree-node">
-        <li class="tree-node">
-          <button mat-button class="tree-item" onclick="this.blur()" [routerLink]="'/mb/' + node.route" routerLinkActive="sidenav-item-selected"
-          (click)="sample = node; mbSidenav.close();" [class.sidenav-item-selected]="sample === node"
-          [class.sidenav-item-unselected]="sample !== node">{{node.name}}</button>
-        </li>
-      </mat-nested-tree-node>
-      <!-- this is the tree node template for expandable nodes -->
-      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <li>
-          <span class="mat-tree-node tree-node">
-            <button mat-button matTreeNodeToggle onclick="this.blur()">
-              <mat-icon fontSet="material-symbols-outlined" class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}}
-              </mat-icon>
-              {{node.name}}
-            </button>
-          </span>
-          <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
-            <ng-container matTreeNodeOutlet></ng-container>
-          </ul>
-        </li>
-      </mat-nested-tree-node>
+  <mat-sidenav #mbSidenav class="mat-elevation-z8" mode="over" fixedInViewport="false" opened="false">
+    <mat-tree #tree class="tree" [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+      <!-- This is the tree node template for leaf nodes -->
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="tree-leaf-node">
+        <button class="tree-item" mat-button 
+          [routerLink]="'/mb/' + node.route" 
+          routerLinkActive="sidenav-item-selected"
+          (click)="sample = node; mbSidenav.close();"
+          [attr.aria-label]="node.name"
+          [title]="node.header || node.name">
+          {{node.name}}
+        </button>
+      </mat-tree-node>
+      <!-- This is the tree node template for expandable nodes -->
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
+        [cdkTreeNodeTypeaheadLabel]="node.name" class="tree-parent-node">
+        <button matIconButton matTreeNodeToggle
+          [attr.aria-label]="'Toggle ' + node.name"
+          [attr.aria-expanded]="tree.isExpanded(node)">
+          <mat-icon fontSet="material-symbols-outlined" class="mat-icon-rtl-mirror">
+            {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        <span class="node-label">{{node.name}}</span>
+      </mat-tree-node>
     </mat-tree>
   </mat-sidenav>
   <mat-sidenav-content>

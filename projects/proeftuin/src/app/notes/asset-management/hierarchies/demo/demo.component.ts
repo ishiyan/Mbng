@@ -15,9 +15,9 @@ import { HierarchyTreeSumFunction, sumNodeValues/*, sumNumberOfNodes*/ } from 'p
 import { coolValueFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
 import { linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
 
-import { omxn40Currencies, omxn40Icb, omxn40Ms } from '../../../../mb/mb-samples/test-data/hierarchies/omxn40';
-import { aexIndexTickers } from '../../../../mb/mb-samples/test-data/hierarchies/aex-index';
-import { flare } from '../../../../mb/mb-samples/test-data/hierarchies/flare';
+import { omxn40Currencies, omxn40Icb, omxn40Ms } from '../../../../mb/test-data/hierarchies/omxn40';
+import { aexIndexTickers } from '../../../../mb/test-data/hierarchies/aex-index';
+import { flare } from '../../../../mb/test-data/hierarchies/flare';
 
 const flatternData = (data: HierarchyTreeNode, name: string = ''): HierarchyTreeNode => {
   const flat: HierarchyTreeNode = { name: name, children: [] };

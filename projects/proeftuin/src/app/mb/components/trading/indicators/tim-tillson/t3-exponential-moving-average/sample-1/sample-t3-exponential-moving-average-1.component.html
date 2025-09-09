@@ -1,0 +1,120 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initial1" (selectionChange)="selected1 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected1 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With length initial: no quote component</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialL2" (selectionChange)="selectedL2 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedL2 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With length initial: no bar component</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialL3" (selectionChange)="selectedL3 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedL3 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With length initial: no bar no quote</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialL4" (selectionChange)="selectedL4 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedL4 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With length initial: both bar and quote</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialL5" (selectionChange)="selectedL5 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedL5 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With smoothing factor initial: no quote component</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialS2" (selectionChange)="selectedS2 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedS2 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With smoothing factor initial: no bar component</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialS3" (selectionChange)="selectedS3 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedS3 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With smoothing factor initial: no bar no quote</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialS4" (selectionChange)="selectedS4 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedS4 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With smoothing factor initial: both bar and quote</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-t3-exponential-moving-average-params [initial]="initialS5" (selectionChange)="selectedS5 = $event;">
+      </mb-t3-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedS5 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+</div>

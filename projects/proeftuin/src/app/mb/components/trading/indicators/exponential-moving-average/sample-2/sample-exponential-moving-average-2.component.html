@@ -1,0 +1,42 @@
+<div class="sample">
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-exponential-moving-average-params [initial]="initial1" (selectionChange)="selected1 = $event;">
+      </mb-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selected1 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With length initial value</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-exponential-moving-average-params [initial]="initialL2" (selectionChange)="selectedL2 = $event;">
+      </mb-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedL2 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>With smoothing factor initial value</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-exponential-moving-average-params [initial]="initialS2" (selectionChange)="selectedS2 = $event;">
+      </mb-exponential-moving-average-params>
+    </mat-card-content>
+    <mat-card-content>
+      Selected: <pre>{{selectedS2 | json}}</pre>
+    </mat-card-content>
+  </mat-card>
+
+</div>

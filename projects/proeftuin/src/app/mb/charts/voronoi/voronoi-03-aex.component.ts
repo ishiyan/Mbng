@@ -1,0 +1,306 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+
+/* eslint-disable max-len */
+import { HierarchyTreeNode } from 'projects/mb/src/lib/charts/hierarchy-tree/hierarchy-tree';
+import { HierarchyTreeSumFunction, sumNumberOfLeafNodes } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/sum-function';
+import { HierarchyTreeFillFunction, coolFill, coolFillInverted, warmFill, warmFillInverted, viridisFill, viridisFillInverted, bluesFill, bluesFillInverted, rainbowFill, rainbowFillInverted } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
+import { coolFillFirstLevel, coolFillFirstLevelInverted, warmFillFirstLevel, warmFillFirstLevelInverted, viridisFillFirstLevel, viridisFillFirstLevelInverted, bluesFillFirstLevel, bluesFillFirstLevelInverted, rainbowFillFirstLevel, rainbowFillFirstLevelInverted, greensFillFirstLevel, greensFillFirstLevelInverted, greysFillFirstLevel, greysFillFirstLevelInverted, gradientFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
+import { coolValueFill, coolValueFillInverted, warmValueFill, warmValueFillInverted, viridisValueFill, viridisValueFillInverted, bluesValueFill, bluesValueFillInverted, rainbowValueFill, rainbowValueFillInverted, greensValueFill, greensValueFillInverted, greysValueFill, greysValueFillInverted, gradientValueFill } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-function';
+import { HierarchyTreeFillOpacityFunction, transparentFillOpacity, opaqueFillOpacity } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/fill-opacity-function';
+import { HierarchyTreeStrokeFunction, noStroke, blackStroke, whiteStroke, transparentStroke } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/stroke-function';
+import { HierarchyTreeStrokeWidthFunction, noStrokeWidth, linearStrokeWidthThin, linearStrokeWidth, linearStrokeWidthThick, linearStrokeWidthExtraThick } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/stroke-width-function';
+import { HierarchyTreeTapFunction } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tap-function';
+import { pathParentTooltips } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/tooltip-function';
+import { HierarchyTreeLabelFunction, nameLabels, valueLabels, emptyLabels } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/label-function';
+import { HierarchyTreeFontSizeFunction, equalFontSize8, equalFontSize10, equalFontSize12, equalFontSize16, equalFontSize18, linearFontSize } from 'projects/mb/src/lib/charts/hierarchy-tree/functions/font-size-function';
+import { VoronoiComponent } from 'projects/mb/src/lib/charts/hierarchy-tree/voronoi/voronoi.component';
+
+import { AexIndexHierarchyTreeNode, aexIndexTickers, aexIndexIssuerCountries, aexIndexIcb } from '../../test-data/hierarchies/aex-index';
+
+interface Dataset {
+  value: AexIndexHierarchyTreeNode;
+  key: string;
+}
+
+interface NumberOrStringItem {
+  value: number | string;
+  key: string;
+}
+
+interface SumFunc {
+  value: HierarchyTreeSumFunction;
+  key: string;
+}
+
+// Use small non-zero values because Voronoi machinery does not tolerate zeroes returning by a sum function.
+const sumFuncWeightPerc: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.weightPerc : 0.0001;
+const sumFuncTransactions: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.transactions : 1;
+const sumFuncVolume: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.volume : 1;
+const sumFuncTurnoverEur: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.turnoverEur : 1;
+const sumFuncPriceEur: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.close : 0.001;
+const sumFuncReturnEur: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.returnEur : 0.0001;
+const sumFuncReturnEurNeg: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? -d.constituent.returnEur : 0.0001;
+const sumFuncReturnPerc: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.returnPerc : 0.0001;
+const sumFuncReturnPercNeg: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? -d.constituent.returnPerc : 0.0001;
+const sumFuncMarketCapBn: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.marketCapBn : 1;
+const sumFuncSharesOutstanding: HierarchyTreeSumFunction = (d: AexIndexHierarchyTreeNode) => d.constituent ? d.constituent.sharesOutstanding : 1;
+
+interface FillFunc {
+  value: HierarchyTreeFillFunction;
+  key: string;
+}
+
+interface FillOpacityFunc {
+  value: HierarchyTreeFillOpacityFunction;
+  key: string;
+}
+
+interface StrokeFunc {
+  value: HierarchyTreeStrokeFunction;
+  key: string;
+}
+
+interface StrokeWidthFunc {
+  value: HierarchyTreeStrokeWidthFunction;
+  key: string;
+}
+
+interface LabelFunc {
+  value: HierarchyTreeLabelFunction;
+  key: string;
+}
+
+interface LabelFontSizeFunc {
+  value: HierarchyTreeFontSizeFunction;
+  key: string;
+}
+
+@Component({
+  selector: 'app-mb-voronoi-03-aex',
+  templateUrl: './voronoi-03-aex.component.html',
+  styleUrls: ['./voronoi-03-aex.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatCard,
+    MatCardContent,
+    MatCardActions,
+    MatSlideToggle,
+    MatSelect,
+    MatOption,
+    VoronoiComponent
+  ]
+})
+export class Voronoi03AexComponent {
+  flat = false;
+
+  readonly datasetArray: Dataset[] = [
+    { key: 'issuers', value: aexIndexIssuerCountries },
+    { key: 'tickers', value: aexIndexTickers },
+    { key: 'icb', value: aexIndexIcb }
+  ];
+  datasetSelected: AexIndexHierarchyTreeNode = this.datasetArray[0].value;
+
+  readonly widthArray: NumberOrStringItem[] = [
+    { key: '100%', value: '100%' },
+    { key: '75%', value: '75%' },
+    { key: '50%', value: '50%' },
+    { key: '25%', value: '25%' },
+    { key: '900', value: 900 },
+    { key: '800', value: 800 },
+    { key: '700', value: 700 },
+    { key: '600', value: 600 },
+    { key: '500', value: 500 },
+    { key: '400', value: 400 },
+    { key: '300', value: 300 },
+    { key: '200', value: 200 }
+  ];
+  widthSelected: number | string = this.widthArray[0].value;
+
+  readonly heightArray: NumberOrStringItem[] = [
+    { key: '100%width', value: '100%width' },
+    { key: '75%width', value: '75%width' },
+    { key: '50%width', value: '50%width' },
+    { key: '25%width', value: '25%width' },
+    { key: '900', value: 900 },
+    { key: '800', value: 800 },
+    { key: '700', value: 700 },
+    { key: '600', value: 600 },
+    { key: '500', value: 500 },
+    { key: '400', value: 400 },
+    { key: '300', value: 300 },
+    { key: '200', value: 200 }
+  ];
+  heightSelected: number | string = this.heightArray[0].value;
+
+  readonly shapeArray: string[] = [ 'circle', 'octagon', 'heptagon', 'hexagon', 'pentagon', 'square', 'diamond', 'triangle' ];
+  shapeSelected: string = this.shapeArray[0];
+
+  readonly convergenceRatioArray: number[] = [ 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.3, 0.4, 0.5, 0.001 ];
+  convergenceRatioSelected: number = this.convergenceRatioArray[0];
+
+  readonly minWeightRatioArray: number[] = [ 0.05, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.3, 0.4, 0.5, 0.001 ];
+  minWeightRatioSelected: number = this.minWeightRatioArray[0];
+
+  readonly maxIterationCountArray: number[] = [ 50, 40, 30, 20, 10, 5, 60, 70, 80, 90, 100, 200 ];
+  maxIterationCountSelected: number = this.maxIterationCountArray[0];
+
+  readonly paddingArray: number[] = [ 2, 1, 0, 3, 4, 5, 10, 20 ];
+  paddingSelected: number = this.paddingArray[0];
+
+  readonly sumFuncArray: SumFunc[] = [
+    { key: 'weight %', value: sumFuncWeightPerc },
+    { key: 'transactions', value: sumFuncTransactions },
+    { key: 'volume', value: sumFuncVolume },
+    { key: 'turnover eur', value: sumFuncTurnoverEur },
+    { key: 'price eur', value: sumFuncPriceEur },
+    { key: 'pos return eur', value: sumFuncReturnEur },
+    { key: 'neg return eur', value: sumFuncReturnEurNeg },
+    { key: 'pos return %', value: sumFuncReturnPerc },
+    { key: 'neg return %', value: sumFuncReturnPercNeg },
+    { key: 'market cap, bn eur', value: sumFuncMarketCapBn },
+    { key: 'shares outstanding', value: sumFuncSharesOutstanding },
+    { key: '# tickers', value: sumNumberOfLeafNodes }
+  ];
+  sumFuncSelected: HierarchyTreeSumFunction = this.sumFuncArray[0].value;
+
+  readonly sortArray: string[] = [ 'asc', 'desc', 'none' ];
+  sortSelected: string = this.sortArray[0];
+
+  readonly fillFuncArray: FillFunc[] = [
+    { key: 'blues', value: bluesFillFirstLevel },
+    // { key: 'leaves', value: (d: any) => gradientFill(d, 'lawngreen', 'green', false, false, false, true) },
+    { key: 'leaves', value: (d: any) => gradientFill(d, 'lightgreen', 'seagreen', false, false, false, false) },
+    { key: 'greens', value: greensFillFirstLevel },
+    { key: 'greys', value: greysFillFirstLevel },
+    { key: 'cool', value: coolFillFirstLevel },
+    { key: 'warm', value: warmFillFirstLevel },
+    { key: 'viridis', value: viridisFillFirstLevel },
+    { key: 'rainbow', value: rainbowFillFirstLevel },
+
+    { key: 'blues inv', value: bluesFillFirstLevelInverted },
+    { key: 'greens inv', value: greensFillFirstLevelInverted },
+    { key: 'greys inv', value: greysFillFirstLevelInverted },
+    { key: 'cool inv', value: coolFillFirstLevelInverted },
+    { key: 'warm inv', value: warmFillFirstLevelInverted },
+    { key: 'viridis inv', value: viridisFillFirstLevelInverted },
+    { key: 'rainbow inv', value: rainbowFillFirstLevelInverted },
+
+    { key: 'cool light', value: coolFill },
+    { key: 'warm light', value: warmFill },
+    { key: 'viridis light', value: viridisFill },
+    { key: 'blues light', value: bluesFill },
+    { key: 'rainbow light', value: rainbowFill },
+
+    { key: 'cool light inv', value: coolFillInverted },
+    { key: 'warm light inv', value: warmFillInverted },
+    { key: 'viridis light inv', value: viridisFillInverted },
+    { key: 'blues light inv', value: bluesFillInverted },
+    { key: 'rainbow light inv', value: rainbowFillInverted },
+
+    { key: 'blues val', value: bluesValueFill },
+    { key: 'leaves val', value: (d: any, min: number, max: number) => gradientValueFill(d, min, max, 'lightgreen', 'seagreen', false, false, false) },
+    { key: 'greens val', value: greensValueFill },
+    { key: 'greys val', value: greysValueFill },
+    { key: 'cool val', value: coolValueFill },
+    { key: 'warm val', value: warmValueFill },
+    { key: 'viridis val', value: viridisValueFill },
+    { key: 'rainbow val', value: rainbowValueFill },
+
+    { key: 'blues val inv', value: bluesValueFillInverted },
+    { key: 'leaves val inv', value: (d: any, min: number, max: number) => gradientValueFill(d, min, max, 'lightgreen', 'seagreen', true, false, false) },
+    { key: 'greens val inv', value: greensValueFillInverted },
+    { key: 'greys val inv', value: greysValueFillInverted },
+    { key: 'cool val inv', value: coolValueFillInverted },
+    { key: 'warm val inv', value: warmValueFillInverted },
+    { key: 'viridis val inv', value: viridisValueFillInverted },
+    { key: 'rainbow val inv', value: rainbowValueFillInverted }
+  ];
+  fillFuncSelected: HierarchyTreeFillFunction = this.fillFuncArray[0].value;
+
+  readonly fillOpacityFuncArray: FillOpacityFunc[] = [
+    { key: 'opaque', value: opaqueFillOpacity },
+    { key: '90%', value: () => 0.9 },
+    { key: '80%', value: () => 0.8 },
+    { key: '70%', value: () => 0.7 },
+    { key: '60%', value: () => 0.6 },
+    { key: '50%', value: () => 0.5 },
+    { key: '60%', value: () => 0.4 },
+    { key: '70%', value: () => 0.3 },
+    { key: '80%', value: () => 0.2 },
+    { key: '10%', value: () => 0.1 },
+    { key: 'transparent', value: transparentFillOpacity }
+  ];
+  fillOpacityFuncSelected: HierarchyTreeFillOpacityFunction = this.fillOpacityFuncArray[0].value;
+
+  readonly strokeFuncArray: StrokeFunc[] = [
+    { key: 'white', value: whiteStroke },
+    { key: 'black', value: blackStroke },
+    { key: 'transparent', value: transparentStroke },
+    { key: 'none', value: noStroke }
+  ];
+  strokeFuncSelected: HierarchyTreeStrokeFunction = this.strokeFuncArray[0].value;
+
+  readonly strokeWidthFuncArray: StrokeWidthFunc[] = [
+    { key: 'thin', value: linearStrokeWidthThin },
+    { key: 'thick', value: linearStrokeWidthThick },
+    { key: 'extra thick', value: linearStrokeWidthExtraThick },
+    { key: 'normal', value: linearStrokeWidth },
+    { key: 'none', value: noStrokeWidth }
+  ];
+  strokeWidthFuncSelected: HierarchyTreeStrokeWidthFunction = this.strokeWidthFuncArray[0].value;
+
+  readonly labelFuncArray: LabelFunc[] = [
+    { key: 'name', value: nameLabels },
+    { key: 'value', value: valueLabels },
+    { key: 'none', value: emptyLabels }
+  ];
+  labelFuncSelected: HierarchyTreeLabelFunction = this.labelFuncArray[0].value;
+
+  readonly labelMinRatioArray: number[] = [ 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ];
+  labelMinRatioSelected: number = this.labelMinRatioArray[0];
+
+  readonly labelFillArray: string[] = [ 'white', 'black', 'transparent' ];
+  labelFillSelected: string = this.labelFillArray[0];
+
+  readonly labelShadowArray: string[] = [ 'none', '0px 0px 8px #000000', '0px 0px 8px #ffffff' ];
+  labelShadowSelected: string = this.labelShadowArray[0];
+
+  readonly labelFontSizeFuncArray: LabelFontSizeFunc[] = [
+    { key: '8', value: equalFontSize8 },
+    { key: '6', value: () => 6 },
+    { key: '7', value: () => 7 },
+    { key: '8', value: equalFontSize8 },
+    { key: '9', value: () => 9 },
+    { key: '10', value: equalFontSize10 },
+    { key: '12', value: equalFontSize12 },
+    { key: '16', value: equalFontSize16 },
+    { key: '18', value: equalFontSize18 },
+    { key: 'linear', value: linearFontSize }
+  ];
+  labelFontSizeFuncSelected: HierarchyTreeFontSizeFunction = this.labelFontSizeFuncArray[0].value;
+
+  selectedNodeInfo!: string;
+  tapFunc: HierarchyTreeTapFunction = (d: d3.HierarchyNode<HierarchyTreeNode>) => {
+    const t = pathParentTooltips(d);
+    const n = d.data as AexIndexHierarchyTreeNode;
+    let text = `${t}: value: ${d.value}`;
+    if (n.constituent) {
+      const c = n.constituent;
+      text += ` ticker: ${c.ticker}, isin: ${c.isin}, name: ${c.name}, issuer country: ${c.issuerCountry},`;
+      text += ` icb: ${c.icb}, weight: ${c.weightPerc}%, price: ${c.close} EUR, turnover: ${c.turnoverEur} EUR,`;
+      text += ` transactions: ${c.transactions}, volume: ${c.volume}, return: ${c.returnEur} EUR, ${c.returnPerc}%,`;
+      text += ` market cap: ${c.marketCapBn} Bn EUR, shares outstanding: ${c.sharesOutstanding}`;
+      text += ` description: ${c.description}`;
+    }
+    this.selectedNodeInfo = text;
+  };
+}

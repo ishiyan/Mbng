@@ -4,11 +4,18 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodePadding, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatTreeNode, MatTreeNodePadding } from '@angular/material/tree';
 
-import { MbSample } from './mb-samples/mb-sample';
-import { treeNodes } from './mb-samples/mb-samples';
+import { MbSample } from './mb-sample';
+import { treeNodes } from './mb-samples';
+
+interface FlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+  route?: string;
+  header?: string;
+}
 
 @Component({
   selector: 'mb-sample-collection',
@@ -28,15 +35,18 @@ import { treeNodes } from './mb-samples/mb-samples';
     MatTree,
     MatTreeNodeDef,
     MatTreeNodeToggle,
-    MatNestedTreeNode,
-    MatTreeNodePadding,
-    MatTreeNodeOutlet
+    MatTreeNode,
+    MatTreeNodePadding
   ]
 })
 export class MbComponent {
   public sample: MbSample = treeNodes[0];
-  public treeControl = new NestedTreeControl<MbSample>(node => node.children);
-  public dataSource = new MatTreeNestedDataSource<MbSample>();
+
+  public dataSource = treeNodes;
+
+  childrenAccessor = (node: MbSample) => node.children ?? [];
+
+  hasChild = (_: number, node: MbSample) => !!node.children && node.children.length > 0;
 
   private static findEqual(node: MbSample, routeUrl: string): MbSample | undefined {
     if (node.route) {
@@ -71,11 +81,12 @@ export class MbComponent {
     return undefined;
   }
 
-  public hasChild = (_: number, node: MbSample) => !!node.children && node.children.length > 0;
-
   constructor() {
+    this.sample = treeNodes[0];
+
     const router = inject(Router);
     const routeUrl = router.routerState.snapshot.url;
+
     for (const node of treeNodes) {
       const n = MbComponent.findEqual(node, routeUrl);
       if (n) {
@@ -83,7 +94,8 @@ export class MbComponent {
         break;
       }
     }
-    if (!this.sample) {
+
+    if (!this.sample.route) {
       for (const node of treeNodes) {
         const n = MbComponent.findFirst(node);
         if (n) {
@@ -92,6 +104,5 @@ export class MbComponent {
         }
       }
     }
-    this.dataSource.data = treeNodes;
   }
 }
