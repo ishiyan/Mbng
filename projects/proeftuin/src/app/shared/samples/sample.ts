@@ -1,6 +1,6 @@
-export interface MbSample {
+export interface Sample {
   name: string;
   header?: string;
   route?: string;
-  children?: MbSample[];
+  children?: Sample[];
 }

@@ -3,15 +3,26 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry, MatIcon } from '@angular/material/icon';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIconButton, MatAnchor } from '@angular/material/button';
-
 import { RouterLink } from '@angular/router';
-import { ThemePickerComponent } from '../theme-picker/theme-picker.component';
+
+import { LightDarkToggleComponent } from 'projects/mb/src/lib/theming/light-dark-toggle.component';
+
+import { ThemeSettingsComponent } from '../theme-settings/theme-settings.component';
 
 @Component({
-    selector: 'app-toolbar',
-    templateUrl: './toolbar.component.html',
-    styleUrls: ['./toolbar.component.scss'],
-    imports: [MatToolbar, MatToolbarRow, MatIconButton, MatIcon, MatAnchor, RouterLink, ThemePickerComponent]
+  selector: 'app-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss'],
+  imports: [
+    MatToolbar,
+    MatToolbarRow,
+    MatIconButton,
+    MatIcon,
+    MatAnchor,
+    RouterLink,
+    ThemeSettingsComponent,
+    LightDarkToggleComponent
+  ]
 })
 export class ToolbarComponent {
   private map: any = {};

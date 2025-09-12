@@ -12,5 +12,5 @@ export const routes: Routes = [
   { path: 'circlepack', loadChildren: () => import('./circlepack/circlepack.routes').then(m => m.routes) },
   { path: 'voronoi', loadChildren: () => import('./voronoi/voronoi.routes').then(m => m.routes) },
   { path: 'hilbert-curve', loadChildren: () => import('./hilbert-curve/hilbert-curve.routes').then(m => m.routes) },
-  { path: '**', redirectTo: 'ohlcv-chart' }
+  { path: '**', redirectTo: 'ohlcv-chart', pathMatch: 'full' }
 ];

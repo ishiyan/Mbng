@@ -1,0 +1,70 @@
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+
+  button.active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Global overlay styles
+::ng-deep .theme-settings-overlay {
+  .cdk-overlay-pane {
+    max-width: 400px;
+    min-width: 340px;
+  }
+}
+
+.theme-settings-panel {
+  background: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface-container);
+
+  font-family: var(--mat-app-body-large-font, 'Roboto', sans-serif);
+  font-size: var(--mat-app-body-large-size, 14px);
+  font-weight: var(--mat-app-body-large-weight, 400);
+  line-height: var(--mat-app-body-large-line-height, 1.5);
+
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--mat-sys-outline-variant);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  //max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box; // Include padding in width calculation
+  width: 100%; // Ensure it takes full available width
+
+  .download-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    min-width: 0; // Allow flex items to shrink below content size
+
+    label {
+      flex: 1;
+      color: var(--mat-sys-on-surface-container);
+      min-width: 0; // Allow text to wrap/truncate
+      word-wrap: break-word; // Break long words if needed
+    }
+  }
+}
+
+::ng-deep .transparent-backdrop {
+  background: transparent;
+}
+/*
+// Dark theme specific adjustments
+@media (prefers-color-scheme: dark) {
+  .theme-settings-panel {
+    // Fallback colors for dark theme if CSS custom properties aren't available
+    background: var(--mat-app-background-color, #121212);
+    color: var(--mat-app-text-color, rgba(255, 255, 255, 0.87));
+    border: 1px solid var(--mat-app-outline-variant, rgba(255, 255, 255, 0.12));
+    box-shadow: var(--mat-app-level-3, 0 8px 32px rgba(0, 0, 0, 0.24));
+  }
+}*/

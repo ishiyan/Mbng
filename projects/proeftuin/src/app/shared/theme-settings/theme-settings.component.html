@@ -1,0 +1,46 @@
+<button 
+  #themeButton
+  mat-icon-button 
+  (click)="toggleThemeSettings()" 
+  matTooltip="Select a theme" 
+  tabindex="-1"
+  [class.active]="isOpen">
+  <mat-icon fontSet="material-symbols-outlined">colors</mat-icon>
+</button>
+
+<ng-template #themeSettingsTemplate>
+  <div class="theme-settings-panel">
+    @if (dynamicTheming()) {
+    <mb-dynamic-theming 
+      (parametersChange)="this.params = $event;" 
+      [presets]="themePresets()"
+      [showPresets]="dynamicThemingShowPresets()" 
+      [showGenerator]="dynamicThemingShowGenerator()"
+      [showTertiary]="dynamicThemingShowTertiary()" 
+      [showContrast]="dynamicThemingShowContrast()"
+      [showVariant]="dynamicThemingShowVariant()" 
+      [showSpecVersion]="dynamicThemingShowSpecVersion()"
+      [showPlatform]="dynamicThemingShowPlatform()" 
+      [showRememberTheme]="dynamicThemingShowRememberTheme()" />
+    }
+    @if (lightDark()) {
+    <mb-light-dark-preference />
+    }
+    @if (downloadThemeSCSS()) {
+    <div class="download-section">
+      <label>Download theme colors as SCSS</label>
+      <button mat-mini-fab (click)="downloadScssStyle()">
+        <mat-icon fontSet="material-symbols-outlined">download</mat-icon>
+      </button>
+    </div>
+    }
+    @if (downloadThemeCSS()) {
+    <div class="download-section">
+      <label>Download theme colors as CSS</label>
+      <button mat-mini-fab (click)="downloadCssStyle()">
+        <mat-icon fontSet="material-symbols-outlined">download</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+</ng-template>

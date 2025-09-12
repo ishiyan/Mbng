@@ -1,30 +1,43 @@
-.sidenav-container {
-  flex: 1;
-}
+@use '@angular/material' as mat;
 
-.header {
-  height: 48px;
-  display: flex;
-  padding: 0px;
-  div {
-    padding: 0px;
+:host {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-secondary-container),
+    container-text-color: var(--mat-sys-on-secondary-container),
+  ));
+
+  @include mat.icon-button-overrides((
+    icon-color: var(--mat-sys-on-secondary-container),
+  ));
+
+  .sidenav-container {
+    flex: 1;
   }
-}
 
-.sidenav-toggle {
-  padding: 0px;
-  padding-left: 8px;
-  margin: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .header {
+    height: 48px;
+    display: flex;
+    padding: 0px;
+    div {
+      padding: 0px;
+    }
+  }
 
-.sidenav-item-selected {
-  font-weight: 600;
-}
+  .sidenav-toggle {
+    padding: 0px;
+    padding-left: 8px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.slide-toggle {
-  margin: 16px;
-  margin-right: 0px;
+  .sidenav-item-selected {
+    font-weight: 600;
+  }
+
+  .slide-toggle {
+    margin: 16px;
+    margin-right: 0px;
+  }
 }

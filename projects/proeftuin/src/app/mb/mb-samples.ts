@@ -1,6 +1,6 @@
-import { MbSample } from './mb-sample';
+import { Sample } from '../shared/samples/sample';
 
-export const treeNodes: MbSample[] = [
+export const treeNodes: Sample[] = [
   {
     name: 'Charts',
     children: [

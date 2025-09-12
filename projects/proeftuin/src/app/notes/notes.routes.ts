@@ -6,5 +6,5 @@ export const routes: Routes = [
       { path: '**', redirectTo: 'am' }
     ]
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'am',  pathMatch: 'full' }
 ];

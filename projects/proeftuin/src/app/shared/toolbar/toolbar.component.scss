@@ -1,28 +1,46 @@
-.mb-toolbar {
-  position: relative;
-  z-index: 8;
-}
+@use '@angular/material' as mat;
 
-.second-row {
-  height: 42px;
-  padding: 0px;
-  padding-left: 8px;
-  vertical-align: middle;
-}
+:host {
+  @include mat.toolbar-overrides((
+    container-background-color: var(--mat-sys-primary-container),
+    container-text-color: var(--mat-sys-on-primary-container),
+  ));
 
-// This fills the remaining space, by using flexbox.
-// Every toolbar row uses a flexbox row layout.
-.fill-remaining-space {
-  flex-grow: 1;
-  // or: flex: 1 1 auto;
-}
+  @include mat.icon-button-overrides((
+    icon-color: var(--mat-sys-on-primary-container),
+  ));
 
-.show-small {
-  display: none;
-}
+  @include mat.sidenav-overrides((
+    container-width: auto,
+    container-shape: 8px,
+  ));
 
-.logo {
-  margin-right: 48px;
+  .mb-toolbar {
+    position: relative;
+    z-index: 8;
+  }
+
+  .second-row {
+    height: 42px;
+    padding: 0px;
+    padding-left: 8px;
+    vertical-align: middle;
+  }
+
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  .fill-remaining-space {
+    flex-grow: 1;
+    // or: flex: 1 1 auto;
+  }
+
+  .show-small {
+    display: none;
+  }
+
+  .logo {
+    margin-right: 48px;
+  }
 }
 
 // Rules for when the device is detected to be a small screen.

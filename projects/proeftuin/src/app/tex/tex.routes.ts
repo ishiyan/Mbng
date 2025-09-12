@@ -12,5 +12,5 @@ export const routes: Routes = [
       { path: 'synthetic', loadComponent: () => import('./tex-list/tex-list.component').then(m => m.TexListComponent) }
     ]
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
