@@ -32,11 +32,14 @@ export class MathJaxService {
   });
 
   render(s: string, element: HTMLElement): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.mathJaxLoadingPromise.then(() => {
       if (MathJaxService.isMathJax(s)) {
         const fixed = MathJaxService.fixMathJaxBugs(s);
         element.innerHTML = `<span class='jax-process'>${fixed}</span>`;
-        window.MathJax.startup.promise.then(() => {
+         window.MathJax.startup.promise.then(() => {
           window.MathJax.typesetPromise([element]).catch((err: any) =>
             console.error('MathJax typeset failed: ' + err.message));
         });

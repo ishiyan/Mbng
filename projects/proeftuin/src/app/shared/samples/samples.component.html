@@ -5,7 +5,7 @@
   <span>{{headerPrefix()}}: {{sample?.header ? sample?.header : '???'}}</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="mat-elevation-z8" mode="push" fixedInViewport="false" opened="false">
+  <mat-sidenav #sidenav mode="push" fixedInViewport="false" opened="false">
     <mat-tree #tree class="tree" [dataSource]="treeNodes()" [childrenAccessor]="childrenAccessor">
       <!-- This is the tree node template for leaf nodes -->
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="tree-leaf-node">

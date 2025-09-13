@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender, HostListener, DOCUMENT } from '@angular/core';
+import { Component, ElementRef, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import * as d3 from 'd3';
@@ -15,24 +15,41 @@ import { dataOhlcvDaily } from '../../data/data-bar-daily';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton]
 })
-export class D3tcCloseComponent {
-  private readonly document = inject(DOCUMENT);
+export class D3tcCloseComponent implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly element = inject(ElementRef);
+  private resizeObserver?: ResizeObserver;
+
   readonly container = viewChild.required<ElementRef>('container');
   readonly svgheight = input<any>();
 
   constructor() {
     afterNextRender({
       write: () => {
+        this.setupResizeObserver();
         this.render();
       }
     });
   }
 
-  @HostListener('window:resize', [])
-  render() {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  private setupResizeObserver(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.render();
+    });
+
+    this.resizeObserver.observe(this.element.nativeElement);
+  }
+
+  private render() {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 

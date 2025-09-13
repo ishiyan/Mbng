@@ -6,6 +6,28 @@
 import * as d3 from 'd3';
 
 export function realTimeChart() {
+  // SSR safety check
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return function() { 
+      return {
+        initialData: function(_) { return arguments.length === 0 ? [] : this; },
+        datum: function(_) { return arguments.length === 0 ? null : this; },
+        width: function(_) { return arguments.length === 0 ? 700 : this; },
+        height: function(_) { return arguments.length === 0 ? 300 : this; },
+        border: function(_) { return arguments.length === 0 ? false : this; },
+        left: function(_) { return arguments.length === 0 ? 50 : this; },
+        top: function(_) { return arguments.length === 0 ? 20 : this; },
+        right: function(_) { return arguments.length === 0 ? 30 : this; },
+        bottom: function(_) { return arguments.length === 0 ? 20 : this; },
+        title: function(_) { return arguments.length === 0 ? '' : this; },
+        xTitle: function(_) { return arguments.length === 0 ? '' : this; },
+        yTitle: function(_) { return arguments.length === 0 ? '' : this; },
+        barWidth: function(_) { return arguments.length === 0 ? 3 : this; },
+        isRunning: function(_) { return arguments.length === 0 ? true : this; },
+        version: "0.1.0"
+      };
+    }; 
+  }
   var version = "0.1.0",
     datum, initialData, data,
     maxSeconds = 300, pixelsPerSecond = 10,

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender, DOCUMENT } from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
@@ -9,24 +9,41 @@ import * as d3 from 'd3';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None // Otherwise active circles will not be highlighted.
 })
-export class ClickToSelectAllComponent {
-  private readonly document = inject(DOCUMENT);
+export class ClickToSelectAllComponent implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly element = inject(ElementRef);
   private readonly container = viewChild.required<ElementRef>('container5');
+  private resizeObserver?: ResizeObserver;
+
   readonly svgheight = input<any>();
 
   constructor() {
     afterNextRender({
       write: () => {
+        this.setupResizeObserver();
         this.render();
       }
     });
   }
 
-  @HostListener('window:resize', [])
-  render() {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  private setupResizeObserver(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.render();
+    });
+
+    this.resizeObserver.observe(this.element.nativeElement);
+  }
+
+  private render() {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 

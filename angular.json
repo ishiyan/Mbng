@@ -144,6 +144,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/proeftuin/src/favicon.ico",
+              "projects/proeftuin/src/robots.txt",
               "projects/proeftuin/src/assets",
               {
                 "glob": "**/*",
@@ -165,7 +166,10 @@
               ]
             },
             "scripts": [],
-            "browser": "projects/proeftuin/src/main.ts"
+            "browser": "projects/proeftuin/src/main.ts",
+            "server": "projects/proeftuin/src/main.server.ts",
+            "ssr": false,
+            "prerender": true
           },
           "configurations": {
             "production": {

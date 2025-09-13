@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, HostListener, afterNextRender, DOCUMENT } from '@angular/core';
+import { Component, OnDestroy, ElementRef, ViewEncapsulation, input, viewChild, inject, ChangeDetectionStrategy, PLATFORM_ID, afterNextRender } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
@@ -14,9 +14,10 @@ import * as rtc from './realTimeChart.js';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RealTimeChartComponent implements OnDestroy {
-  private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly element = inject(ElementRef);
+  private resizeObserver?: ResizeObserver;
+
   readonly container = viewChild.required<ElementRef>('container');
   readonly svgheight = input<any>();
   private chart: any;
@@ -24,14 +25,31 @@ export class RealTimeChartComponent implements OnDestroy {
   constructor() {
     afterNextRender({
       write: () => {
+        this.setupResizeObserver();
         this.render();
       }
     });
   }
 
-  @HostListener('window:resize', [])
-  render() {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+     this.chart.isRunning(false);
+  }
+
+  private setupResizeObserver(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.render();
+    });
+
+    this.resizeObserver.observe(this.element.nativeElement);
+  }
+
+  private  render() {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
@@ -105,9 +123,5 @@ export class RealTimeChartComponent implements OnDestroy {
 
     // start the data generator
     dataGenerator();
-  }
-
-  ngOnDestroy() {
-    this.chart.isRunning(false);
   }
 }

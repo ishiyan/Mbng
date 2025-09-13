@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, viewChild, ChangeDetectionStrategy, PLATFORM_ID, HostListener, inject, effect, afterNextRender, DOCUMENT } from '@angular/core';
+import { Component, ElementRef, input, viewChild, ChangeDetectionStrategy, PLATFORM_ID, inject, effect, afterNextRender, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 
@@ -8,10 +8,11 @@ import * as d3 from 'd3';
   styleUrls: ['./barchart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BarchartComponent {
-  private readonly document = inject(DOCUMENT);
+export class BarchartComponent implements OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly elementRef = viewChild.required<ElementRef>('chart');
+  private resizeObserver?: ResizeObserver;
+
   public readonly data = input.required<Array<any>>();
   private margin: any = { top: 20, bottom: 20, left: 20, right: 20 };
   private chart: any;
@@ -26,6 +27,7 @@ export class BarchartComponent {
   constructor() {
     afterNextRender({
       write: () => {
+        this.setupResizeObserver();
         this.createChart();
         this.updateChart();
       }
@@ -36,9 +38,24 @@ export class BarchartComponent {
     });
   }
 
-  @HostListener('window:resize', [])
-  createChart() {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  private setupResizeObserver(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updateChart();
+    });
+
+    this.resizeObserver.observe(this.elementRef().nativeElement);
+  }
+
+  private  createChart() {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
@@ -84,8 +101,8 @@ export class BarchartComponent {
       .call(d3.axisLeft(this.yScale));
   }
 
-  updateChart() {
-    if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
+  private updateChart() {
+    if (!isPlatformBrowser(this.platformId)) {
       return;
     }
 
