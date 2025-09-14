@@ -1,31 +1,42 @@
 @use '@angular/material' as mat;
 
 :host {
+  $toolbar-background: var(--mat-sys-secondary-container);
+  $toolbar-foreground: var(--mat-sys-on-secondary-container);
+  $tree-background: var(--mat-sys-surface-container-high);
+  $tree-foreground: var(--mat-sys-on-surface);
+  $tree-background-selected: var(--mat-sys-secondary-container);
+  $tree-foreground-selected: var(--mat-sys-on-secondary-container);
+  $tree-border-selected: var(--mat-sys-primary);
+  $tree-background-hover: var(--mat-sys-surface-container-highest);
+  $tree-foreground-hover: var(--mat-sys-on-surface);
+  $tree-border-hover: var(--mat-sys-secondary);
+
   @include mat.toolbar-overrides((
-    container-background-color: var(--mat-sys-secondary-container),
-    container-text-color: var(--mat-sys-on-secondary-container),
+    container-background-color: $toolbar-background,
+    container-text-color: $toolbar-foreground,
   ));
 
   @include mat.icon-button-overrides((
-    icon-color: var(--mat-sys-on-secondary-container),
+    icon-color: $toolbar-foreground,
   ));
 
   @include mat.sidenav-overrides((
     container-width: auto,
     container-shape: 8px,
-    container-background-color: var(--mat-sys-secondary-container),
-    container-text-color: var(--mat-sys-on-secondary-container),
-    container-elevation-shadow: var(--mat-sys-level5)
+    container-background-color: $tree-background,
+    container-text-color:  $tree-foreground,
+    container-elevation-shadow: var(--mat-sys-level3)
   ));
 
   @include mat.tree-overrides((
-    container-background-color: var(--mat-sys-secondary-container),
-    node-text-color: var(--mat-sys-on-secondary-container),
+    container-background-color: $tree-background,
+    node-text-color:  $tree-foreground,
     node-text-font: var(--mat-sys-body-medium)
   ));
 
   @include mat.button-overrides((
-    text-label-text-color: var(--mat-sys-on-secondary-container),
+    text-label-text-color:  $tree-foreground,
   ));
 
   .sidenav-container {
@@ -54,16 +65,16 @@
 
   .sidenav-item-selected {
     font-weight: 600;
-    background-color: var(--mat-sys-primary-container);
-    color: var(--mat-sys-on-primary-container);
-    border-left: 3px solid var(--mat-sys-primary);
+    background-color: $tree-background-selected;
+    color: $tree-foreground-selected;
+    border-left: 3px solid $tree-border-selected;
   }
 
   // Tree Styling
   .tree {
     padding: 0;
-    background-color: var(--mat-sys-secondary-container);
-    color: var(--mat-sys-on-secondary-container);
+    background-color: $tree-background;
+    color:  $tree-foreground;
     min-height: 100%;
     //max-width: 100%;
 
@@ -72,8 +83,8 @@
       display: flex;
       align-items: center;
       width: 100%;
-      background-color: var(--mat-sys-secondary-container);
-      color: var(--mat-sys-on-secondary-container);
+      background-color: $tree-background;
+      color:  $tree-foreground;
       padding-right: 2rem;
 
       // Remove button borders and styling
@@ -81,7 +92,7 @@
         border: none;
         box-shadow: none;
         background: transparent;
-        color: var(--mat-sys-on-secondary-container);
+        color:  $tree-foreground;
         margin-right: 8px;
         padding: 4px;
         min-width: auto;
@@ -92,7 +103,7 @@
           font-size: 18px;
           width: 18px;
           height: 18px;
-          color: var(--mat-sys-on-secondary-container);
+          color:  $tree-foreground;
           transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
         }
       }
@@ -101,22 +112,22 @@
         flex: 1;
         font-size: 14px;
         font-weight: 500;
-        color: var(--mat-sys-on-secondary-container);
+        color:  $tree-foreground;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
       &:hover {
-        background-color: var(--mat-sys-primary-container);
-        color: var(--mat-sys-on-primary-container);
+        background-color: $tree-background-hover;
+        color: $tree-foreground-hover;
 
         .node-label {
-          color: var(--mat-sys-on-primary-container);
+          color: $tree-foreground-hover;
         }
         
         button[matIconButton] .mat-icon {
-          color: var(--mat-sys-on-primary-container);
+          color: $tree-foreground-hover;
         }
       }
     }
@@ -131,23 +142,23 @@
         border-radius: 0;
         margin: 0;
         font-size: 13px;
-        color: var(--mat-sys-on-secondary-container);
+        color:  $tree-foreground;
         background-color: transparent;
         text-align: left;
         border-left: 3px solid transparent;
         transition: all 250ms cubic-bezier(0.4, 0.0, 0.2, 1);
 
         &:hover {
-          background-color: var(--mat-sys-primary-container);
-          color: var(--mat-sys-on-primary-container);
-          border-left-color: var(--mat-sys-primary);
+          background-color: $tree-background-hover;
+          color: $tree-foreground-hover;
+          border-left-color: $tree-border-hover;
         }
 
         &.sidenav-item-selected {
-          background-color: var(--mat-sys-primary-container);
-          color: var(--mat-sys-on-primary-container);
+          background-color: $tree-background-selected;
+          color: $tree-foreground-selected;
           font-weight: 500;
-          border-left-color: var(--mat-sys-primary);
+          border-left-color: $tree-border-selected;
         }
 
         .mdc-button__label {
@@ -168,11 +179,11 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: var(--mat-sys-secondary-container);
-    color: var(--mat-sys-on-secondary-container);
+    background-color: $tree-background;
+    color:  $tree-foreground;
 
     &.mat-drawer {
-      background-color: var(--mat-sys-secondary-container);
+      background-color: $tree-background;
     }
   }
 
@@ -182,8 +193,8 @@
 
   // Remove Material button styling artifacts
   .mat-tree {
-    background: var(--mat-sys-secondary-container);
-    color: var(--mat-sys-on-secondary-container);
+    background: $tree-background;
+    color:  $tree-foreground;
     overflow: visible; // Allow tree to expand naturally
   }
 
@@ -209,6 +220,6 @@
   }
 
   mat-sidenav::-webkit-scrollbar-thumb:hover {
-    background: var(--mat-sys-primary);
+    background: var(--mat-sys-secondary);
   }
 }

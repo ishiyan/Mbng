@@ -124,6 +124,7 @@ export const treeNodes: Sample[] = [
       {
         name: 'Swatches',
         children: [
+          { name: 'Material Design 3 color tokens', header: 'Material Design 3 color tokens', route: 'colors/swatches/md3-color-tokens' },
           { name: 'Features', header: 'Swatches features', route: 'colors/swatches/features' },
           { name: 'Material palettes', header: 'Material palettes', route: 'colors/swatches/material-palettes' },
           { name: 'Linear interpolated palettes', header: 'Linear interpolated palettes', route: 'colors/swatches/linear-interpolated-palettes' },

@@ -31,6 +31,7 @@ export class ToolbarComponent {
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('mbrane-top', sanitizer.bypassSecurityTrustResourceUrl('assets/img/mbrane-top.svg'));
+    iconRegistry.addSvgIcon('github', sanitizer.bypassSecurityTrustResourceUrl('assets/img/github.svg'));
   }
 
   @Input() public set toolbarItems(input: any) {

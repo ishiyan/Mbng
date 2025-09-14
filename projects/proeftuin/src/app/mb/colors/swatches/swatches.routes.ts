@@ -11,5 +11,6 @@ export const routes: Routes = [
   { path: 'palettes-from-web', loadComponent: () => import('./swatches-08-palettes-from-web.component').then(m => m.Swatches08PalettesFromWebComponent) },
   { path: 'predefined-interpolated-palettes', loadComponent: () => import('./swatches-09-predefined-interpolated-palettes.component').then(m => m.Swatches09PredefinedInterpolatedPalettesComponent) },
   { path: 'predefined-line-palettes', loadComponent: () => import('./swatches-10-predefined-line-palettes.component').then(m => m.Swatches10PredefinedLinePalettesComponent) },
-  { path: '**', redirectTo: 'features' }
+  { path: 'md3-color-tokens', loadComponent: () => import('./swatches-11-md3-color-tokens.component').then(m => m.Swatches11Md3ColorTokensComponent) },
+  { path: '**', redirectTo: 'md3-color-tokens' }
 ];
