@@ -869,7 +869,7 @@ export class ColorDiscComponent implements OnDestroy {
 
     let h = 0;
     let s = 0;
-    let l = sum / 2;
+    const l = sum / 2;
 
     if (diff !== 0) {
       s = l > 0.5 ? diff / (2 - sum) : diff / sum;

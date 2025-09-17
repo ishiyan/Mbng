@@ -1,4 +1,4 @@
-import { InjectionToken, makeEnvironmentProviders, Provider } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
 
 /**
  * Injection token for configuring the storage prefix used by DynamicThemingService.

@@ -27,7 +27,7 @@ import { computed, effect, inject, Injectable, PLATFORM_ID, Signal, signal } fro
 // https://github.com/Nerwyn/material-you-utilities
 
 // import { argbFromHex, DynamicScheme, Hct, hexFromArgb, TonalPalette } from '@material/material-color-utilities';
-import { argbFromHex, DynamicScheme, Hct, hexFromArgb, TonalPalette, Variant, Platform } from '@ktibow/material-color-utilities-nightly';
+import { DynamicScheme, hexFromArgb } from '@ktibow/material-color-utilities-nightly';
 
 import { LOCAL_STORAGE } from '../local-storage/local-storage';
 import { DynamicColorService } from './dynamic-color.service';

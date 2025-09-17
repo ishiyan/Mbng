@@ -6,7 +6,7 @@ export const LOCAL_STORAGE = new InjectionToken<Storage | null>('LOCAL_STORAGE',
   factory: () => getStorage(inject(PLATFORM_ID)),
 });
 
-const getStorage = (platformId: Object): Storage | null => {
+const getStorage = (platformId: object): Storage | null => {
   // Prerendering: localStorage is undefined for prerender build
   return isPlatformBrowser(platformId) ? new LocalStorage() : null;
 };
@@ -20,6 +20,7 @@ class LocalStorage implements Storage {
     try {
       return localStorage.length;
     } catch {
+       // Ignore localStorage access errors
       return 0;
     }
   }
@@ -27,13 +28,16 @@ class LocalStorage implements Storage {
   clear(): void {
     try {
       localStorage.clear();
-    } catch {}
+    } catch {
+       // Ignore localStorage access errors
+    }
   }
 
   getItem(key: string): string | null {
     try {
       return localStorage.getItem(key);
     } catch {
+       // Ignore localStorage access errors
       return null;
     }
   }
@@ -42,6 +46,7 @@ class LocalStorage implements Storage {
     try {
       return localStorage.key(index);
     } catch {
+       // Ignore localStorage access errors
       return null;
     }
   }
@@ -49,12 +54,16 @@ class LocalStorage implements Storage {
   removeItem(key: string): void {
     try {
       localStorage.removeItem(key);
-    } catch {}
+    } catch {
+       // Ignore localStorage access errors
+    }
   }
 
   setItem(key: string, value: string): void {
     try {
       localStorage.setItem(key, value);
-    } catch {}
+    } catch {
+       // Ignore localStorage access errors
+    }
   }
 }

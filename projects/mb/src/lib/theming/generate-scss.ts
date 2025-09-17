@@ -86,7 +86,7 @@ function getColorPalettesSCSS(colorPalettes: ColorPalettes): string {
 
 // Gets the generated scss from the provided color palettes and theme types.
 function generateSCSSTheme(colorPalettes: ColorPalettes, colorComment: string): string {
-  let scss = [
+  const scss = [
     '// This file was generated using material color utilities code from',
     '// https://github.com/material-foundation/material-color-utilities/tree/main/typescript',
     '',

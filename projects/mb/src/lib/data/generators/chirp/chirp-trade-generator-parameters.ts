@@ -4,7 +4,7 @@ import { WaveformParameters } from '../waveform-parameters';
 import { TradeParameters } from '../trade-parameters';
 import { SyntheticDataParameters } from '../synthetic-data-parameters';
 import {
-  sampleCountName, timeParametersName, waveformParametersName, chirpParametersName, tradeParametersName,
+  sampleCountName, timeParametersName, waveformParametersName/*, chirpParametersName*/, tradeParametersName,
   objectName
 } from '../constants';
 

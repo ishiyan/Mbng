@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, signal, ElementRef, ViewChild } from '@angular/core';
 import { MatMiniFabButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatTooltip } from '@angular/material/tooltip';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ViewContainerRef, TemplateRef } from '@angular/core';
@@ -22,7 +21,6 @@ import { DynamicThemingPresetService } from 'projects/mb/src/lib/theming/dynamic
     MatMiniFabButton,
     MatIconButton,
     MatIcon,
-    MatTooltip,
     DynamicThemingComponent,
     LightDarkPreferenceComponent
   ]

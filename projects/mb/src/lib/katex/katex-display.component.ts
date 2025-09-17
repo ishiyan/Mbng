@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, afterNextRender, inject, signal, effect } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, PLATFORM_ID, Component, ElementRef, afterNextRender, inject, computed } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { KatexOptions } from 'katex';
 
@@ -30,7 +30,12 @@ export class KatexDisplayComponent implements AfterContentInit {
   private readonly element = inject(ElementRef);
   private readonly settings = inject(KatexSettingsService);
 
-  protected options = signal<KatexOptions>(this.initialSettings());
+  protected options = computed<KatexOptions>(() => ({
+    ...defaultOptions,
+    leqno: this.settings.tagLeft(),
+    fleqn: this.settings.equationLeft()
+  }));
+
   protected expression = empty;
   protected hidden = false;
 
@@ -39,16 +44,6 @@ export class KatexDisplayComponent implements AfterContentInit {
       write: () => {
         this.render();
       }
-    });
-
-    // Replace subscriptions with effects
-    effect(() => {
-      // Read the signals to make effect reactive
-      const tagLeft = this.settings.tagLeft();
-      const equationLeft = this.settings.equationLeft();
-      
-      // Update options when settings change
-      this.options.set(this.initialSettings());
     });
   }
 
@@ -68,13 +63,5 @@ export class KatexDisplayComponent implements AfterContentInit {
       this.expression = this.element.nativeElement.innerText;
       this.hidden = true;
     }
-  }
-
-  private initialSettings(): KatexOptions {
-    return { 
-      ...defaultOptions, 
-      leqno: this.settings.tagLeft(), 
-      fleqn: this.settings.equationLeft() 
-    };
   }
 }

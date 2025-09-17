@@ -2,7 +2,7 @@ import { ChirpParameters } from './chirp-parameters';
 import { TimeParameters } from '../time-parameters';
 import { WaveformParameters } from '../waveform-parameters';
 import { SyntheticDataParameters } from '../synthetic-data-parameters';
-import { sampleCountName, timeParametersName, waveformParametersName, chirpParametersName, objectName } from '../constants';
+import { sampleCountName, timeParametersName, waveformParametersName/*, chirpParametersName*/, objectName } from '../constants';
 
 /** The input parameters for the chirp scalar generator. */
 export class ChirpScalarGeneratorParameters {

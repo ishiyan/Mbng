@@ -5,7 +5,7 @@ import { OhlcvParameters } from '../ohlcv-parameters';
 import { QuoteParameters } from '../quote-parameters';
 import { TradeParameters } from '../trade-parameters';
 import {
-  sampleCountName, timeParametersName, waveformParametersName, chirpParametersName, ohlcvParametersName, quoteParametersName,
+  sampleCountName, timeParametersName, waveformParametersName/*, chirpParametersName*/, ohlcvParametersName, quoteParametersName,
   tradeParametersName, objectName
 } from '../constants';
 

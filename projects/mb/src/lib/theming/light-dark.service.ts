@@ -75,6 +75,7 @@ export class LightDarkService {
       if (stored) {
         try {
           this.lightDark.set(stored as LightDark);
+          this.rememberPreference.set(true);
           return;
         } catch (error) {
           console.error('Invalid stored light-dark setting, ignoring:', error);

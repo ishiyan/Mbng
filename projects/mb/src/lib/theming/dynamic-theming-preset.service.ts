@@ -15,7 +15,6 @@ export class DynamicThemingPresetService {
     name: string,
     displayName: string,
     parameters: DynamicThemingParameters,
-    description?: string
   ): DynamicThemingPreset {
     
     // Generate scheme to extract secondary color

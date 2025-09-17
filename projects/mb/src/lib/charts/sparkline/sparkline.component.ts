@@ -1,4 +1,4 @@
-import { Component, HostListener, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ChangeDetectionStrategy, PLATFORM_ID, input, inject, effect, afterNextRender, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import * as d3 from 'd3';
 

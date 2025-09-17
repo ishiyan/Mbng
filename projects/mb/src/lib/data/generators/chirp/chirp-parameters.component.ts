@@ -68,10 +68,10 @@ export class ChirpParametersComponent {
     });
   }
 
-  ngAfterContentInit() {
+  /*ngAfterContentInit() {
     this.initialized = true;
     this.notify();
-  }
+  }*/
 
   protected get chirpSweepParam(): ChirpSweep {
     return this.params.chirpSweep;

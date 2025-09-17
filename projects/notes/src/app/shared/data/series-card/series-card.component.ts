@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, output, computed, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';

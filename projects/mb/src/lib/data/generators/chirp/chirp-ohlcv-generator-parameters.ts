@@ -4,7 +4,7 @@ import { WaveformParameters } from '../waveform-parameters';
 import { OhlcvParameters } from '../ohlcv-parameters';
 import { SyntheticDataParameters } from '../synthetic-data-parameters';
 import {
-  sampleCountName, timeParametersName, waveformParametersName, chirpParametersName, ohlcvParametersName,
+  sampleCountName, timeParametersName, waveformParametersName/*, chirpParametersName*/, ohlcvParametersName,
   objectName
 } from '../constants';
 

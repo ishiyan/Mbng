@@ -4,7 +4,7 @@ import { WaveformParameters } from '../waveform-parameters';
 import { QuoteParameters } from '../quote-parameters';
 import { SyntheticDataParameters } from '../synthetic-data-parameters';
 import {
-  sampleCountName, timeParametersName, waveformParametersName, chirpParametersName, quoteParametersName,
+  sampleCountName, timeParametersName, waveformParametersName/*, chirpParametersName*/, quoteParametersName,
   objectName
 } from '../constants';
 

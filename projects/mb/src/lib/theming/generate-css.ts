@@ -52,7 +52,7 @@ function getColorSysVariablesCSS(
   let css = '';
 
   // Add extra spacing for high contrast values since variables will be nested within a media query.
-  let leftSpacing = ' '.repeat(isHighContrast ? 4 : 2);
+  const leftSpacing = ' '.repeat(isHighContrast ? 4 : 2);
 
   // Set system variables with values from primary palette
   css += leftSpacing + '/* Primary palette variables */\n';

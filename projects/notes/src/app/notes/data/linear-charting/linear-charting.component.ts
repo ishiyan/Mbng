@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, inject, effect } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 
 import { LinearChartComponent } from 'mb';
 
