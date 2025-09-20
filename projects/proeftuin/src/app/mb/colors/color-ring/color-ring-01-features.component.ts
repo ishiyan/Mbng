@@ -77,7 +77,9 @@ export class ColorRing01FeaturesComponent {
     { value: 'transparent', label: 'Transparent' },
     { value: '#ffffff', label: 'White' },
     { value: '#000000', label: 'Black' },
-    { value: '#f5f5f5', label: 'Light Gray' }
+    { value: '#f5f5f5', label: 'Light Gray' },
+    { value: '#0000ff', label: 'Blue' },
+    { value: '#00ff00', label: 'Green' }
   ];
 
   protected readonly diameterOptions = [180, 200, 240, 280, 320, 360];

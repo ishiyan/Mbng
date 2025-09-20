@@ -143,14 +143,15 @@ export class ColorDiscComponent implements OnDestroy {
     const diameter = this.diameter();
     const resolution = this.effectiveResolution();
     const pixelSize = diameter * resolution;
+    const pixelDiameter = `${diameter}px`;
 
     // Set canvas internal size
     canvas.width = pixelSize;
     canvas.height = pixelSize;
 
     // Set CSS size
-    canvas.style.width = `${diameter}px`;
-    canvas.style.height = `${diameter}px`;
+    canvas.style.width = pixelDiameter;
+    canvas.style.height = pixelDiameter;
 
     // Scale context for high-DPI
     this.ctx.scale(resolution, resolution);

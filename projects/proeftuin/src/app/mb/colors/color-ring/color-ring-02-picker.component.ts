@@ -70,7 +70,9 @@ export class ColorRing02PickerComponent {
     { value: 'transparent', label: 'Transparent' },
     { value: '#ffffff', label: 'White' },
     { value: '#000000', label: 'Black' },
-    { value: '#f5f5f5', label: 'Light Gray' }
+    { value: '#f5f5f5', label: 'Light Gray' },
+    { value: '#0000ff', label: 'Blue' },
+    { value: '#00ff00', label: 'Green' }
   ];
 
   protected readonly diameterOptions = [240, 280, 320, 360, 400];

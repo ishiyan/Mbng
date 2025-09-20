@@ -140,10 +140,12 @@ export class ColorRingComponent implements OnDestroy {
     const resolution = this.effectiveResolution();
 
     // Set canvas size
-    canvasEl.width = diameter * resolution;
-    canvasEl.height = diameter * resolution;
-    canvasEl.style.width = `${diameter}px`;
-    canvasEl.style.height = `${diameter}px`;
+    const pixelSize = diameter * resolution;
+    const pixelDiameter = `${diameter}px`;
+    canvasEl.width = pixelSize;
+    canvasEl.height = pixelSize;
+    canvasEl.style.width = pixelDiameter;
+    canvasEl.style.height = pixelDiameter;
 
     // Scale context for high-DPI displays
     this.ctx.scale(resolution, resolution);
@@ -159,8 +161,9 @@ export class ColorRingComponent implements OnDestroy {
     const handleRadius = this.handleSize() / 2;
     const alphaChannel = this.alphaChannel();
 
-    const center = { x: diameter / 2, y: diameter / 2 };
-    const totalRadius = diameter / 2 - handleRadius;
+    const halfDiameter = diameter / 2;
+    const center = { x: halfDiameter, y: halfDiameter };
+    const totalRadius = halfDiameter;
     const smallGap = 4; // Gap between rings
 
     // Calculate ring positions from outside to inside
@@ -198,6 +201,127 @@ export class ColorRingComponent implements OnDestroy {
       alphaRingOuterRadius,
       handleRadius
     };
+  }
+
+  private getEffectiveBackgroundColor(): string {
+    const bgColor = this.backgroundColor();
+    if (bgColor === 'auto') {
+      const isDarkMode = this.isDarkMode();
+
+      // Use CSS custom property for theme-aware background
+      const computedStyle = getComputedStyle(this.canvas().nativeElement);
+      const matSysSurface = computedStyle.getPropertyValue('--mat-sys-surface').trim();
+      if (matSysSurface) {
+        return this.extractColorFromLightDark(matSysSurface, isDarkMode);
+      }
+
+      // Fallback to default based on theme
+      return isDarkMode ? '#121212' : '#ffffff';
+    }
+
+    return this.resolveCssVariables(bgColor);
+  }
+
+  private extractColorFromLightDark(colorValue: string, isDarkMode: boolean): string {
+    // Check if it's a light-dark() function
+    const lightDarkMatch = colorValue.match(/light-dark\(\s*([^,]+),\s*([^)]+)\s*\)/);
+
+    if (lightDarkMatch) {
+      const lightColor = lightDarkMatch[1].trim();
+      const darkColor = lightDarkMatch[2].trim();
+      return isDarkMode ? darkColor : lightColor;
+    }
+
+    // If it's not a light-dark() function, return the value as-is
+    return colorValue;
+  }
+
+  private isDarkMode(): boolean {
+    // Method 1: Check color-scheme CSS property
+    const documentStyle = getComputedStyle(this.document.documentElement);
+    const colorScheme = documentStyle.getPropertyValue('color-scheme').trim();
+    if (colorScheme.includes('dark')) {
+      return true;
+    }
+    if (colorScheme.includes('light')) {
+      return false;
+    }
+
+    // Method 2: Check for dark theme class
+    if (this.document.documentElement.classList.contains('dark-theme') ||
+      this.document.documentElement.classList.contains('dark') ||
+      this.document.body.classList.contains('dark-theme') ||
+      this.document.body.classList.contains('dark')) {
+      return true;
+    }
+
+    // Method 3: Check prefers-color-scheme media query
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    // Method 4: Check data attributes
+    const themeAttr = this.document.documentElement.getAttribute('data-theme') ||
+      this.document.documentElement.getAttribute('theme');
+    if (themeAttr === 'dark') {
+      return true;
+    }
+
+    // Default to light mode
+    return false;
+  }
+
+  /** Resolve CSS variables to their computed values */
+  private resolveCssVariables(cssValue: string): string {
+    if (!cssValue.includes('var(')) {
+      return cssValue;
+    }
+
+    try {
+      // Use the canvas element's computed style to resolve variables
+      const canvasElement = this.canvas().nativeElement;
+
+      // Set a temporary style property and read it back
+      const originalBackground = canvasElement.style.backgroundColor;
+      canvasElement.style.backgroundColor = cssValue;
+
+      // Get the computed (resolved) value
+      const computedStyle = getComputedStyle(canvasElement);
+      const resolvedColor = computedStyle.backgroundColor;
+
+      // Restore original style
+      canvasElement.style.backgroundColor = originalBackground;
+
+      // Convert to hex if it's rgb format
+      const hexColor = this.convertToHex(resolvedColor);
+
+      return hexColor || resolvedColor;
+    } catch (error) {
+      console.warn('Failed to resolve CSS variable:', cssValue, error);
+      return cssValue;
+    }
+  }
+
+  /** Convert RGB/RGBA color values to hex format */
+  private convertToHex(color: string): string {
+    // Handle rgb(r, g, b) and rgba(r, g, b, a) formats
+    const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);
+
+    if (rgbMatch) {
+      const r = parseInt(rgbMatch[1], 10);
+      const g = parseInt(rgbMatch[2], 10);
+      const b = parseInt(rgbMatch[3], 10);
+
+      const toHex = (n: number): string => {
+        const hex = n.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+      };
+
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+
+    // If it's already a hex color or other format, return as-is
+    return color;
   }
 
   private render(): void {
@@ -239,19 +363,13 @@ export class ColorRingComponent implements OnDestroy {
   private drawBackground(): void {
     if (!this.ctx || !this.geometry) return;
 
-    const ctx = this.ctx;
     const backgroundColor = this.backgroundColor();
-    const diameter = this.diameter();
-
     if (backgroundColor === 'transparent') return;
 
-    let bgColor = backgroundColor;
-    if (backgroundColor === 'auto') {
-      // Use CSS custom property for theme background
-      const styles = getComputedStyle(this.canvas().nativeElement);
-      bgColor = styles.getPropertyValue('--mat-sys-surface') || '#ffffff';
-    }
+    const ctx = this.ctx;
+    const diameter = this.diameter();
 
+    const bgColor = this.getEffectiveBackgroundColor();
     ctx.fillStyle = bgColor;
     
     // Fill only the outer area (outside the hue ring)
@@ -263,35 +381,8 @@ export class ColorRingComponent implements OnDestroy {
     ctx.rect(0, 0, diameter, diameter);
     ctx.arc(center.x, center.y, hueRingOuterRadius + 2, 0, twoPi, true); // Add small buffer and subtract ring area
     ctx.fill();
-    
-    // Determine appropriate gap color based on background
-    let gapColor = '#1a1a1a'; // Default dark color for gaps
-    
-    // Determine which color to analyze for gap color calculation
-    let colorToAnalyze = bgColor;
-    if (backgroundColor === 'auto') {
-      // Use CSS custom property to determine if we're in light or dark theme
-      const styles = getComputedStyle(this.canvas().nativeElement);
-      const surface = styles.getPropertyValue('--mat-sys-surface') || '#ffffff';
-      colorToAnalyze = surface.startsWith('#') ? surface : bgColor;
-    }
-    
-    // Use a darker version of the background for gaps to maintain separation
-    // In light backgrounds, we want darker gaps
-    // In dark backgrounds, we want lighter gaps for contrast
-    const backgroundRgb = this.hexToRgb(colorToAnalyze.startsWith('#') ? colorToAnalyze : '#ffffff');
-    const luminance = this.getLuminance(backgroundRgb);
-    
-    if (luminance > 0.5) {
-      // Light background - use dark gaps
-      gapColor = '#1a1a1a';
-    } else {
-      // Dark background - use lighter gaps for better contrast
-      gapColor = '#404040';
-    }
-    
-    // Fill the gaps between rings with theme-appropriate color
-    ctx.fillStyle = gapColor;
+
+    ctx.fillStyle = bgColor;
     
     // Gap between hue and saturation rings
     ctx.beginPath();
@@ -344,8 +435,9 @@ export class ColorRingComponent implements OnDestroy {
         center.x, center.y, hueRingInnerRadius,
         center.x, center.y, hueRingOuterRadius
       );
-      gradient.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
-      gradient.addColorStop(1, `hsl(${hue}, 100%, 50%)`);
+      const clr = `hsl(${hue}, 100%, 50%)`;
+      gradient.addColorStop(0, clr);
+      gradient.addColorStop(1, clr);
 
       ctx.beginPath();
       ctx.arc(center.x, center.y, hueRingOuterRadius, startAngle, endAngle);
@@ -375,8 +467,9 @@ export class ColorRingComponent implements OnDestroy {
         center.x, center.y, saturationRingInnerRadius,
         center.x, center.y, saturationRingOuterRadius
       );
-      gradient.addColorStop(0, `hsl(${h}, ${saturation}%, 50%)`);
-      gradient.addColorStop(1, `hsl(${h}, ${saturation}%, 50%)`);
+      const clr = `hsl(${h}, ${saturation}%, 50%)`;
+      gradient.addColorStop(0, clr);
+      gradient.addColorStop(1, clr);
 
       ctx.beginPath();
       ctx.arc(center.x, center.y, saturationRingOuterRadius, startAngle, endAngle);
@@ -406,8 +499,9 @@ export class ColorRingComponent implements OnDestroy {
         center.x, center.y, lightnessRingInnerRadius,
         center.x, center.y, lightnessRingOuterRadius
       );
-      gradient.addColorStop(0, `hsl(${h}, ${s}%, ${lightness}%)`);
-      gradient.addColorStop(1, `hsl(${h}, ${s}%, ${lightness}%)`);
+      const clr = `hsl(${h}, ${s}%, ${lightness}%)`;
+      gradient.addColorStop(0, clr);
+      gradient.addColorStop(1, clr);
 
       ctx.beginPath();
       ctx.arc(center.x, center.y, lightnessRingOuterRadius, startAngle, endAngle);
@@ -440,8 +534,9 @@ export class ColorRingComponent implements OnDestroy {
         center.x, center.y, alphaRingInnerRadius,
         center.x, center.y, alphaRingOuterRadius
       );
-      gradient.addColorStop(0, `hsla(${h}, ${s}%, ${l}%, ${alpha})`);
-      gradient.addColorStop(1, `hsla(${h}, ${s}%, ${l}%, ${alpha})`);
+      const clr = `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
+      gradient.addColorStop(0, clr);
+      gradient.addColorStop(1, clr);
 
       ctx.beginPath();
       ctx.arc(center.x, center.y, alphaRingOuterRadius, startAngle, endAngle);
@@ -455,24 +550,37 @@ export class ColorRingComponent implements OnDestroy {
   private drawCheckerboardRing(innerRadius: number, outerRadius: number): void {
     if (!this.ctx || !this.geometry) return;
 
-    const ctx = this.ctx;
+    // Create checkerboard pattern
+    const patternCanvas = document.createElement('canvas');
+    const patternCtx = patternCanvas.getContext('2d')!;
+    const checkerSize = 8;
+    const checkerSize2 = checkerSize * 2;
+
+    patternCanvas.width = checkerSize2;
+    patternCanvas.height = checkerSize2;
+
+    // Draw 2x2 checker pattern
+    patternCtx.fillStyle = '#f0f0f0';
+    patternCtx.fillRect(0, 0, checkerSize, checkerSize);
+    patternCtx.fillRect(checkerSize, checkerSize, checkerSize, checkerSize);
+
+    patternCtx.fillStyle = '#d0d0d0';
+    patternCtx.fillRect(checkerSize, 0, checkerSize, checkerSize);
+    patternCtx.fillRect(0, checkerSize, checkerSize, checkerSize);
+
+    // Create pattern
+    const pattern = this.ctx.createPattern(patternCanvas, 'repeat')!;
+
+    // Draw ring with pattern
     const { center } = this.geometry;
-    const checkSize = 8;
-    const segments = Math.ceil((2 * Math.PI * outerRadius) / checkSize);
     const twoPi = 2 * Math.PI;
-
-    for (let i = 0; i < segments; i++) {
-      const startAngle = (i / segments) * twoPi;
-      const endAngle = ((i + 1) / segments) * twoPi;
-      const isLight = i % 2 === 0;
-
-      ctx.beginPath();
-      ctx.arc(center.x, center.y, outerRadius, startAngle, endAngle);
-      ctx.arc(center.x, center.y, innerRadius, endAngle, startAngle, true);
-      ctx.closePath();
-      ctx.fillStyle = isLight ? '#ffffff' : '#cccccc';
-      ctx.fill();
-    }
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.arc(center.x, center.y, outerRadius, 0, twoPi);
+    this.ctx.arc(center.x, center.y, innerRadius, 0, twoPi, true);
+    this.ctx.fillStyle = pattern;
+    this.ctx.fill();
+    this.ctx.restore();
   }
 
   private drawCenterDisc(): void {
@@ -494,11 +602,6 @@ export class ColorRingComponent implements OnDestroy {
       `hsla(${h}, ${s}%, ${l}%, ${a})` : 
       `hsl(${h}, ${s}%, ${l}%)`;
     ctx.fill();
-
-    // Add border
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 1;
-    ctx.stroke();
   }
 
   private drawCheckerboardCenter(): void {
