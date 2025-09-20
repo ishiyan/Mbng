@@ -116,6 +116,13 @@ export const treeNodes: Sample[] = [
         ]
       },
       {
+        name: 'Color ring',
+        children: [
+          { name: 'Features', header: 'Color ring features', route: 'colors/color-ring/features' },
+          { name: 'Picker', header: 'Color ring picker', route: 'colors/color-ring/picker' }
+        ]
+      },
+      {
         name: 'Color picker',
         children: [
           { name: 'Features', header: 'Color picker features', route: 'colors/color-picker/features' },

@@ -1,0 +1,66 @@
+:host {
+  display: inline-block;
+
+  .color-ring-picker-trigger {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 4px;
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    min-height: 40px;
+    min-width: 120px;
+    transition: all 200ms ease-in-out;
+
+    &:hover:not(:disabled) {
+      background: var(--mat-sys-surface-variant);
+      border-color: var(--mat-sys-outline);
+    }
+
+    &:focus {
+      outline: 2px solid var(--mat-sys-primary);
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .color-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      flex-shrink: 0;
+      background: inherit;
+    }
+
+    .color-value {
+      flex: 1;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .dropdown-icon {
+      margin-left: 8px;
+      flex-shrink: 0;
+      transition: transform 200ms ease-in-out;
+    }
+
+    &[aria-expanded="true"] .dropdown-icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+// Global backdrop style
+::ng-deep .color-ring-picker-backdrop {
+  background: rgba(0, 0, 0, 0.32);
+}

@@ -1,0 +1,155 @@
+@use '@angular/material' as mat;
+
+:host {
+  .sample {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+
+    .example-card {
+      @include mat.card-overrides((
+        elevated-container-shape: 12px,
+        filled-container-shape: 12px,
+        outlined-container-shape: 12px,
+      ));
+
+      mat-card-header {
+        margin-bottom: 16px;
+      }
+
+      mat-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--mat-sys-outline-variant);
+          padding-bottom: 16px;
+          margin-bottom: 16px;
+        }
+
+        .control-row {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          width: 100%;
+          
+          label {
+            min-width: 120px;
+            font-weight: 500;
+            color: var(--mat-sys-on-surface);
+          }
+
+          mat-select {
+            min-width: 150px;
+          }
+
+          mat-slide-toggle {
+            @include mat.slide-toggle-overrides((
+              selected-track-color: var(--mat-sys-primary),
+              selected-handle-color: var(--mat-sys-on-primary),
+              unselected-track-color: var(--mat-sys-outline),
+              unselected-handle-color: var(--mat-sys-outline),
+            ));
+          }
+        }
+
+        mb-color-ring-picker {
+          align-self: center;
+          margin: 16px 0;
+        }
+
+        span {
+          font-family: 'Roboto Mono', monospace;
+          font-size: 14px;
+          line-height: 1.5;
+
+          strong {
+            color: var(--mat-sys-primary);
+          }
+        }
+
+        pre {
+          background-color: var(--mat-sys-surface-variant);
+          color: var(--mat-sys-on-surface-variant);
+          padding: 12px;
+          border-radius: 4px;
+          margin: 0;
+          font-family: 'Roboto Mono', monospace;
+          font-size: 12px;
+          line-height: 1.4;
+          max-width: 100%;
+          overflow-x: auto;
+          white-space: pre-wrap;
+          word-break: break-all;
+        }
+
+        .events-container {
+          width: 100%;
+
+          h4 {
+            margin: 0 0 12px 0;
+            color: var(--mat-sys-on-surface);
+            font-weight: 500;
+          }
+
+          .no-events {
+            color: var(--mat-sys-on-surface-variant);
+            font-style: italic;
+            margin: 0;
+          }
+
+          .events-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: var(--mat-sys-surface-variant);
+            border-radius: 4px;
+            padding: 12px;
+
+            li {
+              font-family: 'Roboto Mono', monospace;
+              font-size: 12px;
+              line-height: 1.4;
+              color: var(--mat-sys-on-surface-variant);
+              padding: 4px 0;
+              border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+              &:last-child {
+                border-bottom: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sample {
+      padding: 16px;
+      gap: 24px;
+
+      .example-card mat-card-content {
+        .control-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+
+          label {
+            min-width: auto;
+          }
+
+          mat-select {
+            min-width: auto;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

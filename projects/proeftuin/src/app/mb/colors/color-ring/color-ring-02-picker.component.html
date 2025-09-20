@@ -1,0 +1,252 @@
+<div class="sample">
+
+  <!-- Default Picker -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Default Color Ring Picker</mat-card-title>
+      <mat-card-subtitle>
+        Basic color ring picker with overlay popup
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mb-color-ring-picker [hexValue]="defaultHexColor()" (hexValueChange)="defaultHexColor.set($event)"
+        (colorChange)="defaultColor.set($event)" (opened)="onPickerOpened()" (closed)="onPickerClosed()">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>hexValueChange:</strong> {{defaultHexColor()}}</span>
+      @if (defaultColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{defaultColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Show Value Option -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Show Value Control</mat-card-title>
+      <mat-card-subtitle>
+        Toggle displaying the hex value in the picker button
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Show Value:</label>
+        <mat-slide-toggle [checked]="showValueEnabled()" (change)="showValueEnabled.set($event.checked)">
+          {{ showValueEnabled() ? 'Enabled' : 'Disabled' }}
+        </mat-slide-toggle>
+      </div>
+      <mb-color-ring-picker [hexValue]="showValueHexColor()" [showValue]="showValueEnabled()"
+        (hexValueChange)="showValueHexColor.set($event)" (colorChange)="showValueColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>showValue:</strong> {{showValueEnabled()}}</span>
+      <span><strong>hexValueChange:</strong> {{showValueHexColor()}}</span>
+      @if (showValueColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{showValueColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Close on Select Option -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Close on Select Control</mat-card-title>
+      <mat-card-subtitle>
+        Automatically close the picker when a color is selected
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Close on Select:</label>
+        <mat-slide-toggle [checked]="closeOnSelectEnabled()" (change)="closeOnSelectEnabled.set($event.checked)">
+          {{ closeOnSelectEnabled() ? 'Enabled' : 'Disabled' }}
+        </mat-slide-toggle>
+      </div>
+      <mb-color-ring-picker [hexValue]="closeOnSelectHexColor()" [closeOnSelect]="closeOnSelectEnabled()"
+        (hexValueChange)="closeOnSelectHexColor.set($event)" (colorChange)="closeOnSelectColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>closeOnSelect:</strong> {{closeOnSelectEnabled()}}</span>
+      <span><strong>hexValueChange:</strong> {{closeOnSelectHexColor()}}</span>
+      @if (closeOnSelectColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{closeOnSelectColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Alpha Channel Picker -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Alpha Channel Picker</mat-card-title>
+      <mat-card-subtitle>
+        Color ring picker with alpha/transparency support
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Alpha Channel:</label>
+        <mat-slide-toggle [checked]="alphaEnabled()" (change)="alphaEnabled.set($event.checked)">
+          {{ alphaEnabled() ? 'Enabled' : 'Disabled' }}
+        </mat-slide-toggle>
+      </div>
+      <mb-color-ring-picker [hexValue]="alphaHexColor()" [alphaChannel]="alphaEnabled()"
+        (hexValueChange)="alphaHexColor.set($event)" (colorChange)="alphaColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>alphaChannel:</strong> {{alphaEnabled()}}</span>
+      <span><strong>hexValueChange:</strong> {{alphaHexColor()}}</span>
+      @if (alphaColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{alphaColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Custom Size Picker -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Custom Size Control</mat-card-title>
+      <mat-card-subtitle>
+        Adjust diameter, ring width, and handle size of the picker
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Diameter:</label>
+        <mat-select [value]="customDiameter()" (selectionChange)="customDiameter.set($event.value)" placeholder="Diameter">
+          @for (diameter of diameterOptions; track diameter) {
+          <mat-option [value]="diameter">{{diameter}}px</mat-option>
+          }
+        </mat-select>
+      </div>
+      <div class="control-row">
+        <label>Ring Width:</label>
+        <mat-select [value]="customRingWidth()" (selectionChange)="customRingWidth.set($event.value)" placeholder="Ring Width">
+          @for (ringWidth of ringWidthOptions; track ringWidth) {
+          <mat-option [value]="ringWidth">{{ringWidth}}px</mat-option>
+          }
+        </mat-select>
+      </div>
+      <div class="control-row">
+        <label>Handle Size:</label>
+        <mat-select [value]="customHandleSize()" (selectionChange)="customHandleSize.set($event.value)" placeholder="Handle Size">
+          @for (handleSize of handleSizeOptions; track handleSize) {
+          <mat-option [value]="handleSize">{{handleSize}}px</mat-option>
+          }
+        </mat-select>
+      </div>
+      <mb-color-ring-picker [hexValue]="customSizeHexColor()" [diameter]="customDiameter()" [ringWidth]="customRingWidth()" [handleSize]="customHandleSize()"
+        (hexValueChange)="customSizeHexColor.set($event)" (colorChange)="customSizeColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>diameter:</strong> {{customDiameter()}}px</span>
+      <span><strong>ringWidth:</strong> {{customRingWidth()}}px</span>
+      <span><strong>handleSize:</strong> {{customHandleSize()}}px</span>
+      <span><strong>hexValueChange:</strong> {{customSizeHexColor()}}</span>
+      @if (customSizeColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{customSizeColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Background Control -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Background Control</mat-card-title>
+      <mat-card-subtitle>
+        Change the background behind the color ring in the picker
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Background:</label>
+        <mat-select [value]="backgroundValue()" (selectionChange)="backgroundValue.set($event.value)" placeholder="Background">
+          @for (option of backgroundOptions; track option.value) {
+          <mat-option [value]="option.value">{{option.label}}</mat-option>
+          }
+        </mat-select>
+      </div>
+      <mb-color-ring-picker [hexValue]="backgroundHexColor()" [backgroundColor]="backgroundValue()"
+        (hexValueChange)="backgroundHexColor.set($event)" (colorChange)="backgroundPickerColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>backgroundColor:</strong> {{backgroundValue()}}</span>
+      <span><strong>hexValueChange:</strong> {{backgroundHexColor()}}</span>
+      @if (backgroundPickerColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{backgroundPickerColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Disabled Picker -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Disabled State</mat-card-title>
+      <mat-card-subtitle>
+        Test the disabled state of the color ring picker
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="control-row">
+        <label>Disabled:</label>
+        <mat-slide-toggle [checked]="disabledState()" (change)="disabledState.set($event.checked)">
+          {{ disabledState() ? 'Disabled' : 'Enabled' }}
+        </mat-slide-toggle>
+      </div>
+      <mb-color-ring-picker [hexValue]="disabledHexColor()" [disabled]="disabledState()"
+        (hexValueChange)="disabledHexColor.set($event)" (colorChange)="disabledColor.set($event)">
+      </mb-color-ring-picker>
+    </mat-card-content>
+    <mat-card-content>
+      <span><strong>disabled:</strong> {{disabledState()}}</span>
+      <span><strong>hexValueChange:</strong> {{disabledHexColor()}}</span>
+      @if (disabledColor()) {
+      <span><strong>colorChange:</strong>
+        <pre>{{disabledColor() | json}}</pre>
+      </span>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Event Tracking -->
+  <mat-card appearance="raised" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Event Tracking</mat-card-title>
+      <mat-card-subtitle>
+        Monitor opened and closed events from the picker
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="events-container">
+        <h4>Recent Events:</h4>
+        @if (pickerEvents().length === 0) {
+        <p class="no-events">No events yet. Open and close a picker to see events.</p>
+        } @else {
+        <ul class="events-list">
+          @for (event of pickerEvents(); track $index) {
+          <li>{{event}}</li>
+          }
+        </ul>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
