@@ -366,24 +366,12 @@ export class ColorRingComponent implements OnDestroy {
     const backgroundColor = this.backgroundColor();
     if (backgroundColor === 'transparent') return;
 
-    const ctx = this.ctx;
-    const diameter = this.diameter();
-
-    const bgColor = this.getEffectiveBackgroundColor();
-    ctx.fillStyle = bgColor;
-    
-    // Fill only the outer area (outside the hue ring)
-    const { center, hueRingOuterRadius } = this.geometry;
+    const { center } = this.geometry;
     const twoPi = 2 * Math.PI;
-    
-    // Create a path for the entire canvas minus the color ring area
-    ctx.beginPath();
-    ctx.rect(0, 0, diameter, diameter);
-    ctx.arc(center.x, center.y, hueRingOuterRadius + 2, 0, twoPi, true); // Add small buffer and subtract ring area
-    ctx.fill();
-
+    const bgColor = this.getEffectiveBackgroundColor();
+    const ctx = this.ctx;
     ctx.fillStyle = bgColor;
-    
+        
     // Gap between hue and saturation rings
     ctx.beginPath();
     ctx.arc(center.x, center.y, this.geometry.hueRingInnerRadius, 0, twoPi);
