@@ -328,9 +328,7 @@ export class ColorRingComponent implements OnDestroy {
     if (!this.ctx || !this.geometry) return;
 
     const ctx = this.ctx;
-    const geometry = this.geometry;
     const diameter = this.diameter();
-    const [h, s, l, a] = this.currentHsla();
 
     // Clear canvas
     ctx.clearRect(0, 0, diameter, diameter);
@@ -799,14 +797,15 @@ export class ColorRingComponent implements OnDestroy {
   private updateDrag(x: number, y: number): void {
     if (!this.geometry || !this.dragTarget) return;
 
+    const twoPi = 2 * Math.PI;
     const { center } = this.geometry;
     const dx = x - center.x;
     const dy = y - center.y;
     const angle = Math.atan2(dy, dx) + Math.PI / 2; // Start from top
-    const normalizedAngle = (angle < 0 ? angle + 2 * Math.PI : angle) / (2 * Math.PI);
+    const normalizedAngle = (angle < 0 ? angle + twoPi : angle) / twoPi;
 
     const [h, s, l, a] = this.currentHsla();
-    let newHsla: [number, number, number, number] = [h, s, l, a];
+    const newHsla: [number, number, number, number] = [h, s, l, a];
 
     switch (this.dragTarget) {
       case hueRing:
