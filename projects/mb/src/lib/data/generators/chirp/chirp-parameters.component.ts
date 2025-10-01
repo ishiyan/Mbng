@@ -63,15 +63,11 @@ export class ChirpParametersComponent {
     effect(() => {
       const p = this.chirpParameters();
       if (p) {
+        this.initialized = true;
         this.params = p;
       }
     });
   }
-
-  /*ngAfterContentInit() {
-    this.initialized = true;
-    this.notify();
-  }*/
 
   protected get chirpSweepParam(): ChirpSweep {
     return this.params.chirpSweep;
