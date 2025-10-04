@@ -76,6 +76,7 @@ export * from './lib/data/entities/quote-component';
 export * from './lib/data/entities/quote-component.component';
 
 export * from './lib/data/generators/generate-step';
+export * from './lib/data/generators/generate-chirp';
 
 export * from './lib/data/generators/repetitive-sample/repetitive-sample-generator-parameters';
 
