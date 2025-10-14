@@ -12,6 +12,7 @@ import { HilbertTransformerCycleEstimator, createEstimator } from 'mb';
 import { predefinedLinePalettes } from 'mb';
 import { HilbertTransformerCycleEstimatorType, HilbertTransformerCycleEstimatorParams } from 'mb';
 import { BarComponent, barComponentValue } from 'mb';
+import { generateChirp, ChirpSweep } from 'mb';
 
 import { ContentSettingsService } from '../../../../shared/content-settings/content-settings.service';
 import { BarSeriesService } from '../../../../shared/data/bar-series/bar-series.service';
@@ -22,6 +23,8 @@ import { frequencyResponseOfAnIndicatorNote } from '../../../../notes';
 import { HtceInput } from './htce-input.interface';
 import { Htce } from './htce.interface';
 import { HtceListComponent } from './htce-list.component';
+
+const [chirpBars, chirpMnemonic] = generateChirp(48, 16, 512, 2, true, ChirpSweep.LinearFrequency, 0.03, 0, 1);
 
 const calculateHtce = (bars: Bar[], htce: HilbertTransformerCycleEstimator, barComponent: BarComponent): Scalar[] => {
   const scalars: Scalar[] = [];
@@ -236,6 +239,39 @@ export class HtceComponent implements AfterViewInit {
     barComponent: BarComponent.Median, showStyle: true
   };
 
+  private readonly indicatorsChirpLen: Htce[] = [
+    {
+      id: 581,
+      estimatorType: HilbertTransformerCycleEstimatorType.HomodyneDiscriminator,
+      params: {
+        smoothingLength: 4, alphaEmaQuadratureInPhase: 0.2, alphaEmaPeriod: 0.2
+      },
+      barComponent: BarComponent.Median,
+      style: { color: 'red', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 582,
+      estimatorType: HilbertTransformerCycleEstimatorType.DualDifferentiator,
+      params: {
+        smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.15
+      },
+      barComponent: BarComponent.Median,
+      style: { color: 'green', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    },
+    {
+      id: 583,
+      estimatorType: HilbertTransformerCycleEstimatorType.PhaseAccumulator,
+      params: {
+        smoothingLength: 4, alphaEmaQuadratureInPhase: 0.15, alphaEmaPeriod: 0.25
+      },
+      barComponent: BarComponent.Median,
+      style: { color: 'blue', width: 1, dash: 'solid', interpolation: 'linear' },
+      showStyle: true
+    }
+  ];
+
   protected palettes: string[][] = predefinedLinePalettes(
     Math.max(3, this.initialIndicators.params.length));
   protected selectedPalette: string[] = this.palettes[this.selectedIndex];
@@ -247,6 +283,8 @@ export class HtceComponent implements AfterViewInit {
   protected configurationParamsLen!: Configuration;
   protected configurationParamsAlphaQuad!: Configuration;
   protected configurationParamsAlphaPer!: Configuration;
+
+  protected configurationChirpLen!: Configuration;
 
   constructor() {
     effect(() => {
@@ -297,12 +335,15 @@ export class HtceComponent implements AfterViewInit {
     this.fixColors(this.indicatorsLen);
     this.fixColors(this.indicatorsAlphaQuad);
     this.fixColors(this.indicatorsAlphaPer);
+    this.fixColors(this.indicatorsChirpLen);
     this.configurationParamsLen =
       this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, this.indicatorsLen);
     this.configurationParamsAlphaQuad =
       this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, this.indicatorsAlphaQuad);
     this.configurationParamsAlphaPer =
       this.prepareConfig(this.dataSelection.mnemonic, this.dataSelection.data, this.indicatorsAlphaPer);
+    this.configurationChirpLen =
+      this.prepareConfig(chirpMnemonic, chirpBars, this.indicatorsChirpLen);
   }
 
   private prepareConfig(mnemonic: string, bars: Bar[], indicators: Htce[]): Configuration {
