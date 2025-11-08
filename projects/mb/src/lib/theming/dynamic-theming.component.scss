@@ -90,6 +90,12 @@
       flex: 0 0 auto; // Don't grow/shrink, use natural width
     }
 
+    picker-button {
+      $diameter: 40px;
+      flex: 0 0 $diameter; // Don't grow/shrink, fixed width
+      cursor: pointer;
+    }
+
     mb-color-disc-picker {
       $diameter: 40px;
       flex: 0 0 $diameter; // Don't grow/shrink, fixed width
@@ -107,7 +113,25 @@
       --color-disc-picker-preview-height: calc(#{$diameter} - 8px);
       --color-disc-picker-preview-border-radius: 50%;
     }
-    
+ 
+    mb-color-ring-picker {
+      $diameter: 40px;
+      flex: 0 0 $diameter; // Don't grow/shrink, fixed width
+      cursor: pointer;
+
+      // Use CSS custom properties to style the inner trigger
+      --color-ring-picker-gap: 0;
+      --color-ring-picker-padding: 0;
+      --color-ring-picker-border: 2px solid var(--mat-sys-outline-variant);
+      --color-ring-picker-border-radius: 50%;
+      --color-ring-picker-width: #{$diameter};
+      --color-ring-picker-height: #{$diameter};
+      --color-ring-picker-min-height: #{$diameter};
+      --color-ring-picker-preview-width: calc(#{$diameter} - 8px);
+      --color-ring-picker-preview-height: calc(#{$diameter} - 8px);
+      --color-ring-picker-preview-border-radius: 50%;
+    }
+   
     mat-slide-toggle {
       flex: 0 0 auto; // Don't grow/shrink, use natural width
     }

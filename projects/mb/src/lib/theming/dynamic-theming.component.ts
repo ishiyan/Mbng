@@ -7,6 +7,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 
 import { ColorDiscPickerComponent } from '../colors/color-disc/color-disc-picker.component';
+import { ColorRingPickerComponent } from '../colors/color-ring/color-ring-picker.component';
 import { DynamicColorService } from './dynamic-color.service';
 import { DynamicThemingService } from './dynamic-theming.service';
 import { DynamicThemingVariant } from './dynamic-theming-variant.enum';
@@ -26,7 +27,8 @@ import { DynamicThemingPreset } from './dynamic-theming-preset.interface';
     MatSlideToggle,
     MatSlider,
     MatSliderThumb,
-    ColorDiscPickerComponent
+    ColorDiscPickerComponent,
+    ColorRingPickerComponent
   ]
 })
 export class DynamicThemingComponent {
@@ -47,6 +49,7 @@ export class DynamicThemingComponent {
   showSpecVersion = input<boolean>(true);
   showPlatform = input<boolean>(true);
   showRememberTheme = input<boolean>(true);
+  showColorDisc = input<boolean>(true);
   
   // Input for theme presets
   presets = input<DynamicThemingPreset[]>([]);

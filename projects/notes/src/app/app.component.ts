@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconRegistry, MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 
@@ -11,7 +12,6 @@ import { ContentSettingsComponent } from './shared/content-settings/content-sett
 import { ThemeSettingsComponent } from './shared/theme-settings/theme-settings.component';
 import { LayoutSettingsComponent } from './shared/layout-settings/layout-settings.component';
 
-import { DynamicColorTokensComponent } from 'mb';
 import { LightDarkToggleComponent } from 'mb';
 
 @Component({
@@ -32,10 +32,12 @@ import { LightDarkToggleComponent } from 'mb';
     SeriesListComponent,
     ContentSettingsComponent,
     ThemeSettingsComponent,
-    DynamicColorTokensComponent,
     LightDarkToggleComponent,
     LayoutSettingsComponent
   ]
 })
 export class AppComponent {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('github', sanitizer.bypassSecurityTrustResourceUrl('assets/img/github.svg'));
+  }
 }

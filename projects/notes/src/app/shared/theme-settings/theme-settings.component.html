@@ -1,5 +1,6 @@
 @if (dynamicTheming()) {
 <mb-dynamic-theming (parametersChange)="this.params = $event;" [presets]="themePresets()"
+  [showColorDisc]="dynamicThemingShowColorDisc()"
   [showPresets]="dynamicThemingShowPresets()"
   [showGenerator]="dynamicThemingShowGenerator()"
   [showTertiary]="dynamicThemingShowTertiary()"

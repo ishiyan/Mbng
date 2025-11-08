@@ -4,21 +4,20 @@
   .color-ring-picker-trigger {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: 4px;
-    background: var(--mat-sys-surface);
-    color: var(--mat-sys-on-surface);
+    gap: var(--color-ring-picker-gap, 0.5rem);
+    padding: var(--color-ring-picker-padding, 0.5rem);
+    border: var(--color-ring-picker-border, 2px solid var(--mat-sys-outline-variant));
+    border-radius: var(--color-ring-picker-border-radius, 8px);
     cursor: pointer;
-    font-family: inherit;
-    font-size: 14px;
-    min-height: 40px;
-    min-width: 120px;
+    background: var(--color-ring-picker-background, var(--mat-sys-surface-container));
     transition: all 200ms ease-in-out;
+    min-height: var(--color-ring-picker-min-height, 44px); // Touch target
+    width: var(--color-ring-picker-width, auto);
+    height: var(--color-ring-picker-height, auto);
 
-    &:hover:not(:disabled) {
-      background: var(--mat-sys-surface-variant);
-      border-color: var(--mat-sys-outline);
+    &:hover:not(.disabled) {
+      border-color: var(--color-ring-picker-hover-border, var(--mat-sys-primary));
+      background: var(--color-ring-picker-hover-background, var(--mat-sys-surface-container-high));
     }
 
     &:focus {
@@ -26,41 +25,54 @@
       outline-offset: 2px;
     }
 
-    &:disabled {
+    &.disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .color-swatch {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-right: 8px;
+    .color-preview {
+      width: var(--color-ring-picker-preview-width, 32px);
+      height: var(--color-ring-picker-preview-height, 32px);
+      border-radius: var(--color-ring-picker-preview-border-radius, 6px);
       border: 1px solid rgba(0, 0, 0, 0.1);
-      flex-shrink: 0;
       background: inherit;
     }
 
     .color-value {
-      flex: 1;
-      text-align: left;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-    }
-
-    .dropdown-icon {
-      margin-left: 8px;
-      flex-shrink: 0;
-      transition: transform 200ms ease-in-out;
-    }
-
-    &[aria-expanded="true"] .dropdown-icon {
-      transform: rotate(180deg);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.875rem;
+      color: var(--mat-sys-on-surface);
+      text-transform: uppercase;
+      min-width: 4rem;
     }
   }
 }
 
-// Global backdrop style
-::ng-deep .color-ring-picker-backdrop {
-  background: rgba(0, 0, 0, 0.32);
+// Global overlay styles
+:root {
+  .transparent-backdrop {
+    background: transparent;
+    cursor: default;
+    touch-action: auto; // Allow touch interactions
+    -webkit-tap-highlight-color: transparent;
+    
+    // Ensure backdrop covers entire screen on mobile
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+
+  .color-picker-overlay {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: var(--mat-sys-surface-container);
+    padding: 1rem;
+    border: 1px solid var(--mat-sys-outline-variant);
+
+    mb-color-ring {
+      display: block;
+    }
+  }
 }

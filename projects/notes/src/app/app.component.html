@@ -8,6 +8,12 @@
     <button mat-icon-button (click)="sidenav.toggle()" aria-label="Show or hide settings">
       <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
     </button>
+    <button mat-icon-button routerLink="https://github.com/ishiyan/Mbng" target="_blank" rel="noopener noreferrer">
+      <mat-icon svgIcon="github" />
+    </button>
+    <button mat-icon-button routerLink="https://ishiyan.github.io" target="_blank" rel="noopener noreferrer">
+      <mat-icon fontSet="material-symbols-outlined">contacts_products</mat-icon>
+    </button>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container">
@@ -57,28 +63,19 @@
         <div class="collapsible-content">
           <mat-divider />
           <app-theme-settings
+            [dynamicThemingShowColorDisc]="false"
             [dynamicTheming]="true"
             [dynamicThemingShowPresets]="true"
             [dynamicThemingShowGenerator]="true"
             [dynamicThemingShowTertiary]="true"
-            [dynamicThemingShowContrast]="true"
+            [dynamicThemingShowContrast]="false"
             [dynamicThemingShowVariant]="true"
-            [dynamicThemingShowSpecVersion]="true"
-            [dynamicThemingShowPlatform]="true"
+            [dynamicThemingShowSpecVersion]="false"
+            [dynamicThemingShowPlatform]="false"
             [dynamicThemingShowRememberTheme]="true"
             [lightDark]="true"
-            [downloadThemeSCSS]="true"
+            [downloadThemeSCSS]="false"
           />
-        </div>
-      </details>
-
-      <details class="collapsible">
-        <summary class="collapsible-summary">
-          <div class="section-header">Current color tokens</div>
-        </summary>
-        <div class="collapsible-content">
-          <mat-divider />
-          <mb-dynamic-color-tokens />
         </div>
       </details>
       <br />

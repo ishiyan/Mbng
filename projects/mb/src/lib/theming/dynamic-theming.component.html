@@ -21,28 +21,46 @@
   @if (showGenerator()) {
   <div class="color-section">
     <label>Primary</label>
-  <mb-color-disc-picker
-    [layout]="'outer-hue'"
-    [alphaChannel]="false"
-    [hexValue]="dtsSvc.primaryColor()"
-    (hexValueChange)="dtsSvc.primaryColor.set($event)"
-    [showValue]="false"
-    [diameter]="300"
-    [resolution]="'auto'">
-  </mb-color-disc-picker>
+    @if (showColorDisc()) {
+    <mb-color-disc-picker class="picker-button"
+      [layout]="'outer-hue'"
+      [alphaChannel]="false"
+      [hexValue]="dtsSvc.primaryColor()"
+      (hexValueChange)="dtsSvc.primaryColor.set($event)"
+      [showValue]="false"
+      [diameter]="300"
+      [resolution]="'auto'" />
+    } @else {
+    <mb-color-ring-picker class="picker-button"
+      [alphaChannel]="false"
+      [hexValue]="dtsSvc.primaryColor()"
+      (hexValueChange)="dtsSvc.primaryColor.set($event)"
+      [showValue]="false"
+      [showValue]="false"
+      [diameter]="300"
+      [resolution]="'auto'" />
+    }
     @if (showTertiary()) {
       <label>Tertiary</label>
       <mat-slide-toggle [(ngModel)]="dtsSvc.useTertiaryColor" />
       @if (dtsSvc.useTertiaryColor()) {
-        <mb-color-disc-picker 
+        @if (showColorDisc()) {
+        <mb-color-disc-picker class="picker-button"
           [layout]="'outer-hue'"
           [alphaChannel]="false"
           [hexValue]="dtsSvc.tertiaryColor()"
           (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
           [showValue]="false"
           [diameter]="300"
-          [resolution]="'auto'">
-        </mb-color-disc-picker>
+          [resolution]="'auto'" />
+        } @else {
+        <mb-color-ring-picker class="picker-button"
+          [alphaChannel]="false"
+          [hexValue]="dtsSvc.tertiaryColor()"
+          (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
+          [showValue]="false"
+          [diameter]="300" />
+        }
       }
     }
   </div>

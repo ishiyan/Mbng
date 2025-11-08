@@ -24,6 +24,7 @@ export class ThemeSettingsComponent {
   
   // Input signals for controlling visibility
   dynamicTheming = input<boolean>(true);
+  dynamicThemingShowColorDisc = input<boolean>(true);
   dynamicThemingShowPresets = input<boolean>(true);
   dynamicThemingShowGenerator = input<boolean>(true);
   dynamicThemingShowTertiary = input<boolean>(true);
