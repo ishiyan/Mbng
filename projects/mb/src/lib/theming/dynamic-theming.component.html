@@ -21,7 +21,7 @@
   @if (showGenerator()) {
   <div class="color-section">
     <label>Primary</label>
-    @if (showColorDisc()) {
+    @if (internalShowColorDisc()) {
     <mb-color-disc-picker class="picker-button"
       [layout]="'outer-hue'"
       [alphaChannel]="false"
@@ -44,7 +44,7 @@
       <label>Tertiary</label>
       <mat-slide-toggle [(ngModel)]="dtsSvc.useTertiaryColor" />
       @if (dtsSvc.useTertiaryColor()) {
-        @if (showColorDisc()) {
+        @if (internalShowColorDisc()) {
         <mb-color-disc-picker class="picker-button"
           [layout]="'outer-hue'"
           [alphaChannel]="false"
@@ -121,6 +121,16 @@
     </mat-form-field>
   </div>
   }
+
+  <div class="select-section">
+    <label>Color picker</label>
+    <mat-form-field class="spec-select" appearance="fill">
+      <mat-select [(ngModel)]="internalShowColorDisc">
+        <mat-option [value]="true">Disc</mat-option>
+        <mat-option [value]="false">Ring</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
   @if (showRememberTheme()) {
   <div class="remember-section">

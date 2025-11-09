@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
@@ -54,10 +54,15 @@ export class DynamicThemingComponent {
   // Input for theme presets
   presets = input<DynamicThemingPreset[]>([]);
 
+  protected internalShowColorDisc = signal<boolean>(true);
+
   constructor() {
     effect(() => {
       const currentParams = this.dtsSvc.currentParameters();
       this.parametersChange.emit(currentParams);
+    });
+    effect(() => {
+      this.internalShowColorDisc.set(this.showColorDisc());
     });
   }
 
