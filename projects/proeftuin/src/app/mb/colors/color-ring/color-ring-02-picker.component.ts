@@ -35,11 +35,6 @@ export class ColorRing02PickerComponent {
   protected showValueColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
   protected showValueEnabled = signal<boolean>(true);
 
-  // Close on select option
-  protected closeOnSelectHexColor = signal<string>('#2196f3');
-  protected closeOnSelectColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
-  protected closeOnSelectEnabled = signal<boolean>(false);
-
   // Alpha channel with picker
   protected alphaHexColor = signal<string>('#ff980080');
   protected alphaColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);

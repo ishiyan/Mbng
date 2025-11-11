@@ -295,37 +295,6 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Close on Select -->
-  <mat-card appearance="raised" class="example-card">
-    <mat-card-header>
-      <mat-card-title>Close on Select</mat-card-title>
-      <mat-card-subtitle>
-        Automatically close picker when color is selected
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="control-row">
-        <label>Close on Select:</label>
-        <mat-slide-toggle [(ngModel)]="closeOnSelectEnabled" (ngModelChange)="closeOnSelectEnabled.set($event)">
-        </mat-slide-toggle>
-      </div>
-      <mb-color-disc-picker
-        [hexValue]="closeOnSelectHexColor()"
-        [closeOnSelect]="closeOnSelectEnabled()"
-        [diameter]="280"
-        (hexValueChange)="closeOnSelectHexColor.set($event)"
-        (colorChange)="closeOnSelectColor.set($event)">
-      </mb-color-disc-picker>
-    </mat-card-content>
-    <mat-card-content>
-      <span><strong>closeOnSelect:</strong> {{closeOnSelectEnabled()}}</span>
-      <span><strong>hexValueChange:</strong> {{closeOnSelectHexColor()}}</span>
-      @if (closeOnSelectColor()) {
-        <span><strong>colorChange:</strong> {{closeOnSelectColor() | json}}</span>
-      }
-    </mat-card-content>
-  </mat-card>
-
   <!-- Disabled State -->
   <mat-card appearance="raised" class="example-card">
     <mat-card-header>
@@ -423,9 +392,6 @@
           <mat-slide-toggle [(ngModel)]="advancedShowValue" (ngModelChange)="advancedShowValue.set($event)">Show Value</mat-slide-toggle>
         </div>
         <div class="control-row">
-          <mat-slide-toggle [(ngModel)]="advancedCloseOnSelect" (ngModelChange)="advancedCloseOnSelect.set($event)">Close on Select</mat-slide-toggle>
-        </div>
-        <div class="control-row">
           <mat-slide-toggle [(ngModel)]="advancedDisabled" (ngModelChange)="advancedDisabled.set($event)">Disabled</mat-slide-toggle>
         </div>
       </div>
@@ -440,7 +406,6 @@
           [resolution]="advancedResolution()"
           [backgroundColor]="advancedBackground()"
           [showValue]="advancedShowValue()"
-          [closeOnSelect]="advancedCloseOnSelect()"
           [disabled]="advancedDisabled()"
           (hexValueChange)="advancedHexColor.set($event)"
           (colorChange)="advancedColor.set($event)"
@@ -458,7 +423,6 @@
       <span><strong>resolution:</strong> {{advancedResolution()}}</span>
       <span><strong>backgroundColor:</strong> {{advancedBackground()}}</span>
       <span><strong>showValue:</strong> {{advancedShowValue()}}</span>
-      <span><strong>closeOnSelect:</strong> {{advancedCloseOnSelect()}}</span>
       <span><strong>disabled:</strong> {{advancedDisabled()}}</span>
       <span><strong>hexValueChange:</strong> {{advancedHexColor()}}</span>
       @if (advancedColor()) {

@@ -36,7 +36,6 @@
       [hexValue]="dtsSvc.primaryColor()"
       (hexValueChange)="dtsSvc.primaryColor.set($event)"
       [showValue]="false"
-      [showValue]="false"
       [diameter]="300"
       [resolution]="'auto'" />
     }
@@ -59,7 +58,8 @@
           [hexValue]="dtsSvc.tertiaryColor()"
           (hexValueChange)="dtsSvc.tertiaryColor.set($event)"
           [showValue]="false"
-          [diameter]="300" />
+          [diameter]="300"
+          [resolution]="'auto'"  />
         }
       }
     }

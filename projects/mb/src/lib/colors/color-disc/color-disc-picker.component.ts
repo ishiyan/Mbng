@@ -39,8 +39,6 @@ export class ColorDiscPickerComponent {
   readonly backgroundColor = input<string>('auto');
    /** Show the current color value as text in the trigger button */
   readonly showValue = input<boolean>(true);
-  /** Automatically close the color picker when a color is selected */
-  readonly closeOnSelect = input<boolean>(false);
 
   // Output events
   /** Emitted only a hex value when a color is selected from the picker */
@@ -48,45 +46,38 @@ export class ColorDiscPickerComponent {
   /** Emitted when a color is selected from the picker */
   readonly colorChange = output<{ hex: string; hsl: [number, number, number]; alpha?: number }>();
   /** Emitted when the picker overlay is opened */
-  readonly pickerOpened = output<void>();
+  readonly opened = output<void>();
   /** Emitted when a picker overlay is closed */
-  readonly pickerClosed = output<void>();
+  readonly closed = output<void>();
 
   protected togglePicker(): void {
     if (this.disabled()) return;
 
     if (this.isOpen()) {
-      this.closePicker();
+      this.close();
     } else {
-      this.openPicker();
+      this.open();
     }
   }
 
-  private openPicker(): void {
+  private open(): void {
     if (this.overlayRef || this.disabled()) return;
 
-    const positionStrategy: PositionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.trigger())
-      .withPositions([
-        { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
-        { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -8 },
-        { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
-        { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -8 }
-      ]);
+    const positionStrategy: PositionStrategy = this.createPositionStrategy();
 
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
       backdropClass: 'transparent-backdrop',
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      panelClass: 'color-picker-overlay'
+      panelClass: 'color-picker-overlay',
+      disposeOnNavigation: true
     });
 
     // Close when backdrop is clicked (this handles click-outside)
     // Handle both click and touchstart for mobile compatibility
     this.overlayRef.backdropClick().subscribe(() => {
-      this.closePicker();
+      this.close();
     });
 
     // Add additional touch event handling for mobile
@@ -96,13 +87,13 @@ export class ColorDiscPickerComponent {
         // Add both mouse and touch events
         backdropElement.addEventListener('touchstart', (event) => {
           event.preventDefault();
-          this.closePicker();
+          this.close();
         }, { passive: false });
 
         // Also handle touchend as fallback
         backdropElement.addEventListener('touchend', (event) => {
           event.preventDefault();
-          this.closePicker();
+          this.close();
         }, { passive: false });
       }
     });
@@ -110,14 +101,14 @@ export class ColorDiscPickerComponent {
     // Close on Escape key
     this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        this.closePicker();
+        this.close();
       }
     });
 
     const colorDiscPortal = new ComponentPortal(ColorDiscComponent);
     const componentRef = this.overlayRef.attach(colorDiscPortal);
 
-    // Configure the color disc
+    // Set input properties on the portal component
     componentRef.setInput('alphaChannel', this.alphaChannel());
     componentRef.setInput('layout', this.layout());
     componentRef.setInput('diameter', this.diameter());
@@ -128,16 +119,9 @@ export class ColorDiscPickerComponent {
     componentRef.setInput('hexValue', this.hexValue());
     componentRef.setInput('backgroundColor', this.backgroundColor());
 
-    // Handle color changes - only close if closeOnSelect is true
+    // Subscribe to color changes
     componentRef.instance.hexValueChange.subscribe((hex) => {
       this.hexValueChange.emit(hex);
-
-      // Close if closeOnSelect is true
-      if (this.closeOnSelect()) {
-        setTimeout(() => {
-          this.closePicker();
-        }, 0);
-      }
     });
 
     componentRef.instance.colorChange.subscribe((colorEvent) => {
@@ -145,15 +129,30 @@ export class ColorDiscPickerComponent {
     });
 
     this.isOpen.set(true);
-    this.pickerOpened.emit();
+    this.opened.emit();
   }
 
-  private closePicker(): void {
+  private close(): void {
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
-      this.isOpen.set(false);
-      this.pickerClosed.emit();
     }
+    this.isOpen.set(false);
+    this.closed.emit();
   }
+  
+  private createPositionStrategy(): PositionStrategy {
+    return this.overlay.position()
+      .flexibleConnectedTo(this.trigger())
+      .withPositions([
+        { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+        { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -8 },
+        { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+        { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -8 }
+      ])
+      .withPush(true)
+      .withFlexibleDimensions(true)
+      .withViewportMargin(16);
+  }
+
 }

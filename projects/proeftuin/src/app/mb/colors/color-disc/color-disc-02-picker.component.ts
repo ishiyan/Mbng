@@ -70,11 +70,6 @@ export class ColorDisc02PickerComponent {
   protected showValueColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected showValueEnabled = signal<boolean>(true);
 
-  // Close on select
-  protected closeOnSelectHexColor = signal<string>('#8bc34a');
-  protected closeOnSelectColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
-  protected closeOnSelectEnabled = signal<boolean>(false);
-
   // Disabled state
   protected disabledHexColor = signal<string>('#3f51b5');
   protected disabledColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
@@ -91,7 +86,6 @@ export class ColorDisc02PickerComponent {
   protected advancedBackground = signal<string>('auto');
   protected advancedAlpha = signal<boolean>(true);
   protected advancedShowValue = signal<boolean>(true);
-  protected advancedCloseOnSelect = signal<boolean>(false);
   protected advancedDisabled = signal<boolean>(false);
 
   // Picker events tracking

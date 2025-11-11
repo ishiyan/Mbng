@@ -37,8 +37,6 @@ export class ColorRingPickerComponent {
   readonly backgroundColor = input<string>('auto');
   /** Show the current color value as text in the trigger button */
   readonly showValue = input<boolean>(true);
-  /** Automatically close the color picker when a color is selected */
-  readonly closeOnSelect = input<boolean>(false);
 
   // Output events
   /** Emitted only a hex value when a color is selected from the picker */
@@ -49,13 +47,6 @@ export class ColorRingPickerComponent {
   readonly opened = output<void>();
   /** Emitted when the picker overlay is closed */
   readonly closed = output<void>();
-
-  protected readonly currentHex = signal<string>('#ff4081');
-
-  constructor() {
-    // Update internal hex value when input changes
-    this.currentHex.set(this.hexValue());
-  }
 
   protected togglePicker(): void {
     if (this.disabled()) return;
@@ -68,16 +59,48 @@ export class ColorRingPickerComponent {
   }
 
   protected open(): void {
-    if (this.disabled() || this.isOpen()) return;
+    if (this.overlayRef || this.disabled() || this.isOpen()) return;
 
     const positionStrategy = this.createPositionStrategy();
     
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
-      backdropClass: 'color-ring-picker-backdrop',
+      backdropClass: 'transparent-backdrop',
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      panelClass: 'color-picker-overlay',
       disposeOnNavigation: true
+    });
+
+    // Close when backdrop is clicked (this handles click-outside)
+    // Handle both click and touchstart for mobile compatibility
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.close();
+    });
+
+    // Add additional touch event handling for mobile
+    this.overlayRef.attachments().subscribe(() => {
+      const backdropElement = this.overlayRef?.backdropElement;
+      if (backdropElement) {
+        // Add both mouse and touch events
+        backdropElement.addEventListener('touchstart', (event) => {
+          event.preventDefault();
+          this.close();
+        }, { passive: false });
+
+        // Also handle touchend as fallback
+        backdropElement.addEventListener('touchend', (event) => {
+          event.preventDefault();
+          this.close();
+        }, { passive: false });
+      }
+    });
+
+    // Close on Escape key
+    this.overlayRef.keydownEvents().subscribe((event) => {
+      if (event.key === 'Escape') {
+        this.close();
+      }
     });
 
     const portal = new ComponentPortal(ColorRingComponent);
@@ -89,34 +112,17 @@ export class ColorRingPickerComponent {
     componentRef.setInput('ringWidth', this.ringWidth());
     componentRef.setInput('handleSize', this.handleSize());
     componentRef.setInput('resolution', this.resolution());
-    componentRef.setInput('disabled', false);
-    componentRef.setInput('hexValue', this.currentHex());
+    componentRef.setInput('disabled', this.disabled());
+    componentRef.setInput('hexValue', this.hexValue());
     componentRef.setInput('backgroundColor', this.backgroundColor());
 
     // Subscribe to color changes
     componentRef.instance.hexValueChange.subscribe((hex: string) => {
-      this.currentHex.set(hex);
       this.hexValueChange.emit(hex);
-      
-      if (this.closeOnSelect()) {
-        this.close();
-      }
     });
 
-    componentRef.instance.colorChange.subscribe((color) => {
-      this.colorChange.emit(color);
-    });
-
-    // Handle backdrop click
-    this.overlayRef.backdropClick().subscribe(() => {
-      this.close();
-    });
-
-    // Handle escape key
-    this.overlayRef.keydownEvents().subscribe((event) => {
-      if (event.key === 'Escape') {
-        this.close();
-      }
+    componentRef.instance.colorChange.subscribe((colorEvent) => {
+      this.colorChange.emit(colorEvent);
     });
 
     this.isOpen.set(true);
@@ -136,34 +142,10 @@ export class ColorRingPickerComponent {
     return this.overlay.position()
       .flexibleConnectedTo(this.trigger())
       .withPositions([
-        {
-          originX: 'start',
-          originY: 'bottom',
-          overlayX: 'start',
-          overlayY: 'top',
-          offsetY: 8
-        },
-        {
-          originX: 'start',
-          originY: 'top',
-          overlayX: 'start',
-          overlayY: 'bottom',
-          offsetY: -8
-        },
-        {
-          originX: 'end',
-          originY: 'bottom',
-          overlayX: 'end',
-          overlayY: 'top',
-          offsetY: 8
-        },
-        {
-          originX: 'end',
-          originY: 'top',
-          overlayX: 'end',
-          overlayY: 'bottom',
-          offsetY: -8
-        }
+        { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+        { originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom', offsetY: -8 },
+        { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+        { originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom', offsetY: -8 }
       ])
       .withPush(true)
       .withFlexibleDimensions(true)
@@ -171,7 +153,7 @@ export class ColorRingPickerComponent {
   }
 
   protected getTriggerStyle(): { [key: string]: string } {
-    const hex = this.currentHex();
+    const hex = this.hexValue();
     return {
       'background-color': hex,
       'border': '1px solid #ccc'

@@ -46,6 +46,7 @@ export class ThemeSettingsComponent {
   dynamicThemingShowVariant = input<boolean>(true);
   dynamicThemingShowSpecVersion = input<boolean>(true);
   dynamicThemingShowPlatform = input<boolean>(true);
+  dynamicThemingShowColorDisc = input<boolean>(true);
   dynamicThemingShowRememberTheme = input<boolean>(true);
   lightDark = input<boolean>(true);
   downloadThemeSCSS = input<boolean>(true);

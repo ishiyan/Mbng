@@ -24,7 +24,6 @@ export class ThemeSettingsComponent {
   
   // Input signals for controlling visibility
   dynamicTheming = input<boolean>(true);
-  dynamicThemingShowColorDisc = input<boolean>(true);
   dynamicThemingShowPresets = input<boolean>(true);
   dynamicThemingShowGenerator = input<boolean>(true);
   dynamicThemingShowTertiary = input<boolean>(true);
@@ -32,6 +31,7 @@ export class ThemeSettingsComponent {
   dynamicThemingShowVariant = input<boolean>(true);
   dynamicThemingShowSpecVersion = input<boolean>(true);
   dynamicThemingShowPlatform = input<boolean>(true);
+  dynamicThemingShowColorDisc = input<boolean>(true);
   dynamicThemingShowRememberTheme = input<boolean>(true);
   lightDark = input<boolean>(true);
   downloadThemeSCSS = input<boolean>(true);

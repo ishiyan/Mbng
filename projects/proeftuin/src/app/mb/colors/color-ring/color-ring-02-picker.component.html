@@ -53,36 +53,6 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Close on Select Option -->
-  <mat-card appearance="raised" class="example-card">
-    <mat-card-header>
-      <mat-card-title>Close on Select Control</mat-card-title>
-      <mat-card-subtitle>
-        Automatically close the picker when a color is selected
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="control-row">
-        <label>Close on Select:</label>
-        <mat-slide-toggle [checked]="closeOnSelectEnabled()" (change)="closeOnSelectEnabled.set($event.checked)">
-          {{ closeOnSelectEnabled() ? 'Enabled' : 'Disabled' }}
-        </mat-slide-toggle>
-      </div>
-      <mb-color-ring-picker [hexValue]="closeOnSelectHexColor()" [closeOnSelect]="closeOnSelectEnabled()"
-        (hexValueChange)="closeOnSelectHexColor.set($event)" (colorChange)="closeOnSelectColor.set($event)">
-      </mb-color-ring-picker>
-    </mat-card-content>
-    <mat-card-content>
-      <span><strong>closeOnSelect:</strong> {{closeOnSelectEnabled()}}</span>
-      <span><strong>hexValueChange:</strong> {{closeOnSelectHexColor()}}</span>
-      @if (closeOnSelectColor()) {
-      <span><strong>colorChange:</strong>
-        <pre>{{closeOnSelectColor() | json}}</pre>
-      </span>
-      }
-    </mat-card-content>
-  </mat-card>
-
   <!-- Alpha Channel Picker -->
   <mat-card appearance="raised" class="example-card">
     <mat-card-header>
