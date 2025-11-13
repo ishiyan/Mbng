@@ -40,4 +40,8 @@ export class AppComponent {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('github', sanitizer.bypassSecurityTrustResourceUrl('assets/img/github.svg'));
   }
+
+  protected openWebsite(url: string): void {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 }

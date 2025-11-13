@@ -8,10 +8,10 @@
     <button mat-icon-button (click)="sidenav.toggle()" aria-label="Show or hide settings">
       <mat-icon fontSet="material-symbols-outlined">settings</mat-icon>
     </button>
-    <button mat-icon-button routerLink="https://github.com/ishiyan/Mbng" target="_blank" rel="noopener noreferrer">
+    <button mat-icon-button (click)="openWebsite('https://github.com/ishiyan/Mbng')" aria-label="Go to GitHub repository">
       <mat-icon svgIcon="github" />
     </button>
-    <button mat-icon-button routerLink="https://ishiyan.github.io" target="_blank" rel="noopener noreferrer">
+    <button mat-icon-button (click)="openWebsite('https://ishiyan.github.io')" aria-label="Go to personal website">
       <mat-icon fontSet="material-symbols-outlined">contacts_products</mat-icon>
     </button>
   </mat-toolbar>
