@@ -15,6 +15,7 @@ $prefix: (ohlcv-chart);
   
   // Default to primary if no color variant specified
   $variant-key: if($color-variant, $color-variant, primary);
+  //$variant-key: if(sass($color-variant): $color-variant; else: primary); //if($color-variant, $color-variant, primary);
   
   // Dynamically construct colors
   $variant: map.get($system, $variant-key);

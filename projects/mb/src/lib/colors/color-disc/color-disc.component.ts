@@ -58,7 +58,11 @@ export class ColorDiscComponent implements OnDestroy {
   private readonly effectiveResolution = computed(() => {
     const resolution = this.resolution();
     if (resolution === 'auto') {
-      return Math.min(window.devicePixelRatio || 1, 3); // Cap at 3x for performance
+      if (typeof window !== 'undefined' && window.devicePixelRatio) {
+        return Math.min(window.devicePixelRatio || 1, 3); // Cap at 3x for performance
+      } else {
+        return 1;
+      }
     }
     return resolution;
   });
@@ -201,7 +205,9 @@ export class ColorDiscComponent implements OnDestroy {
   }
 
   private scheduleRender(): void {
-    requestAnimationFrame(() => this.render());
+    if (typeof requestAnimationFrame !== 'undefined') {
+      requestAnimationFrame(() => this.render());
+    }
   }
 
   private getEffectiveBackgroundColor(): string {
