@@ -29,7 +29,6 @@ export class HilbertStocksComponent implements OnInit {
       const level2 = Math.pow(2, lev / 2); // 1 << lev
       const x = d3.scaleLinear().domain([-.5, level2]).range([0, w]);
       const size = x(1) as number - x(0) as number + 1;
-      console.log('level', lev, 'level2:', level2, 'size:', size);
       const min = Math.max(.0001, d3.min(dat) ?? 0);
       const max = d3.max(dat) ?? 1;
       const delta = max - min;

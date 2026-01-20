@@ -10,7 +10,10 @@ $prefix: (svg-viewer);
   $system: m3-utils.get-system($theme);
 
   // Set to currentColor if no color variant specified, otherwise use the variant color
-  $variant: if($color-variant, map.get($system, $color-variant), currentColor);
+  $variant: currentColor;
+  @if $color-variant {
+    $variant: map.get($system, $color-variant);
+  }
 
   @return (
     base: (),

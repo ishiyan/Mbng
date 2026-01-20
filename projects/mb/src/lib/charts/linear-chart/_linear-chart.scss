@@ -14,7 +14,10 @@ $prefix: (linear-chart);
   $surface-container: map.get($system, surface-container);
   
   // Default to primary if no color variant specified
-  $variant-key: if($color-variant, $color-variant, primary);
+  $variant-key: primary;
+  @if $color-variant {
+    $variant-key: $color-variant;
+  }
   
   // Dynamically construct colors
   $variant: map.get($system, $variant-key);

@@ -20,7 +20,7 @@ export class RealTimeChartComponent implements OnDestroy {
 
   readonly container = viewChild.required<ElementRef>('container');
   readonly svgheight = input<any>();
-  private chart: any;
+  private chart: any = undefined;
 
   constructor() {
     afterNextRender({
@@ -33,7 +33,9 @@ export class RealTimeChartComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
-     this.chart.isRunning(false);
+    if (this.chart !== undefined) {
+      this.chart.isRunning(false);
+    }
   }
 
   private setupResizeObserver(): void {

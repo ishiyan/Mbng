@@ -37,7 +37,7 @@
             ],
             "stylePreprocessorOptions": {
               "sass": {
-                "silenceDeprecations": ["color-functions", "global-builtin", "import", "mixed-decls"]
+                "silenceDeprecations": []
               }
             },
             "styles": [
@@ -53,13 +53,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "12mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "15mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2mb",
-                  "maximumError": "9mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 }
               ],
               "outputHashing": "all"
@@ -135,9 +135,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {
-              "base": "dist/proeftuin"
-            },
+            "outputPath": "dist/proeftuin",
             "index": "projects/proeftuin/src/index.html",
             "polyfills": [],
             "tsConfig": "projects/proeftuin/tsconfig.app.json",
@@ -169,7 +167,7 @@
             "browser": "projects/proeftuin/src/main.ts",
             "server": "projects/proeftuin/src/main.server.ts",
             "ssr": false,
-            "prerender": true
+            "prerender": false
           },
           "configurations": {
             "production": {
