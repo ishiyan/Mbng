@@ -34,7 +34,7 @@
     "@angular/platform-server": "^21.1.0",
     "@angular/router": "^21.1.0",
     "@angular/ssr": "^21.1.0",
-    "@ktibow/material-color-utilities-nightly": "^0.4.1768601500000",
+    "@ktibow/material-color-utilities-nightly": "^0.4.1768930731000",
     "@material/material-color-utilities": "^0.3.0",
     "core-js": "^3.47.0",
     "d3": "^7.9.0",
