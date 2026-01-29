@@ -1,12 +1,3 @@
-// TypeScript versions 4.4.3 and higher:
-// Error TS2339: Property 'msSaveBlob' does not exist on type 'Navigator'.
-// Use declaration merging to add it back to the 'Navigator'.
-declare global {
-  interface Navigator {
-      msSaveBlob?: (blob: any, defaultName?: string) => boolean;
-  }
-}
-
 export class Downloader {
 
   public static download(blob: Blob, filename: string): void {
@@ -14,8 +5,10 @@ export class Downloader {
       return;
     }
 
-    if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, filename);
+    // msSaveBlob is a deprecated IE-only API
+    const nav = navigator as Navigator & { msSaveBlob?: (blob: Blob, defaultName?: string) => boolean };
+    if (nav.msSaveBlob) {
+      nav.msSaveBlob(blob, filename);
     } else {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);

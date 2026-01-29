@@ -414,6 +414,8 @@ for http://ng-localhost/notes/assets/mb/mb-candlesticks.svg
 16. [mathjax](https://www.mathjax.org/news/#new-in-release)
 17. [katex](https://github.com/KaTeX/KaTeX/releases)
 18. [katex types](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/katex)
+19. [material-color-utilities](https://github.com/material-foundation/material-color-utilities/commits/main/typescript)
+20. [ktibow/material-color-utilities-nightly](https://www.npmjs.com/package/@ktibow/material-color-utilities-nightly)
 
 ## Naming and styling
 

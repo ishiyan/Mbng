@@ -88,8 +88,9 @@ export class HistoricalDataDownloadComponent {
     // @ts-ignore
     const filename = this.currentHistoricalData.name.replace(/ /g, '_') + '.csv';
 
-    if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, filename);
+    const nav = navigator as Navigator & { msSaveBlob?: (blob: Blob, defaultName?: string) => boolean };
+    if (nav.msSaveBlob) {
+      nav.msSaveBlob(blob, filename);
     } else {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
