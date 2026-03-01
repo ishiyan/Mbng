@@ -2,11 +2,11 @@
 
 ## Projects in this monorepo
 
-| Project     | Description | Live |
+| Project | Description | Live |
 | ----------- | ----------- | ------------ |
-| `mb`        | A library with shared components and widgets | |
+| `mb` | A library with shared components and widgets | |
 | `proeftuin` | A testing ground for the `mb` library | [Github pages](https://ishiyan.github.io/Proeftuin) |
-| `notes`     | An interactive assorted notes for various topics | [Github pages](https://ishiyan.github.io/notes) |
+| `notes` | An interactive assorted notes for various topics | [Github pages](https://ishiyan.github.io/notes) |
 
 ## TODO
 
