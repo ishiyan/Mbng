@@ -31,6 +31,14 @@ wget -O .github/instructions/angular-llms-full.md https://next.angular.dev/asset
 1. Run `ng serve proeftuin` in the terminal.
 2. Use the `Simple Browser: Show` command to open the built-in browser. Enter `http://localhost:4200` when prompted for URL.
 
+### Skills
+
+Place skills in `.opencode/skills/` for OpenCode and in `.github/skills/` for VSCode (Copilot).
+
+1. [official angular skills](https://github.com/angular/skills)
+2. [angular repo skills](https://github.com/angular/angular/tree/main/.agent/skills)
+3. [material design 3 skills](https://github.com/shelbeely/Shelbeely-Agent-skills/tree/main/skills)
+
 ## Updating
 
 Install `n` to update `npm`-
