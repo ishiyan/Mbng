@@ -205,6 +205,11 @@ $fallbacks: linear-chart.get-tokens();
     fill-opacity: var(---linear-chart-area-opacity);
     stroke: none;
   }
+  // Quote bars
+  ::ng-deep path.quotebar {
+    fill: none;
+    stroke: var(---linear-chart-point-color);
+  }
   // Points
   ::ng-deep path.point {
     fill: none;

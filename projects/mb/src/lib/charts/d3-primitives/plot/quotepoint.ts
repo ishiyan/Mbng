@@ -25,13 +25,11 @@ export const quotepoint = (quoteAccessor: any, plot: any, plotMixin: any) =>
       const x = p.xScale;
       const y = p.yScale;
       const w = p.width(x);
-      const w2 = w / w;
+      const w2 = w / 2;
 
       return (d: any) => {
-        const high = y(accessor.ask(d));
-        const low = y(accessor.bid(d));
-        const cyHigh = y(high); // - y(0)
-        const cyLow = y(low); // - y(0)
+        const cyHigh = y(accessor.ask(d));
+        const cyLow = y(accessor.bid(d));
         const cx = x(accessor.time(d)) - w2;
         const r = 1.5;
         const r2 = r * 2;
