@@ -206,7 +206,7 @@ describe('FrequencyResponse', () => {
 
   it('unwraps phase degrees from [-180, 180] range', () => {
     const wrapped = [-80, -180, -90, -180, -90, 0, 90, 180, 90, 180, 80];
-    const expected = [-80, -280, -280, -460, -460, -460, -460, -460, -640, -640, -840];
+    const expected = [-80, 180, -90, 180, -90, -360, -630, -900, -630, -900, -640];
 
     // eslint-disable-next-line @typescript-eslint/dot-notation
     const actual = FrequencyResponse['createFrequencyResponseComponent'](wrapped.length);

@@ -70,7 +70,7 @@ export class FrequencyResponse {
     }
 
     protected static createFrequencyResponseComponent(len: number): FrequencyResponseComponent {
-        return { min: -Infinity, max: Infinity, data: new Array<number>(len) };
+        return { min: Infinity, max: -Infinity, data: new Array<number>(len) };
     }
 
     protected static parseSpectrum(len: number, spectrum: number[],
@@ -88,7 +88,7 @@ export class FrequencyResponse {
             const im = spectrum[k++];
 
             // Wrapped phase -- atan2 returns radians in the [-π, π] range.
-            // We convert them into [-180, 180] dergee range.
+            // We convert them into [-180, 180] degree range.
             phase.data[i] = -Math.atan2(im, re) * rad2deg;
             phaseUnwrapped.data[i] = 0;
 
@@ -125,9 +125,9 @@ export class FrequencyResponse {
             let w = wrapped[i];
             const increment = wrapped[i] - wrapped[i-1];
             if (increment > phaseDegreesUnwrappingLimit) {
-                k -= increment;
+                k -= 360;
             } else if (increment < -phaseDegreesUnwrappingLimit) {
-                k += increment;
+                k += 360;
             }
 
             w += k;
@@ -141,10 +141,6 @@ export class FrequencyResponse {
     }
 
     protected static toDecibels(len: number, src: FrequencyResponseComponent, tgt: FrequencyResponseComponent) {
-        const five = 5;
-        const ten = 10;
-        const twenty = 20;
-        const hundreed = 100;
         let dbmin = Infinity;
         let dbmax = -Infinity;
         let base = src.data[0];
@@ -153,7 +149,7 @@ export class FrequencyResponse {
         }
 
         for (let i = 0; i < len; ++i) {
-            const db = twenty * Math.log10(src.data[i] / base);
+            const db = 20 * Math.log10(src.data[i] / base);
             dbmin = Math.min(dbmin, db);
             dbmax = Math.max(dbmax, db);
             tgt.data[i] = db;
@@ -161,9 +157,9 @@ export class FrequencyResponse {
 
         // If dbmin falls into one of [-100, -90), [-90, -80), ..., [-10, 0)
         // intervals, set it to the minimum value of the interval.
-        for (let i = ten; i > 0; --i) {
-            const min = -i * ten;
-            const max = -(i - 1) * ten;
+        for (let i = 10; i > 0; --i) {
+            const min = -i * 10;
+            const max = -(i - 1) * 10;
             if (dbmin >= min && dbmin < max) {
                 dbmin = min;
                 break;
@@ -171,11 +167,11 @@ export class FrequencyResponse {
         }
 
         // Limit all minimal decibel values to -100.
-        if (dbmin < -hundreed) {
-            dbmin = -hundreed;
+        if (dbmin < -100) {
+            dbmin = -100;
             for (let i = 0; i < len; ++i) {
-                if (tgt.data[i] < -hundreed) {
-                    tgt.data[i] = -hundreed;
+                if (tgt.data[i] < -100) {
+                    tgt.data[i] = -100;
                 }
             }
         }
@@ -183,8 +179,8 @@ export class FrequencyResponse {
         // If dbmax falls into one of [0, 5), [5, 10)
         // intervals, set it to the maximum value of the interval.
         for (let i = 2; i > 0; --i) {
-            const max = i * five;
-            const min = (i - 1) * five;
+            const max = i * 5;
+            const min = (i - 1) * 5;
             if (dbmax >= min && dbmax < max) {
                 dbmax = max;
                 break;
@@ -192,11 +188,11 @@ export class FrequencyResponse {
         }
 
         // Limit all maximal decibel values to 10.
-        if (dbmax > ten) {
-            dbmax = ten;
+        if (dbmax > 10) {
+            dbmax = 10;
             for (let i = 0; i < len; ++i) {
-                if (tgt.data[i] > ten) {
-                    tgt.data[i] = ten;
+                if (tgt.data[i] > 10) {
+                    tgt.data[i] = 10;
                 }
             }
         }
@@ -206,9 +202,6 @@ export class FrequencyResponse {
     }
 
     protected static toPercents(len: number, src: FrequencyResponseComponent, tgt: FrequencyResponseComponent) {
-        const ten = 10;
-        const hundreed = 100;
-        const twohundred = 200;
         const pctmin = 0;
         let pctmax = -Infinity;
         let base = src.data[0];
@@ -217,28 +210,28 @@ export class FrequencyResponse {
         }
 
         for (let i = 0; i < len; ++i) {
-            const pct = hundreed * src.data[i] / base;
+            const pct = 100 * src.data[i] / base;
             pctmax = Math.max(pctmax, pct);
             tgt.data[i] = pct;
         }
 
-        // If pctmax falls into one of [100, 110), [110, 120), ...,  [190, 200)
+        // If pctmax falls into one of [100, 110), [110, 120), ..., [190, 200)
         // intervals, set it to the maximum value of the interval.
-        for (let i = 0; i < ten; ++i) {
-            const min = hundreed + i * ten;
-            const max = hundreed + (i + 1) * ten;
+        for (let i = 0; i < 10; ++i) {
+            const min = 100 + i * 10;
+            const max = 100 + (i + 1) * 10;
             if (pctmax >= min && pctmax < max) {
                 pctmax = max;
                 break;
             }
         }
 
-        // Limit all maximal percentages values to 200.
-        if (pctmax > twohundred) {
-            pctmax = twohundred;
+        // Limit all maximal percentage values to 200.
+        if (pctmax > 200) {
+            pctmax = 200;
             for (let i = 0; i < len; ++i) {
-                if (tgt.data[i] > twohundred) {
-                    tgt.data[i] = twohundred;
+                if (tgt.data[i] > 200) {
+                    tgt.data[i] = 200;
                 }
             }
         }
