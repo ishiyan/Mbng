@@ -14,26 +14,16 @@ const doRebind = (target: any, source: any, method: any, postSetCallback: any) =
 // Slight modification to d3.rebind taking a post set callback
 // https://github.com/d3/d3/blob/v3.5.17/src/core/rebind.js
 // Copies a variable number of methods from source to target.
-export function rebindCallback(target: any, source: any, arg1?: any, arg2?: any, postSetCallback?: any) {
-  const n = arguments.length;
-  let i = 2;
-  let method: any;
-  while (++i < n) {
-    // eslint-disable-next-line prefer-rest-params
-    target[method = arguments[i]] = doRebind(target, source, source[method], postSetCallback);
+export const rebindCallback = (target: any, source: any, postSetCallback: any, ...methods: string[]) => {
+  for (const method of methods) {
+    target[method] = doRebind(target, source, source[method], postSetCallback);
   }
   return target;
-}
+};
 
 export const rebinder = {
-  // eslint-disable-next-line object-shorthand
   rebindCallback: rebindCallback,
 
-  // eslint-disable-next-line object-shorthand
-  rebind: function(/* target: any, source: any */) {
-    // eslint-disable-next-line prefer-rest-params
-    const newArgs = Array.prototype.slice.call(arguments, 0);
-    newArgs.splice(2, 0, undefined);
-    return rebindCallback.apply(this, newArgs as any);
-  }
+  rebind: (target: any, source: any, ...methods: string[]) =>
+    rebindCallback(target, source, undefined, ...methods),
 };

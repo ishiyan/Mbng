@@ -140,6 +140,9 @@ $fallbacks: ohlcv-chart.get-tokens();
       fill: var(---ohlcv-chart-nav-data-color);
       fill-opacity: var(---ohlcv-chart-nav-data-opacity);
     }
+    g.line path {
+      stroke: var(---ohlcv-chart-nav-data-color);
+    }
     g.pane rect.selection {
       fill: var(---ohlcv-chart-nav-selection-color);
       fill-opacity: var(---ohlcv-chart-nav-selection-opacity);

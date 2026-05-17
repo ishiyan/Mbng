@@ -53,14 +53,14 @@
       <mat-button-toggle-group #group4="matButtonToggleGroup" class="button-toggle-group" [value]="quoteViewType"
         (change)="quoteViewType = group4.value">
         <mat-button-toggle [value]="quoteViewBars">
-          <mat-icon svgIcon="mb-line" class="svg-icon" />
+          <mat-icon svgIcon="mb-bars" class="svg-icon" />
         </mat-button-toggle>
         <mat-button-toggle [value]="quoteViewDots">
           <mat-icon svgIcon="mb-dots" class="svg-icon" />
         </mat-button-toggle>
       </mat-button-toggle-group>
     }
-    @if (!isScalar) {
+    @if (isBar || isTrade) {
       <mat-slide-toggle class="slide-toggle" [(ngModel)]="viewVolume">
         <mat-icon fontSet="material-symbols-outlined">leaderboard</mat-icon>
       </mat-slide-toggle>

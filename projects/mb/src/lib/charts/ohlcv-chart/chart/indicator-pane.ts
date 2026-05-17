@@ -43,9 +43,9 @@ export class IndicatorPane {
       max = +datum[max].time;
     }
     let minValue = Number.MAX_VALUE;
-    let maxValue = Number.MIN_VALUE;
+    let maxValue = -Number.MAX_VALUE;
     let minIntensity = Number.MAX_VALUE;
-    let maxIntensity = Number.MIN_VALUE;
+    let maxIntensity = -Number.MAX_VALUE;
     if (this.indicatorHeatmap) {
       const data = this.indicatorHeatmap.data;
       if (data.length > 0) {
@@ -64,7 +64,7 @@ export class IndicatorPane {
             }
           }
         }
-        if (maxIntensity === Number.MIN_VALUE || minIntensity === Number.MAX_VALUE) {
+        if (maxIntensity === -Number.MAX_VALUE || minIntensity === Number.MAX_VALUE) {
           minIntensity = 0;
           maxIntensity = 0;
         }
@@ -132,8 +132,9 @@ export class IndicatorPane {
     if (this.indicatorHeatmap) {
       this.yValue.domain([minValue, maxValue]).nice();
     } else {
-      minValue *= this.yMarginFactorBottom;
-      maxValue *= this.yMarginFactorTop;
+      const margin = (maxValue - minValue) * (this.yMarginFactorTop - 1);
+      minValue -= margin;
+      maxValue += margin;
       this.yValue.domain([minValue, maxValue]).nice();
     }
 
@@ -207,29 +208,24 @@ export class IndicatorPane {
     canvas.style.height = height + 'px';
     canvas.style.imageRendering = 'pixelated';
     const context = canvas.getContext('2d');
+    if (!context) { return canvas; }
     const y = this.yValue;
     const heat = heatmap.values;
-    if (min !== 0 && max !== 1) {
+    if (min !== 0 || max !== 1) {
       const delta = max - min;
       for (let i = 0; i < height; ++i) {
         const index = Math.round((y.invert(i) - periodMin) * periodRes);
+        if (index < 0 || index >= heat.length) { continue; }
         const value = (heat[index] - min) / delta;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         context.fillStyle = color(invertColor ? 1 - value : value);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         context.fillRect(0, periodInverted ? height - i : i, width, 1);
       }
     } else {
       for (let i = 0; i < height; ++i) {
         const index = Math.round((y.invert(i) - periodMin) * periodRes);
+        if (index < 0 || index >= heat.length) { continue; }
         const value = heat[index];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         context.fillStyle = color(invertColor ? 1 - value : value);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         context.fillRect(0, periodInverted ? height - i : i, width, 1);
       }
     }

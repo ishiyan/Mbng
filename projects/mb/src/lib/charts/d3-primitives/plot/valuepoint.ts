@@ -34,8 +34,7 @@ export const valuepoint = (valueAccessor: any, plot: any, plotMixin: any) =>
           return null;
         }
 
-        const zero = 0; // y(0)
-        const cy = y(value) - zero;
+        const cy = y(value);
         const cx = x(accessor.time(d)) - w2;
         const r = 1.5;
         const r2 = r * 2;

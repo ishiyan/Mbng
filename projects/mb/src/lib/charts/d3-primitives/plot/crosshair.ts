@@ -91,7 +91,8 @@ export const crosshair = (crosshairAccessor: any, plot: any, plotMixin: any) =>
         const xNew = p.xScale.invert(coords[0]);
         const yNew = p.yScale.invert(coords[1]);
         const dispatch = xNew !== null && yNew !== null
-          && (p.accessor.x(d) !== xNew || p.accessor.y(d) !== yNew);
+          && (p.accessor.x(d) === null || p.accessor.y(d) === null
+            || Math.abs(p.accessor.x(d) - xNew) > 1e-10 || Math.abs(p.accessor.y(d) - yNew) > 1e-10);
 
         p.accessor.x(d, xNew);
         p.accessor.y(d, yNew);

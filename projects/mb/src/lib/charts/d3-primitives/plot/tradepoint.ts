@@ -34,14 +34,13 @@ export const tradepoint = (tradeAccessor: any, plot: any, plotMixin: any) =>
           return null;
         }
 
-        const zero = 0; // y(0)
-        const cy = y(price) - zero;
+        const cy = y(price);
         const cx = x(accessor.time(d)) - w2;
         const r = 1.5;
         const r2 = r * 2;
 
-        return 'M ' + (cx - r) + ',' + cy +
-          ' a ' + r + ',' + r + ' 0 1,0 ' + r2 + ',0 a ' + r + ',' + r + ' 0 1,0 -' + r2 + ',0';
+        return 'M' + (cx - r) + ',' + cy +
+          'a' + r + ',' + r + ' 0 1,0 ' + r2 + ',0a' + r + ',' + r + ' 0 1,0 -' + r2 + ',0';
       };
     };
 

@@ -34,9 +34,9 @@ export const ohlc = (ohlcvAccessor: any, plot: any, plotMixin: any) =>
         const xPoint = x(accessor.time(d));
         const xValue = xPoint - w2;
 
-        return 'M ' + xValue + ' ' +
-          open + ' l ' + w2 + ' 0 M ' + xPoint + ' ' + y(accessor.high(d)) + ' L ' +
-          xPoint + ' ' + y(accessor.low(d)) + ' M ' + xPoint + ' ' + close + ' l ' + w2 + ' 0';
+        return 'M' + xValue + ',' +
+          open + 'l' + w2 + ',0M' + xPoint + ',' + y(accessor.high(d)) + 'L' +
+          xPoint + ',' + y(accessor.low(d)) + 'M' + xPoint + ',' + close + 'l' + w2 + ',0';
       };
     };
 

@@ -177,7 +177,7 @@ export class LinearChartComponent {
 
     effect(() => {
       const series = this.dataSeries();
-      if (series) {
+      if (series && series.length > 0) {
         if ((series as Bar[])[0].close !== undefined) {
           this.temporalEntityKind = TemporalEntityKind.Bar;
         } else if ((series as Scalar[])[0].value !== undefined) {
@@ -222,7 +222,7 @@ export class LinearChartComponent {
     if (!isPlatformBrowser(this.platformId) || !this.document || this.document === null) {
       return;
     }
-    if (!this.data || this.data === null) {
+    if (!this.data || this.data === null || this.temporalEntityKind === undefined) {
       return;
     }
   
@@ -276,17 +276,18 @@ export class LinearChartComponent {
     }
 
     const focus = svg.append('g').attr('class', 'focus').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    focus.append('clipPath').attr('id', 'clip')
-      .append('rect').attr('x', 0).attr('y', y(1)).attr('width', width).attr('height', y(0) as number - y(1) as number);
+    const clipId = 'clip-' + this.random;
+    focus.append('clipPath').attr('id', clipId)
+      .append('rect').attr('x', 0).attr('y', 0).attr('width', width).attr('height', height);
 
     let yVolume: d3.ScaleLinear<number, number>;
     let volume: any;
     if (this.renderVolume) {
       yVolume = d3.scaleLinear().range([y(0) as number, y(0.3) as number]);
       volume = (primitives.plot.volume() as any).xScale(x).yScale(yVolume);
-      focus.append('g').attr('class', 'volume').attr('clip-path', 'url(#clip)');
+      focus.append('g').attr('class', 'volume').attr('clip-path', `url(#${clipId})`);
     }
-    focus.append('g').attr('class', 'price').attr('clip-path', 'url(#clip)');
+    focus.append('g').attr('class', 'price').attr('clip-path', `url(#${clipId})`);
     focus.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')');
     focus.append('g').attr('class', 'y axis');
     if (this.renderCrosshair) {
@@ -507,7 +508,7 @@ export class LinearChartComponent {
   public saveToSvg(): void {
     const d = new Date();
     const filename =
-      `linear-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
+      `linear-chart_${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
     const e = d3.select('#' + this.widthContainerId).node() as Element;
     Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);

@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
 import { primitives } from '../../d3-primitives';
-import { IndicatorArrow, verticalArrowGap, minArrowWidth, arowHeightToWidthRatio } from './indicator-arrow';
+import { IndicatorArrow, verticalArrowGap, minArrowWidth, arrowHeightToWidthRatio } from './indicator-arrow';
 import { IndicatorBand } from './indicator-band';
 import { IndicatorLineArea } from './indicator-line-area';
 import { IndicatorLine } from './indicator-line';
@@ -115,7 +115,7 @@ export class PricePane {
     if (this.indicatorArrows.length > 0) {
       const slotWidth = this.priceShape.width()(timePane.timeScale);
       arrowWidth = slotWidth < minArrowWidth ? minArrowWidth : slotWidth;
-      arrowHeight = arrowWidth * arowHeightToWidthRatio;
+      arrowHeight = arrowWidth * arrowHeightToWidthRatio;
       const arrowDelta = arrowHeight + verticalArrowGap;
       const h = this.yPrice.range()[0];
       if (arrowDelta < h) {
@@ -146,8 +146,9 @@ export class PricePane {
         }
       }
     }
-    minPrice *= this.yMarginFactorBottom;
-    maxPrice *= this.yMarginFactorTop;
+    const priceMargin = (maxPrice - minPrice) * (this.yMarginFactorTop - 1);
+    minPrice -= priceMargin;
+    maxPrice += priceMargin;
     this.yPrice.domain([minPrice, maxPrice]).nice();
 
     // Draw bands and areas below price and lines.

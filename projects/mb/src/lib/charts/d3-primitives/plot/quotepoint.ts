@@ -28,8 +28,13 @@ export const quotepoint = (quoteAccessor: any, plot: any, plotMixin: any) =>
       const w2 = w / 2;
 
       return (d: any) => {
-        const cyHigh = y(accessor.ask(d));
-        const cyLow = y(accessor.bid(d));
+        const ask = accessor.ask(d);
+        const bid = accessor.bid(d);
+        if (isNaN(ask) || isNaN(bid)) {
+          return null;
+        }
+        const cyHigh = y(ask);
+        const cyLow = y(bid);
         const cx = x(accessor.time(d)) - w2;
         const r = 1.5;
         const r2 = r * 2;

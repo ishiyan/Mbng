@@ -12,8 +12,6 @@ import * as d3 from 'd3';
 import { primitives } from '../d3-primitives';
 import { Ohlcv } from '../../data/entities/ohlcv';
 import { Scalar } from '../../data/entities/scalar';
-/* import { Band } from '../entities/band';
-import { Heatmap } from '../entities/heatmap'; */
 import * as Template from './template/template';
 import * as Chart from './chart/chart';
 import { Downloader } from '../downloader';
@@ -111,7 +109,7 @@ export class OhlcvChartComponent {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const numeric = +value.match(/\d+/);
+    const numeric = +value.match(/-?\d+\.?\d*/);
     if (value.endsWith('%')) {
       return numeric / 100 * reference;
     }
@@ -140,7 +138,7 @@ export class OhlcvChartComponent {
   private static textBoundingClientRect(t: any, remove = false): any {
     const node = t.node();
     let rect: any;
-    if (node && node != null) {
+    if (node) {
       rect = node.getBoundingClientRect();
       if (remove) {
         t.remove();
@@ -329,6 +327,7 @@ export class OhlcvChartComponent {
     let time = cfg.ohlcv.data[0].time;
     for (const item of cfg.pricePane.bands) {
       const data = item.data;
+      if (data.length === 0) { continue; }
       const t = data[0].time;
       if (time > t) {
         time = t;
@@ -336,6 +335,7 @@ export class OhlcvChartComponent {
     }
     for (const item of cfg.pricePane.lines) {
       const data = item.data;
+      if (data.length === 0) { continue; }
       const t = data[0].time;
       if (time > t) {
         time = t;
@@ -344,6 +344,7 @@ export class OhlcvChartComponent {
     for (const pane of cfg.indicatorPanes) {
       for (const item of pane.bands) {
         const data = item.data;
+        if (data.length === 0) { continue; }
         const t = data[0].time;
         if (time > t) {
           time = t;
@@ -351,6 +352,7 @@ export class OhlcvChartComponent {
       }
       for (const item of pane.lines) {
         const data = item.data;
+        if (data.length === 0) { continue; }
         const t = data[0].time;
         if (time > t) {
           time = t;
@@ -364,6 +366,7 @@ export class OhlcvChartComponent {
     let time = cfg.ohlcv.data[cfg.ohlcv.data.length - 1].time;
     for (const item of cfg.pricePane.bands) {
       const data = item.data;
+      if (data.length === 0) { continue; }
       const t = data[data.length - 1].time;
       if (time < t) {
         time = t;
@@ -371,6 +374,7 @@ export class OhlcvChartComponent {
     }
     for (const item of cfg.pricePane.lines) {
       const data = item.data;
+      if (data.length === 0) { continue; }
       const t = data[data.length - 1].time;
       if (time < t) {
         time = t;
@@ -379,6 +383,7 @@ export class OhlcvChartComponent {
     for (const pane of cfg.indicatorPanes) {
       for (const item of pane.bands) {
         const data = item.data;
+        if (data.length === 0) { continue; }
         const t = data[data.length - 1].time;
         if (time < t) {
           time = t;
@@ -386,6 +391,7 @@ export class OhlcvChartComponent {
       }
       for (const item of pane.lines) {
         const data = item.data;
+        if (data.length === 0) { continue; }
         const t = data[data.length - 1].time;
         if (time < t) {
           time = t;
@@ -393,7 +399,7 @@ export class OhlcvChartComponent {
       }
     }
     // return time;
-    return new Date(time.getFullYear(), time.getMonth(), time.getDay() + 10);
+    return new Date(time.getFullYear(), time.getMonth(), time.getDate() + 10);
   }
 
   private static appendText(group: any, left: number, top: number, text: string): any {
@@ -426,7 +432,7 @@ export class OhlcvChartComponent {
     const clipUrl = `url(#${clip})`;
     pane.group = svg.append('g').attr('class', 'price-pane').attr('transform', `translate(${lh.content.left}, ${lv.pricePane.top})`);
     pane.group.append('clipPath').attr('id', clip).append('rect').attr('x', 0).attr('y', pane.yPrice(1))
-      .attr('width', lh.content.width).attr('height', pane.yPrice(0) as number - pane.yPrice(1) as number);
+      .attr('width', lh.content.width).attr('height', (pane.yPrice(0) as number) - (pane.yPrice(1) as number));
 
     for (let i = 0; i < cf.bands.length; ++i) {
       const band = cf.bands[i];
@@ -590,7 +596,7 @@ export class OhlcvChartComponent {
     const clipUrl = `url(#${clip})`;
     pane.group = svg.append('g').attr('class', 'indicator-pane').attr('transform', `translate(${lh.content.left}, ${block.top})`);
     pane.group.append('clipPath').attr('id', clip).append('rect').attr('x', 0).attr('y', pane.yValue(1))
-      .attr('width', lh.content.width).attr('height', pane.yValue(0) as number - pane.yValue(1) as number);
+      .attr('width', lh.content.width).attr('height', (pane.yValue(0) as number) - (pane.yValue(1) as number));
 
     if (cf.heatmap) {
       const heatmap = cf.heatmap;
@@ -804,7 +810,7 @@ export class OhlcvChartComponent {
       case 'stepafter': return d3.curveStepAfter;
       case 'natural': return d3.curveNatural;
       case 'basis': return d3.curveBasis;
-      case 'catmullrom': return d3.curveCatmullRom;
+      case 'catmullrom': case 'camullrom': return d3.curveCatmullRom;
       case 'cardinal': return d3.curveCardinal;
       default: return d3.curveLinear;
     }
@@ -820,7 +826,7 @@ export class OhlcvChartComponent {
   }
 
   private static getArrowPrice(data: Ohlcv[], arrow: Template.ArrowData): number {
-    if (arrow.value) {
+    if (arrow.value != null) {
       return +arrow.value;
     }
     const ohlcv = OhlcvChartComponent.findOhlcv(data, arrow.time);
@@ -838,13 +844,10 @@ export class OhlcvChartComponent {
     canvas.style.height = height + 'px';
     canvas.style.imageRendering = 'pixelated';
     const context = canvas.getContext('2d');
+    if (!context) { return canvas; }
     const k = 1 / (width - 1);
     for (let i = 0; i < width; ++i) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       context.fillStyle = color(invertGradient ? (1 - i * k) : (i * k));
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       context.fillRect(i, 0, 1, height);
     }
     return canvas;
@@ -963,7 +966,7 @@ export class OhlcvChartComponent {
   public downloadSvg(): void {
     const d = new Date();
     const filename =
-      `olcv-chart_${d.getFullYear()}-${d.getMonth()}-${d.getDay()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
+      `ohlcv-chart_${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}.html`;
     const e = d3.select('#' + this.widthContainerId).node() as Element;
     Downloader.download(Downloader.serializeToSvg(Downloader.getChildElementById(e.parentNode, this.svgContainerId),
       textBeforeSvg, textAfterSvg), filename);
@@ -982,7 +985,7 @@ export class OhlcvChartComponent {
 
     const id = this.random;
     const e = d3.select('#' + this.widthContainerId).node() as any;
-    if (!e || e === null) {
+    if (!e) {
       return;
     }
 

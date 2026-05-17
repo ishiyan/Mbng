@@ -126,7 +126,7 @@ export const plot = () => {
 
   const arrayJoin = (array: any, delimiter: any) => {
     if (!array.length) {
-      return;
+      return '';
     }
 
     let result = array[0];

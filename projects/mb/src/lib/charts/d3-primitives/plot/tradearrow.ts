@@ -99,7 +99,7 @@ export const tradearrow = (tradeAccessor: any, plot: any, plotMixin: any) =>
     const binder = () => {
       svgArrow.x((d: any) => p.xScale(p.accessor.time(d))).y(y);
       arrowGenerator = plot.joinPath(() => svgArrow);
-      return tradearrow;
+      return tradearrow_;
     };
 
     const findNearest = (data: any, x: any) =>

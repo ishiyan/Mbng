@@ -41,11 +41,11 @@ export const candlestick = (ohlcvAccessor: any, plot: any, plotMixin: any) =>
         const close = y(accessor.close(d));
         const xValue = x(accessor.time(d)) - w2;
 
-        let path = 'M ' + xValue + ' ' + open + ' l ' + w + ' ' + 0;
+        let path = 'M' + xValue + ',' + open + 'l' + w + ',0';
 
         // Draw body only if there is a body (there is no stroke, so will not appear anyway).
         if (open !== close) {
-          path += ' L ' + (xValue + w) + ' ' + close + ' l ' + -w + ' ' + 0 + ' L ' + xValue + ' ' + open;
+          path += 'L' + (xValue + w) + ',' + close + 'l' + -w + ',0L' + xValue + ',' + open;
         }
 
         return path;
@@ -66,15 +66,15 @@ export const candlestick = (ohlcvAccessor: any, plot: any, plotMixin: any) =>
         const xValue = xPoint - w2;
 
         // Top.
-        let path = 'M ' + xPoint + ' ' + y(accessor.high(d)) + ' L ' + xPoint + ' ' + Math.min(open, close);
+        let path = 'M' + xPoint + ',' + y(accessor.high(d)) + 'L' + xPoint + ',' + Math.min(open, close);
 
         // Draw another cross wick if there is no body.
         if (open === close) {
-          path += ' M ' + xValue + ' ' + open + ' l ' + w + ' ' + 0;
+          path += 'M' + xValue + ',' + open + 'l' + w + ',0';
         }
 
         // Bottom.
-        return path + ' M ' + xPoint + ' ' + Math.max(open, close) + ' L ' + xPoint + ' ' + y(accessor.low(d));
+        return path + 'M' + xPoint + ',' + Math.max(open, close) + 'L' + xPoint + ',' + y(accessor.low(d));
       };
     };
 

@@ -4,7 +4,9 @@ export const verticalArrowGap = 3;
 /** The minimal width of an arrow in pixels. */
 export const minArrowWidth = 3;
 /** The arrow height / width ratio. */
-export const arowHeightToWidthRatio = 5 / 4;
+export const arrowHeightToWidthRatio = 5 / 4;
+/** @deprecated Use `arrowHeightToWidthRatio` instead. */
+export const arowHeightToWidthRatio = arrowHeightToWidthRatio;
 
 export class IndicatorArrow {
   arrow: any;
