@@ -1,0 +1,12 @@
+{
+  "description": "Example layout configuration with text annotations",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "text", "time": "2024-01-05T00:00:00Z", "value": 180, "text": "Swing low", "color": "#26a69a", "size": 10 },
+      { "type": "text", "time": "2024-01-19T00:00:00Z", "value": 192, "text": "Breakout", "color": "#ef5350", "size": 10 }
+    ]
+  },
+  "crosshair": true
+}

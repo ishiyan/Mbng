@@ -1,0 +1,13 @@
+{
+  "description": "Example layout configuration with lines",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "line", "time1": "2024-01-05T00:00:00Z", "value1": 181, "time2": "2024-01-30T00:00:00Z", "value2": 195, "color": "#FF9800", "width": 1, "label": "Trend" },
+      { "type": "line", "time1": "2024-01-02T00:00:00Z", "value1": 186, "time2": "2024-01-12T00:00:00Z", "value2": 181, "color": "#9C27B0", "width": 1, "dash": "4,2", "label": "Fib 0.618" },
+      { "type": "line", "time1": "2024-01-12T00:00:00Z", "value1": 187, "time2": "2024-01-25T00:00:00Z", "value2": 192, "color": "#2196F3", "width": 1.5 }
+    ]
+  },
+  "crosshair": true
+}

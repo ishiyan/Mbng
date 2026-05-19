@@ -1,0 +1,74 @@
+{
+  "description": "Layout configuration for Bollinger Bands and Goertzel indicators",
+  "width": "100%",
+  "widthMin": 600,
+  "axisLeft": true,
+  "axisRight": false,
+  "crosshair": true,
+  "volumeInPricePane": true,
+  "margin": { "left": 0, "top": 5, "right": 0, "bottom": 5 },
+  "timeTicksFormat": "%Y-%m-%d",
+  "timeAnnotationFormat": "%Y-%m-%d",
+  "pricePane": {
+    "series": ["test"],
+    "height": 300,
+    "valueFormat": ",.2f",
+    "valueMarginPercentageFactor": 0.05,
+    "lines": [
+      { "series": "bblo", "color": "#2196F3", "width": 1.5, "interpolation": "natural" },
+      { "series": "bbup", "color": "#2196F3", "width": 1.5, "interpolation": "natural" },
+      { "series": "bbma", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+    ],
+    "bands": [
+      { "series": "bb", "color": "rgba(33,150,243,0.1)", "interpolation": "natural" }
+    ]
+  },
+  "indicatorPanes": [
+    {
+      "height": 60,
+      "valueFormat": ",.2f",
+      "valueMarginPercentageFactor": 0.05,
+      "horizontals": [
+        { "value": 0.3, "color": "#ef5350", "width": 0.5 },
+        { "value": 0.1, "color": "#ef5350", "width": 0.5 }
+      ],
+      "lines": [
+        { "series": "bbbw", "color": "#2196F3", "width": 1.5, "interpolation": "natural" }
+      ]
+    },
+    {
+      "height": 60,
+      "valueFormat": ",.2f",
+      "valueMarginPercentageFactor": 0.05,
+      "horizontals": [
+        { "value": 0.5, "color": "#26a69a", "width": 0.5 }
+      ],
+      "lines": [
+        { "series": "bb%b", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+      ]
+    },
+    {
+      "height": 120,
+      "valueFormat": ",.0f",
+      "valueMarginPercentageFactor": 0.05,
+      "heatmap": {
+        "series": "goertzel-2-28", "gradient": ["#000000", "#0000ff", "#00ffff", "#ffffff"], "invertGradient": false
+      }
+    },
+    {
+      "height": 120,
+      "valueFormat": ",.0f",
+      "valueMarginPercentageFactor": 0.05,
+      "heatmap": {
+        "series": "goertzel-2-64", "gradient": "viridis", "invertGradient": false
+      }
+    }
+  ],
+  "navigationPane": {
+    "height": 30,
+    "hasLine": false,
+    "hasArea": true,
+    "hasTimeAxis": true,
+    "timeTicksFormat": "%b %d"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "description": "Test layout for draggable annotations — all supported types",
+  "pricePane": {
+    "height": 300,
+    "annotations": [
+      { "type": "zone", "value1": 191, "value2": 194, "color": "rgba(33,150,243,0.1)", "draggable": true },
+      { "type": "hline", "value": 190, "color": "#FF5722", "width": 1.5, "dash": "6 3", "label": "support", "draggable": true },
+      { "type": "hline", "value": 197, "color": "#4CAF50", "width": 1.5, "dash": "6 3", "label": "resistance", "draggable": true },
+      { "type": "vline", "time": "2024-01-10T00:00:00Z", "color": "#9C27B0", "width": 1, "dash": "4 2", "label": "event", "draggable": true },
+      { "type": "line", "time1": "2024-01-03T00:00:00Z", "value1": 186, "time2": "2024-01-22T00:00:00Z", "value2": 198, "color": "#2196F3", "width": 2, "draggable": true },
+      { "type": "text", "time": "2024-01-15T00:00:00Z", "value": 193, "text": "drag me", "color": "#FF9800", "size": 11, "draggable": true },
+      { "type": "arrow", "time": "2024-01-08T00:00:00Z", "value": 188, "shape": "triangle", "direction": "up", "color": "#4CAF50", "markerSize": 10, "draggable": true }
+    ]
+  },
+  "indicatorPanes": [
+    {
+      "height": 80,
+      "series": ["rsi"],
+      "annotations": [
+        { "type": "zone", "value1": 30, "value2": 70, "color": "rgba(156,39,176,0.05)", "draggable": true },
+        { "type": "hline", "value": 70, "color": "#F44336", "width": 1, "dash": "4 2", "label": "overbought", "draggable": true },
+        { "type": "hline", "value": 30, "color": "#4CAF50", "width": 1, "dash": "4 2", "label": "oversold", "draggable": true }
+      ]
+    }
+  ]
+}

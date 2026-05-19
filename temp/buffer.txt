@@ -1,0 +1,23 @@
+file:///home/ivan/Repos/Mbng/tools/indicator-study/index.html
+
+npx http-server tools/indicator-study -p 8080 -o
+npx http-server -p 8080 -o index.html?data=foo.json&layout=bar.json
+
+http://localhost:8080/?data=example-data.json&layout=example-layout.json
+
+I need to start local index.html from the command line on Ubuntu.
+When I do that, file opens and in browser I see 
+file:///home/ivan/foobar/index.html
+
+Now I need to pass parameters ?data=foo.json&layout=bar.json
+Both files are in the same folder
+When I try to start
+index.html?data=foo.json&layout=bar.json
+browser opens index.html but says it cannot find both json files.
+
+How to start it (without proper serving like "npx http-server -p 8080 -o index.html?data=foo.json&layout=bar.json")
+
+Frequency response
+projects/mb/src/lib/trading/indicators/indicator/frequency-response/frequency-response.interface.ts
+projects/mb/src/lib/trading/indicators/indicator/frequency-response/frequency-response.ts
+projects/mb/src/lib/charts/frequency-response-chart/frequency-response-chart.component.ts

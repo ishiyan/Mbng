@@ -1,0 +1,72 @@
+{
+  "description": "Example layout configuration",
+  "width": "100%",
+  "widthMin": 600,
+  "axisLeft": true,
+  "axisRight": false,
+  "crosshair": true,
+  "volumeInPricePane": true,
+  "margin": { "left": 0, "top": 5, "right": 0, "bottom": 5 },
+  "timeTicksFormat": "%Y-%m-%d",
+  "timeAnnotationFormat": "%Y-%m-%d",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 300,
+    "valueFormat": ",.2f",
+    "valueMarginPercentageFactor": 0.05,
+    "bands": [
+      { "series": "bband", "mnemonic": "bb(20,2)", "color": "rgba(33,150,243,0.1)", "interpolation": "natural" }
+    ],
+    "lines": [
+      { "series": "ema5", "mnemonic": "ema5", "color": "#2196F3", "width": 1.5, "interpolation": "natural" },
+      { "series": "ema10", "mnemonic": "ema10", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+    ]
+  },
+  "indicatorPanes": [
+    {
+      "height": 80,
+      "valueFormat": ",.0f",
+      "valueMarginPercentageFactor": 0.05,
+      "lines": [
+        { "series": "rsi", "mnemonic": "rsi(14)", "color": "#2196F3", "width": 1.5, "interpolation": "natural" }
+      ],
+      "horizontals": [
+        { "value": 70, "color": "#ef5350", "width": 0.5, "dash": "3,3" },
+        { "value": 30, "color": "#26a69a", "width": 0.5, "dash": "3,3" }
+      ]
+    },
+    {
+      "height": 80,
+      "valueFormat": ",.0f",
+      "heatmap": {
+        "series": "hmap",
+        "mnemonic": "heatmap with embedded gradient",
+        "gradient": ["#000000", "#0000ff", "#00ffff", "#ffffff"],
+        "invertGradient": false
+      },
+      "lines": [
+        { "series": "hmapmedian", "mnemonic": "heatmap median", "color": "#2196F3", "width": 1.5, "interpolation": "natural" }
+      ]
+    },
+    {
+      "height": 80,
+      "valueFormat": ",.0f",
+      "heatmap": {
+        "series": "hmap",
+        "mnemonic": "heatmap with viridis",
+        "gradient": "viridis",
+        "invertGradient": false
+      },
+      "lines": [
+        { "series": "hmapmedian", "mnemonic": "heatmap median", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+      ]
+    }
+  ],
+  "navigationPane": {
+    "height": 30,
+    "hasLine": false,
+    "hasArea": true,
+    "hasTimeAxis": true,
+    "timeTicksFormat": "%b %d"
+  }
+}

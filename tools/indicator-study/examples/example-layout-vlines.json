@@ -1,0 +1,12 @@
+{
+  "description": "Example layout configuration with vertical lines",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "vline", "time": "2024-01-12T00:00:00Z", "color": "#2196F3", "width": 1, "dash": "3,3", "label": "Earnings" },
+      { "type": "vline", "time": "2024-01-22T00:00:00Z", "color": "#FF9800", "width": 1.5, "dash": "6,2", "label": "Ex-Div" }
+    ]
+  },
+  "crosshair": true
+}

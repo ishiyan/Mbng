@@ -1,0 +1,51 @@
+{
+  "description": "Example layout configuration with heatmaps and line overlay",
+  "width": "100%",
+  "widthMin": 600,
+  "axisLeft": true,
+  "axisRight": false,
+  "crosshair": true,
+  "volumeInPricePane": true,
+  "margin": { "left": 0, "top": 5, "right": 0, "bottom": 5 },
+  "timeTicksFormat": "%Y-%m-%d",
+  "timeAnnotationFormat": "%Y-%m-%d",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 300,
+    "valueFormat": ",.2f",
+    "valueMarginPercentageFactor": 0.05
+  },
+  "indicatorPanes": [
+    {
+      "height": 80,
+      "valueFormat": ",.0f",
+      "heatmap": {
+        "series": "hmap",
+        "gradient": ["#000000", "#0000ff", "#00ffff", "#ffffff"],
+        "invertGradient": false
+      },
+      "lines": [
+        { "series": "hmapmedian", "color": "#2196F3", "width": 1.5, "interpolation": "natural" }
+      ]
+    },
+    {
+      "height": 80,
+      "valueFormat": ",.0f",
+      "heatmap": {
+        "series": "hmap",
+        "gradient": "viridis",
+        "invertGradient": false
+      },
+      "lines": [
+        { "series": "hmapmedian", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+      ]
+    }
+  ],
+  "navigationPane": {
+    "height": 30,
+    "hasLine": false,
+    "hasArea": true,
+    "hasTimeAxis": true,
+    "timeTicksFormat": "%b %d"
+  }
+}

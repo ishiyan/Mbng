@@ -1,0 +1,12 @@
+{
+  "description": "Example layout configuration with horizontal lines",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "hline", "value": 190, "color": "#ef5350", "width": 1, "dash": "5,3", "label": "Resistance" },
+      { "type": "hline", "value": 183, "color": "#26a69a", "width": 1, "dash": "5,3", "label": "Support" }
+    ]
+  },
+  "crosshair": true
+}

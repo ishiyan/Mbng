@@ -1,0 +1,33 @@
+{
+  "description": "Example quote data for indicator study",
+  "series": {
+    "book": {
+      "type": "quote",
+      "mnemonic": "ASML@XAMS, NL0010273215, 5min",
+      "description": "Example quote data for indicator study",
+      "data": [
+        { "time": "2024-01-02T00:00:00Z", "bidPrice": 99.8, "askPrice": 100.2, "bidSize": 500, "askSize": 350 },
+        { "time": "2024-01-03T00:00:00Z", "bidPrice": 101.5, "askPrice": 102.0, "bidSize": 420, "askSize": 680 },
+        { "time": "2024-01-04T00:00:00Z", "bidPrice": 99.2, "askPrice": 99.7, "bidSize": 800, "askSize": 450 },
+        { "time": "2024-01-05T00:00:00Z", "bidPrice": 100.5, "askPrice": 101.0, "bidSize": 320, "askSize": 290 },
+        { "time": "2024-01-08T00:00:00Z", "bidPrice": 102.8, "askPrice": 103.3, "bidSize": 550, "askSize": 720 },
+        { "time": "2024-01-09T00:00:00Z", "bidPrice": 104.2, "askPrice": 104.8, "bidSize": 610, "askSize": 480 },
+        { "time": "2024-01-10T00:00:00Z", "bidPrice": 103.5, "askPrice": 104.0, "bidSize": 380, "askSize": 540 },
+        { "time": "2024-01-11T00:00:00Z", "bidPrice": 105.9, "askPrice": 106.4, "bidSize": 720, "askSize": 650 },
+        { "time": "2024-01-12T00:00:00Z", "bidPrice": 107.3, "askPrice": 107.9, "bidSize": 900, "askSize": 850 },
+        { "time": "2024-01-15T00:00:00Z", "bidPrice": 106.7, "askPrice": 107.2, "bidSize": 450, "askSize": 380 },
+        { "time": "2024-01-16T00:00:00Z", "bidPrice": 108.2, "askPrice": 108.8, "bidSize": 580, "askSize": 920 },
+        { "time": "2024-01-17T00:00:00Z", "bidPrice": 109.5, "askPrice": 110.1, "bidSize": 670, "askSize": 510 },
+        { "time": "2024-01-18T00:00:00Z", "bidPrice": 108.0, "askPrice": 108.6, "bidSize": 430, "askSize": 760 },
+        { "time": "2024-01-19T00:00:00Z", "bidPrice": 110.7, "askPrice": 111.3, "bidSize": 810, "askSize": 640 },
+        { "time": "2024-01-22T00:00:00Z", "bidPrice": 112.3, "askPrice": 112.9, "bidSize": 950, "askSize": 880 },
+        { "time": "2024-01-23T00:00:00Z", "bidPrice": 111.2, "askPrice": 111.7, "bidSize": 520, "askSize": 470 },
+        { "time": "2024-01-24T00:00:00Z", "bidPrice": 113.6, "askPrice": 114.2, "bidSize": 680, "askSize": 750 },
+        { "time": "2024-01-25T00:00:00Z", "bidPrice": 114.9, "askPrice": 115.5, "bidSize": 830, "askSize": 920 },
+        { "time": "2024-01-26T00:00:00Z", "bidPrice": 113.4, "askPrice": 114.0, "bidSize": 390, "askSize": 310 },
+        { "time": "2024-01-29T00:00:00Z", "bidPrice": 116.0, "askPrice": 116.6, "bidSize": 740, "askSize": 860 }
+      ]
+    }
+  },
+  "crosshair": true
+}

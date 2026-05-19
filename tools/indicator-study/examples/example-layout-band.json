@@ -1,0 +1,41 @@
+{
+  "description": "Example layout configuration with bands",
+  "width": "100%",
+  "widthMin": 600,
+  "axisLeft": true,
+  "axisRight": false,
+  "crosshair": true,
+  "volumeInPricePane": true,
+  "margin": { "left": 0, "top": 5, "right": 0, "bottom": 5 },
+  "timeTicksFormat": "%Y-%m-%d",
+  "timeAnnotationFormat": "%Y-%m-%d",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 300,
+    "valueFormat": ",.2f",
+    "valueMarginPercentageFactor": 0.05,
+    "bands": [
+      { "series": "bband", "color": "rgba(33,150,243,0.1)", "interpolation": "natural" }
+    ]
+  },
+  "indicatorPanes": [
+    {
+      "height": 300,
+      "valueFormat": ",.0f",
+      "bands": [
+        { "series": "bband", "color": "rgba(33,150,243,0.1)", "interpolation": "natural" }
+      ],
+      "lines": [
+        { "series": "bbandma", "color": "#2196F3", "width": 1.5, "interpolation": "natural" }
+      ]
+
+    }
+  ],
+  "navigationPane": {
+    "height": 30,
+    "hasLine": false,
+    "hasArea": true,
+    "hasTimeAxis": true,
+    "timeTicksFormat": "%b %d"
+  }
+}

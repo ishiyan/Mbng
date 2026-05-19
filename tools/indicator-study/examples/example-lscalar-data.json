@@ -1,0 +1,33 @@
+{
+  "description": "Example linear data for indicator study",
+  "series": {
+    "signal": {
+      "type": "scalar",
+      "mnemonic": "roofingFilter(20, 0.15, hl/2, false)",
+      "description": "Example signal data for roofing filter indicator with period 20 and bandwidth 0.15",
+      "data": [
+        { "time": "2024-01-02T00:00:00Z", "value": 100.5 },
+        { "time": "2024-01-03T00:00:00Z", "value": 102.3 },
+        { "time": "2024-01-04T00:00:00Z", "value": 99.8 },
+        { "time": "2024-01-05T00:00:00Z", "value": 101.2 },
+        { "time": "2024-01-08T00:00:00Z", "value": 103.7 },
+        { "time": "2024-01-09T00:00:00Z", "value": 105.1 },
+        { "time": "2024-01-10T00:00:00Z", "value": 104.3 },
+        { "time": "2024-01-11T00:00:00Z", "value": 106.8 },
+        { "time": "2024-01-12T00:00:00Z", "value": 108.2 },
+        { "time": "2024-01-15T00:00:00Z", "value": 107.5 },
+        { "time": "2024-01-16T00:00:00Z", "value": 109.1 },
+        { "time": "2024-01-17T00:00:00Z", "value": 110.4 },
+        { "time": "2024-01-18T00:00:00Z", "value": 108.9 },
+        { "time": "2024-01-19T00:00:00Z", "value": 111.6 },
+        { "time": "2024-01-22T00:00:00Z", "value": 113.2 },
+        { "time": "2024-01-23T00:00:00Z", "value": 112.0 },
+        { "time": "2024-01-24T00:00:00Z", "value": 114.5 },
+        { "time": "2024-01-25T00:00:00Z", "value": 115.8 },
+        { "time": "2024-01-26T00:00:00Z", "value": 114.2 },
+        { "time": "2024-01-29T00:00:00Z", "value": 116.9 }
+      ]
+    }
+  },
+  "crosshair": true
+}

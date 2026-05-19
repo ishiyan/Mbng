@@ -1,0 +1,12 @@
+{
+  "description": "Example layout configuration with zones",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "zone", "value1": 185, "value2": 190, "color": "rgba(33,150,243,0.1)", "label": "Consolidation", "labelColor": "#2196F3" },
+      { "type": "zone", "value1": 191, "value2": 195, "time1": "2024-01-19T00:00:00Z", "color": "rgba(76,175,80,0.1)", "label": "Breakout zone", "labelColor": "#4CAF50" }
+    ]
+  },
+  "crosshair": true
+}

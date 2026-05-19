@@ -1,0 +1,15 @@
+{
+  "description": "Example layout configuration with arrows",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "type": "arrow", "time": "2024-01-08T00:00:00Z", "value": 180, "direction": "up", "color": "#26a69a", "shape": "triangle", "markerSize": 10 },
+      { "type": "arrow", "time": "2024-01-18T00:00:00Z", "value": 193, "direction": "down", "color": "#ef5350", "shape": "arrow", "markerSize": 10 },
+      { "type": "arrow", "time": "2024-01-10T00:00:00Z", "value": 183, "direction": "upright", "color": "#2196F3", "shape": "triangle", "markerSize": 8 },
+      { "type": "arrow", "time": "2024-01-23T00:00:00Z", "value": 194, "direction": "downleft", "color": "#FF9800", "shape": "triangle", "markerSize": 8 },
+      { "type": "arrow", "time": "2024-01-16T00:00:00Z", "value": 186, "direction": "right", "color": "#4CAF50", "shape": "arrow", "markerSize": 9 }
+    ]
+  },
+  "crosshair": true
+}

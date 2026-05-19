@@ -1,0 +1,33 @@
+{
+  "description": "Example trade data for indicator study",
+  "series": {
+    "fills": {
+      "type": "trade",
+      "mnemonic": "AAPL fills, 1D",
+      "description": "Example trade data for indicator study",
+      "data": [
+        { "time": "2024-01-02T00:00:00Z", "price": 100.5, "volume": 1200 },
+        { "time": "2024-01-03T00:00:00Z", "price": 102.3, "volume": 1850 },
+        { "time": "2024-01-04T00:00:00Z", "price": 99.8, "volume": 2400 },
+        { "time": "2024-01-05T00:00:00Z", "price": 101.2, "volume": 980 },
+        { "time": "2024-01-08T00:00:00Z", "price": 103.7, "volume": 1560 },
+        { "time": "2024-01-09T00:00:00Z", "price": 105.1, "volume": 2100 },
+        { "time": "2024-01-10T00:00:00Z", "price": 104.3, "volume": 1320 },
+        { "time": "2024-01-11T00:00:00Z", "price": 106.8, "volume": 1750 },
+        { "time": "2024-01-12T00:00:00Z", "price": 108.2, "volume": 2680 },
+        { "time": "2024-01-15T00:00:00Z", "price": 107.5, "volume": 1450 },
+        { "time": "2024-01-16T00:00:00Z", "price": 109.1, "volume": 1920 },
+        { "time": "2024-01-17T00:00:00Z", "price": 110.4, "volume": 2250 },
+        { "time": "2024-01-18T00:00:00Z", "price": 108.9, "volume": 1680 },
+        { "time": "2024-01-19T00:00:00Z", "price": 111.6, "volume": 3100 },
+        { "time": "2024-01-22T00:00:00Z", "price": 113.2, "volume": 2450 },
+        { "time": "2024-01-23T00:00:00Z", "price": 112.0, "volume": 1890 },
+        { "time": "2024-01-24T00:00:00Z", "price": 114.5, "volume": 2780 },
+        { "time": "2024-01-25T00:00:00Z", "price": 115.8, "volume": 3200 },
+        { "time": "2024-01-26T00:00:00Z", "price": 114.2, "volume": 1540 },
+        { "time": "2024-01-29T00:00:00Z", "price": 116.9, "volume": 2900 }
+      ]
+    }
+  },
+  "crosshair": true
+}

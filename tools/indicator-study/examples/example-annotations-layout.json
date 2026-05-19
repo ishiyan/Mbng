@@ -1,0 +1,15 @@
+{
+  "description": "Example layout configuration with annotations",
+  "pricePane": {
+    "series": ["aapl"],
+    "height": 350,
+    "annotations": [
+      { "series": "buys", "type": "arrow", "shape": "triangle", "direction": "up", "color": "#26a69a", "markerSize": 10 },
+      { "series": "sells", "type": "arrow", "shape": "arrow", "direction": "down", "color": "#ef5350", "markerSize": 10 },
+      { "series": "patterns", "type": "zone", "color": "rgba(255,152,0,0.12)" },
+      { "series": "zigzag", "type": "line", "color": "#9C27B0", "width": 1.5 }
+    ]
+  },
+  "crosshair": true,
+  "volumeInPricePane": true
+}
