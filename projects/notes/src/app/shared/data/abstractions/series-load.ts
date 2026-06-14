@@ -4,7 +4,7 @@ import {  DynamicColorService, LineConfiguration } from 'mb';
 import { TemporalEntity } from 'mb';
 import { TimeGranularity } from 'mb';
 
-import { Series } from '../series.interface';
+import { Series, SeriesData } from '../series.interface';
 
 const empty = '';
 
@@ -30,7 +30,7 @@ export abstract class SeriesLoad {
   protected readonly progressPercentageReading = signal(50);
   protected readonly progressPercentageParsing = signal(0);
   protected errorText = empty;
-  protected data = signal<TemporalEntity[]>([]);
+  protected data = signal<SeriesData>([]);
   protected granularity = TimeGranularity.Aperiodic;
   protected mnemonic = empty;
   protected description = empty;
@@ -86,7 +86,7 @@ export abstract class SeriesLoad {
         this.granularity = this.determineGranularity(data);
         this.mnemonic = 'temp';
         this.description = this.filePath;
-        this.data.set(data);
+        this.data.set(data as SeriesData);
       } catch (error) {
         this.errorText = empty + error;
         this.data.set([]); // Ensure data is cleared

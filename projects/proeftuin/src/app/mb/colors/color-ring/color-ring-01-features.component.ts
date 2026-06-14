@@ -28,41 +28,41 @@ import { ColorRingComponent } from 'projects/mb/src/lib/colors/color-ring/color-
 export class ColorRing01FeaturesComponent {
   // Default
   protected defaultHexColor = signal<string>('#ff4081');
-  protected defaultColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected defaultColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
 
   // Alpha channel
   protected alphaHexColor = signal<string>('#2196f380');
-  protected alphaColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected alphaColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected alphaEnabled = signal<boolean>(true);
 
   // Diameter variations
   protected diameterHexColor = signal<string>('#ff9800');
-  protected diameterColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected diameterColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected diameterValue = signal<number>(240);
 
   // Ring width variations
   protected ringWidthHexColor = signal<string>('#9c27b0');
-  protected ringWidthColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected ringWidthColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected ringWidthValue = signal<number>(20);
 
   // Handle size variations
   protected handleSizeHexColor = signal<string>('#607d8b');
-  protected handleSizeColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected handleSizeColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected handleSizeValue = signal<number>(16);
 
   // Resolution variations
   protected resolutionHexColor = signal<string>('#795548');
-  protected resolutionColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected resolutionColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected resolutionValue = signal<number | 'auto'>(2);
 
   // Background variations
   protected backgroundHexColor = signal<string>('#f44336');
-  protected backgroundColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected backgroundColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected backgroundValue = signal<string>('auto');
 
   // Disabled state
   protected disabledHexColor = signal<string>('#3f51b5');
-  protected disabledColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected disabledColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected disabledState = signal<boolean>(false);
 
   protected readonly resolutionOptions = [

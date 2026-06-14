@@ -1,5 +1,8 @@
 import { TimeGranularity } from 'mb';
-import { TemporalEntity } from 'mb';
+import { Bar, Quote, Trade, Scalar } from 'mb';
+
+/** The union of supported series data array types. */
+export type SeriesData = Bar[] | Quote[] | Trade[] | Scalar[];
 
 /** Contains a series of temporal entities. */
 export interface Series {
@@ -25,5 +28,5 @@ export interface Series {
   timeGranularity: TimeGranularity;
 
   /** The actual data array. */
-  data: TemporalEntity[];
+  data: SeriesData;
 }

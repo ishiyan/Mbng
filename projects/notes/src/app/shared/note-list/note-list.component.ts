@@ -58,11 +58,6 @@ export class NoteListComponent {
     this.filterNotes();
   }
 
-  protected toggleTag(tag: Tag): void {
-    tag.enabled = !tag.enabled;
-    this.filterNotes();
-  }
-
   protected toggleTagsVisibility(): void {
     this.tagsVisible = !this.tagsVisible;
   }

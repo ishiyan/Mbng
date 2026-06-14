@@ -69,8 +69,6 @@ export class FractalAdaptiveMovingAverageParamsComponent implements AfterContent
 
   protected barComponent?: BarComponent;
   protected quoteComponent?: QuoteComponent;
-  protected barComponentVisible = false;
-  protected quoteComponentVisible = false;
   
   protected alphaParamVisible = false;
 
@@ -97,8 +95,6 @@ export class FractalAdaptiveMovingAverageParamsComponent implements AfterContent
       this.barComponent = value.barComponent;
       this.params.quoteComponent = value.quoteComponent;
       this.quoteComponent = value.quoteComponent;
-      this.barComponentVisible = value.barComponent !== undefined;
-      this.quoteComponentVisible = value.quoteComponent !== undefined;
     });
   }
 

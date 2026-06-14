@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, input, viewChild, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, input, viewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatFormField } from '@angular/material/form-field';
@@ -19,6 +19,7 @@ import { dataOhlcvDaily } from '../../data/data-bar-daily-big';
     selector: 'app-d3-d3tc-horizon-chart-interactive',
     templateUrl: './d3tc-horizon-chart-interactive.component.html',
     styleUrls: ['./d3tc-horizon-chart-interactive.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatFormField, MatSelect, FormsModule, MatOption, MatInput, MatRadioGroup, MatRadioButton]
 })
 export class D3tcHorizonChartInteractiveComponent implements OnInit {

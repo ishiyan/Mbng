@@ -28,33 +28,33 @@ import { ColorRingPickerComponent } from 'projects/mb/src/lib/colors/color-ring/
 export class ColorRing02PickerComponent {
   // Default picker
   protected defaultHexColor = signal<string>('#ff4081');
-  protected defaultColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected defaultColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
 
   // Show value option
   protected showValueHexColor = signal<string>('#4caf50');
-  protected showValueColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected showValueColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected showValueEnabled = signal<boolean>(true);
 
   // Alpha channel with picker
   protected alphaHexColor = signal<string>('#ff980080');
-  protected alphaColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected alphaColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected alphaEnabled = signal<boolean>(true);
 
   // Custom size picker
   protected customSizeHexColor = signal<string>('#9c27b0');
-  protected customSizeColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected customSizeColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected customDiameter = signal<number>(320);
   protected customRingWidth = signal<number>(28);
   protected customHandleSize = signal<number>(16);
 
   // Background variations
   protected backgroundHexColor = signal<string>('#f44336');
-  protected backgroundPickerColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected backgroundPickerColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected backgroundValue = signal<string>('auto');
 
   // Disabled picker
   protected disabledHexColor = signal<string>('#607d8b');
-  protected disabledColor = signal<{ hex: string; hsl: [number, number, number]; alpha: number } | null>(null);
+  protected disabledColor = signal<{ hex: string; hsl: [number, number, number]; alpha?: number } | null>(null);
   protected disabledState = signal<boolean>(false);
 
   // Event tracking

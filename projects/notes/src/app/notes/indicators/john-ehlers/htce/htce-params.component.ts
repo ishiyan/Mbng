@@ -35,7 +35,6 @@ export class HtceParamsComponent {
       const init = this.initial();
       this.current = init;
       this.barComponent = init.barComponent;
-      this.barComponentVisible = init.barComponent !== undefined;
     });
   }
 
@@ -47,7 +46,6 @@ export class HtceParamsComponent {
 
   protected current!: Htce;
   protected barComponent?: BarComponent;
-  protected barComponentVisible = this.barComponent !== undefined;
 
   protected updateStyle(style: LineStyle) {
     this.current.style = style;

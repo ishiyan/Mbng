@@ -119,8 +119,6 @@ export class DoubleExponentialMovingAverageParamsComponent implements AfterConte
 
   protected barComponent?: BarComponent;
   protected quoteComponent?: QuoteComponent;
-  protected barComponentVisible = this.barComponent !== undefined;
-  protected quoteComponentVisible = this.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<DoubleExponentialMovingAverageLengthParams | DoubleExponentialMovingAverageSmoothingFactorParams>();
@@ -143,8 +141,6 @@ export class DoubleExponentialMovingAverageParamsComponent implements AfterConte
   
       this.barComponent = value.barComponent;
       this.quoteComponent = value.quoteComponent;
-      this.barComponentVisible = value.barComponent !== undefined;
-      this.quoteComponentVisible = value.quoteComponent !== undefined;
     });  
   }
 

@@ -3,9 +3,9 @@
   <input type="number" matInput min="2" max="1024" step="1" [(ngModel)]="lengthParam" />
 </mat-form-field>
 <mat-slide-toggle class="mr" [color]="'primary'" [(ngModel)]="unbiasedParam">Unbiased</mat-slide-toggle>
-@if (barComponentVisible) {
+@if (params.barComponent !== undefined) {
   <mb-bar-component [initial]="params.barComponent" (selectionChange)="barComponentChanged($event);" class="mr" />
 }
-@if (quoteComponentVisible) {
+@if (params.quoteComponent !== undefined) {
   <mb-quote-component [initial]="params.quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr" />
 }

@@ -203,8 +203,6 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
 
   protected barComponent?: BarComponent;
   protected quoteComponent?: QuoteComponent;
-  protected barComponentVisible = this.barComponent !== undefined;
-  protected quoteComponentVisible = this.quoteComponent !== undefined;
   
   private estimatorParams: HilbertTransformerCycleEstimatorParams = {
     smoothingLength: 3, alphaEmaQuadratureInPhase: 0.3, alphaEmaPeriod: 0.3
@@ -245,8 +243,6 @@ export class MesaAdaptiveMovingAverageParamsComponent implements AfterContentIni
       this.paramsLength.quoteComponent = value.quoteComponent;
       this.paramsAlpha.quoteComponent = value.quoteComponent;
       this.quoteComponent = value.quoteComponent;
-      this.barComponentVisible = value.barComponent !== undefined;
-      this.quoteComponentVisible = value.quoteComponent !== undefined;
     });
   }
 

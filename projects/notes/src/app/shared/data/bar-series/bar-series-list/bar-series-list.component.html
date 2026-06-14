@@ -1,5 +1,5 @@
 @for (series of seriesArray(); track series.data) {
-  <app-series-card [series]="series" [removable]="series.removable"
+  <app-series-card [series]="series" [removable]="series.removable ?? false"
     (removed)="removed($event);" />
 }
 <app-bar-series-load />

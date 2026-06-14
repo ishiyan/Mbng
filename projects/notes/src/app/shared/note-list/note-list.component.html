@@ -23,7 +23,7 @@
       <mat-chip-listbox [selectable]="true" [multiple]="true" aria-label="Select tags to search">
         @for (tag of tags; track tag.title) {
           <mat-chip-option [selectable]="true" [selected]="tag.enabled"
-            (change)="tagsChanged(tag, $event);" (click)="toggleTag(tag)">
+            (selectionChange)="tagsChanged(tag, $event);">
             {{tag.title}}
           </mat-chip-option>
         }

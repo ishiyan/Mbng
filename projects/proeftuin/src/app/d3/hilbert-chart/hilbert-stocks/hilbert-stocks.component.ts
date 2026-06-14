@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import * as d3 from 'd3';
 
 import { Bar } from 'projects/mb/src/lib/data/entities/bar';
@@ -12,6 +12,7 @@ import * as hilbert from '../hilbert';
 @Component({
     selector: 'app-d3-hilbert-stocks',
     templateUrl: './hilbert-stocks.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./hilbert-stocks.component.scss']
 })
 export class HilbertStocksComponent implements OnInit {

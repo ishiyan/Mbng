@@ -53,9 +53,6 @@ export class StandardDeviationParamsComponent implements AfterContentInit {
     this.notify();
   }
 
-  protected barComponentVisible = this.params.barComponent !== undefined;
-  protected quoteComponentVisible = this.params.quoteComponent !== undefined;
-
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<StandardDeviationParams>();
 
@@ -66,8 +63,6 @@ export class StandardDeviationParamsComponent implements AfterContentInit {
     effect(() => {
       const value = this.initial();
       this.params = value;
-      this.barComponentVisible = value.barComponent !== undefined;
-      this.quoteComponentVisible = value.quoteComponent !== undefined;
     });  
   }
 

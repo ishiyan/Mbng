@@ -18,9 +18,9 @@
   <mat-label>vFactor</mat-label>
   <input type="number" matInput min="0.001" max="0.999" step="0.001" [(ngModel)]="vFactorParam" />
 </mat-form-field>
-@if (barComponentVisible) {
+@if (barComponent !== undefined) {
   <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr" />
 }
-@if (quoteComponentVisible) {
+@if (quoteComponent !== undefined) {
   <mb-quote-component [initial]="quoteComponent" (selectionChange)="quoteComponentChanged($event);" class="mr" />
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import * as d3 from 'd3';
 
 function distance2xy(d: number): { x: number; y: number } {
@@ -36,6 +36,7 @@ function distance2xy(d: number): { x: number; y: number } {
 @Component({
     selector: 'app-d3-hilbert-paths',
     templateUrl: './hilbert-paths.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./hilbert-paths.component.scss']
 })
 export class HilbertPathsComponent implements OnInit {

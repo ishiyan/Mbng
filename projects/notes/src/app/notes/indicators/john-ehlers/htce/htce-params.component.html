@@ -6,7 +6,7 @@
   </mb-hilbert-transformer-cycle-estimator-type>
   <mb-hilbert-transformer-cycle-estimator-params [initial]="current.params" (selectionChange)="updateParams($event);">
   </mb-hilbert-transformer-cycle-estimator-params>
-  @if (barComponentVisible) {
+  @if (barComponent !== undefined) {
     <mb-bar-component [initial]="barComponent" (selectionChange)="barComponentChanged($event);" class="mr">
     </mb-bar-component>
   }

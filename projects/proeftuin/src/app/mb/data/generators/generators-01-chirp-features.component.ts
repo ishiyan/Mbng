@@ -23,7 +23,7 @@ const sweepRepeatCount = 3; // Number of times to repeat the sweep in the genera
   ]
 })
 export class Generators01ChirpFeaturesComponent {
-  protected readonly configLine: LineConfiguration = { fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 };
+  protected readonly configLine: LineConfiguration[] = [{ fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 }];
 
   protected linPerUniMoniker = '';
   protected linPerUni = [this.linPerUniGen()];

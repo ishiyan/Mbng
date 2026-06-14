@@ -17,5 +17,13 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/public-api.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

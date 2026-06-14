@@ -141,8 +141,6 @@ export class T3ExponentialMovingAverageParamsComponent implements AfterContentIn
 
   protected barComponent?: BarComponent;
   protected quoteComponent?: QuoteComponent;
-  protected barComponentVisible = this.barComponent !== undefined;
-  protected quoteComponentVisible = this.quoteComponent !== undefined;
 
   /** Event emitted when the selected value has been changed by the user. */
   readonly selectionChange = output<T3ExponentialMovingAverageLengthParams | T3ExponentialMovingAverageSmoothingFactorParams>();
@@ -165,8 +163,6 @@ export class T3ExponentialMovingAverageParamsComponent implements AfterContentIn
   
       this.barComponent = value.barComponent;
       this.quoteComponent = value.quoteComponent;
-      this.barComponentVisible = value.barComponent !== undefined;
-      this.quoteComponentVisible = value.quoteComponent !== undefined;
     });  
   }
 

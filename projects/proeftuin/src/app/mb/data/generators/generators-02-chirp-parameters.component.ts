@@ -33,7 +33,7 @@ export class Generators02ChirpParametersComponent {
     this.data = this.generate(params);
   }
 
-  protected readonly configLine: LineConfiguration = { fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 };
+  protected readonly configLine: LineConfiguration[] = [{ fillColor: undefined, strokeColor: 'steelblue', strokeWidth: 1 }];
   protected moniker = '';
   protected data: Scalar[] = this.generate(this.initial);
 

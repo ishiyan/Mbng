@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import * as d3 from 'd3';
@@ -13,6 +13,7 @@ import { MatOption } from '@angular/material/core';
     selector: 'app-d3-hilbert-curve',
     templateUrl: './hilbert-curve.component.html',
     styleUrls: ['./hilbert-curve.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatFormField, MatSelect, MatOption, MatSlideToggle]
 })
 export class HilbertCurveComponent implements OnInit {

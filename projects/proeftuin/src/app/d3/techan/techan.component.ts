@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { D3tcFeedComponent } from './d3tc-feed/d3tc-feed.component';
 import { D3tcCandlesticksComponent } from './d3tc-candlesticks/d3tc-candlesticks.component';
 import { D3tcOhlcComponent } from './d3tc-ohlc/d3tc-ohlc.component';
@@ -19,6 +19,7 @@ import { D3tcFinanceTimeComponent } from './d3tc-finance-time/d3tc-finance-time.
   selector: 'app-d3-techan',
   templateUrl: './techan.component.html',
   styleUrls: ['./techan.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     D3tcFeedComponent,
     D3tcCandlesticksComponent,

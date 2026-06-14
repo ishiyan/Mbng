@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { DynamicThemingService } from 'projects/mb/src/lib/theming/dynamic-theming.service';
@@ -11,6 +11,7 @@ import { FooterComponent } from './shared/footer/footer.component';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ToolbarComponent, RouterOutlet, FooterComponent]
 })
 export class AppComponent {

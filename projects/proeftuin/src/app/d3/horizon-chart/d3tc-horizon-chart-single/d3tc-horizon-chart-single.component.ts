@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import * as d3 from 'd3';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -10,6 +10,7 @@ import { Bar } from 'projects/mb/src/lib/data/entities/bar';
 @Component({
   selector: 'app-d3-d3tc-horizon-chart-single',
   templateUrl: './d3tc-horizon-chart-single.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./d3tc-horizon-chart-single.component.scss']
 })
 export class D3tcHorizonChartSingleComponent implements OnInit {

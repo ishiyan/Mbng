@@ -1,6 +1,6 @@
 <div class="series-load-container">
   <!-- '$event.target.value = null;' resets the file input, otherwise you cannot load the same file twice -->
-  <input hidden type="file" #fileInput (change)="selectedFile($event.target.files); $event.target.value = null;"
+  <input hidden type="file" #fileInput (change)="selectedFile($event.target.files!); $event.target.value = '';"
     accept=".csv, .csv.gz" />
   
   <!-- File selection section -->

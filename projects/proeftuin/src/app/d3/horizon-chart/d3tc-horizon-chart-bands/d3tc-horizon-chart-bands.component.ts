@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, viewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -16,6 +16,7 @@ import { D3tcHorizonChartSingleComponent } from '../d3tc-horizon-chart-single/d3
     selector: 'app-d3-d3tc-horizon-chart-bands',
     templateUrl: './d3tc-horizon-chart-bands.component.html',
     styleUrls: ['./d3tc-horizon-chart-bands.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatFormField, MatSelect, FormsModule, MatOption, MatInput, MatRadioGroup, MatRadioButton, D3tcHorizonChartSingleComponent]
 })
 export class D3tcHorizonChartBandsComponent implements OnInit {
