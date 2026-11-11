@@ -131,3 +131,37 @@ And for dark:
 ```
 
 No code changes needed — the existing tokens already support this styling.
+
+> Python-style candlesticks
+
+Paste this in the Theme Editor for both light and dark:
+
+```json
+{
+  "candle-up-fill": "#32CD32",
+  "candle-up-stroke": "#32CD32",
+  "candle-down-fill": "#1f77b4",
+  "candle-down-stroke": "#1f77b4"
+}
+```
+
+> Python tab10 palette in hex
+
+Taken from [stackoverflow](https://stackoverflow.com/questions/64369710/what-are-the-hex-codes-of-matplotlib-tab10-palette)
+
+| tab | hex |
+| --- | --- |
+| tab:blue | #1f77b4 |
+| tab:orange | #ff7f0e |
+| tab:green | #2ca02c |
+| tab:red | #d62728 |
+| tab:purple | #9467bd |
+| tab:brown | #8c564b |
+| tab:pink | #e377c2 |
+| tab:gray | #7f7f7f |
+| tab:olive | #bcbd22 |
+| tab:cyan | #17becf |
+
+> Links to palette tools
+
+[rgbatohex.com](// https://rgbatohex.com/tools/color-name)
