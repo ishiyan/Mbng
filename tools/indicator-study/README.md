@@ -16,6 +16,11 @@ A standalone, zero-dependency charting tool for generating indicator study illus
 ?data=path/to/data.json&layout=path/to/layout.json
 ```
 
+Local JSON URLs normally require an HTTP server because browsers restrict
+`file://` fetches. See [RUNNING.md](RUNNING.md) for Ubuntu Bash and Windows Command
+Prompt commands, background servers, and options for automatic loading without
+a server.
+
 ## Concepts
 
 ### Data File
@@ -73,6 +78,7 @@ Data files are self-sufficient (auto-layout). Layout files refine presentation a
 ```
 index.html          — Complete standalone app (~3100 lines)
 d3-primitives.js    — Chart primitives (scales, plots, axes)
+RUNNING.md          — Command-line launch options for Ubuntu and Windows
 SCHEMA.md           — Full JSON schema reference for data and layout
 THEMES.md           — CSS variable documentation
 examples/           — Sample data and layout files
@@ -98,5 +104,6 @@ examples/           — Sample data and layout files
 
 ## Documentation
 
+- [RUNNING.md](RUNNING.md) — Command-line launch guide, including options without a server
 - [SCHEMA.md](SCHEMA.md) — Complete JSON schema for data and layout files
 - [THEMES.md](THEMES.md) — CSS custom properties reference and theming guide
