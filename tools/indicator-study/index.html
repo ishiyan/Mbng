@@ -289,6 +289,7 @@ const defaultNavPane = () => ({
 const defaultConfig = () => ({
   width: '100%', widthMin: undefined, widthMax: undefined,
   navigationPane: defaultNavPane(),
+  selection: undefined,
   timeAnnotationFormat: undefined, timeTicksFormat: undefined, timeTicks: undefined,
   axisLeft: true, axisRight: false,
   margin: { ...defaultMargin },
@@ -329,7 +330,9 @@ const arrowHeightToWidthRatio = 5 / 4;
 let config = null;
 let fullData = null;     // full OHLCV array for replay
 let replayIndex = 0;
-let currentSelection = null;
+let currentSelectionDomain = null;
+let pendingSelection = undefined;
+let lastSelectionWarning = null;
 let isCandlestick = true;
 let isVolume = true;
 let isCrosshair = false;
@@ -343,6 +346,98 @@ function valueToPixels(value, reference) {
   const numeric = +('' + value).match(/-?\d+\.?\d*/);
   if (('' + value).endsWith('%')) return numeric / 100 * reference;
   return numeric;
+}
+
+function resolveSelectionBound(bound, isUpper, n, getTimes) {
+  if (bound === undefined || bound === null) {
+    return { index: isUpper ? n - 1 : 0, outOfRange: false, error: null };
+  }
+  if (typeof bound === 'number') {
+    if (!Number.isFinite(bound)) {
+      return { index: null, outOfRange: false, error: 'selection index must be a finite integer or ISO date' };
+    }
+    let idx = Math.trunc(bound);
+    if (idx < 0) idx = n + idx;
+    if (!isUpper && idx >= n) return { index: null, outOfRange: true, error: null };
+    if (isUpper && idx < 0) return { index: null, outOfRange: true, error: null };
+    return { index: Math.max(0, Math.min(n - 1, idx)), outOfRange: false, error: null };
+  }
+  if (bound instanceof Date || typeof bound === 'string') {
+    const ts = bound instanceof Date ? +bound : Date.parse(bound);
+    if (isNaN(ts)) {
+      return { index: null, outOfRange: false, error: `invalid selection date "${bound}"` };
+    }
+    const times = getTimes();
+    if (!isUpper) {
+      const idx = d3.bisectLeft(times, ts);
+      if (idx >= n) return { index: null, outOfRange: true, error: null };
+      return { index: idx, outOfRange: false, error: null };
+    }
+    const idx = d3.bisectRight(times, ts) - 1;
+    if (idx < 0) return { index: null, outOfRange: true, error: null };
+    return { index: idx, outOfRange: false, error: null };
+  }
+  return { index: null, outOfRange: false, error: 'selection bounds must be ISO dates, integers, or null' };
+}
+
+function resolveSelectionIndices(selection, data, timeAccessor) {
+  if (selection === undefined || selection === null) {
+    return { indices: null, warning: null };
+  }
+  let rawFrom;
+  let rawTo;
+  if (Array.isArray(selection)) {
+    if (selection.length === 0) return { indices: null, warning: null };
+    if (selection.length !== 2) {
+      return { indices: null, warning: 'Warning: selection array must have [from, to] elements' };
+    }
+    rawFrom = selection[0];
+    rawTo = selection[1];
+  } else if (typeof selection === 'object' && !(selection instanceof Date)) {
+    const keys = Object.keys(selection);
+    if (keys.length === 0) return { indices: null, warning: null };
+    if (!('from' in selection) && !('to' in selection)) {
+      return { indices: null, warning: 'Warning: selection object expects "from" and/or "to"' };
+    }
+    rawFrom = selection.from;
+    rawTo = selection.to;
+  } else {
+    return { indices: null, warning: 'Warning: invalid selection; expected { from, to } or [from, to]' };
+  }
+
+  if ((rawFrom === undefined || rawFrom === null) && (rawTo === undefined || rawTo === null)) {
+    return { indices: null, warning: null };
+  }
+  if (!data || data.length === 0) {
+    return { indices: null, warning: null };
+  }
+
+  let cachedTimes = null;
+  const getTimes = () => {
+    if (!cachedTimes) cachedTimes = data.map(d => +timeAccessor(d));
+    return cachedTimes;
+  };
+
+  const n = data.length;
+  const lo = resolveSelectionBound(rawFrom, false, n, getTimes);
+  if (lo.error) return { indices: null, warning: 'Warning: ' + lo.error };
+  if (lo.outOfRange) return { indices: null, warning: 'Warning: selection range is outside available data' };
+
+  const hi = resolveSelectionBound(rawTo, true, n, getTimes);
+  if (hi.error) return { indices: null, warning: 'Warning: ' + hi.error };
+  if (hi.outOfRange) return { indices: null, warning: 'Warning: selection range is outside available data' };
+
+  if (lo.index > hi.index) {
+    return { indices: null, warning: 'Warning: selection range is empty or reversed (from > to)' };
+  }
+  return { indices: [lo.index, hi.index], warning: null };
+}
+
+function indicesToZoomDomain(indices, n, fullZoomDomain) {
+  const lastIdx = n - 1;
+  const d0 = indices[0] <= 0 ? fullZoomDomain[0] : indices[0] - 0.45;
+  const d1 = indices[1] >= lastIdx ? fullZoomDomain[1] : indices[1] + 0.45;
+  return [d0, d1];
 }
 
 function convertInterpolation(interp) {
@@ -2002,7 +2097,10 @@ function renderLinear() {
     const priceSelection = focus.select('g.price');
     const datum = priceSelection.datum();
     if (!datum || datum.length === 0) return;
-    const sliced = datum.slice.apply(datum, x.zoomable().domain());
+    const timeDomain = x.zoomable().domain();
+    const mn = Math.max(0, Math.min(datum.length - 1, Math.round(timeDomain[0])));
+    const mx = Math.max(0, Math.min(datum.length - 1, Math.round(timeDomain[1])));
+    const sliced = datum.slice(mn, mx + 1);
     y.domain(getLinearYDomain(kind, sliced, accessor));
     priceSelection.call(priceShape);
     if (isVolume && (kind === LINEAR_BAR || kind === LINEAR_TRADE) && volume) {
@@ -2017,11 +2115,16 @@ function renderLinear() {
 
   // Brush
   function brushed(event) {
+    if (!event.sourceEvent) return;
+    lastSelectionWarning = null;
     const zoomable = x.zoomable();
     const zoomableNav = xNav.zoomable();
     zoomable.domain(zoomableNav.domain());
     if (event.selection !== null) {
-      zoomable.domain(event.selection.map(zoomable.invert));
+      currentSelectionDomain = event.selection.map(zoomableNav.invert);
+      zoomable.domain(currentSelectionDomain);
+    } else {
+      currentSelectionDomain = null;
     }
     draw();
   }
@@ -2052,11 +2155,34 @@ function renderLinear() {
     focus.select('g.volume').datum(data);
   }
   nav.select('g.area').datum(data).call(areaNav);
-  nav.select('g.pane').call(brushNav).selectAll('rect').attr('height', heightNav);
+  const navPaneSelection = nav.select('g.pane');
+  navPaneSelection.call(brushNav);
 
-  x.zoomable().domain(xNav.zoomable().domain());
+  const fullZoomDomain = xNav.zoomable().domain().slice();
+  if (pendingSelection !== undefined) {
+    const resolved = resolveSelectionIndices(pendingSelection, data, accessor.time);
+    pendingSelection = undefined;
+    lastSelectionWarning = resolved.warning;
+    currentSelectionDomain = resolved.indices
+      ? indicesToZoomDomain(resolved.indices, data.length, fullZoomDomain)
+      : null;
+  }
+
+  if (currentSelectionDomain != null) {
+    x.zoomable().domain(currentSelectionDomain);
+    const zoomableNav = xNav.zoomable();
+    const navRange = zoomableNav.range();
+    const px0 = Math.max(navRange[0], Math.min(navRange[1], zoomableNav(currentSelectionDomain[0])));
+    const px1 = Math.max(navRange[0], Math.min(navRange[1], zoomableNav(currentSelectionDomain[1])));
+    if (px1 > px0) {
+      brushNav.move(navPaneSelection, [px0, px1]);
+    }
+  } else {
+    x.zoomable().domain(fullZoomDomain);
+  }
+  navPaneSelection.selectAll('rect').attr('height', heightNav);
   draw();
-  setStatus(`${data.length}${fullData ? ' / ' + fullData.length : ''} points [${kind}]`);
+  setStatus(lastSelectionWarning || `${data.length}${fullData ? ' / ' + fullData.length : ''} points [${kind}]`);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2117,15 +2243,17 @@ function render() {
   }
 
   function brushed(event) {
+    if (!event.sourceEvent) return;
+    lastSelectionWarning = null;
     const zoomable = timePane.timeScale.zoomable();
     const zoomableNav = navPane.timeScale.zoomable();
     zoomable.domain(zoomableNav.domain());
     if (!event.selection) {
-      currentSelection = null;
+      currentSelectionDomain = null;
       draw();
     } else {
-      currentSelection = event.selection;
-      zoomable.domain(event.selection.map(zoomable.invert));
+      currentSelectionDomain = event.selection.map(zoomableNav.invert);
+      zoomable.domain(currentSelectionDomain);
       if (!smoothBrushing) draw();
     }
   }
@@ -2165,19 +2293,34 @@ function render() {
   if (navPane.line) navPane.lineSelection.datum(cfg.ohlcv.data).call(navPane.line);
   if (navPane.timeAxis) navPane.timeAxisSelection.call(navPane.timeAxis);
 
-  if (navPane.brush) {
-    navPane.paneSelection.call(navPane.brush).selectAll('rect').attr('height', lv.navigationPane.height);
+  const fullZoomDomain = timePane.timeScale.zoomable().domain().slice();
+  if (pendingSelection !== undefined) {
+    const resolved = resolveSelectionIndices(pendingSelection, cfg.ohlcv.data, pricePane.priceAccessor.time);
+    pendingSelection = undefined;
+    lastSelectionWarning = resolved.warning;
+    currentSelectionDomain = resolved.indices
+      ? indicesToZoomDomain(resolved.indices, cfg.ohlcv.data.length, fullZoomDomain)
+      : null;
+  }
+  if (currentSelectionDomain != null) {
+    timePane.timeScale.zoomable().domain(currentSelectionDomain);
+  }
 
-    if (currentSelection != null && (currentSelection[1] - currentSelection[0] > minSelection)) {
-      navPane.brush.move(navPane.paneSelection, currentSelection);
-      const zoomable = timePane.timeScale.zoomable();
+  if (navPane.brush) {
+    navPane.paneSelection.call(navPane.brush);
+    if (currentSelectionDomain != null) {
       const zoomableNav = navPane.timeScale.zoomable();
-      zoomable.domain(zoomableNav.domain());
-      zoomable.domain(currentSelection.map(zoomable.invert));
+      const navRange = zoomableNav.range();
+      const px0 = Math.max(navRange[0], Math.min(navRange[1], zoomableNav(currentSelectionDomain[0])));
+      const px1 = Math.max(navRange[0], Math.min(navRange[1], zoomableNav(currentSelectionDomain[1])));
+      if (px1 > px0) {
+        navPane.brush.move(navPane.paneSelection, [px0, px1]);
+      }
     }
+    navPane.paneSelection.selectAll('rect').attr('height', lv.navigationPane.height);
   }
   draw();
-  setStatus(`${cfg.ohlcv.data.length}${fullData ? ' / ' + fullData.length : ''} bars`);
+  setStatus(lastSelectionWarning || `${cfg.ohlcv.data.length}${fullData ? ' / ' + fullData.length : ''} bars`);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2275,7 +2418,10 @@ function isDataFile(obj) {
 }
 
 function isLayoutFile(obj) {
-  return obj && (obj.pricePane || obj.indicatorPanes) && !obj.series;
+  return Boolean(
+    obj && typeof obj === 'object' && !obj.series && !obj.ohlcv &&
+    (obj.pricePane || obj.indicatorPanes || obj.selection !== undefined || obj.navigationPane || obj.nav !== undefined)
+  );
 }
 
 /**
@@ -2489,7 +2635,9 @@ function loadConfig(raw) {
     document.getElementById('volume-toggle').checked = isVolume;
     document.getElementById('crosshair-toggle').checked = isCrosshair;
     updateLinearViewControls(kind);
-    currentSelection = null;
+    currentSelectionDomain = null;
+    pendingSelection = cfg.selection;
+    lastSelectionWarning = null;
     render();
     showDataControls();
     return;
@@ -2506,7 +2654,9 @@ function loadConfig(raw) {
   document.getElementById('volume-toggle').checked = isVolume;
   document.getElementById('crosshair-toggle').checked = isCrosshair;
   updateLinearViewControls(null);
-  currentSelection = null;
+  currentSelectionDomain = null;
+  pendingSelection = cfg.selection;
+  lastSelectionWarning = null;
   render();
   showDataControls();
 }
@@ -2545,9 +2695,16 @@ function loadFile(raw, filename) {
 
 function warnUnresolved(cfg) {
   const refs = cfg._unresolvedRefs;
+  const warnings = [];
   if (refs && refs.length > 0) {
     const unique = [...new Set(refs)];
-    setStatus('Warning: layout references series not found in data: ' + unique.join(', '));
+    warnings.push('Warning: layout references series not found in data: ' + unique.join(', '));
+  }
+  if (lastSelectionWarning) {
+    warnings.push(lastSelectionWarning);
+  }
+  if (warnings.length > 0) {
+    setStatus(warnings.join(' | '));
   }
 }
 
@@ -2704,7 +2861,8 @@ function replayClear() {
   if (!fullData) return;
   replayIndex = 0;
   setReplayData([]);
-  currentSelection = null;
+  currentSelectionDomain = null;
+  lastSelectionWarning = null;
   render();
   updateBarCount();
 }
@@ -2713,7 +2871,8 @@ function replayForward() {
   if (!fullData || replayIndex >= fullData.length) return;
   replayIndex++;
   setReplayData(fullData.slice(0, replayIndex));
-  currentSelection = null;
+  currentSelectionDomain = null;
+  lastSelectionWarning = null;
   render();
   updateBarCount();
 }
@@ -2722,7 +2881,8 @@ function replayForward10() {
   if (!fullData || replayIndex >= fullData.length) return;
   replayIndex = Math.min(replayIndex + 10, fullData.length);
   setReplayData(fullData.slice(0, replayIndex));
-  currentSelection = null;
+  currentSelectionDomain = null;
+  lastSelectionWarning = null;
   render();
   updateBarCount();
 }
@@ -2731,7 +2891,8 @@ function replayAll() {
   if (!fullData) return;
   replayIndex = fullData.length;
   setReplayData(fullData.slice());
-  currentSelection = null;
+  currentSelectionDomain = null;
+  lastSelectionWarning = null;
   render();
   updateBarCount();
 }
@@ -2742,7 +2903,6 @@ function replayAll() {
 
 document.getElementById('candlestick-toggle').addEventListener('change', function() {
   isCandlestick = this.checked;
-  currentSelection = null;
   render();
 });
 
@@ -2753,19 +2913,16 @@ document.getElementById('linear-view-select').addEventListener('change', functio
   } else {
     linearViewMode = this.value;
   }
-  currentSelection = null;
   render();
 });
 
 document.getElementById('volume-toggle').addEventListener('change', function() {
   isVolume = this.checked;
-  currentSelection = null;
   render();
 });
 
 document.getElementById('crosshair-toggle').addEventListener('change', function() {
   isCrosshair = this.checked;
-  currentSelection = null;
   render();
 });
 

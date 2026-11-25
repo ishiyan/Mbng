@@ -169,42 +169,52 @@ embedded HTML option.
 
 ## No server: generate an HTML copy with both JSON files embedded
 
-This option uses normal browser settings. A short Node.js script reads the two
-JSON files and inserts calls to the page's existing `loadFile()` function after
-the app script. The browser then receives the data directly, without fetching
-the JSON files.
+This option uses normal browser settings. `make-study.cjs` inlines
+`d3-primitives.js` and inserts calls to the page's existing `loadFile()`
+function with both JSON files embedded, producing a single HTML file that the
+browser can open from any folder without fetching local JSON or script files.
 
-Save the following as `make-study.cjs` in `tools/indicator-study/`. It uses only
-Node.js built-ins; no npm installation is needed:
+`tools/indicator-study/make-study.cjs` uses only Node.js built-ins; no npm
+installation is needed:
 
 ```javascript
-const { readFileSync, writeFileSync } = require('node:fs');
+const { mkdirSync, readFileSync, writeFileSync } = require('node:fs');
+const { dirname, join } = require('node:path');
 
-const [dataPath, layoutPath] = process.argv.slice(2);
+const [dataPath, layoutPath, outputPath = 'study.html'] = process.argv.slice(2);
 if (!dataPath || !layoutPath) {
-  throw new Error('Usage: node make-study.cjs data.json layout.json');
+  throw new Error('Usage: node make-study.cjs data.json layout.json [output.html]');
 }
 
-const inlineJson = path => JSON.stringify(JSON.parse(readFileSync(path, 'utf8')))
+const inlineJson = filePath => JSON.stringify(JSON.parse(readFileSync(filePath, 'utf8')))
   .replaceAll('<', '\\u003c');
+
+const primitives = readFileSync(join(__dirname, 'd3-primitives.js'), 'utf8')
+  .replaceAll('</script', '<\\/script');
 
 const script = `<script>
 loadFile(${inlineJson(layoutPath)}, 'embedded layout');
 loadFile(${inlineJson(dataPath)}, 'embedded data');
 </script>`;
 
-const html = readFileSync('index.html', 'utf8');
-writeFileSync('study.html', html.replace('</body>', () => `${script}\n</body>`));
+const html = readFileSync(join(__dirname, 'index.html'), 'utf8')
+  .replace('<script src="d3-primitives.js"></script>', () => `<script>\n${primitives}\n</script>`)
+  .replace('</body>', () => `${script}\n</body>`);
+
+mkdirSync(dirname(outputPath), { recursive: true });
+writeFileSync(outputPath, html);
 ```
 
 Escaping `<` keeps JSON strings containing HTML, such as `</script>`, from
 terminating the inserted script. Loading the layout first lets the data render
 with that layout immediately.
 
-Generate the copy with the same command in Bash or Command Prompt:
+Generate `study.html` (the default output name) in Bash or Command Prompt, or
+pass an optional third argument to choose a custom output file path:
 
 ```sh
 node make-study.cjs ./examples/example-data.json ./examples/example-layout.json
+node make-study.cjs ./examples/example-selection-data.json ./examples/example-selection-layout.json ./selection-study.html
 ```
 
 Then open it in Ubuntu Bash:
@@ -219,10 +229,12 @@ Or in Windows Command Prompt:
 start "" "study.html"
 ```
 
-Both files load automatically. Keep `study.html` beside `d3-primitives.js`, and
-open it without `data`/`layout` URL parameters. The output embeds a snapshot of
-both JSON files and is overwritten each time you run the script. Regenerate it
-after changing the data, layout, or `index.html`. D3 still comes from the CDN.
+Both JSON files and `d3-primitives.js` are embedded automatically, so the
+generated HTML file can be written to or moved to any directory. Open it without
+`data`/`layout` URL parameters. The output embeds a snapshot and is overwritten
+each time you run the script with the same output path; regenerate it after
+changing the data, layout, `d3-primitives.js`, or `index.html`. D3 still comes
+from the CDN.
 
 ## Paths and troubleshooting
 

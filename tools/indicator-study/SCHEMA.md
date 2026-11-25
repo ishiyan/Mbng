@@ -95,7 +95,7 @@ Structure depends on `annotationType` of the series:
 
 ## Layout File
 
-**Detection**: has `pricePane` or `indicatorPanes`, does NOT have `series`.
+**Detection**: has `pricePane`, `indicatorPanes`, `selection`, `navigationPane`, or `nav`, and does NOT have `series`.
 
 ### Root
 
@@ -116,6 +116,7 @@ Structure depends on `annotationType` of the series:
 | `timeTicks` | `number` | auto | Number of time axis ticks |
 | `pricePane` | `object` | `{}` | Price pane config |
 | `indicatorPanes` | `array` | `[]` | Indicator pane configs |
+| `selection` | `object\|array\|null` | `null` | Initial visible range (`{ from, to }` or `[from, to]`; full range if omitted) |
 | `nav` | `boolean` | `true` | Show navigation/brush pane (`false` hides it) |
 | `navigationPane` | `object` | see below | Nav/brush pane config |
 
@@ -290,6 +291,33 @@ Named gradients: `viridis`, `inferno`, `magma`, `plasma`, `warm`, `cool`, `rainb
 | `hasTimeAxis` | `boolean` | `true` | Show time axis |
 | `timeTicksFormat` | `string` | — | d3 time format |
 | `timeTicks` | `number` | auto | Number of ticks |
+
+To pre-select a sub-range in the navigation brush (or zoom the chart when `"nav": false`), set top-level [`selection`](#selection).
+
+### `selection`
+
+Optional initial visible range along the time/bar axis. When omitted, `null`, `{}`, or `[null, null]`, the chart opens unselected showing the full available data range.
+
+**Accepted shapes**:
+
+- Object: `{ "from"?: string | number | null, "to"?: string | number | null }`
+- Tuple shorthand: `[from, to]`
+
+**Bound formats** (inclusive on both ends):
+
+| Format | Meaning | Example |
+|--------|---------|---------|
+| ISO date/time `string` | `from` snaps to first point with `time >= from`; `to` snaps to last point with `time <= to` | `{ "from": "2024-06-03", "to": "2024-10-31" }` |
+| Integer `number` (`>= 0`) | `0`-based bar index (`0` = first bar) | `[100, 249]` |
+| Negative integer `number` | Offset from end (`data.length + index`; `-1` = last bar) | `{ "from": -100 }` (last 100 bars) |
+| `null` or omitted | Open bound (`0` for `from`, `data.length - 1` for `to`) | `[-120, null]` or `{ "to": 199 }` |
+
+**Behavior notes**:
+
+- Partially out-of-bounds ranges clamp to `[0, data.length - 1]`.
+- Completely non-overlapping, reversed (`from > to`), or invalid bounds fall back to the full data range with a status bar warning.
+- Applies to both OHLCV bar charts and linear (`quote` / `trade` / `scalar`) charts, and works even when `"nav": false` hides the navigation pane.
+- Interactive brushing updates the live chart view without modifying the layout JSON in the editor.
 
 ---
 

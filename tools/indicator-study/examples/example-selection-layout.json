@@ -1,0 +1,47 @@
+{
+  "description": "Example layout with initial navigation selection range over a 500-bar dataset",
+  "width": "100%",
+  "widthMin": 600,
+  "axisLeft": true,
+  "axisRight": false,
+  "crosshair": true,
+  "volumeInPricePane": true,
+  "margin": { "left": 0, "top": 5, "right": 0, "bottom": 5 },
+  "timeTicksFormat": "%Y-%m-%d",
+  "timeAnnotationFormat": "%Y-%m-%d",
+  "selection": {
+    "from": "2024-06-03",
+    "to": "2024-10-31"
+  },
+  "pricePane": {
+    "series": ["price"],
+    "height": 300,
+    "valueFormat": ",.2f",
+    "valueMarginPercentageFactor": 0.05,
+    "lines": [
+      { "series": "ema20", "mnemonic": "EMA(20)", "color": "#2196F3", "width": 1.5, "interpolation": "natural" },
+      { "series": "ema50", "mnemonic": "EMA(50)", "color": "#FF9800", "width": 1.5, "interpolation": "natural" }
+    ]
+  },
+  "indicatorPanes": [
+    {
+      "height": 85,
+      "valueFormat": ",.0f",
+      "valueMarginPercentageFactor": 0.05,
+      "lines": [
+        { "series": "rsi14", "mnemonic": "RSI(14)", "color": "#9C27B0", "width": 1.5, "interpolation": "linear" }
+      ],
+      "horizontals": [
+        { "value": 70, "color": "#ef5350", "width": 0.5, "dash": "3,3" },
+        { "value": 30, "color": "#26a69a", "width": 0.5, "dash": "3,3" }
+      ]
+    }
+  ],
+  "navigationPane": {
+    "height": 36,
+    "hasLine": true,
+    "hasArea": true,
+    "hasTimeAxis": true,
+    "timeTicksFormat": "%Y-%m"
+  }
+}

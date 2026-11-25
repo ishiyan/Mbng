@@ -65,7 +65,7 @@ Data files are self-sufficient (auto-layout). Layout files refine presentation a
 - **Indicator panes**: unlimited, with lines, bands, lineAreas, heatmaps, horizontals
 - **6 annotation types**: hline, vline, text, arrow, zone, line — static or draggable
 - **Data-driven annotations**: markers (triangle/arrow shapes) from annotation series
-- **Navigation pane**: brush-based zoom; disable with `"nav": false`
+- **Navigation pane**: brush-based zoom with optional initial `"selection"` range in layout JSON; disable pane with `"nav": false`
 - **Replay controls**: step through bars one at a time or in batches
 - **Crosshair**: with axis annotations
 - **Theme system**: light/dark with 24 CSS custom properties (see [THEMES.md](THEMES.md))
@@ -78,6 +78,7 @@ Data files are self-sufficient (auto-layout). Layout files refine presentation a
 ```
 index.html          — Complete standalone app (~3100 lines)
 d3-primitives.js    — Chart primitives (scales, plots, axes)
+make-study.cjs      — Generates self-contained HTML with embedded data/layout
 RUNNING.md          — Command-line launch options for Ubuntu and Windows
 SCHEMA.md           — Full JSON schema reference for data and layout
 THEMES.md           — CSS variable documentation
@@ -94,6 +95,7 @@ examples/           — Sample data and layout files
 | `example-trade-data.json` | — | Trade chart (auto-layout) |
 | `example-annotations-data.json` | `example-annotations-layout.json` | Data-driven markers |
 | `example-data.json` | `example-layout-draggable-annotations.json` | All draggable types |
+| `example-selection-data.json` | `example-selection-layout.json` | 500-bar study with initial navigation `selection` range |
 
 ## Key Design Decisions
 
