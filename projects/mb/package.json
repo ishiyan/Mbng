@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "exports": {
     ".": {
-      "sass": "./styles/_index.scss"
+      "sass": "./styles/_index.scss",
+      "default": "./src/public-api.ts"
     }
   },
   "peerDependencies": {

@@ -2,9 +2,9 @@
 
 ## Repository Overview
 
-Angular 21 monorepo workspace with three projects:
+Angular 22 monorepo workspace with three projects:
 
-- **`projects/mb`** — Reusable Angular library (charts, theming, indicators, data utilities, KaTeX, color tools). Built with ng-packagr.
+- **`projects/mb`** — Reusable Angular library (charts, theming, indicators, data utilities, KaTeX, color tools). Built with `@angular/build:library`.
 - **`projects/notes`** — SSG documentation/notes site consuming the `mb` library.
 - **`projects/proeftuin`** — Experimental playground app for the `mb` library.
 
@@ -187,7 +187,7 @@ tsconfig.json             # Root TS config (strict mode, path mapping to dist/mb
 projects/mb/
   src/lib/                # Library source (charts, colors, data, trading, theming, etc.)
   src/public-api.ts       # Library export surface (313 lines)
-  ng-package.json         # ng-packagr config
+  package.json            # Library package manifest & entry-point exports
 projects/notes/src/       # Notes SSG app
 projects/proeftuin/src/   # Playground app
 ```

@@ -85,7 +85,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.3.0",
     "material-symbols": "^0.49.0",
-    "ng-packagr": "^22.3.0",
     "protractor": "~7.0.0",
     "roboto-fontface": "^0.10.0",
     "sass": "^1.108.2",

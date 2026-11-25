@@ -256,20 +256,30 @@
         }
       },
       "root": "projects/mb",
-      "sourceRoot": "projects/mb/src",
+      "sourceRoot": "projects/mb",
       "prefix": "mb",
       "architect": {
         "build": {
-          "builder": "@angular/build:ng-packagr",
+          "builder": "@angular/build:library",
           "options": {
-            "project": "projects/mb/ng-package.json"
+            "tsConfig": "projects/mb/tsconfig.lib.json",
+            "outputPath": "dist/mb",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/mb/assets",
+              {
+                "input": "projects/mb/src/lib",
+                "glob": "**/_*.scss",
+                "output": "styles"
+              }
+            ]
           },
           "configurations": {
             "production": {
               "tsConfig": "projects/mb/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/mb/tsconfig.lib.json"
+              "compilationMode": "full"
             }
           },
           "defaultConfiguration": "production"

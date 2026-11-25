@@ -4,7 +4,7 @@ Trust this file first. Only search the codebase if information here is missing o
 
 ## 1. Repository Summary
 Monorepo for an Angular workspace (Angular 20.x) containing:
-- `projects/mb`: Reusable Angular library (charts, theming, indicators, data utilities, KaTeX/MathJax integration, theming & color utilities). Built with `ng-packagr`.
+- `projects/mb`: Reusable Angular library (charts, theming, indicators, data utilities, KaTeX/MathJax integration, theming & color utilities). Built with `@angular/build:library`.
 - `projects/notes`: Static (SSG) interactive notes / documentation site consuming the `mb` library.
 - `projects/proeftuin`: Experimental/demo playground app for the `mb` library.
 - `new/`: Experimental sandbox code (not part of build pipeline). Ignore unless explicitly asked.
@@ -76,7 +76,7 @@ Root files:
 - `.github/` (this instructions file; may also contain future guidelines subfolder)
 
 Per project:
-- Library: `projects/mb/src/lib/**` (components, theming, charts, data, indicators). Entry point: `projects/mb/src/public-api.ts` (export surface). Build config: `projects/mb/ng-package.json`.
+- Library: `projects/mb/src/lib/**` (components, theming, charts, data, indicators). Entry point: `projects/mb/src/public-api.ts` (export surface). Build config: `angular.json` (`@angular/build:library`) and `projects/mb/package.json`.
 - Notes app: `projects/notes/src/` (routes/components under `app/`). Global styles: `projects/notes/src/styles.scss` referencing built library styles.
 - Proeftuin app: `projects/proeftuin/src/` (experimental showcase). Has `environments/` for environment-specific files.
 - Tests: Co-located `*.spec.ts` in each project.
