@@ -1,0 +1,26 @@
+{
+  "description": "Single-chart amplitude response in dB with -3 dB cutoff and passband shading",
+  "width": "100%",
+  "widthMin": 560,
+  "height": 340,
+  "palette": "tab10",
+  "xMode": "frequency",
+  "yMode": "amplitudeDb",
+  "minDb": -45,
+  "maxDb": 5,
+  "horizontals": [
+    { "value": 0, "color": "var(--ref-line)", "width": 1, "dash": "2,3", "label": "0 dB (unity)", "align": "start" },
+    { "value": -3.01, "color": "#ef5350", "width": 1, "dash": "5,3", "label": "-3 dB cutoff" }
+  ],
+  "annotations": [
+    {
+      "type": "zone",
+      "x1": 0,
+      "x2": 0.14,
+      "y1": -45,
+      "y2": 5,
+      "color": "rgba(38,166,154,0.09)",
+      "label": "Low-frequency passband"
+    }
+  ]
+}

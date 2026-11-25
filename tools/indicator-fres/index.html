@@ -1,0 +1,2885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indicator Frequency Response</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+/* ── Reset ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+/* ── Theme tokens ──────────────────────────────────────────────── */
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --bg2: #f5f5f5; --border: #dddddd;
+  --axis: #666666; --grid: #999999; --grid-opacity: 0.35;
+  --label: #444444; --legend: #333333; --subfigure: #1a1a1a; --coords: #1a1a1a;
+  --curve-width: 2; --curve-hover-width: 5;
+  --ref-line: #888888; --crosshair: #888888;
+  --annotation-bg: #1a1a1a; --annotation-fg: #ffffff;
+  --btn-bg: #e8e8e8; --btn-hover: #d0d0d0;
+}
+[data-theme="dark"] {
+  --bg: #1e1e1e; --fg: #e0e0e0; --bg2: #2a2a2a; --border: #444444;
+  --axis: #aaaaaa; --grid: #777777; --grid-opacity: 0.35;
+  --label: #cccccc; --legend: #d0d0d0; --subfigure: #e0e0e0; --coords: #e0e0e0;
+  --curve-width: 2; --curve-hover-width: 5;
+  --ref-line: #999999; --crosshair: #888888;
+  --annotation-bg: #e0e0e0; --annotation-fg: #1a1a1a;
+  --btn-bg: #3a3a3a; --btn-hover: #4a4a4a;
+}
+[data-theme="print"] {
+  --bg: #ffffff; --fg: #000000; --bg2: #f2f2f2; --border: #cccccc;
+  --axis: #000000; --grid: #888888; --grid-opacity: 0.4;
+  --label: #000000; --legend: #000000; --subfigure: #000000; --coords: #000000;
+  --curve-width: 1.75; --curve-hover-width: 4.5;
+  --ref-line: #333333; --crosshair: #555555;
+  --annotation-bg: #000000; --annotation-fg: #ffffff;
+  --btn-bg: #e8e8e8; --btn-hover: #d0d0d0;
+}
+
+body { background: var(--bg); color: var(--fg); }
+body.drag-over { outline: 2px dashed var(--axis); outline-offset: -4px; }
+
+/* ── Controls bar ──────────────────────────────────────────────── */
+#controls {
+  display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 12px;
+  background: var(--bg2); border-bottom: 1px solid var(--border); align-items: center;
+}
+#controls label { font-size: 13px; cursor: pointer; user-select: none; display: inline-flex; align-items: center; gap: 4px; }
+#controls button, #controls select {
+  font-size: 13px; padding: 4px 10px; border: 1px solid var(--border);
+  background: var(--btn-bg); color: var(--fg); border-radius: 4px; cursor: pointer;
+}
+#controls button:hover { background: var(--btn-hover); }
+#controls .ctrl-group { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--axis); }
+#controls .spacer { flex: 1; }
+#data-controls { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#export-controls { display: inline-flex; gap: 6px; align-items: center; }
+#status { font-size: 12px; color: var(--axis); }
+#info-line { font-size: 12px; color: var(--axis); padding: 2px 12px 0; min-height: 18px; }
+#info-line span { margin-right: 12px; }
+#file-label-data::before { content: "data: "; opacity: 0.6; }
+#file-label-layout::before { content: "layout: "; opacity: 0.6; }
+#file-label-data:empty, #file-label-layout:empty { display: none; }
+#file-label-data:empty::before, #file-label-layout:empty::before { display: none; }
+
+/* ── Chart container ───────────────────────────────────────────── */
+#chart-container { padding: 12px; }
+#chart-width { width: 100%; }
+
+/* ── SVG styling (theme-aware) ─────────────────────────────────── */
+#chart-container svg { display: block; background: var(--bg); }
+#chart-container svg text { fill: var(--fg); font-family: Arial, Helvetica, sans-serif; cursor: default; }
+#chart-container svg .axis path { fill: none; stroke: var(--axis); }
+#chart-container svg .axis .tick line { fill: none; stroke: var(--axis); }
+#chart-container svg .axis.has-grid .tick line.grid-line { stroke: var(--grid); stroke-opacity: var(--grid-opacity); }
+#chart-container svg .axis text { fill: var(--axis); font-size: 11px; }
+#chart-container svg text.xlabel, #chart-container svg text.ylabel { fill: var(--label); font-size: 12px; }
+#chart-container svg text.chart-title { fill: var(--fg); font-size: 13px; font-weight: 600; }
+#chart-container svg .subfigure text { fill: var(--subfigure); font-size: 12px; font-weight: 700; }
+#chart-container svg .legend text { fill: var(--legend); font-size: 12px; cursor: pointer; }
+#chart-container svg .legend .legend-item { cursor: pointer; }
+#chart-container svg .coords { fill: var(--coords); font-size: 11px; pointer-events: none; }
+#chart-container svg .lines .line-group { fill: none; stroke-width: var(--curve-width); }
+#chart-container svg .lines .line-group.hover { stroke-width: var(--curve-hover-width) !important; }
+#chart-container svg .crosshair .wire { fill: none; stroke: var(--crosshair); stroke-dasharray: 4,4; stroke-width: 1; pointer-events: none; }
+#chart-container svg .axisannotation rect { fill: var(--annotation-bg); }
+#chart-container svg .axisannotation text { fill: var(--annotation-fg); font-size: 10px; }
+#chart-container svg .drag-interaction { opacity: 0; fill: none; cursor: grab; }
+#chart-container svg .drag-interaction:hover { opacity: 0.15; }
+#chart-container svg .drag-interaction:active { cursor: grabbing; }
+#chart-container svg .drag-interaction.drag-zone { fill: var(--fg); opacity: 0; cursor: grab; }
+#chart-container svg .drag-interaction.drag-zone:hover { opacity: 0.08; }
+#chart-container svg .drag-interaction.drag-zone:active { cursor: grabbing; }
+#chart-container svg .drag-endpoint { fill: var(--fg); opacity: 0; cursor: grab; }
+#chart-container svg .drag-endpoint:hover { opacity: 0.7; }
+#chart-container svg .drag-endpoint:active { cursor: grabbing; }
+
+/* ── Layout editor ─────────────────────────────────────────────── */
+#layout-editor { border-top: 1px solid var(--border); margin: 0; }
+#layout-editor-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 12px; background: var(--bg2); cursor: pointer; user-select: none;
+  font-size: 13px; font-weight: 500;
+}
+#layout-editor-header button {
+  background: none; border: none; color: var(--fg); font-size: 14px; cursor: pointer;
+  transition: transform 0.2s;
+}
+#layout-editor.collapsed #layout-editor-header button { transform: rotate(-90deg); }
+#layout-editor.collapsed #layout-editor-body { display: none; }
+#layout-editor-body { padding: 8px 12px; }
+#series-info {
+  font-size: 11px; font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  color: var(--axis); margin-bottom: 6px; line-height: 1.6;
+}
+#series-info:empty { display: none; }
+#series-info .si-desc { color: var(--fg); opacity: 0.75; display: block; margin-bottom: 4px; white-space: pre-wrap; }
+#series-info .si-meta { color: var(--axis); display: block; margin-bottom: 4px; }
+#series-info .si-name { color: var(--fg); font-weight: 600; }
+#series-info .si-type { color: #2196F3; }
+#series-info .si-mnemonic { color: var(--axis); font-style: italic; }
+#series-info .si-count { color: var(--axis); }
+#series-info .si-series-desc { color: var(--axis); opacity: 0.75; font-size: 10px; }
+#layout-textarea {
+  width: 100%; resize: vertical; overflow: hidden; min-height: 76px;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  font-size: 12px; line-height: 1.4; tab-size: 2;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px; outline: none;
+}
+#layout-textarea:focus { border-color: var(--axis); }
+#layout-editor-controls {
+  display: flex; gap: 8px; align-items: center; margin-top: 6px;
+}
+#layout-editor-controls button {
+  font-size: 13px; padding: 4px 12px; border: 1px solid var(--border);
+  background: var(--btn-bg); color: var(--fg); border-radius: 4px; cursor: pointer;
+}
+#layout-editor-controls button:hover { background: var(--btn-hover); }
+#layout-error { font-size: 12px; color: #ef5350; }
+.layout-ref { font-size: 11px; color: var(--axis); opacity: 0.75; margin-top: 4px; word-break: break-word; }
+
+/* ── Data editor ───────────────────────────────────────────────── */
+#data-editor { border-top: 1px solid var(--border); }
+#data-editor-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 12px; background: var(--bg2); cursor: pointer; user-select: none;
+  font-size: 13px; font-weight: 500;
+}
+#data-editor-header button {
+  background: none; border: none; color: var(--fg); font-size: 14px; cursor: pointer;
+  transition: transform 0.2s;
+}
+#data-editor.collapsed #data-editor-header button { transform: rotate(-90deg); }
+#data-editor.collapsed #data-editor-body { display: none; }
+#data-editor-body { padding: 8px 12px; }
+#data-textarea {
+  width: 100%; resize: vertical; overflow-x: auto; overflow-y: auto; min-height: 96px; max-height: 420px;
+  white-space: pre;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  font-size: 12px; line-height: 1.4; tab-size: 2;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px; outline: none;
+}
+#data-textarea:focus { border-color: var(--axis); }
+#data-editor-controls {
+  display: flex; gap: 8px; align-items: center; margin-top: 6px;
+}
+#data-editor-controls button {
+  font-size: 13px; padding: 4px 12px; border: 1px solid var(--border);
+  background: var(--btn-bg); color: var(--fg); border-radius: 4px; cursor: pointer;
+}
+#data-editor-controls button:hover { background: var(--btn-hover); }
+#data-error { font-size: 12px; color: #ef5350; }
+
+/* ── Theme editor ──────────────────────────────────────────────── */
+#theme-editor { border-top: 1px solid var(--border); }
+#theme-editor-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 12px; background: var(--bg2); cursor: pointer; user-select: none;
+  font-size: 13px; font-weight: 500;
+}
+#theme-editor-header button {
+  background: none; border: none; color: var(--fg); font-size: 14px; cursor: pointer;
+  transition: transform 0.2s;
+}
+#theme-editor.collapsed #theme-editor-header button { transform: rotate(-90deg); }
+#theme-editor.collapsed #theme-editor-body { display: none; }
+#theme-editor-body { padding: 8px 12px; }
+#theme-textarea {
+  width: 100%; resize: vertical; overflow: hidden; min-height: 76px;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  font-size: 12px; line-height: 1.4; tab-size: 2;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px; outline: none;
+}
+#theme-textarea:focus { border-color: var(--axis); }
+#theme-editor-controls {
+  display: flex; gap: 8px; align-items: center; margin-top: 6px;
+}
+#theme-editor-controls button {
+  font-size: 13px; padding: 4px 12px; border: 1px solid var(--border);
+  background: var(--btn-bg); color: var(--fg); border-radius: 4px; cursor: pointer;
+}
+#theme-editor-controls button:hover { background: var(--btn-hover); }
+#theme-error { font-size: 12px; color: #ef5350; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <span id="data-controls" style="display:none">
+    <span class="ctrl-group">Y:
+      <select id="ymode-select">
+        <option value="powerDb">Pwr dB</option>
+        <option value="powerPct">Pwr %</option>
+        <option value="amplitudeDb">Amp dB</option>
+        <option value="amplitudePct">Amp %</option>
+        <option value="phaseDeg">Phase &deg;</option>
+        <option value="phaseDegUnwrapped">Phase &deg; unwrapped</option>
+      </select>
+    </span>
+    <span class="ctrl-group">X:
+      <select id="xmode-select">
+        <option value="frequency">Frequency</option>
+        <option value="period">Period</option>
+      </select>
+    </span>
+    <span class="ctrl-group">Scale:
+      <select id="xscale-select">
+        <option value="linear">Linear</option>
+        <option value="log">Log</option>
+      </select>
+    </span>
+    <label><input type="checkbox" id="grid-toggle" checked> Grid</label>
+    <label><input type="checkbox" id="crosshair-toggle"> Crosshair</label>
+  </span>
+  <select id="theme-select">
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="print">Print (B&amp;W)</option>
+  </select>
+  <div class="spacer"></div>
+  <input type="file" id="file-input" accept=".json" multiple style="width:0;height:0;overflow:hidden;opacity:0;position:absolute">
+  <button id="btn-choose-file">Load JSON</button>
+  <span id="export-controls" style="display:none">
+    <button id="btn-save-svg">Save SVG</button>
+    <button id="btn-save-png">Save PNG</button>
+  </span>
+</div>
+<div id="info-line">
+  <span id="file-label-data"></span>
+  <span id="file-label-layout"></span>
+  <span id="status"></span>
+</div>
+
+<div id="chart-container">
+  <div id="chart-width"></div>
+  <div id="chart-svg"></div>
+</div>
+
+<div id="layout-editor">
+  <div id="layout-editor-header">
+    <span>Layout Editor</span>
+    <button id="btn-layout-toggle" title="Collapse/expand">&#9660;</button>
+  </div>
+  <div id="layout-editor-body">
+    <div id="series-info"></div>
+    <textarea id="layout-textarea" spellcheck="false" placeholder="Paste or edit fres-layout.json here..."></textarea>
+    <div id="layout-editor-controls">
+      <button id="btn-layout-apply">Apply</button>
+      <button id="btn-layout-format">Format</button>
+      <button id="btn-layout-copy">Copy</button>
+      <button id="btn-layout-save">Save</button>
+      <span id="layout-error"></span>
+    </div>
+    <div class="layout-ref">yMode: powerDb, powerPct, amplitudeDb, amplitudePct, phaseDeg, phaseDegUnwrapped | xMode: frequency, period | xScale: linear, log</div>
+    <div class="layout-ref">palette: default, tab10, cool, warm, viridis, plasma, inferno, magma, cividis, turbo, cubehelixdefault, blues, greens, greys, oranges, purples, reds, mono</div>
+    <div class="layout-ref">interpolation: catmullRomOpen, catmullRom, linear, natural, monotoneX, basis, cardinal, step</div>
+  </div>
+</div>
+
+<div id="data-editor" class="collapsed">
+  <div id="data-editor-header">
+    <span>Data Editor</span>
+    <button id="btn-data-toggle" title="Collapse/expand">&#9660;</button>
+  </div>
+  <div id="data-editor-body">
+    <textarea id="data-textarea" spellcheck="false" placeholder="Paste or edit fres-data.json here..."></textarea>
+    <div id="data-editor-controls">
+      <button id="btn-data-apply">Apply</button>
+      <button id="btn-data-format">Format</button>
+      <button id="btn-data-copy">Copy</button>
+      <button id="btn-data-save">Save</button>
+      <span id="data-error"></span>
+    </div>
+  </div>
+</div>
+
+<div id="theme-editor" class="collapsed">
+  <div id="theme-editor-header">
+    <span>Theme Editor</span>
+    <button id="btn-theme-toggle" title="Collapse/expand">&#9660;</button>
+  </div>
+  <div id="theme-editor-body">
+    <textarea id="theme-textarea" spellcheck="false" placeholder="CSS custom properties or JSON tokens..."></textarea>
+    <div id="theme-editor-controls">
+      <button id="btn-theme-apply">Apply</button>
+      <button id="btn-theme-reset">Reset</button>
+      <button id="btn-theme-copy">Copy</button>
+      <button id="btn-theme-save">Save</button>
+      <span id="theme-error"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  CONSTANTS & PALETTES
+ * ═══════════════════════════════════════════════════════════════════ */
+
+const PER_CHART_SENTINEL = '__per_chart__';
+
+const DEFAULT_SINGLE_HEIGHT = 320;
+const DEFAULT_GRID_HEIGHT = 220;
+const DEFAULT_OUTER_MARGIN = { top: 6, right: 6, bottom: 6, left: 6 };
+const DEFAULT_GAP = { row: 14, col: 16 };
+
+const DEFAULT_PALETTE = [
+  '#2196F3', '#FF9800', '#4CAF50', '#ef5350',
+  '#9C27B0', '#00BCD4', '#795548', '#607D8B'
+];
+
+const MONO_DASHES = ['', '6,3', '2,2', '8,3,2,3', '10,4', '4,2,1,2,1,2'];
+
+const Y_MODES = {
+  powerDb:           { field: 'powerDecibel',          label: 'Power, dB',             suffix: ' dB', kind: 'db'  },
+  powerPct:          { field: 'powerPercent',          label: 'Power, %',              suffix: ' %',  kind: 'pct' },
+  amplitudeDb:       { field: 'amplitudeDecibel',      label: 'Amplitude, dB',         suffix: ' dB', kind: 'db'  },
+  amplitudePct:      { field: 'amplitudePercent',      label: 'Amplitude, %',          suffix: ' %',  kind: 'pct' },
+  phaseDeg:          { field: 'phaseDegrees',          label: 'Phase, deg \u00b0',     suffix: ' \u00b0', kind: 'deg' },
+  phaseDegUnwrapped: { field: 'phaseDegreesUnwrapped', label: 'Unwrapped phase, deg \u00b0', suffix: ' \u00b0', kind: 'deg' }
+};
+
+const X_MODES = {
+  frequency: { label: 'Normalized frequency' },
+  period:    { label: 'Period, samples' }
+};
+
+const COMPONENT_FIELDS = [
+  'powerDecibel',
+  'powerPercent',
+  'amplitudeDecibel',
+  'amplitudePercent',
+  'phaseDegrees',
+  'phaseDegreesUnwrapped'
+];
+
+const LAYOUT_HINT_KEYS = new Set([
+  'description', 'width', 'widthMin', 'widthMax', 'height', 'heightMin', 'heightMax',
+  'columns', 'gap', 'margin', 'palette', 'grid', 'crosshair', 'legend', 'legendMarker',
+  'charts', 'panes', 'subfig', 'title', 'xMode', 'yMode', 'xScale', 'interpolation',
+  'xLabel', 'yLabel', 'xFormat', 'yFormat', 'yFormatMargin', 'xTicks', 'yTicks', 'nice',
+  'minFrequency', 'maxFrequency', 'minPeriod', 'maxPeriod',
+  'minDb', 'maxDb', 'minPct', 'maxPct', 'minDeg', 'maxDeg',
+  'xMin', 'xMax', 'yMin', 'yMax', 'series', 'lines',
+  'horizontals', 'verticals', 'annotations'
+]);
+
+const THEME_TOKEN_NAMES = [
+  '--bg', '--fg', '--bg2', '--border',
+  '--axis', '--grid', '--grid-opacity',
+  '--label', '--legend', '--subfigure', '--coords',
+  '--curve-width', '--curve-hover-width',
+  '--ref-line', '--crosshair',
+  '--annotation-bg', '--annotation-fg',
+  '--btn-bg', '--btn-hover'
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  STATE
+ * ═══════════════════════════════════════════════════════════════════ */
+
+let dataStore = null;       // normalized { description, signalLength, frequencies, seriesOrder, seriesMap }
+let rawDataStore = null;    // raw user data JSON object
+let layoutStore = null;     // raw user layout JSON object
+let resolvedModel = null;   // merged figure + charts model
+
+let uiOverrides = {
+  yMode: null,
+  xMode: null,
+  xScale: null,
+  grid: null,
+  crosshair: null
+};
+
+const hoveredSeries = new Set();
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  HELPERS & SCALES / PALETTES
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function slugifyKey(raw, fallback) {
+  const parts = [];
+  let prevDash = false;
+  const str = String(raw || '').trim().toLowerCase();
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if ((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch === '_') {
+      parts.push(ch);
+      prevDash = false;
+    } else if (ch === '%') {
+      if (parts.length > 0 && !prevDash) parts.push('-');
+      parts.push('pct');
+      prevDash = false;
+    } else if (parts.length > 0 && !prevDash) {
+      parts.push('-');
+      prevDash = true;
+    }
+  }
+  const out = parts.join('').replace(/^-+|-+$/g, '');
+  return out || fallback || 'series';
+}
+
+function allocateUniqueKey(candidate, used) {
+  if (!used.has(candidate)) {
+    used.add(candidate);
+    return candidate;
+  }
+  let n = 2;
+  while (used.has(candidate + '-' + n)) n++;
+  const key = candidate + '-' + n;
+  used.add(key);
+  return key;
+}
+
+function getCurrentTheme() {
+  const attr = document.documentElement.getAttribute('data-theme');
+  if (attr === 'dark' || attr === 'print') return attr;
+  return 'light';
+}
+
+function resolveDimension(val, refWidth, fallback) {
+  if (val === undefined || val === null || val === '') return fallback;
+  if (typeof val === 'number' && Number.isFinite(val)) return val;
+  const str = String(val).trim();
+  const m = str.match(/^(-?\d+(?:\.\d+)?)(px|%width|%)?$/i);
+  if (!m) return fallback;
+  const num = parseFloat(m[1]);
+  const unit = (m[2] || 'px').toLowerCase();
+  if (unit === '%' || unit === '%width') return (num / 100) * refWidth;
+  return num;
+}
+
+function clampDimension(val, minVal, maxVal) {
+  let out = val;
+  if (typeof minVal === 'number' && Number.isFinite(minVal) && out < minVal) out = minVal;
+  if (typeof maxVal === 'number' && Number.isFinite(maxVal) && out > maxVal) out = maxVal;
+  return out;
+}
+
+function resolveCurveFactory(interp) {
+  switch (String(interp || 'catmullRomOpen').toLowerCase()) {
+    case 'linear':         return d3.curveLinear;
+    case 'catmullrom':
+    case 'camullrom':      return d3.curveCatmullRom;
+    case 'natural':        return d3.curveNatural;
+    case 'monotonex':
+    case 'monotone':       return d3.curveMonotoneX;
+    case 'basis':          return d3.curveBasis;
+    case 'cardinal':       return d3.curveCardinal;
+    case 'step':           return d3.curveStep;
+    case 'stepbefore':     return d3.curveStepBefore;
+    case 'stepafter':      return d3.curveStepAfter;
+    case 'catmullromopen':
+    default:               return d3.curveCatmullRomOpen;
+  }
+}
+
+function resolveInterpolator(name) {
+  switch (String(name || '').toLowerCase()) {
+    case 'cool':             return d3.interpolateCool;
+    case 'warm':             return d3.interpolateWarm;
+    case 'viridis':          return d3.interpolateViridis;
+    case 'plasma':           return d3.interpolatePlasma;
+    case 'inferno':          return d3.interpolateInferno;
+    case 'magma':            return d3.interpolateMagma;
+    case 'cividis':          return d3.interpolateCividis;
+    case 'turbo':            return d3.interpolateTurbo;
+    case 'rainbow':          return d3.interpolateRainbow;
+    case 'cubehelixdefault': return d3.interpolateCubehelixDefault;
+    case 'blues':            return t => d3.interpolateBlues(0.3 + 0.65 * t);
+    case 'greens':           return t => d3.interpolateGreens(0.3 + 0.65 * t);
+    case 'greys':            return t => d3.interpolateGreys(0.35 + 0.6 * t);
+    case 'oranges':          return t => d3.interpolateOranges(0.3 + 0.65 * t);
+    case 'purples':          return t => d3.interpolatePurples(0.3 + 0.65 * t);
+    case 'reds':             return t => d3.interpolateReds(0.3 + 0.65 * t);
+    default:                 return null;
+  }
+}
+
+function resolvePaletteStyle(paletteSpec, index, total) {
+  const isPrint = getCurrentTheme() === 'print';
+  const isMono = isPrint || (typeof paletteSpec === 'string' && paletteSpec.toLowerCase() === 'mono');
+  if (isMono) {
+    return {
+      color: 'var(--fg)',
+      dash: MONO_DASHES[index % MONO_DASHES.length]
+    };
+  }
+  if (Array.isArray(paletteSpec) && paletteSpec.length > 0) {
+    return { color: paletteSpec[index % paletteSpec.length], dash: '' };
+  }
+  const name = String(paletteSpec || 'default').toLowerCase();
+  if (name === 'tab10' || name === 'tableau10') {
+    const arr = d3.schemeTableau10 || DEFAULT_PALETTE;
+    return { color: arr[index % arr.length], dash: '' };
+  }
+  const interp = resolveInterpolator(name);
+  if (interp) {
+    const t = total <= 1 ? 0 : index / Math.max(1, total - 1);
+    return { color: interp(t), dash: '' };
+  }
+  return { color: DEFAULT_PALETTE[index % DEFAULT_PALETTE.length], dash: '' };
+}
+
+function normalizeYMode(raw) {
+  if (!raw) return 'powerDb';
+  if (Y_MODES[raw]) return raw;
+  const low = String(raw).toLowerCase();
+  if (low === 'powerdecibel' || low === 'powerdecibels' || low === 'pwrdb') return 'powerDb';
+  if (low === 'powerpercent' || low === 'powerpercents' || low === 'pwrpct') return 'powerPct';
+  if (low === 'amplitudedecibel' || low === 'amplitudedecibels' || low === 'ampdb') return 'amplitudeDb';
+  if (low === 'amplitudepercent' || low === 'amplitudepercents' || low === 'amppct') return 'amplitudePct';
+  if (low === 'phasedegrees' || low === 'phase') return 'phaseDeg';
+  if (low === 'phasedegreesunwrapped' || low === 'phaseunwrapped') return 'phaseDegUnwrapped';
+  return 'powerDb';
+}
+
+function normalizeXMode(raw) {
+  if (!raw) return 'frequency';
+  const low = String(raw).toLowerCase();
+  if (low === 'period' || low === 'periods') return 'period';
+  return 'frequency';
+}
+
+function normalizeXScale(raw) {
+  if (!raw) return 'linear';
+  return String(raw).toLowerCase() === 'log' ? 'log' : 'linear';
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  FILE DETECTION & NORMALIZATION
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function hasFresComponent(entry) {
+  if (!entry || typeof entry !== 'object') return false;
+  if (Array.isArray(entry.frequencies)) return true;
+  for (const f of COMPONENT_FIELDS) {
+    if (entry[f] !== undefined) return true;
+  }
+  return false;
+}
+
+function isDataFile(obj) {
+  if (!obj || typeof obj !== 'object') return false;
+  if (Array.isArray(obj)) {
+    return obj.length > 0 && hasFresComponent(obj[0]);
+  }
+  if (Array.isArray(obj.responses)) {
+    return true;
+  }
+  if (obj.series && typeof obj.series === 'object' && !Array.isArray(obj.series)) {
+    const vals = Object.values(obj.series);
+    if (vals.length === 0) return Array.isArray(obj.frequencies);
+    return hasFresComponent(vals[0]);
+  }
+  return false;
+}
+
+function isLayoutFile(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
+  if (isDataFile(obj)) return false;
+  for (const k of Object.keys(obj)) {
+    if (LAYOUT_HINT_KEYS.has(k)) return true;
+  }
+  return Object.keys(obj).length === 0;
+}
+
+function normalizeNumberArray(arr) {
+  if (!Array.isArray(arr)) return [];
+  const out = new Array(arr.length);
+  for (let i = 0; i < arr.length; i++) {
+    const v = arr[i];
+    out[i] = (typeof v === 'number' && Number.isFinite(v)) ? v : NaN;
+  }
+  return out;
+}
+
+function normalizeComponent(rawComp) {
+  let arr = [];
+  let explicitMin = NaN;
+  let explicitMax = NaN;
+  if (Array.isArray(rawComp)) {
+    arr = normalizeNumberArray(rawComp);
+  } else if (rawComp && typeof rawComp === 'object') {
+    arr = normalizeNumberArray(rawComp.data);
+    if (typeof rawComp.min === 'number' && Number.isFinite(rawComp.min)) explicitMin = rawComp.min;
+    if (typeof rawComp.max === 'number' && Number.isFinite(rawComp.max)) explicitMax = rawComp.max;
+  }
+  let calcMin = Infinity;
+  let calcMax = -Infinity;
+  for (let i = 0; i < arr.length; i++) {
+    const v = arr[i];
+    if (Number.isFinite(v)) {
+      if (v < calcMin) calcMin = v;
+      if (v > calcMax) calcMax = v;
+    }
+  }
+  const min = Number.isFinite(explicitMin) ? explicitMin : (Number.isFinite(calcMin) ? calcMin : 0);
+  const max = Number.isFinite(explicitMax) ? explicitMax : (Number.isFinite(calcMax) ? calcMax : 1);
+  return { data: arr, min, max };
+}
+
+function normalizeDataFile(raw) {
+  const usedKeys = new Set();
+  const seriesOrder = [];
+  const seriesMap = {};
+  let description = '';
+  let signalLength = null;
+  let rootFrequencies = [];
+
+  let rawEntries = [];
+  if (Array.isArray(raw)) {
+    rawEntries = raw.map((entry, idx) => [entry.key || entry.label || entry.mnemonic || ('series-' + (idx + 1)), entry, true]);
+  } else {
+    if (typeof raw.description === 'string') description = raw.description;
+    if (typeof raw.signalLength === 'number' && Number.isFinite(raw.signalLength)) signalLength = raw.signalLength;
+    if (Array.isArray(raw.frequencies)) rootFrequencies = normalizeNumberArray(raw.frequencies);
+
+    if (Array.isArray(raw.responses)) {
+      rawEntries = raw.responses.map((entry, idx) => [entry.key || entry.label || entry.mnemonic || ('series-' + (idx + 1)), entry, true]);
+    } else if (raw.series && typeof raw.series === 'object' && !Array.isArray(raw.series)) {
+      rawEntries = Object.entries(raw.series).map(([k, entry]) => [k, entry, false]);
+    }
+  }
+
+  for (const [rawKey, entry, slugify] of rawEntries) {
+    if (!entry || typeof entry !== 'object') continue;
+    const key = slugify ? allocateUniqueKey(slugifyKey(rawKey), usedKeys) : allocateUniqueKey(String(rawKey), usedKeys);
+    const freqs = Array.isArray(entry.frequencies) && entry.frequencies.length > 0
+      ? normalizeNumberArray(entry.frequencies)
+      : rootFrequencies;
+
+    const periods = new Array(freqs.length);
+    for (let i = 0; i < freqs.length; i++) {
+      const f = freqs[freqs.length - 1 - i];
+      periods[i] = (Number.isFinite(f) && f > 0) ? (2 / f) : NaN;
+    }
+
+    let posFreqMin = Infinity;
+    let posPeriodMin = Infinity;
+    let periodMax = -Infinity;
+    for (let i = 0; i < freqs.length; i++) {
+      if (Number.isFinite(freqs[i]) && freqs[i] > 0 && freqs[i] < posFreqMin) posFreqMin = freqs[i];
+      if (Number.isFinite(periods[i]) && periods[i] > 0) {
+        if (periods[i] < posPeriodMin) posPeriodMin = periods[i];
+        if (periods[i] > periodMax) periodMax = periods[i];
+      }
+    }
+
+    const comps = {};
+    const compsReversed = {};
+    for (const field of COMPONENT_FIELDS) {
+      const norm = normalizeComponent(entry[field]);
+      comps[field] = norm;
+      compsReversed[field] = {
+        data: norm.data.slice().reverse(),
+        min: norm.min,
+        max: norm.max
+      };
+    }
+
+    seriesOrder.push(key);
+    seriesMap[key] = {
+      key,
+      mnemonic: entry.mnemonic || entry.label || key,
+      description: typeof entry.description === 'string' ? entry.description : '',
+      warmup: (typeof entry.warmup === 'number' && Number.isFinite(entry.warmup)) ? entry.warmup : null,
+      color: typeof entry.color === 'string' ? entry.color : null,
+      width: (typeof entry.width === 'number' && Number.isFinite(entry.width)) ? entry.width : null,
+      dash: typeof entry.dash === 'string' ? entry.dash : null,
+      frequencies: freqs,
+      periods,
+      posFreqMin: Number.isFinite(posFreqMin) ? posFreqMin : 1e-3,
+      posPeriodMin: Number.isFinite(posPeriodMin) ? posPeriodMin : 2,
+      periodMax: Number.isFinite(periodMax) ? Math.ceil(periodMax) : 100,
+      components: comps,
+      componentsPeriod: compsReversed
+    };
+  }
+
+  if (!signalLength && rootFrequencies.length > 0) {
+    signalLength = (rootFrequencies.length + 1) * 2;
+  }
+
+  return {
+    description,
+    signalLength,
+    frequencies: rootFrequencies,
+    seriesOrder,
+    seriesMap
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  MERGE DATA + LAYOUT
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function normalizeRefLines(arr) {
+  if (!Array.isArray(arr)) return [];
+  const out = [];
+  for (const item of arr) {
+    if (typeof item === 'number' && Number.isFinite(item)) {
+      out.push({
+        value: item,
+        color: 'var(--ref-line)',
+        width: 1,
+        dash: '4,3',
+        label: '',
+        align: null,
+        expandDomain: true
+      });
+    } else if (item && typeof item === 'object' && typeof item.value === 'number' && Number.isFinite(item.value)) {
+      out.push({
+        value: item.value,
+        color: item.color || 'var(--ref-line)',
+        width: (typeof item.width === 'number' && Number.isFinite(item.width)) ? item.width : 1,
+        dash: item.dash !== undefined ? String(item.dash) : '4,3',
+        label: typeof item.label === 'string' ? item.label : '',
+        align: typeof item.align === 'string' ? item.align : null,
+        expandDomain: item.expandDomain !== false
+      });
+    }
+  }
+  return out;
+}
+
+function cloneAnnotationsWithRef(rawAnns) {
+  if (!Array.isArray(rawAnns)) return [];
+  return rawAnns.map(ann => {
+    if (!ann || typeof ann !== 'object') return null;
+    const copy = { ...ann, _layoutRef: ann };
+    if (Array.isArray(ann.data)) {
+      copy.data = ann.data.map(pt => ({ ...pt }));
+    }
+    return copy;
+  }).filter(Boolean);
+}
+
+function mergeDataAndLayout(data, rawLayout) {
+  const layout = (rawLayout && typeof rawLayout === 'object' && !Array.isArray(rawLayout)) ? rawLayout : {};
+  const rawCharts = Array.isArray(layout.charts)
+    ? layout.charts
+    : (Array.isArray(layout.panes) ? layout.panes : null);
+  const isMultiChart = Boolean(rawCharts && rawCharts.length > 1);
+  const chartSpecs = rawCharts && rawCharts.length > 0 ? rawCharts : [layout];
+
+  const unresolvedRefs = [];
+
+  // Build deterministic figure-wide series order for consistent palette assignment
+  const figureSeriesOrder = [];
+  const seenSeries = new Set();
+  const registerKey = k => {
+    if (data.seriesMap[k] && !seenSeries.has(k)) {
+      seenSeries.add(k);
+      figureSeriesOrder.push(k);
+    }
+  };
+
+  for (const cs of chartSpecs) {
+    const serArr = Array.isArray(cs.series) ? cs.series : (Array.isArray(layout.series) ? layout.series : null);
+    const linesArr = Array.isArray(cs.lines) ? cs.lines : (Array.isArray(layout.lines) ? layout.lines : null);
+    if (serArr) serArr.forEach(registerKey);
+    if (linesArr) linesArr.forEach(l => { if (l && l.series) registerKey(l.series); });
+    if (!serArr && !linesArr) data.seriesOrder.forEach(registerKey);
+  }
+  if (figureSeriesOrder.length === 0) {
+    data.seriesOrder.forEach(registerKey);
+  }
+  const paletteIndexByKey = new Map();
+  figureSeriesOrder.forEach((k, idx) => paletteIndexByKey.set(k, idx));
+  const paletteTotal = Math.max(1, figureSeriesOrder.length);
+
+  const pick = (cs, key, fallback) => {
+    if (cs && cs[key] !== undefined) return cs[key];
+    if (layout[key] !== undefined) return layout[key];
+    return fallback;
+  };
+
+  const resolvedCharts = chartSpecs.map((cs, chartIdx) => {
+    const chartPalette = pick(cs, 'palette', 'default');
+    const defaultInterp = pick(cs, 'interpolation', 'catmullRomOpen');
+
+    const serArr = Array.isArray(cs.series) ? cs.series : (cs !== layout && Array.isArray(layout.series) ? layout.series : (cs === layout && Array.isArray(layout.series) ? layout.series : null));
+    const linesArr = Array.isArray(cs.lines) ? cs.lines : (cs !== layout && Array.isArray(layout.lines) ? layout.lines : (cs === layout && Array.isArray(layout.lines) ? layout.lines : null));
+
+    const overrideByKey = new Map();
+    if (linesArr) {
+      for (const item of linesArr) {
+        if (item && typeof item.series === 'string') {
+          overrideByKey.set(item.series, item);
+        }
+      }
+    }
+
+    let orderedKeys = [];
+    if (serArr && serArr.length > 0) {
+      orderedKeys = serArr.slice();
+    } else if (linesArr && linesArr.length > 0) {
+      orderedKeys = linesArr.map(l => l && l.series).filter(Boolean);
+    } else {
+      orderedKeys = data.seriesOrder.slice();
+    }
+
+    const curves = [];
+    for (let i = 0; i < orderedKeys.length; i++) {
+      const key = orderedKeys[i];
+      const entry = data.seriesMap[key];
+      if (!entry) {
+        unresolvedRefs.push(key);
+        continue;
+      }
+      const ov = overrideByKey.get(key) || {};
+      const pIdx = paletteIndexByKey.has(key) ? paletteIndexByKey.get(key) : i;
+      const pal = resolvePaletteStyle(chartPalette, pIdx, paletteTotal);
+      const isPrint = getCurrentTheme() === 'print';
+
+      // Explicit layout color always wins; data series color applies in non-print themes unless palette is explicitly set
+      const hasExplicitPalette = cs.palette !== undefined || layout.palette !== undefined;
+      let strokeColor = ov.color || (!isPrint && !hasExplicitPalette && entry.color ? entry.color : pal.color);
+      let strokeDash = ov.dash !== undefined ? String(ov.dash) : (entry.dash !== null && !isPrint ? entry.dash : pal.dash);
+      if (isPrint && !ov.color) {
+        strokeColor = 'var(--fg)';
+        if (ov.dash === undefined) strokeDash = pal.dash;
+      }
+
+      curves.push({
+        key,
+        entry,
+        mnemonic: ov.mnemonic || entry.mnemonic || key,
+        color: strokeColor,
+        width: (typeof ov.width === 'number' && Number.isFinite(ov.width))
+          ? ov.width
+          : (entry.width !== null ? entry.width : null),
+        dash: strokeDash,
+        opacity: (typeof ov.opacity === 'number' && Number.isFinite(ov.opacity)) ? ov.opacity : 1,
+        interpolation: ov.interpolation || defaultInterp
+      });
+    }
+
+    const rawHoriz = cs.horizontals !== undefined ? cs.horizontals : layout.horizontals;
+    const rawVert = cs.verticals !== undefined ? cs.verticals : layout.verticals;
+    const rawAnns = cs.annotations !== undefined ? cs.annotations : layout.annotations;
+
+    return {
+      index: chartIdx,
+      subfig: typeof cs.subfig === 'string' ? cs.subfig : (cs === layout && typeof layout.subfig === 'string' ? layout.subfig : ''),
+      title: typeof cs.title === 'string' ? cs.title : (cs === layout && typeof layout.title === 'string' ? layout.title : ''),
+      xMode: normalizeXMode(pick(cs, 'xMode', pick(cs, 'xmode', 'frequency'))),
+      yMode: normalizeYMode(pick(cs, 'yMode', pick(cs, 'ymode', 'powerDb'))),
+      xScale: normalizeXScale(pick(cs, 'xScale', 'linear')),
+      height: cs.height !== undefined ? cs.height : layout.height,
+      heightMin: pick(cs, 'heightMin', undefined),
+      heightMax: pick(cs, 'heightMax', undefined),
+      legend: cs.legend !== undefined ? cs.legend : undefined,
+      xLabel: cs.xLabel !== undefined ? cs.xLabel : layout.xLabel,
+      yLabel: cs.yLabel !== undefined ? cs.yLabel : layout.yLabel,
+      xFormat: pick(cs, 'xFormat', undefined),
+      yFormat: pick(cs, 'yFormat', '.2f'),
+      yFormatMargin: Number(pick(cs, 'yFormatMargin', 0)) || 0,
+      xTicks: pick(cs, 'xTicks', undefined),
+      yTicks: pick(cs, 'yTicks', undefined),
+      nice: cs.nice !== undefined ? cs.nice : layout.nice,
+      minFrequency: pick(cs, 'minFrequency', undefined),
+      maxFrequency: pick(cs, 'maxFrequency', undefined),
+      minPeriod: pick(cs, 'minPeriod', undefined),
+      maxPeriod: pick(cs, 'maxPeriod', undefined),
+      minDb: pick(cs, 'minDb', undefined),
+      maxDb: pick(cs, 'maxDb', undefined),
+      minPct: pick(cs, 'minPct', undefined),
+      maxPct: pick(cs, 'maxPct', undefined),
+      minDeg: pick(cs, 'minDeg', undefined),
+      maxDeg: pick(cs, 'maxDeg', undefined),
+      xMin: cs.xMin !== undefined ? cs.xMin : (cs === layout ? layout.xMin : undefined),
+      xMax: cs.xMax !== undefined ? cs.xMax : (cs === layout ? layout.xMax : undefined),
+      yMin: cs.yMin !== undefined ? cs.yMin : (cs === layout ? layout.yMin : undefined),
+      yMax: cs.yMax !== undefined ? cs.yMax : (cs === layout ? layout.yMax : undefined),
+      curves,
+      horizontals: normalizeRefLines(rawHoriz),
+      verticals: normalizeRefLines(rawVert),
+      annotations: cloneAnnotationsWithRef(rawAnns)
+    };
+  });
+
+  let gapRow = DEFAULT_GAP.row;
+  let gapCol = DEFAULT_GAP.col;
+  if (typeof layout.gap === 'number' && Number.isFinite(layout.gap)) {
+    gapRow = layout.gap;
+    gapCol = layout.gap;
+  } else if (layout.gap && typeof layout.gap === 'object') {
+    if (typeof layout.gap.row === 'number') gapRow = layout.gap.row;
+    if (typeof layout.gap.col === 'number') gapCol = layout.gap.col;
+  }
+
+  const outerMargin = {
+    top: (layout.margin && typeof layout.margin.top === 'number') ? layout.margin.top : DEFAULT_OUTER_MARGIN.top,
+    right: (layout.margin && typeof layout.margin.right === 'number') ? layout.margin.right : DEFAULT_OUTER_MARGIN.right,
+    bottom: (layout.margin && typeof layout.margin.bottom === 'number') ? layout.margin.bottom : DEFAULT_OUTER_MARGIN.bottom,
+    left: (layout.margin && typeof layout.margin.left === 'number') ? layout.margin.left : DEFAULT_OUTER_MARGIN.left
+  };
+
+  let legendMode = 'perChart';
+  if (layout.legend === false || layout.legend === 'none') legendMode = 'none';
+  else if (layout.legend === 'shared') legendMode = 'shared';
+  else legendMode = 'perChart';
+
+  const legendMarker = String(layout.legendMarker || 'line').toLowerCase() === 'circle' ? 'circle' : 'line';
+
+  // Shared legend items deduplicated in figure order
+  const sharedLegendItems = [];
+  const seenLegend = new Set();
+  for (const ch of resolvedCharts) {
+    for (const c of ch.curves) {
+      if (!seenLegend.has(c.key)) {
+        seenLegend.add(c.key);
+        sharedLegendItems.push(c);
+      }
+    }
+  }
+
+  return {
+    isMultiChart,
+    width: layout.width !== undefined ? layout.width : '100%',
+    widthMin: layout.widthMin,
+    widthMax: layout.widthMax,
+    defaultHeight: isMultiChart ? DEFAULT_GRID_HEIGHT : DEFAULT_SINGLE_HEIGHT,
+    columns: Math.max(1, Math.min(resolvedCharts.length, Math.trunc(Number(layout.columns) || 1))),
+    gap: { row: gapRow, col: gapCol },
+    margin: outerMargin,
+    grid: layout.grid !== false,
+    crosshair: layout.crosshair === true,
+    legendMode,
+    legendMarker,
+    sharedLegendItems,
+    charts: resolvedCharts,
+    unresolvedRefs
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  LEGEND MEASUREMENT & RENDERING
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function measureTextLengths(svgSel, labels, fontSize) {
+  const probeGroup = svgSel.append('g').attr('style', 'visibility:hidden;pointer-events:none');
+  const lengths = labels.map(txt => {
+    const t = probeGroup.append('text').attr('font-size', fontSize || 12).text(txt || '');
+    try {
+      const len = t.node().getComputedTextLength();
+      if (len > 0) return len;
+    } catch (_) { /* ignore */ }
+    return String(txt || '').length * 6.8;
+  });
+  probeGroup.remove();
+  return lengths;
+}
+
+function computeLegendLayout(svgSel, items, maxWidth, markerType) {
+  if (!items || items.length === 0 || maxWidth <= 0) {
+    return { rows: 0, height: 0, placements: [] };
+  }
+  const swatchWidth = markerType === 'circle' ? 12 : 20;
+  const swatchGap = 5;
+  const itemSpacing = 14;
+  const rowHeight = 16;
+  const textLengths = measureTextLengths(svgSel, items.map(it => it.mnemonic), 12);
+
+  const placements = [];
+  let x = 0;
+  let row = 0;
+  for (let i = 0; i < items.length; i++) {
+    const totalW = swatchWidth + swatchGap + textLengths[i];
+    if (i > 0 && x + totalW > maxWidth) {
+      row++;
+      x = 0;
+    }
+    placements.push({
+      item: items[i],
+      x,
+      y: row * rowHeight + 9,
+      swatchWidth,
+      swatchGap
+    });
+    x += totalW + itemSpacing;
+  }
+  const rows = row + 1;
+  return {
+    rows,
+    height: rows * rowHeight + 4,
+    placements
+  };
+}
+
+function renderLegend(parentG, legendLayout, offsetX, offsetY, markerType) {
+  if (!legendLayout || legendLayout.placements.length === 0) return;
+  const legG = parentG.append('g')
+    .attr('class', 'legend')
+    .attr('transform', `translate(${offsetX},${offsetY})`);
+
+  for (const p of legendLayout.placements) {
+    const c = p.item;
+    const isHovered = hoveredSeries.has(c.key);
+    const itemG = legG.append('g')
+      .attr('class', 'legend-item')
+      .attr('transform', `translate(${p.x},${p.y})`)
+      .on('click', () => {
+        if (hoveredSeries.has(c.key)) hoveredSeries.delete(c.key);
+        else hoveredSeries.add(c.key);
+        render();
+      });
+
+    if (markerType === 'circle') {
+      const r = 5;
+      itemG.append('circle')
+        .attr('cx', r)
+        .attr('cy', 0)
+        .attr('r', r)
+        .attr('fill', isHovered ? 'none' : c.color)
+        .attr('stroke', c.color)
+        .attr('stroke-width', 2);
+    } else {
+      const sw = p.swatchWidth;
+      const w = isHovered ? 4 : (c.width || 2);
+      const lineEl = itemG.append('line')
+        .attr('x1', 0).attr('y1', 0)
+        .attr('x2', sw).attr('y2', 0)
+        .attr('stroke', c.color)
+        .attr('stroke-width', w)
+        .attr('fill', 'none');
+      if (c.dash) lineEl.attr('stroke-dasharray', c.dash);
+    }
+
+    itemG.append('text')
+      .attr('x', p.swatchWidth + p.swatchGap)
+      .attr('y', 0)
+      .attr('dy', '0.34em')
+      .style('font-weight', isHovered ? '700' : '400')
+      .text(c.mnemonic);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  ANNOTATION SHAPES & RENDERING
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function trianglePath(x, y, sz, direction) {
+  const half = sz / 2;
+  switch (direction) {
+    case 'down':      return `M${x},${y + sz} L${x - half},${y} L${x + half},${y} Z`;
+    case 'left':      return `M${x - sz},${y} L${x},${y - half} L${x},${y + half} Z`;
+    case 'right':     return `M${x + sz},${y} L${x},${y - half} L${x},${y + half} Z`;
+    case 'upright':   return `M${x + half},${y - half} L${x - half},${y - half} L${x + half},${y + half} Z`;
+    case 'upleft':    return `M${x - half},${y - half} L${x + half},${y - half} L${x - half},${y + half} Z`;
+    case 'downright': return `M${x + half},${y + half} L${x - half},${y + half} L${x + half},${y - half} Z`;
+    case 'downleft':  return `M${x - half},${y + half} L${x + half},${y + half} L${x - half},${y - half} Z`;
+    default:          return `M${x},${y - sz} L${x - half},${y} L${x + half},${y} Z`;
+  }
+}
+
+function arrowPath(x, y, sz, direction) {
+  const w = sz * 0.8;
+  const hw = w / 2;
+  const ph = sz / 2;
+  const tw = sz / 3;
+  const htw = tw / 2;
+  const th = sz - ph;
+  switch (direction) {
+    case 'down':
+      return `M${x},${y + sz} L${x - hw},${y + th} L${x - htw},${y + th} L${x - htw},${y} L${x + htw},${y} L${x + htw},${y + th} L${x + hw},${y + th} Z`;
+    case 'left':
+      return `M${x - sz},${y} L${x - th},${y - hw} L${x - th},${y - htw} L${x},${y - htw} L${x},${y + htw} L${x - th},${y + htw} L${x - th},${y + hw} Z`;
+    case 'right':
+      return `M${x + sz},${y} L${x + th},${y - hw} L${x + th},${y - htw} L${x},${y - htw} L${x},${y + htw} L${x + th},${y + htw} L${x + th},${y + hw} Z`;
+    default:
+      return `M${x},${y - sz} L${x - hw},${y - th} L${x - htw},${y - th} L${x - htw},${y} L${x + htw},${y} L${x + htw},${y - th} L${x + hw},${y - th} Z`;
+  }
+}
+
+function roundCoord(val) {
+  if (!Number.isFinite(val)) return val;
+  return +val.toPrecision(5);
+}
+
+function drawStaticZones(group, annotations, xScale, yScale, plotW, plotH) {
+  if (!annotations) return;
+  for (const ann of annotations) {
+    if (ann.draggable || ann.type !== 'zone') continue;
+    const color = ann.color || 'rgba(33,150,243,0.12)';
+    const fontSize = ann.size || 10;
+    const zones = ann.data || [ann];
+    for (const z of zones) {
+      const px1 = z.x1 !== undefined && z.x1 !== null ? xScale(z.x1) : 0;
+      const px2 = z.x2 !== undefined && z.x2 !== null ? xScale(z.x2) : plotW;
+      const py1 = z.y1 !== undefined && z.y1 !== null ? yScale(z.y1) : plotH;
+      const py2 = z.y2 !== undefined && z.y2 !== null ? yScale(z.y2) : 0;
+      const xLeft = Number.isFinite(px1) ? Math.min(px1, Number.isFinite(px2) ? px2 : plotW) : 0;
+      const xRight = Number.isFinite(px2) ? Math.max(px2, Number.isFinite(px1) ? px1 : 0) : plotW;
+      const yTop = Math.min(Number.isFinite(py1) ? py1 : plotH, Number.isFinite(py2) ? py2 : 0);
+      const yBot = Math.max(Number.isFinite(py1) ? py1 : plotH, Number.isFinite(py2) ? py2 : 0);
+      group.append('rect')
+        .attr('x', xLeft).attr('y', yTop)
+        .attr('width', Math.max(0, xRight - xLeft))
+        .attr('height', Math.max(0, yBot - yTop))
+        .attr('fill', color).attr('stroke', 'none');
+      if (ann.label && zones.length === 1) {
+        group.append('text')
+          .attr('x', xLeft + 5).attr('y', yTop + fontSize + 3)
+          .attr('text-anchor', 'start').attr('font-size', fontSize)
+          .style('fill', ann.labelColor || 'var(--fg)')
+          .text(ann.label);
+      }
+    }
+  }
+}
+
+function drawStaticForegroundAnnotations(group, annotations, xScale, yScale, plotW, plotH) {
+  if (!annotations) return;
+  for (const ann of annotations) {
+    if (ann.draggable || ann.type === 'zone') continue;
+    const color = ann.color || 'var(--fg)';
+    const width = ann.width || 1;
+    const dash = ann.dash || '';
+    const fontSize = ann.size || 10;
+
+    switch (ann.type) {
+      case 'hline': {
+        const val = ann.value !== undefined ? ann.value : ann.y;
+        const y = yScale(val);
+        if (!Number.isFinite(y) || y < 0 || y > plotH) break;
+        const ln = group.append('line')
+          .attr('x1', 0).attr('y1', y).attr('x2', plotW).attr('y2', y)
+          .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+        if (dash) ln.attr('stroke-dasharray', dash);
+        if (ann.label) {
+          const anchor = ann.anchor || ann.align || 'end';
+          const lx = anchor === 'start' ? 4 : (anchor === 'middle' ? plotW / 2 : plotW - 4);
+          group.append('text')
+            .attr('x', lx).attr('y', y - 4)
+            .attr('text-anchor', anchor).attr('font-size', fontSize)
+            .style('fill', color).text(ann.label);
+        }
+        break;
+      }
+      case 'vline': {
+        const val = ann.x !== undefined ? ann.x : ann.value;
+        const x = xScale(val);
+        if (!Number.isFinite(x) || x < 0 || x > plotW) break;
+        const ln = group.append('line')
+          .attr('x1', x).attr('y1', 0).attr('x2', x).attr('y2', plotH)
+          .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+        if (dash) ln.attr('stroke-dasharray', dash);
+        if (ann.label) {
+          const nearRight = x > plotW - 60;
+          group.append('text')
+            .attr('x', nearRight ? x - 4 : x + 4)
+            .attr('y', fontSize + 3)
+            .attr('text-anchor', nearRight ? 'end' : 'start')
+            .attr('font-size', fontSize).style('fill', color).text(ann.label);
+        }
+        break;
+      }
+      case 'text': {
+        const xv = ann.x;
+        const yv = ann.y !== undefined ? ann.y : ann.value;
+        const x = xScale(xv);
+        const y = yScale(yv);
+        if (!Number.isFinite(x) || !Number.isFinite(y)) break;
+        group.append('text')
+          .attr('x', x).attr('y', y)
+          .attr('text-anchor', ann.anchor || 'start')
+          .attr('font-size', fontSize).style('fill', color)
+          .text(ann.text || '');
+        break;
+      }
+      case 'arrow': {
+        const shape = ann.shape || 'triangle';
+        const direction = ann.direction || 'up';
+        const sz = ann.markerSize || 8;
+        const pts = ann.data || [ann];
+        for (const pt of pts) {
+          const xv = pt.x;
+          const yv = pt.y !== undefined ? pt.y : pt.value;
+          const x = xScale(xv);
+          const y = yScale(yv);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+          const d = shape === 'arrow' ? arrowPath(x, y, sz, direction) : trianglePath(x, y, sz, direction);
+          group.append('path').attr('d', d).attr('fill', color).attr('stroke', 'none');
+          if (ann.label && pts.length === 1) {
+            const dy = direction.startsWith('down') ? (sz + fontSize + 2) : -(sz + 4);
+            group.append('text')
+              .attr('x', x).attr('y', y + dy)
+              .attr('text-anchor', ann.anchor || 'middle')
+              .attr('font-size', fontSize).style('fill', color)
+              .text(ann.label);
+          }
+        }
+        break;
+      }
+      case 'line': {
+        const segs = ann.data || [ann];
+        for (const ln of segs) {
+          const x1 = xScale(ln.x1);
+          const y1 = yScale(ln.y1 !== undefined ? ln.y1 : ln.value1);
+          const x2 = xScale(ln.x2);
+          const y2 = yScale(ln.y2 !== undefined ? ln.y2 : ln.value2);
+          if (!Number.isFinite(x1) || !Number.isFinite(y1) || !Number.isFinite(x2) || !Number.isFinite(y2)) continue;
+          const el = group.append('line')
+            .attr('x1', x1).attr('y1', y1).attr('x2', x2).attr('y2', y2)
+            .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+          if (dash) el.attr('stroke-dasharray', dash);
+          if (ann.label && segs.length === 1) {
+            group.append('text')
+              .attr('x', (x1 + x2) / 2).attr('y', (y1 + y2) / 2 - 4)
+              .attr('text-anchor', 'middle').attr('font-size', fontSize)
+              .style('fill', color).text(ann.label);
+          }
+        }
+        break;
+      }
+    }
+  }
+}
+
+function setupDraggableAnnotations(group, annotations, xScale, yScale, plotW, plotH, onDragEnd) {
+  if (!annotations) return;
+  for (const ann of annotations) {
+    if (!ann.draggable) continue;
+    const color = ann.color || 'var(--fg)';
+    const width = ann.width || 1;
+    const dash = ann.dash || '';
+    const fontSize = ann.size || 10;
+
+    switch (ann.type) {
+      case 'hline': {
+        const val = ann.value !== undefined ? ann.value : ann.y;
+        const y = yScale(val);
+        if (!Number.isFinite(y)) break;
+        const vis = group.append('line')
+          .attr('x1', 0).attr('y1', y).attr('x2', plotW).attr('y2', y)
+          .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+        if (dash) vis.attr('stroke-dasharray', dash);
+        let labelEl = null;
+        if (ann.label) {
+          labelEl = group.append('text')
+            .attr('x', plotW - 4).attr('y', y - 4)
+            .attr('text-anchor', 'end').attr('font-size', fontSize)
+            .style('fill', color).text(ann.label);
+        }
+        group.append('line').attr('class', 'drag-interaction')
+          .attr('x1', 0).attr('y1', y).attr('x2', plotW).attr('y2', y)
+          .attr('stroke', color).attr('stroke-width', 14)
+          .call(d3.drag()
+            .on('drag', function(event) {
+              const ny = Math.max(0, Math.min(plotH, event.y));
+              d3.select(this).attr('y1', ny).attr('y2', ny);
+              vis.attr('y1', ny).attr('y2', ny);
+              if (labelEl) labelEl.attr('y', ny - 4);
+            })
+            .on('end', function(event) {
+              const ny = Math.max(0, Math.min(plotH, event.y));
+              const nv = roundCoord(yScale.invert(ny));
+              if (ann._layoutRef) {
+                if ('y' in ann._layoutRef && !('value' in ann._layoutRef)) ann._layoutRef.y = nv;
+                else ann._layoutRef.value = nv;
+              }
+              if (onDragEnd) onDragEnd();
+            })
+          );
+        break;
+      }
+      case 'vline': {
+        const val = ann.x !== undefined ? ann.x : ann.value;
+        const x = xScale(val);
+        if (!Number.isFinite(x)) break;
+        const vis = group.append('line')
+          .attr('x1', x).attr('y1', 0).attr('x2', x).attr('y2', plotH)
+          .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+        if (dash) vis.attr('stroke-dasharray', dash);
+        let labelEl = null;
+        if (ann.label) {
+          labelEl = group.append('text')
+            .attr('x', x + 4).attr('y', fontSize + 3)
+            .attr('text-anchor', 'start').attr('font-size', fontSize)
+            .style('fill', color).text(ann.label);
+        }
+        group.append('line').attr('class', 'drag-interaction')
+          .attr('x1', x).attr('y1', 0).attr('x2', x).attr('y2', plotH)
+          .attr('stroke', color).attr('stroke-width', 14)
+          .call(d3.drag()
+            .on('drag', function(event) {
+              const nx = Math.max(0, Math.min(plotW, event.x));
+              d3.select(this).attr('x1', nx).attr('x2', nx);
+              vis.attr('x1', nx).attr('x2', nx);
+              if (labelEl) labelEl.attr('x', nx + 4);
+            })
+            .on('end', function(event) {
+              const nx = Math.max(0, Math.min(plotW, event.x));
+              const nv = roundCoord(xScale.invert(nx));
+              if (ann._layoutRef) {
+                if ('value' in ann._layoutRef && !('x' in ann._layoutRef)) ann._layoutRef.value = nv;
+                else ann._layoutRef.x = nv;
+              }
+              if (onDragEnd) onDragEnd();
+            })
+          );
+        break;
+      }
+      case 'text': {
+        const x = xScale(ann.x);
+        const y = yScale(ann.y !== undefined ? ann.y : ann.value);
+        if (!Number.isFinite(x) || !Number.isFinite(y)) break;
+        const vis = group.append('text')
+          .attr('x', x).attr('y', y)
+          .attr('text-anchor', ann.anchor || 'start')
+          .attr('font-size', fontSize).style('fill', color)
+          .text(ann.text || '');
+        group.append('circle').attr('class', 'drag-endpoint')
+          .attr('cx', x).attr('cy', y).attr('r', 8)
+          .call(d3.drag()
+            .on('drag', function(event) {
+              const nx = Math.max(0, Math.min(plotW, event.x));
+              const ny = Math.max(0, Math.min(plotH, event.y));
+              d3.select(this).attr('cx', nx).attr('cy', ny);
+              vis.attr('x', nx).attr('y', ny);
+            })
+            .on('end', function(event) {
+              const nx = Math.max(0, Math.min(plotW, event.x));
+              const ny = Math.max(0, Math.min(plotH, event.y));
+              if (ann._layoutRef) {
+                ann._layoutRef.x = roundCoord(xScale.invert(nx));
+                const yv = roundCoord(yScale.invert(ny));
+                if ('value' in ann._layoutRef && !('y' in ann._layoutRef)) ann._layoutRef.value = yv;
+                else ann._layoutRef.y = yv;
+              }
+              if (onDragEnd) onDragEnd();
+            })
+          );
+        break;
+      }
+      case 'arrow': {
+        const shape = ann.shape || 'triangle';
+        const direction = ann.direction || 'up';
+        const sz = ann.markerSize || 8;
+        const pts = ann.data || [ann];
+        for (let pi = 0; pi < pts.length; pi++) {
+          const pt = pts[pi];
+          const x = xScale(pt.x);
+          const y = yScale(pt.y !== undefined ? pt.y : pt.value);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+          const d = shape === 'arrow' ? arrowPath(x, y, sz, direction) : trianglePath(x, y, sz, direction);
+          const vis = group.append('path').attr('d', d).attr('fill', color).attr('stroke', 'none');
+          let labelEl = null;
+          const dy = direction.startsWith('down') ? (sz + fontSize + 2) : -(sz + 4);
+          if (ann.label && pts.length === 1) {
+            labelEl = group.append('text')
+              .attr('x', x).attr('y', y + dy)
+              .attr('text-anchor', ann.anchor || 'middle')
+              .attr('font-size', fontSize).style('fill', color)
+              .text(ann.label);
+          }
+          group.append('circle').attr('class', 'drag-endpoint')
+            .attr('cx', x).attr('cy', y).attr('r', 8)
+            .datum(pi)
+            .call(d3.drag()
+              .on('drag', function(event) {
+                const nx = Math.max(0, Math.min(plotW, event.x));
+                const ny = Math.max(0, Math.min(plotH, event.y));
+                d3.select(this).attr('cx', nx).attr('cy', ny);
+                vis.attr('d', shape === 'arrow' ? arrowPath(nx, ny, sz, direction) : trianglePath(nx, ny, sz, direction));
+                if (labelEl) labelEl.attr('x', nx).attr('y', ny + dy);
+              })
+              .on('end', function(event) {
+                const idx = d3.select(this).datum();
+                const nx = Math.max(0, Math.min(plotW, event.x));
+                const ny = Math.max(0, Math.min(plotH, event.y));
+                if (ann._layoutRef) {
+                  const ref = ann._layoutRef.data ? ann._layoutRef.data[idx] : ann._layoutRef;
+                  ref.x = roundCoord(xScale.invert(nx));
+                  const yv = roundCoord(yScale.invert(ny));
+                  if ('value' in ref && !('y' in ref)) ref.value = yv;
+                  else ref.y = yv;
+                }
+                if (onDragEnd) onDragEnd();
+              })
+            );
+        }
+        break;
+      }
+      case 'line': {
+        const x1 = xScale(ann.x1);
+        const y1 = yScale(ann.y1 !== undefined ? ann.y1 : ann.value1);
+        const x2 = xScale(ann.x2);
+        const y2 = yScale(ann.y2 !== undefined ? ann.y2 : ann.value2);
+        if (!Number.isFinite(x1) || !Number.isFinite(y1) || !Number.isFinite(x2) || !Number.isFinite(y2)) break;
+        const vis = group.append('line')
+          .attr('x1', x1).attr('y1', y1).attr('x2', x2).attr('y2', y2)
+          .attr('stroke', color).attr('stroke-width', width).attr('fill', 'none');
+        if (dash) vis.attr('stroke-dasharray', dash);
+        let labelEl = null;
+        if (ann.label) {
+          labelEl = group.append('text')
+            .attr('x', (x1 + x2) / 2).attr('y', (y1 + y2) / 2 - 4)
+            .attr('text-anchor', 'middle').attr('font-size', fontSize)
+            .style('fill', color).text(ann.label);
+        }
+        const body = group.append('line').attr('class', 'drag-interaction')
+          .attr('x1', x1).attr('y1', y1).attr('x2', x2).attr('y2', y2)
+          .attr('stroke', color).attr('stroke-width', 14);
+        const c1 = group.append('circle').attr('class', 'drag-endpoint').attr('cx', x1).attr('cy', y1).attr('r', 7);
+        const c2 = group.append('circle').attr('class', 'drag-endpoint').attr('cx', x2).attr('cy', y2).attr('r', 7);
+
+        const syncLabel = () => {
+          if (labelEl) {
+            labelEl
+              .attr('x', (+vis.attr('x1') + +vis.attr('x2')) / 2)
+              .attr('y', (+vis.attr('y1') + +vis.attr('y2')) / 2 - 4);
+          }
+        };
+        const saveEndpoints = () => {
+          if (ann._layoutRef) {
+            ann._layoutRef.x1 = roundCoord(xScale.invert(+vis.attr('x1')));
+            ann._layoutRef.y1 = roundCoord(yScale.invert(+vis.attr('y1')));
+            ann._layoutRef.x2 = roundCoord(xScale.invert(+vis.attr('x2')));
+            ann._layoutRef.y2 = roundCoord(yScale.invert(+vis.attr('y2')));
+          }
+          if (onDragEnd) onDragEnd();
+        };
+
+        c1.call(d3.drag()
+          .on('drag', function(event) {
+            const nx = Math.max(0, Math.min(plotW, event.x));
+            const ny = Math.max(0, Math.min(plotH, event.y));
+            d3.select(this).attr('cx', nx).attr('cy', ny);
+            vis.attr('x1', nx).attr('y1', ny);
+            body.attr('x1', nx).attr('y1', ny);
+            syncLabel();
+          })
+          .on('end', saveEndpoints)
+        );
+        c2.call(d3.drag()
+          .on('drag', function(event) {
+            const nx = Math.max(0, Math.min(plotW, event.x));
+            const ny = Math.max(0, Math.min(plotH, event.y));
+            d3.select(this).attr('cx', nx).attr('cy', ny);
+            vis.attr('x2', nx).attr('y2', ny);
+            body.attr('x2', nx).attr('y2', ny);
+            syncLabel();
+          })
+          .on('end', saveEndpoints)
+        );
+        body.call(d3.drag()
+          .subject(() => ({ x: 0, y: 0 }))
+          .on('start', function() {
+            const el = d3.select(this);
+            el.attr('data-sx1', vis.attr('x1')).attr('data-sy1', vis.attr('y1'))
+              .attr('data-sx2', vis.attr('x2')).attr('data-sy2', vis.attr('y2'));
+          })
+          .on('drag', function(event) {
+            const el = d3.select(this);
+            const nx1 = +el.attr('data-sx1') + event.x;
+            const ny1 = +el.attr('data-sy1') + event.y;
+            const nx2 = +el.attr('data-sx2') + event.x;
+            const ny2 = +el.attr('data-sy2') + event.y;
+            vis.attr('x1', nx1).attr('y1', ny1).attr('x2', nx2).attr('y2', ny2);
+            el.attr('x1', nx1).attr('y1', ny1).attr('x2', nx2).attr('y2', ny2);
+            c1.attr('cx', nx1).attr('cy', ny1);
+            c2.attr('cx', nx2).attr('cy', ny2);
+            syncLabel();
+          })
+          .on('end', saveEndpoints)
+        );
+        break;
+      }
+      case 'zone': {
+        const zColor = ann.color || 'rgba(33,150,243,0.12)';
+        const px1 = ann.x1 !== undefined && ann.x1 !== null ? xScale(ann.x1) : 0;
+        const px2 = ann.x2 !== undefined && ann.x2 !== null ? xScale(ann.x2) : plotW;
+        const py1 = ann.y1 !== undefined && ann.y1 !== null ? yScale(ann.y1) : plotH;
+        const py2 = ann.y2 !== undefined && ann.y2 !== null ? yScale(ann.y2) : 0;
+        let xLeft = Math.min(px1, px2);
+        let xRight = Math.max(px1, px2);
+        let yTop = Math.min(py1, py2);
+        let yBot = Math.max(py1, py2);
+
+        const vis = group.append('rect')
+          .attr('x', xLeft).attr('y', yTop)
+          .attr('width', Math.max(2, xRight - xLeft))
+          .attr('height', Math.max(2, yBot - yTop))
+          .attr('fill', zColor).attr('stroke', 'none');
+        let labelEl = null;
+        if (ann.label) {
+          labelEl = group.append('text')
+            .attr('x', xLeft + 5).attr('y', yTop + fontSize + 3)
+            .attr('text-anchor', 'start').attr('font-size', fontSize)
+            .style('fill', ann.labelColor || 'var(--fg)').text(ann.label);
+        }
+        const hit = group.append('rect').attr('class', 'drag-interaction drag-zone')
+          .attr('x', xLeft).attr('y', yTop)
+          .attr('width', Math.max(2, xRight - xLeft))
+          .attr('height', Math.max(2, yBot - yTop));
+        const tl = group.append('circle').attr('class', 'drag-endpoint').attr('cx', xLeft).attr('cy', yTop).attr('r', 6);
+        const br = group.append('circle').attr('class', 'drag-endpoint').attr('cx', xRight).attr('cy', yBot).attr('r', 6);
+
+        const updateZoneDom = () => {
+          const lx = Math.min(xLeft, xRight);
+          const rx = Math.max(xLeft, xRight);
+          const ty = Math.min(yTop, yBot);
+          const by = Math.max(yTop, yBot);
+          vis.attr('x', lx).attr('y', ty).attr('width', Math.max(2, rx - lx)).attr('height', Math.max(2, by - ty));
+          hit.attr('x', lx).attr('y', ty).attr('width', Math.max(2, rx - lx)).attr('height', Math.max(2, by - ty));
+          tl.attr('cx', lx).attr('cy', ty);
+          br.attr('cx', rx).attr('cy', by);
+          if (labelEl) labelEl.attr('x', lx + 5).attr('y', ty + fontSize + 3);
+        };
+        const commitZone = () => {
+          const lx = Math.min(xLeft, xRight);
+          const rx = Math.max(xLeft, xRight);
+          const ty = Math.min(yTop, yBot);
+          const by = Math.max(yTop, yBot);
+          if (ann._layoutRef) {
+            ann._layoutRef.x1 = roundCoord(xScale.invert(lx));
+            ann._layoutRef.x2 = roundCoord(xScale.invert(rx));
+            ann._layoutRef.y1 = roundCoord(yScale.invert(by));
+            ann._layoutRef.y2 = roundCoord(yScale.invert(ty));
+          }
+          if (onDragEnd) onDragEnd();
+        };
+
+        hit.call(d3.drag()
+          .subject(() => ({ x: 0, y: 0 }))
+          .on('start', function() {
+            d3.select(this)
+              .attr('data-xl', xLeft).attr('data-xr', xRight)
+              .attr('data-yt', yTop).attr('data-yb', yBot);
+          })
+          .on('drag', function(event) {
+            const el = d3.select(this);
+            const w = +el.attr('data-xr') - +el.attr('data-xl');
+            const h = +el.attr('data-yb') - +el.attr('data-yt');
+            xLeft = Math.max(0, Math.min(plotW - w, +el.attr('data-xl') + event.x));
+            xRight = xLeft + w;
+            yTop = Math.max(0, Math.min(plotH - h, +el.attr('data-yt') + event.y));
+            yBot = yTop + h;
+            updateZoneDom();
+          })
+          .on('end', commitZone)
+        );
+        tl.call(d3.drag()
+          .on('drag', function(event) {
+            xLeft = Math.max(0, Math.min(plotW, event.x));
+            yTop = Math.max(0, Math.min(plotH, event.y));
+            updateZoneDom();
+          })
+          .on('end', commitZone)
+        );
+        br.call(d3.drag()
+          .on('drag', function(event) {
+            xRight = Math.max(0, Math.min(plotW, event.x));
+            yBot = Math.max(0, Math.min(plotH, event.y));
+            updateZoneDom();
+          })
+          .on('end', commitZone)
+        );
+        break;
+      }
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  D3 MULTI-CHART RENDERER
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function render() {
+  const containerSel = d3.select('#chart-svg');
+  containerSel.selectAll('*').remove();
+  if (!dataStore) return;
+
+  resolvedModel = mergeDataAndLayout(dataStore, layoutStore);
+  const model = resolvedModel;
+  const charts = model.charts;
+  if (!charts || charts.length === 0) return;
+
+  const showGrid = uiOverrides.grid !== null ? uiOverrides.grid : model.grid;
+  const showCrosshair = uiOverrides.crosshair !== null ? uiOverrides.crosshair : model.crosshair;
+
+  const widthHost = document.getElementById('chart-width');
+  const availWidth = Math.max(240, (widthHost && widthHost.clientWidth) ? widthHost.clientWidth : (window.innerWidth - 24));
+  const svgW = Math.round(clampDimension(resolveDimension(model.width, availWidth, availWidth), model.widthMin, model.widthMax));
+
+  const svg = containerSel.append('svg')
+    .attr('width', svgW)
+    .attr('height', 100);
+
+  const innerTotalW = Math.max(120, svgW - model.margin.left - model.margin.right);
+  const cols = model.columns;
+  const rows = Math.ceil(charts.length / cols);
+  const cellW = Math.max(120, (innerTotalW - (cols - 1) * model.gap.col) / cols);
+
+  // Shared figure-wide legend measurement
+  let sharedLegendLayout = null;
+  let sharedLegendOffsetY = model.margin.top;
+  let gridStartY = model.margin.top;
+  if (model.legendMode === 'shared' && model.sharedLegendItems.length > 0) {
+    const leftPad = 48;
+    sharedLegendLayout = computeLegendLayout(svg, model.sharedLegendItems, Math.max(80, innerTotalW - leftPad), model.legendMarker);
+    gridStartY += sharedLegendLayout.height + 6;
+  }
+
+  // Measure per-chart heights & legends
+  const cellMeta = charts.map(ch => {
+    const cellH = Math.round(clampDimension(
+      resolveDimension(ch.height, cellW, model.defaultHeight),
+      ch.heightMin,
+      ch.heightMax
+    ));
+    const marginLeft = 48 + ch.yFormatMargin;
+    const marginRight = 14;
+    const plotW = Math.max(50, cellW - marginLeft - marginRight);
+
+    const showChartLegend = ch.legend !== undefined
+      ? Boolean(ch.legend)
+      : (model.legendMode === 'perChart');
+    const legendLayout = showChartLegend
+      ? computeLegendLayout(svg, ch.curves, plotW, model.legendMarker)
+      : { rows: 0, height: 0, placements: [] };
+
+    const titleHeight = ch.title ? 18 : 0;
+    const marginTop = Math.max(14, 6 + titleHeight + legendLayout.height);
+    const marginBottom = 34;
+    const plotH = Math.max(50, cellH - marginTop - marginBottom);
+
+    return {
+      cellH: marginTop + plotH + marginBottom,
+      marginLeft,
+      marginRight,
+      marginTop,
+      marginBottom,
+      plotW,
+      plotH,
+      titleHeight,
+      legendLayout
+    };
+  });
+
+  const rowHeights = new Array(rows).fill(0);
+  for (let i = 0; i < charts.length; i++) {
+    const r = Math.floor(i / cols);
+    if (cellMeta[i].cellH > rowHeights[r]) rowHeights[r] = cellMeta[i].cellH;
+  }
+
+  const rowOffsets = new Array(rows).fill(0);
+  let curY = gridStartY;
+  for (let r = 0; r < rows; r++) {
+    rowOffsets[r] = curY;
+    curY += rowHeights[r] + (r < rows - 1 ? model.gap.row : 0);
+  }
+
+  const svgH = Math.round(curY + model.margin.bottom);
+  svg
+    .attr('height', svgH)
+    .attr('viewBox', `0 0 ${svgW} ${svgH}`)
+    .attr('preserveAspectRatio', 'xMinYMin meet');
+
+  if (sharedLegendLayout) {
+    renderLegend(svg, sharedLegendLayout, model.margin.left + 48, sharedLegendOffsetY, model.legendMarker);
+  }
+
+  const uidPrefix = 'fres-' + Math.random().toString(36).slice(2, 8);
+
+  for (let idx = 0; idx < charts.length; idx++) {
+    const ch = charts[idx];
+    const meta = cellMeta[idx];
+    const row = Math.floor(idx / cols);
+    const col = idx % cols;
+    const cellX = model.margin.left + col * (cellW + model.gap.col);
+    const cellY = rowOffsets[row];
+    // Expand plotH if another chart in the same row was taller
+    const extraRowH = rowHeights[row] - meta.cellH;
+    const plotW = meta.plotW;
+    const plotH = meta.plotH + extraRowH;
+
+    renderSingleChart(svg, ch, meta, cellX, cellY, plotW, plotH, showGrid, showCrosshair, model.legendMarker, `${uidPrefix}-${idx}`);
+  }
+}
+
+function renderSingleChart(svg, ch, meta, cellX, cellY, plotW, plotH, showGrid, showCrosshair, legendMarker, clipUid) {
+  const xMode = uiOverrides.xMode || ch.xMode;
+  const yMode = uiOverrides.yMode || ch.yMode;
+  const xScaleMode = uiOverrides.xScale || ch.xScale;
+  const yMeta = Y_MODES[yMode] || Y_MODES.powerDb;
+  const xMeta = X_MODES[xMode] || X_MODES.frequency;
+
+  const g = svg.append('g')
+    .attr('class', 'frequency-response')
+    .attr('transform', `translate(${cellX + meta.marginLeft},${cellY + meta.marginTop})`);
+
+  if (ch.title) {
+    g.append('text')
+      .attr('class', 'chart-title')
+      .attr('text-anchor', 'middle')
+      .attr('x', plotW / 2)
+      .attr('y', -(meta.marginTop - 13))
+      .text(ch.title);
+  }
+
+  if (meta.legendLayout && meta.legendLayout.placements.length > 0) {
+    const legY = -meta.legendLayout.height - 2;
+    renderLegend(g, meta.legendLayout, 0, legY, legendMarker);
+  }
+
+  // Determine X domain
+  let posMin = Infinity;
+  let periodUpper = 2;
+  for (const c of ch.curves) {
+    if (xMode === 'period') {
+      if (c.entry.posPeriodMin < posMin) posMin = c.entry.posPeriodMin;
+      if (c.entry.periodMax > periodUpper) periodUpper = c.entry.periodMax;
+    } else {
+      if (c.entry.posFreqMin < posMin) posMin = c.entry.posFreqMin;
+    }
+  }
+  if (!Number.isFinite(posMin) || posMin <= 0) posMin = xMode === 'period' ? 2 : 1e-3;
+
+  let xmin = xMode === 'period' ? 2 : (xScaleMode === 'log' ? posMin : 0);
+  let xmax = xMode === 'period' ? Math.max(4, periodUpper) : 1;
+  let hasExplicitXBound = false;
+
+  if (xMode === 'period') {
+    if (typeof ch.minPeriod === 'number' && Number.isFinite(ch.minPeriod)) { xmin = ch.minPeriod; hasExplicitXBound = true; }
+    if (typeof ch.maxPeriod === 'number' && Number.isFinite(ch.maxPeriod)) { xmax = ch.maxPeriod; hasExplicitXBound = true; }
+  } else {
+    if (typeof ch.minFrequency === 'number' && Number.isFinite(ch.minFrequency)) { xmin = ch.minFrequency; hasExplicitXBound = true; }
+    if (typeof ch.maxFrequency === 'number' && Number.isFinite(ch.maxFrequency)) { xmax = ch.maxFrequency; hasExplicitXBound = true; }
+  }
+  if (typeof ch.xMin === 'number' && Number.isFinite(ch.xMin)) { xmin = ch.xMin; hasExplicitXBound = true; }
+  if (typeof ch.xMax === 'number' && Number.isFinite(ch.xMax)) { xmax = ch.xMax; hasExplicitXBound = true; }
+
+  for (const rv of ch.verticals) {
+    if (rv.expandDomain) {
+      if (rv.value < xmin) xmin = rv.value;
+      if (rv.value > xmax) xmax = rv.value;
+    }
+  }
+
+  if (xScaleMode === 'log') {
+    if (xmin <= 0) xmin = posMin;
+    if (xmax <= xmin) xmax = xmin * 10;
+  } else if (xmax <= xmin) {
+    xmax = xmin + 1;
+  }
+
+  // Determine Y domain across curves
+  let ymin = Infinity;
+  let ymax = -Infinity;
+  for (const c of ch.curves) {
+    const compSet = xMode === 'period' ? c.entry.componentsPeriod : c.entry.components;
+    const comp = compSet[yMeta.field];
+    if (comp && comp.data.length > 0) {
+      if (comp.min < ymin) ymin = comp.min;
+      if (comp.max > ymax) ymax = comp.max;
+    }
+  }
+  if (!Number.isFinite(ymin) || !Number.isFinite(ymax)) {
+    ymin = -1;
+    ymax = 1;
+  }
+
+  let hasExplicitYBound = false;
+  if (yMeta.kind === 'db') {
+    if (typeof ch.minDb === 'number' && Number.isFinite(ch.minDb)) { ymin = ch.minDb; hasExplicitYBound = true; }
+    if (typeof ch.maxDb === 'number' && Number.isFinite(ch.maxDb)) { ymax = ch.maxDb; hasExplicitYBound = true; }
+  } else if (yMeta.kind === 'pct') {
+    if (typeof ch.minPct === 'number' && Number.isFinite(ch.minPct)) { ymin = ch.minPct; hasExplicitYBound = true; }
+    if (typeof ch.maxPct === 'number' && Number.isFinite(ch.maxPct)) { ymax = ch.maxPct; hasExplicitYBound = true; }
+  } else {
+    if (typeof ch.minDeg === 'number' && Number.isFinite(ch.minDeg)) { ymin = ch.minDeg; hasExplicitYBound = true; }
+    if (typeof ch.maxDeg === 'number' && Number.isFinite(ch.maxDeg)) { ymax = ch.maxDeg; hasExplicitYBound = true; }
+  }
+  if (typeof ch.yMin === 'number' && Number.isFinite(ch.yMin)) { ymin = ch.yMin; hasExplicitYBound = true; }
+  if (typeof ch.yMax === 'number' && Number.isFinite(ch.yMax)) { ymax = ch.yMax; hasExplicitYBound = true; }
+
+  for (const rh of ch.horizontals) {
+    if (rh.expandDomain) {
+      if (rh.value < ymin) ymin = rh.value;
+      if (rh.value > ymax) ymax = rh.value;
+    }
+  }
+  if (ymax <= ymin) {
+    const pad = Math.abs(ymin) * 0.05 || 1;
+    ymin -= pad;
+    ymax += pad;
+  }
+
+  const xScale = xScaleMode === 'log'
+    ? d3.scaleLog().domain([xmin, xmax]).range([0, plotW])
+    : d3.scaleLinear().domain([xmin, xmax]).range([0, plotW]);
+  if (xScaleMode === 'linear' && ch.nice !== false && !hasExplicitXBound) {
+    xScale.nice();
+  } else if (ch.nice === true) {
+    xScale.nice();
+  }
+
+  const yScale = d3.scaleLinear().domain([ymin, ymax]).range([plotH, 0]);
+  if (ch.nice !== false && !hasExplicitYBound) {
+    yScale.nice();
+  } else if (ch.nice === true) {
+    yScale.nice();
+  }
+
+  const xTickCount = (typeof ch.xTicks === 'number' && ch.xTicks > 0) ? ch.xTicks : Math.max(3, Math.round(plotW / 55));
+  const yTickCount = (typeof ch.yTicks === 'number' && ch.yTicks > 0) ? ch.yTicks : Math.max(3, Math.round(plotH / 38));
+
+  const xAxis = d3.axisBottom(xScale)
+    .tickSizeInner(showGrid ? -plotH : 5)
+    .tickSizeOuter(0);
+  if (xScaleMode === 'log') {
+    xAxis.ticks(xTickCount, ch.xFormat || '~g');
+  } else {
+    xAxis.ticks(xTickCount);
+    if (ch.xFormat) xAxis.tickFormat(d3.format(ch.xFormat));
+  }
+
+  let yFmtFn = null;
+  try {
+    yFmtFn = d3.format(ch.yFormat || '.2f');
+  } catch (_) {
+    yFmtFn = d3.format('.2f');
+  }
+  const yAxis = d3.axisLeft(yScale)
+    .ticks(yTickCount)
+    .tickSizeInner(showGrid ? -plotW : 5)
+    .tickSizeOuter(0)
+    .tickFormat(yFmtFn);
+
+  const xAxisG = g.append('g')
+    .attr('class', 'x axis' + (showGrid ? ' has-grid' : ''))
+    .attr('transform', `translate(0,${plotH})`)
+    .call(xAxis);
+  if (showGrid) {
+    xAxisG.selectAll('.tick line').classed('grid-line', true);
+  }
+
+  const yAxisG = g.append('g')
+    .attr('class', 'y axis' + (showGrid ? ' has-grid' : ''))
+    .call(yAxis);
+  if (showGrid) {
+    yAxisG.selectAll('.tick line').classed('grid-line', true);
+  }
+
+  const resolvedXLabel = ch.xLabel !== undefined ? ch.xLabel : xMeta.label;
+  const resolvedYLabel = ch.yLabel !== undefined ? ch.yLabel : yMeta.label;
+  const xLabelOffset = 29;
+
+  if (resolvedXLabel) {
+    g.append('text')
+      .attr('class', 'xlabel')
+      .attr('text-anchor', 'middle')
+      .attr('x', plotW / 2)
+      .attr('y', plotH + xLabelOffset)
+      .text(resolvedXLabel);
+  }
+
+  if (resolvedYLabel) {
+    g.append('text')
+      .attr('class', 'ylabel')
+      .attr('transform', 'rotate(-90)')
+      .attr('text-anchor', 'middle')
+      .attr('x', -plotH / 2)
+      .attr('y', 12 - meta.marginLeft)
+      .text(resolvedYLabel);
+  }
+
+  if (ch.subfig) {
+    g.append('g')
+      .attr('class', 'subfigure')
+      .append('text')
+      .attr('text-anchor', 'start')
+      .attr('x', -meta.marginLeft + 2)
+      .attr('y', plotH + xLabelOffset)
+      .text(ch.subfig);
+  }
+
+  // Clipped plot layer
+  const clipId = 'clip-' + clipUid;
+  g.append('clipPath')
+    .attr('id', clipId)
+    .append('rect')
+    .attr('width', plotW)
+    .attr('height', plotH);
+
+  const plotBody = g.append('g').attr('clip-path', `url(#${clipId})`);
+
+  // 1. Background zones
+  const zoneLayer = plotBody.append('g').attr('class', 'zones');
+  drawStaticZones(zoneLayer, ch.annotations, xScale, yScale, plotW, plotH);
+
+  // 2. Reference horizontals & verticals
+  const refLayer = plotBody.append('g').attr('class', 'reference-lines');
+  for (const rh of ch.horizontals) {
+    const y = yScale(rh.value);
+    if (!Number.isFinite(y)) continue;
+    const ln = refLayer.append('line')
+      .attr('x1', 0).attr('y1', y).attr('x2', plotW).attr('y2', y)
+      .attr('stroke', rh.color).attr('stroke-width', rh.width).attr('fill', 'none');
+    if (rh.dash) ln.attr('stroke-dasharray', rh.dash);
+    if (rh.label) {
+      const align = rh.align || 'end';
+      const lx = align === 'start' ? 4 : (align === 'middle' ? plotW / 2 : plotW - 4);
+      refLayer.append('text')
+        .attr('x', lx).attr('y', y - 4)
+        .attr('text-anchor', align).attr('font-size', 10)
+        .style('fill', rh.color).text(rh.label);
+    }
+  }
+  for (const rv of ch.verticals) {
+    if (xScaleMode === 'log' && rv.value <= 0) continue;
+    const x = xScale(rv.value);
+    if (!Number.isFinite(x)) continue;
+    const ln = refLayer.append('line')
+      .attr('x1', x).attr('y1', 0).attr('x2', x).attr('y2', plotH)
+      .attr('stroke', rv.color).attr('stroke-width', rv.width).attr('fill', 'none');
+    if (rv.dash) ln.attr('stroke-dasharray', rv.dash);
+    if (rv.label) {
+      const nearRight = x > plotW - 60;
+      const align = rv.align || (nearRight ? 'end' : 'start');
+      refLayer.append('text')
+        .attr('x', align === 'end' ? x - 4 : x + 4)
+        .attr('y', 12)
+        .attr('text-anchor', align).attr('font-size', 10)
+        .style('fill', rv.color).text(rv.label);
+    }
+  }
+
+  // 3. Curves
+  const linesLayer = plotBody.append('g').attr('class', 'lines');
+  for (const c of ch.curves) {
+    const xArr = xMode === 'period' ? c.entry.periods : c.entry.frequencies;
+    const compSet = xMode === 'period' ? c.entry.componentsPeriod : c.entry.components;
+    const yComp = compSet[yMeta.field];
+    if (!yComp || !yComp.data || yComp.data.length === 0) continue;
+
+    const len = Math.min(xArr.length, yComp.data.length);
+    const pts = [];
+    for (let j = 0; j < len; j++) {
+      const xv = xArr[j];
+      const yv = yComp.data[j];
+      if (!Number.isFinite(xv) || !Number.isFinite(yv) || (xScaleMode === 'log' && xv <= 0)) {
+        pts.push(null);
+      } else {
+        pts.push({ x: xScale(xv), y: yScale(yv) });
+      }
+    }
+
+    const lineGen = d3.line()
+      .defined(d => d !== null && Number.isFinite(d.x) && Number.isFinite(d.y))
+      .x(d => d.x)
+      .y(d => d.y)
+      .curve(resolveCurveFactory(c.interpolation));
+
+    const lg = linesLayer.append('g')
+      .attr('class', 'line-group')
+      .classed('hover', hoveredSeries.has(c.key))
+      .style('stroke', c.color)
+      .style('opacity', c.opacity);
+    if (c.width !== null && !hoveredSeries.has(c.key)) {
+      lg.style('stroke-width', c.width);
+    }
+
+    const pathEl = lg.append('path')
+      .attr('fill', 'none')
+      .attr('d', lineGen(pts));
+    if (c.dash) pathEl.attr('stroke-dasharray', c.dash);
+  }
+
+  // 4. Static foreground annotations
+  const staticAnnLayer = plotBody.append('g').attr('class', 'annotations');
+  drawStaticForegroundAnnotations(staticAnnLayer, ch.annotations, xScale, yScale, plotW, plotH);
+
+  // 5. Pointer inspection (coords or crosshair)
+  const fmtCoordX = xMode === 'period' ? d3.format('.2f') : d3.format('.3f');
+  const fmtCoordY = d3.format('.2f');
+
+  const coordsText = g.append('text')
+    .attr('class', 'coords')
+    .attr('text-anchor', 'end')
+    .attr('x', plotW - 6)
+    .attr('y', 16)
+    .style('display', 'none');
+
+  const crosshairG = g.append('g')
+    .attr('class', 'crosshair')
+    .style('display', 'none');
+  const chV = crosshairG.append('line').attr('class', 'wire').attr('y1', 0).attr('y2', plotH);
+  const chH = crosshairG.append('line').attr('class', 'wire').attr('x1', 0).attr('x2', plotW);
+
+  const xBadge = crosshairG.append('g').attr('class', 'axisannotation');
+  const xBadgeRect = xBadge.append('rect').attr('height', 16).attr('rx', 2);
+  const xBadgeText = xBadge.append('text').attr('y', 12).attr('text-anchor', 'middle');
+
+  const yBadge = crosshairG.append('g').attr('class', 'axisannotation');
+  const yBadgeRect = yBadge.append('rect').attr('height', 16).attr('rx', 2);
+  const yBadgeText = yBadge.append('text').attr('y', 12).attr('text-anchor', 'end');
+
+  g.append('rect')
+    .attr('class', 'pointer-overlay')
+    .attr('width', plotW)
+    .attr('height', plotH)
+    .style('fill', 'none')
+    .style('pointer-events', 'all')
+    .on('mouseenter touchstart', () => {
+      if (showCrosshair) crosshairG.style('display', null);
+      else coordsText.style('display', null);
+    })
+    .on('mouseleave touchend', () => {
+      coordsText.style('display', 'none');
+      crosshairG.style('display', 'none');
+    })
+    .on('mousemove touchmove', function(event) {
+      const [mx, my] = d3.pointer(event, this);
+      const cx = Math.max(0, Math.min(plotW, mx));
+      const cy = Math.max(0, Math.min(plotH, my));
+      const xv = xScale.invert(cx);
+      const yv = yScale.invert(cy);
+      if (!showCrosshair) {
+        coordsText.text(`${fmtCoordX(xv)} \u21c6 ${fmtCoordY(yv)}${yMeta.suffix}`);
+      } else {
+        chV.attr('x1', cx).attr('x2', cx);
+        chH.attr('y1', cy).attr('y2', cy);
+
+        const xt = fmtCoordX(xv);
+        const xw = Math.max(36, xt.length * 6.5 + 10);
+        const bx = Math.max(xw / 2, Math.min(plotW - xw / 2, cx));
+        xBadge.attr('transform', `translate(${bx},${plotH + 2})`);
+        xBadgeRect.attr('x', -xw / 2).attr('width', xw);
+        xBadgeText.attr('x', 0).text(xt);
+
+        const yt = yFmtFn(yv);
+        const yw = Math.max(34, yt.length * 6.5 + 8);
+        const by = Math.max(0, Math.min(plotH - 16, cy - 8));
+        yBadge.attr('transform', `translate(0,${by})`);
+        yBadgeRect.attr('x', -yw - 3).attr('width', yw);
+        yBadgeText.attr('x', -7).text(yt);
+      }
+    });
+
+  // 6. Draggable annotations above pointer-overlay so handles receive drag events
+  const dragAnnLayer = g.append('g').attr('class', 'draggable-annotations');
+  setupDraggableAnnotations(dragAnnLayer, ch.annotations, xScale, yScale, plotW, plotH, () => {
+    if (window._forceSyncEditor) window._forceSyncEditor();
+    render();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  STATUS, TOOLBAR SYNC & SMART LOADER
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function setStatus(msg) {
+  document.getElementById('status').textContent = msg || '';
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function ensurePerChartOption(selectEl, enable) {
+  let opt = selectEl.querySelector(`option[value="${PER_CHART_SENTINEL}"]`);
+  if (enable && !opt) {
+    opt = document.createElement('option');
+    opt.value = PER_CHART_SENTINEL;
+    opt.textContent = 'Per chart';
+    selectEl.insertBefore(opt, selectEl.firstChild);
+  } else if (!enable && opt) {
+    opt.remove();
+  }
+}
+
+function syncToolbarControls() {
+  const model = mergeDataAndLayout(
+    dataStore || { seriesOrder: [], seriesMap: {} },
+    layoutStore
+  );
+  const ySel = document.getElementById('ymode-select');
+  const xSel = document.getElementById('xmode-select');
+  const sSel = document.getElementById('xscale-select');
+  const gChk = document.getElementById('grid-toggle');
+  const cChk = document.getElementById('crosshair-toggle');
+
+  ensurePerChartOption(ySel, model.isMultiChart);
+  ensurePerChartOption(xSel, model.isMultiChart);
+  ensurePerChartOption(sSel, model.isMultiChart);
+
+  const first = model.charts[0] || { yMode: 'powerDb', xMode: 'frequency', xScale: 'linear' };
+  ySel.value = uiOverrides.yMode || (model.isMultiChart ? PER_CHART_SENTINEL : first.yMode);
+  xSel.value = uiOverrides.xMode || (model.isMultiChart ? PER_CHART_SENTINEL : first.xMode);
+  sSel.value = uiOverrides.xScale || (model.isMultiChart ? PER_CHART_SENTINEL : first.xScale);
+  gChk.checked = uiOverrides.grid !== null ? uiOverrides.grid : model.grid;
+  cChk.checked = uiOverrides.crosshair !== null ? uiOverrides.crosshair : model.crosshair;
+}
+
+function showDataControls() {
+  document.getElementById('data-controls').style.display = '';
+  document.getElementById('export-controls').style.display = '';
+}
+
+function updateDataStatus() {
+  if (!dataStore) {
+    setStatus('');
+    return;
+  }
+  const nSeries = dataStore.seriesOrder.length;
+  const firstKey = dataStore.seriesOrder[0];
+  const nPts = firstKey ? dataStore.seriesMap[firstKey].frequencies.length : (dataStore.frequencies ? dataStore.frequencies.length : 0);
+  const parts = [`${nSeries} series, ${nPts} frequencies`];
+  if (resolvedModel && resolvedModel.unresolvedRefs && resolvedModel.unresolvedRefs.length > 0) {
+    const uniq = [...new Set(resolvedModel.unresolvedRefs)];
+    parts.push('Warning: layout references missing series: ' + uniq.join(', '));
+  }
+  setStatus(parts.join(' | '));
+}
+
+function resetUiOverrides() {
+  uiOverrides = { yMode: null, xMode: null, xScale: null, grid: null, crosshair: null };
+}
+
+function loadFile(raw, filename) {
+  if (isDataFile(raw)) {
+    rawDataStore = raw;
+    dataStore = normalizeDataFile(raw);
+    hoveredSeries.clear();
+    document.getElementById('file-label-data').textContent = filename || '';
+    syncToolbarControls();
+    showDataControls();
+    render();
+    updateDataStatus();
+    if (window._syncEditorNow) window._syncEditorNow();
+    if (window._syncDataEditorNow) window._syncDataEditorNow();
+  } else if (isLayoutFile(raw)) {
+    layoutStore = raw;
+    resetUiOverrides();
+    document.getElementById('file-label-layout').textContent = filename || '';
+    syncToolbarControls();
+    if (window._syncEditorNow) window._syncEditorNow();
+    if (dataStore) {
+      render();
+      updateDataStatus();
+    } else {
+      setStatus('Layout loaded. Now load a data file, or pass ?data=url');
+    }
+  } else {
+    setStatus('Error: unrecognized JSON format. Expected fres-data.json ({ "series": {...} }) or fres-layout.json.');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  EXPORT (SVG + 2x PNG)
+ * ═══════════════════════════════════════════════════════════════════ */
+
+const THEME_PRESETS = (function parseThemePresets() {
+  const styleEl = document.querySelector('head style');
+  const css = styleEl ? styleEl.textContent : '';
+  function extract(themeName) {
+    let re;
+    if (themeName === 'dark') re = /\[data-theme="dark"\]\s*\{([^}]+)\}/;
+    else if (themeName === 'print') re = /\[data-theme="print"\]\s*\{([^}]+)\}/;
+    else re = /:root\s*\{([^}]+)\}/;
+    const m = css.match(re);
+    if (!m) return {};
+    const tokens = {};
+    m[1].replace(/--([\w-]+)\s*:\s*([^;]+)/g, (_, k, v) => {
+      tokens['--' + k] = v.trim();
+    });
+    return tokens;
+  }
+  return {
+    light: extract('light'),
+    dark: extract('dark'),
+    print: extract('print')
+  };
+})();
+
+function getResolvedTokens() {
+  const el = document.documentElement;
+  const cs = getComputedStyle(el);
+  const preset = THEME_PRESETS[getCurrentTheme()] || THEME_PRESETS.light || {};
+  const out = {};
+  for (const name of THEME_TOKEN_NAMES) {
+    const inlineVal = el.style.getPropertyValue(name).trim();
+    const computedVal = cs ? cs.getPropertyValue(name).trim() : '';
+    out[name] = inlineVal || computedVal || preset[name] || '';
+  }
+  return out;
+}
+
+function replaceCssVarsInString(str, tokens) {
+  if (!str || !str.includes('var(--')) return str;
+  return str.replace(/var\(\s*(--[\w-]+)\s*\)/g, (full, key) => tokens[key] || full);
+}
+
+function getExportCSS(tokens) {
+  const bg = tokens['--bg'] || '#ffffff';
+  const fg = tokens['--fg'] || '#1a1a1a';
+  const axis = tokens['--axis'] || '#666666';
+  const grid = tokens['--grid'] || '#999999';
+  const gridOp = tokens['--grid-opacity'] || '0.35';
+  const label = tokens['--label'] || '#444444';
+  const legend = tokens['--legend'] || '#333333';
+  const subfig = tokens['--subfigure'] || fg;
+  const curveW = tokens['--curve-width'] || '2';
+  const hoverW = tokens['--curve-hover-width'] || '5';
+  return `
+    svg { background: ${bg}; }
+    text { fill: ${fg}; font-family: Arial, Helvetica, sans-serif; }
+    .axis path { fill: none; stroke: ${axis}; }
+    .axis .tick line { fill: none; stroke: ${axis}; }
+    .axis.has-grid .tick line.grid-line { stroke: ${grid}; stroke-opacity: ${gridOp}; }
+    .axis text { fill: ${axis}; font-size: 11px; }
+    text.xlabel, text.ylabel { fill: ${label}; font-size: 12px; }
+    text.chart-title { fill: ${fg}; font-size: 13px; font-weight: 600; }
+    .subfigure text { fill: ${subfig}; font-size: 12px; font-weight: 700; }
+    .legend text { fill: ${legend}; font-size: 12px; }
+    .lines .line-group { fill: none; stroke-width: ${curveW}; }
+    .lines .line-group.hover { stroke-width: ${hoverW}; }`;
+}
+
+function serializeSvg() {
+  const svgEl = document.querySelector('#chart-svg svg');
+  if (!svgEl) return null;
+  const tokens = getResolvedTokens();
+  const clone = svgEl.cloneNode(true);
+
+  // Strip interactive-only layers and handles
+  clone.querySelectorAll('.drag-interaction, .drag-endpoint, .pointer-overlay, .crosshair, .coords').forEach(el => el.remove());
+
+  // Resolve inline var(--...) attributes so standalone SVG viewers render colors reliably
+  clone.querySelectorAll('*').forEach(el => {
+    for (const attr of ['stroke', 'fill', 'style']) {
+      const val = el.getAttribute(attr);
+      if (val && val.includes('var(--')) {
+        el.setAttribute(attr, replaceCssVarsInString(val, tokens));
+      }
+    }
+  });
+
+  const style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+  style.textContent = getExportCSS(tokens);
+  const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  bgRect.setAttribute('class', 'svg-bg');
+  bgRect.setAttribute('width', clone.getAttribute('width') || '100%');
+  bgRect.setAttribute('height', clone.getAttribute('height') || '100%');
+  bgRect.setAttribute('fill', tokens['--bg'] || '#ffffff');
+  clone.insertBefore(bgRect, clone.firstChild);
+  clone.insertBefore(style, clone.firstChild);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+  return (typeof XMLSerializer !== 'undefined')
+    ? new XMLSerializer().serializeToString(clone)
+    : clone.outerHTML;
+}
+
+function downloadBlob(blob, filename) {
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function timestampSuffix() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}_${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}`;
+}
+
+function saveSvg() {
+  const svgStr = serializeSvg();
+  if (!svgStr) { setStatus('No chart to save'); return; }
+  const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+  downloadBlob(blob, `indicator-fres_${timestampSuffix()}.svg`);
+  setStatus('SVG saved');
+}
+
+function savePng() {
+  const svgStr = serializeSvg();
+  if (!svgStr) { setStatus('No chart to save'); return; }
+  const svgEl = document.querySelector('#chart-svg svg');
+  const w = +svgEl.getAttribute('width');
+  const h = +svgEl.getAttribute('height');
+  const scale = 2;
+  const tokens = getResolvedTokens();
+  const canvas = document.createElement('canvas');
+  canvas.width = w * scale;
+  canvas.height = h * scale;
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = function() {
+    ctx.fillStyle = tokens['--bg'] || '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(function(blob) {
+      downloadBlob(blob, `indicator-fres_${timestampSuffix()}.png`);
+      setStatus('PNG saved (2x)');
+    }, 'image/png');
+  };
+  img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  EVENT WIRING & DRAG-AND-DROP
+ * ═══════════════════════════════════════════════════════════════════ */
+
+document.getElementById('ymode-select').addEventListener('change', function() {
+  uiOverrides.yMode = this.value === PER_CHART_SENTINEL ? null : this.value;
+  render();
+});
+
+document.getElementById('xmode-select').addEventListener('change', function() {
+  uiOverrides.xMode = this.value === PER_CHART_SENTINEL ? null : this.value;
+  render();
+});
+
+document.getElementById('xscale-select').addEventListener('change', function() {
+  uiOverrides.xScale = this.value === PER_CHART_SENTINEL ? null : this.value;
+  render();
+});
+
+document.getElementById('grid-toggle').addEventListener('change', function() {
+  uiOverrides.grid = this.checked;
+  render();
+});
+
+document.getElementById('crosshair-toggle').addEventListener('change', function() {
+  uiOverrides.crosshair = this.checked;
+  render();
+});
+
+document.getElementById('theme-select').addEventListener('change', function() {
+  if (this.value === 'light') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', this.value);
+});
+
+function handleFileList(fileList) {
+  const files = Array.from(fileList || []);
+  if (files.length === 0) return;
+  Promise.all(files.map(f => f.text().then(txt => ({ name: f.name, obj: JSON.parse(txt) }))))
+    .then(parsed => {
+      // Load layout files before data files when dropped/chosen together
+      parsed.sort((a, b) => (isLayoutFile(a.obj) ? -1 : 1) - (isLayoutFile(b.obj) ? -1 : 1));
+      for (const item of parsed) {
+        loadFile(item.obj, item.name);
+      }
+    })
+    .catch(err => setStatus('Error: ' + err.message));
+}
+
+document.getElementById('file-input').addEventListener('change', function(e) {
+  handleFileList(e.target.files);
+  this.value = '';
+});
+
+document.getElementById('btn-choose-file').addEventListener('click', function() {
+  document.getElementById('file-input').click();
+});
+
+document.getElementById('btn-save-svg').addEventListener('click', saveSvg);
+document.getElementById('btn-save-png').addEventListener('click', savePng);
+
+window.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  document.body.classList.add('drag-over');
+});
+window.addEventListener('dragleave', function(e) {
+  if (e.target === document.documentElement || e.target === document.body) {
+    document.body.classList.remove('drag-over');
+  }
+});
+window.addEventListener('drop', function(e) {
+  e.preventDefault();
+  document.body.classList.remove('drag-over');
+  if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    handleFileList(e.dataTransfer.files);
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  LAYOUT EDITOR
+ * ═══════════════════════════════════════════════════════════════════ */
+
+(function initLayoutEditor() {
+  const editor = document.getElementById('layout-editor');
+  const header = document.getElementById('layout-editor-header');
+  const textarea = document.getElementById('layout-textarea');
+  const errorEl = document.getElementById('layout-error');
+  const seriesInfoEl = document.getElementById('series-info');
+  let lastSyncedLayout = null;
+
+  function autoResize() {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.max(76, textarea.scrollHeight) + 'px';
+  }
+
+  function syncSeriesInfo() {
+    if (!dataStore || dataStore.seriesOrder.length === 0) {
+      seriesInfoEl.innerHTML = '';
+      return;
+    }
+    let html = '';
+    if (dataStore.description) {
+      html += `<span class="si-desc">${escapeHtml(dataStore.description)}</span>`;
+    }
+    if (dataStore.signalLength) {
+      const specLen = dataStore.frequencies.length || (dataStore.seriesMap[dataStore.seriesOrder[0]].frequencies.length);
+      html += `<span class="si-meta">signalLength=${dataStore.signalLength}, spectrum=${specLen} pts</span>`;
+    }
+    html += dataStore.seriesOrder.map(key => {
+      const entry = dataStore.seriesMap[key];
+      const count = entry.frequencies.length;
+      const warmupTxt = entry.warmup !== null ? `, warmup=${entry.warmup}` : '';
+      const mnem = entry.mnemonic ? ` <span class="si-mnemonic">${escapeHtml(entry.mnemonic)}</span>` : '';
+      const desc = entry.description ? ` <span class="si-series-desc">&mdash; ${escapeHtml(entry.description)}</span>` : '';
+      return `<span class="si-name">${escapeHtml(key)}</span> <span class="si-type">fres</span> <span class="si-count">(${count}${warmupTxt})</span>${mnem}${desc}`;
+    }).join('<br>');
+    seriesInfoEl.innerHTML = html;
+  }
+
+  function syncEditor() {
+    if (layoutStore && layoutStore !== lastSyncedLayout) {
+      lastSyncedLayout = layoutStore;
+      textarea.value = JSON.stringify(layoutStore, null, 2);
+      errorEl.textContent = '';
+      autoResize();
+    }
+    syncSeriesInfo();
+  }
+
+  window._syncEditorNow = syncEditor;
+  window._forceSyncEditor = function() {
+    if (layoutStore) {
+      lastSyncedLayout = layoutStore;
+      textarea.value = JSON.stringify(layoutStore, null, 2);
+      autoResize();
+    }
+  };
+
+  header.addEventListener('click', function() {
+    editor.classList.toggle('collapsed');
+    if (!editor.classList.contains('collapsed')) autoResize();
+  });
+
+  document.getElementById('btn-layout-apply').addEventListener('click', function() {
+    errorEl.textContent = '';
+    const text = textarea.value.trim();
+    if (!text) {
+      layoutStore = null;
+      lastSyncedLayout = null;
+      resetUiOverrides();
+      syncToolbarControls();
+      if (dataStore) {
+        render();
+        updateDataStatus();
+      }
+      return;
+    }
+    try {
+      const obj = JSON.parse(text);
+      if (isDataFile(obj)) {
+        errorEl.textContent = 'This looks like a fres-data.json file. Use Load JSON for data.';
+        return;
+      }
+      if (!obj || typeof obj !== 'object' || Array.isArray(obj)) {
+        errorEl.textContent = 'Layout must be a JSON object.';
+        return;
+      }
+      layoutStore = obj;
+      lastSyncedLayout = obj;
+      resetUiOverrides();
+      syncToolbarControls();
+      if (dataStore) {
+        render();
+        updateDataStatus();
+      } else {
+        setStatus('Layout applied. Load a fres-data.json file to visualize.');
+      }
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  });
+
+  document.getElementById('btn-layout-format').addEventListener('click', function() {
+    errorEl.textContent = '';
+    const text = textarea.value.trim();
+    if (!text) return;
+    try {
+      textarea.value = JSON.stringify(JSON.parse(text), null, 2);
+      autoResize();
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  });
+
+  document.getElementById('btn-layout-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      errorEl.textContent = '';
+      const btn = document.getElementById('btn-layout-copy');
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 3000);
+    });
+  });
+
+  document.getElementById('btn-layout-save').addEventListener('click', function() {
+    const text = textarea.value.trim();
+    if (!text) return;
+    const blob = new Blob([text], { type: 'application/json' });
+    downloadBlob(blob, 'fres-layout.json');
+    const btn = document.getElementById('btn-layout-save');
+    btn.textContent = 'Saved to fres-layout.json';
+    setTimeout(() => { btn.textContent = 'Save'; }, 3000);
+  });
+
+  textarea.addEventListener('input', autoResize);
+  textarea.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('btn-layout-apply').click();
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = this.selectionStart;
+      const end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  DATA EDITOR
+ * ═══════════════════════════════════════════════════════════════════ */
+
+function stringifyCompactData(val, indent) {
+  const pad = ' '.repeat(indent || 0);
+  if (val === null || typeof val !== 'object') return JSON.stringify(val);
+  if (Array.isArray(val)) {
+    const isScalar = val.every(x => x === null || typeof x === 'number' || typeof x === 'string' || typeof x === 'boolean');
+    if (isScalar) return '[' + val.map(x => JSON.stringify(x)).join(', ') + ']';
+    if (val.length === 0) return '[]';
+    const innerPad = ' '.repeat((indent || 0) + 2);
+    return '[\n' + val.map(x => innerPad + stringifyCompactData(x, (indent || 0) + 2)).join(',\n') + '\n' + pad + ']';
+  }
+  const keys = Object.keys(val);
+  if (keys.length === 0) return '{}';
+  // Keep { min, max, data } spectrum component objects on a single readable line
+  if (Array.isArray(val.data) && keys.every(k => k === 'min' || k === 'max' || k === 'data')) {
+    const parts = keys.map(k => `${JSON.stringify(k)}: ${stringifyCompactData(val[k], 0)}`);
+    return `{ ${parts.join(', ')} }`;
+  }
+  const innerPad = ' '.repeat((indent || 0) + 2);
+  const lines = keys.map(k => `${innerPad}${JSON.stringify(k)}: ${stringifyCompactData(val[k], (indent || 0) + 2)}`);
+  return '{\n' + lines.join(',\n') + '\n' + pad + '}';
+}
+
+(function initDataEditor() {
+  const editor = document.getElementById('data-editor');
+  const header = document.getElementById('data-editor-header');
+  const textarea = document.getElementById('data-textarea');
+  const errorEl = document.getElementById('data-error');
+  let lastSyncedData = null;
+
+  function autoResizeData() {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(420, Math.max(96, textarea.scrollHeight)) + 'px';
+  }
+
+  function syncDataEditor() {
+    if (editor.classList.contains('collapsed')) return;
+    if (rawDataStore && rawDataStore !== lastSyncedData) {
+      lastSyncedData = rawDataStore;
+      textarea.value = stringifyCompactData(rawDataStore, 0);
+      errorEl.textContent = '';
+      autoResizeData();
+    }
+  }
+
+  window._syncDataEditorNow = syncDataEditor;
+
+  header.addEventListener('click', function() {
+    editor.classList.toggle('collapsed');
+    if (!editor.classList.contains('collapsed')) {
+      syncDataEditor();
+      autoResizeData();
+    }
+  });
+
+  document.getElementById('btn-data-apply').addEventListener('click', function() {
+    errorEl.textContent = '';
+    const text = textarea.value.trim();
+    if (!text) {
+      errorEl.textContent = 'Data JSON cannot be empty.';
+      return;
+    }
+    try {
+      const obj = JSON.parse(text);
+      if (!isDataFile(obj)) {
+        errorEl.textContent = 'Expected fres-data.json ({ "series": {...} } or FrequencyResponseResult[]).';
+        return;
+      }
+      lastSyncedData = obj;
+      loadFile(obj, document.getElementById('file-label-data').textContent || 'inline data');
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  });
+
+  document.getElementById('btn-data-format').addEventListener('click', function() {
+    errorEl.textContent = '';
+    const text = textarea.value.trim();
+    if (!text) return;
+    try {
+      textarea.value = stringifyCompactData(JSON.parse(text), 0);
+      autoResizeData();
+    } catch (err) {
+      errorEl.textContent = err.message;
+    }
+  });
+
+  document.getElementById('btn-data-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      errorEl.textContent = '';
+      const btn = document.getElementById('btn-data-copy');
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 3000);
+    });
+  });
+
+  document.getElementById('btn-data-save').addEventListener('click', function() {
+    const text = textarea.value.trim();
+    if (!text) return;
+    const blob = new Blob([text], { type: 'application/json' });
+    downloadBlob(blob, 'fres-data.json');
+    const btn = document.getElementById('btn-data-save');
+    btn.textContent = 'Saved to fres-data.json';
+    setTimeout(() => { btn.textContent = 'Save'; }, 3000);
+  });
+
+  textarea.addEventListener('input', autoResizeData);
+  textarea.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('btn-data-apply').click();
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = this.selectionStart;
+      const end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  THEME EDITOR
+ * ═══════════════════════════════════════════════════════════════════ */
+
+(function initThemeEditor() {
+  const themeEditor = document.getElementById('theme-editor');
+  const themeHeader = document.getElementById('theme-editor-header');
+  const themeTextarea = document.getElementById('theme-textarea');
+  const themeErrorEl = document.getElementById('theme-error');
+
+  function getOriginalTokens() {
+    const cur = getCurrentTheme();
+    return { ...(THEME_PRESETS[cur] || THEME_PRESETS.light) };
+  }
+
+  function tokensToText(tokens) {
+    return Object.entries(tokens).map(([k, v]) => `${k}: ${v};`).join('\n');
+  }
+
+  function textToTokens(text) {
+    const trimmedWhole = text.trim();
+    if (!trimmedWhole) return {};
+    if (trimmedWhole.startsWith('{')) {
+      const parsed = JSON.parse(trimmedWhole);
+      const out = {};
+      for (const [k, v] of Object.entries(parsed)) {
+        const prop = k.startsWith('--') ? k : '--' + k;
+        out[prop] = String(v).trim();
+      }
+      return out;
+    }
+    const tokens = {};
+    for (const line of text.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('/*')) continue;
+      const m = trimmed.match(/^(--[\w-]+)\s*:\s*(.+?);?\s*$/);
+      if (m) tokens[m[1]] = m[2];
+    }
+    return tokens;
+  }
+
+  function autoResizeTheme() {
+    themeTextarea.style.height = 'auto';
+    themeTextarea.style.height = Math.max(76, themeTextarea.scrollHeight) + 'px';
+  }
+
+  function populateEditor() {
+    const tokens = getOriginalTokens();
+    const el = document.documentElement;
+    for (const key of Object.keys(tokens)) {
+      const inline = el.style.getPropertyValue(key).trim();
+      if (inline) tokens[key] = inline;
+    }
+    themeTextarea.value = tokensToText(tokens);
+    themeErrorEl.textContent = '';
+    autoResizeTheme();
+  }
+
+  themeTextarea.addEventListener('input', autoResizeTheme);
+
+  themeHeader.addEventListener('click', function() {
+    themeEditor.classList.toggle('collapsed');
+    if (!themeEditor.classList.contains('collapsed')) populateEditor();
+  });
+
+  document.getElementById('theme-select').addEventListener('change', function() {
+    // Clear previous preset's inline overrides when switching preset so the new preset displays cleanly
+    const el = document.documentElement;
+    for (const name of THEME_TOKEN_NAMES) {
+      el.style.removeProperty(name);
+    }
+    if (!themeEditor.classList.contains('collapsed')) {
+      populateEditor();
+    }
+    if (dataStore) render();
+  });
+
+  document.getElementById('btn-theme-apply').addEventListener('click', function() {
+    themeErrorEl.textContent = '';
+    try {
+      const tokens = textToTokens(themeTextarea.value);
+      if (Object.keys(tokens).length === 0) {
+        themeErrorEl.textContent = 'No valid tokens found';
+        return;
+      }
+      const el = document.documentElement;
+      for (const [k, v] of Object.entries(tokens)) {
+        el.style.setProperty(k, v);
+      }
+      if (dataStore) render();
+    } catch (err) {
+      themeErrorEl.textContent = err.message;
+    }
+  });
+
+  document.getElementById('btn-theme-reset').addEventListener('click', function() {
+    themeErrorEl.textContent = '';
+    const el = document.documentElement;
+    for (const k of THEME_TOKEN_NAMES) {
+      el.style.removeProperty(k);
+    }
+    populateEditor();
+    if (dataStore) render();
+  });
+
+  document.getElementById('btn-theme-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(themeTextarea.value).then(() => {
+      themeErrorEl.textContent = '';
+      const btn = document.getElementById('btn-theme-copy');
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 3000);
+    });
+  });
+
+  document.getElementById('btn-theme-save').addEventListener('click', function() {
+    const text = themeTextarea.value.trim();
+    if (!text) return;
+    const theme = getCurrentTheme();
+    const filename = `theme-${theme}.css`;
+    const blob = new Blob([text], { type: 'text/css' });
+    downloadBlob(blob, filename);
+    const btn = document.getElementById('btn-theme-save');
+    btn.textContent = `Saved to ${filename}`;
+    setTimeout(() => { btn.textContent = 'Save'; }, 3000);
+  });
+
+  themeTextarea.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('btn-theme-apply').click();
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = this.selectionStart;
+      const end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 2;
+    }
+  });
+})();
+
+window.addEventListener('resize', function() {
+  if (dataStore) render();
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+ *  INIT — URL params (?data=&layout=&theme=), inline CONFIG, or idle
+ * ═══════════════════════════════════════════════════════════════════ */
+
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const themeParam = (params.get('theme') || '').toLowerCase();
+  if (themeParam === 'dark' || themeParam === 'print' || themeParam === 'light') {
+    const sel = document.getElementById('theme-select');
+    sel.value = themeParam;
+    if (themeParam === 'light') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', themeParam);
+  }
+
+  const dataUrl = params.get('data') || params.get('config');
+  const layoutUrl = params.get('layout');
+  if (dataUrl || layoutUrl) {
+    const tasks = [];
+    if (layoutUrl) {
+      tasks.push(fetch(layoutUrl).then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status} loading ${layoutUrl}`);
+        return r.json();
+      }).then(obj => ({ obj, name: layoutUrl })));
+    }
+    if (dataUrl) {
+      tasks.push(fetch(dataUrl).then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status} loading ${dataUrl}`);
+        return r.json();
+      }).then(obj => ({ obj, name: dataUrl })));
+    }
+    Promise.all(tasks)
+      .then(items => {
+        for (const it of items) loadFile(it.obj, it.name);
+      })
+      .catch(err => setStatus('Failed to load: ' + err.message));
+    return;
+  }
+
+  if (typeof CONFIG !== 'undefined') {
+    loadFile(CONFIG, 'inline');
+    return;
+  }
+
+  setStatus('Load JSON: ?data=url | ?data=url&layout=url | Load JSON / drag-and-drop');
+})();
+</script>
+</body>
+</html>

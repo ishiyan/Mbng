@@ -1,0 +1,74 @@
+{
+  "description": "Showcase of reference lines plus static and draggable annotations",
+  "width": "100%",
+  "widthMin": 580,
+  "height": 360,
+  "xMode": "period",
+  "maxPeriod": 60,
+  "yMode": "amplitudePct",
+  "lines": [
+    { "series": "sma-14", "mnemonic": "SMA(14)", "color": "#1976d2", "width": 2 },
+    { "series": "ema-14", "mnemonic": "EMA(14)", "color": "#ff9800", "width": 2 },
+    { "series": "super-smoother-10", "mnemonic": "SuperSmoother(10)", "color": "#26a69a", "width": 2.2 },
+    { "series": "roofing-10-48", "mnemonic": "Roofing(10, 48)", "color": "#9c27b0", "width": 2, "dash": "6,3" }
+  ],
+  "horizontals": [
+    { "value": 70.71, "color": "#ef5350", "dash": "4,3", "label": "-3 dB (70.7%)" }
+  ],
+  "verticals": [
+    { "value": 10, "color": "#26a69a", "dash": "3,3", "label": "T = 10" },
+    { "value": 48, "color": "#9c27b0", "dash": "3,3", "label": "T = 48" }
+  ],
+  "annotations": [
+    {
+      "type": "zone",
+      "x1": 10,
+      "x2": 48,
+      "y1": 0,
+      "y2": 105,
+      "color": "rgba(156,39,176,0.08)",
+      "label": "Roofing passband (10..48)",
+      "draggable": true
+    },
+    {
+      "type": "hline",
+      "value": 50,
+      "color": "#607d8b",
+      "dash": "6,3",
+      "label": "Half-amplitude (drag me)",
+      "draggable": true
+    },
+    {
+      "type": "arrow",
+      "x": 14,
+      "y": 0.5,
+      "shape": "arrow",
+      "direction": "down",
+      "markerSize": 11,
+      "color": "#1976d2",
+      "label": "SMA(14) first null",
+      "draggable": true
+    },
+    {
+      "type": "text",
+      "x": 32,
+      "y": 92,
+      "text": "Low-pass trend preservation",
+      "color": "var(--fg)",
+      "size": 11,
+      "draggable": true
+    },
+    {
+      "type": "line",
+      "x1": 4,
+      "y1": 22,
+      "x2": 16,
+      "y2": 82,
+      "color": "#26a69a",
+      "width": 1.2,
+      "dash": "3,2",
+      "label": "Transition slope",
+      "draggable": true
+    }
+  ]
+}

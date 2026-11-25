@@ -1,0 +1,41 @@
+{
+  "description": "Bode-style logarithmic frequency plot (Amplitude dB and Unwrapped Phase)",
+  "width": "100%",
+  "widthMin": 600,
+  "height": 240,
+  "columns": 1,
+  "legend": "shared",
+  "palette": "default",
+  "series": ["sma-14", "ema-14", "dema-14", "tema-14", "super-smoother-10", "roofing-10-48"],
+  "charts": [
+    {
+      "subfig": "(a)",
+      "xMode": "frequency",
+      "xScale": "log",
+      "yMode": "amplitudeDb",
+      "minDb": -60,
+      "maxDb": 5,
+      "horizontals": [
+        { "value": -3.01, "color": "#ef5350", "dash": "4,3", "label": "-3 dB" },
+        { "value": -20, "color": "var(--ref-line)", "dash": "2,3", "label": "-20 dB" }
+      ],
+      "verticals": [
+        { "value": 0.0417, "color": "#26a69a", "dash": "4,3", "label": "T = 48" },
+        { "value": 0.2, "color": "#26a69a", "dash": "4,3", "label": "T = 10" }
+      ]
+    },
+    {
+      "subfig": "(b)",
+      "xMode": "frequency",
+      "xScale": "log",
+      "yMode": "phaseDegUnwrapped",
+      "minDeg": -360,
+      "maxDeg": 180,
+      "horizontals": [
+        { "value": 0, "dash": "2,3", "label": "0 deg" },
+        { "value": -90, "dash": "4,3", "label": "-90 deg" },
+        { "value": -180, "dash": "4,3", "label": "-180 deg" }
+      ]
+    }
+  ]
+}

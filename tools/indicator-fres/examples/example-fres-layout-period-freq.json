@@ -1,0 +1,42 @@
+{
+  "description": "SMA parameter sweep with continuous cool palette across Period and Frequency",
+  "width": "100%",
+  "widthMin": 640,
+  "height": 220,
+  "columns": 2,
+  "gap": { "row": 16, "col": 18 },
+  "legend": "shared",
+  "palette": "cool",
+  "charts": [
+    {
+      "subfig": "(a)",
+      "xMode": "period",
+      "maxPeriod": 45,
+      "yMode": "amplitudePct",
+      "horizontals": [{ "value": 70.71, "dash": "4,3", "label": "70.7%" }]
+    },
+    {
+      "subfig": "(b)",
+      "xMode": "frequency",
+      "yMode": "amplitudePct",
+      "horizontals": [{ "value": 70.71, "dash": "4,3", "label": "70.7%" }]
+    },
+    {
+      "subfig": "(c)",
+      "xMode": "period",
+      "maxPeriod": 45,
+      "yMode": "phaseDegUnwrapped",
+      "minDeg": -270,
+      "maxDeg": 15,
+      "horizontals": [{ "value": 0, "dash": "2,3" }]
+    },
+    {
+      "subfig": "(d)",
+      "xMode": "frequency",
+      "yMode": "phaseDegUnwrapped",
+      "minDeg": -360,
+      "maxDeg": 15,
+      "horizontals": [{ "value": 0, "dash": "2,3" }]
+    }
+  ]
+}
